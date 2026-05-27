@@ -38,11 +38,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = header.substring(7);
 
+        // 잘못된 token 시 조건
         if (!jwtProvider.validate(token)) {
             filterChain.doFilter(request, response);
             return;
         }
-
+        
+        // 선 실행 토큰 생성 / 등록
         try {
             Long userId = jwtProvider.getUserId(token);
 
