@@ -1,1 +1,143 @@
-# 26-05adf
+# SRE Skeleton Project
+
+Vite React TypeScript dist 정적파일 서빙, Spring Boot gradlew/jar 서빙
+Nginx 에 결합 후 Docker Compose로 통합한 개발+ci/cd 포트폴리오 프로젝트입니다.
+
+## 아키텍처 개요
+Browser → Nginx (80) → /api/* → Spring Boot (8080) → MySQL (3306)
+→ /      → React dist 정적 파일
+
+## 핵심 설계 포인트
+
+| 관점 | 적용 내용 |
+|---|---|
+| 보안 | DTO/ 각 반응 및 요청 개별 관리, Entity 별도, non-root Docker 실행, .env 분리 |
+| 유지보수 | GlobalExceptionHandler, Service 계층 DTO 매핑, ResponseEntity |
+| 안정성 | DB Healthcheck + service_healthy 조건, Multi-stage Dockerfile |
+| 관측 가능성 | Spring Actuator /health /metrics, Docker HEALTHCHECK 연동 |
+| 확장성 | Strangler Fig Pattern (Vue → React 점진적 마이그레이션) |
+
+# myapp2my
+
+
+## 설치
+```bash
+# 1. gradle 설치
+sudo snap install gradle --classic
+
+# PATH 추가
+echo 'export PATH=$PATH:/snap/bin' >> ~/.bashrc
+source ~/.bashrc
+
+# 2. gradle 종류
+snap list gradle
+
+# 3. gradle 위치
+which gradle
+
+# 4. gradle 버전
+gradle -v
+
+
+
+# 5. 자바 설치 17
+sudo apt update
+sudo apt install openjdk-17-jdk -y
+
+# 6. 자바 위치
+readlink -f $(which java)
+
+# 7. 환경변수 기입
+echo 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64' >> ~/.bashrc
+echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+
+# 8. 버전 확인
+echo $JAVA_HOME
+java -version
+
+
+
+
+# 9. 노드 설치 20
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
+
+# 10. 프론트 에서 vite 템플릿 리액트
+cd frontend
+npm create vite@latest . -- --template react
+
+# 11. 노드 버전 과 위치
+node -v
+npm -v
+which node
+which npm
+
+```
+
+
+## 빠른 시작
+
+```bash
+# 1. 환경 변수 설정
+cp .env.example .env
+# .env 파일에서 DB_PASSWORD 등 수정
+
+# 2. 빌드 
+cd ~/바탕화면/myapp2my/backend
+gradle wrapper --gradle-version 8.1
+
+./gradlew clean build --stacktrace
+
+cd ~/바탕화면/myapp2my/frontend
+npm run dev
+npm run build
+
+# 3. 전체 실행
+docker compose down
+docker compose build --no-cache
+docker-compose up --build
+
+# 5. 확인
+open http://localhost          # 앱
+curl http://localhost/actuator/health  # 헬스체크
+```
+
+
+## 프로젝트 구조
+.
+├── backend/
+│   ├── src/main/java/com/example/backend/
+│   │   ├── controller/     # HTTP 요청 처리, DTO 반환
+│   │   ├── service/        # 비즈니스 로직, DTO ↔ Entity 변환
+│   │   ├── repository/     # JPA Repository
+│   │   ├── model/          # JPA Entity (내부용, API 미노출)
+│   │   ├── dto/            # Request/Response 레코드
+│   │   └── exception/      # GlobalExceptionHandler
+│   ├── Dockerfile          # Multi-stage + non-root
+│   └── build.gradle
+├── frontend/
+│   └── src/
+│       ├── App.js          # React 
+│       └── Dashboard.js    # React 컴포넌트
+├── nginx/
+│   ├── default.conf        # Reverse Proxy + SPA 라우팅 + 보안 헤더
+│   └── Dockerfile
+├── docker-compose.yml      # Healthcheck 기반 서비스 기동 순서 제어
+├── .env                    # 민감 정보 (Git 제외)
+└── .gitignore
+
+## 면접 포인트
+
+**"왜 DTO를 썼나요?"**
+Entity 직접 노출 시 DB 스키마가 외부에 드러나고, JPA Lazy Loading 문제로
+무한 직렬화가 발생할 수 있습니다. API 스펙과 DB 스키마를 분리해 독립적으로 변경 가능하게 했습니다.
+
+**"컨테이너 시작 순서를 어떻게 보장하나요?"**
+`depends_on: - db`는 프로세스 시작만 보장합니다. MySQL이 실제로 쿼리를 받을 준비가
+됐는지는 `mysqladmin ping` healthcheck + `condition: service_healthy`로 보장합니다.
+
+**"시스템 장애를 어떻게 감지하나요?"**
+Spring Actuator의 `/actuator/health`가 DB 연결 상태 등을 자동 점검합니다.
+Docker HEALTHCHECK와 연동되어 컨테이너 레벨에서도 상태를 감지하며,
+이후 Prometheus + Grafana로 확장 가능한 구조입니다.
