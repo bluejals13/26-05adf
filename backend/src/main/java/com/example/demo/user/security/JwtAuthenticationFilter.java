@@ -37,12 +37,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String token = header.substring(7);
-
-        // 잘못된 token 시 조건
-        if (!jwtProvider.validate(token)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
         
         // 선 실행 토큰 생성 / 등록
         try {
@@ -59,20 +53,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(auth);
 
-        } catch (Exception e) {
+        } catch (Exception e) { // 필요하면 401 처리도 가능
             SecurityContextHolder.clearContext();
          }
-
-        CustomUserPrincipal principal = new CustomUserPrincipal(userId);
-
-        UsernamePasswordAuthenticationToken auth =
-            new UsernamePasswordAuthenticationToken(
-                principal,
-                null,
-                List.of(new SimpleGrantedAuthority("ROLE_USER"))
-            );
-
-        SecurityContextHolder.getContext().setAuthentication(auth);
 
         filterChain.doFilter(request, response);
     }
