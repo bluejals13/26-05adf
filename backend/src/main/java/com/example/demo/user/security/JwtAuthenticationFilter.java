@@ -53,10 +53,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(auth);
 
-        } catch (Exception e) { // (hard auth) or soft auth
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
-         }
+           } catch (Exception e) {
+                SecurityContextHolder.clearContext();
+
+                // 🔥 선택: 완전 차단하려면 아래 활성화
+                // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                // return;
+        }
 
         filterChain.doFilter(request, response);
     }
