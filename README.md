@@ -105,7 +105,7 @@ curl http://localhost/actuator/health  # 헬스체크
 
 
 ## 프로젝트 구조
-.
+```bash
 ├── backend/
 │   ├── src/main/java/com/example/backend/
 │   │   ├── controller/     # HTTP 요청 처리, DTO 반환
@@ -126,18 +126,5 @@ curl http://localhost/actuator/health  # 헬스체크
 ├── docker-compose.yml      # Healthcheck 기반 서비스 기동 순서 제어
 ├── .env                    # 민감 정보 (Git 제외)
 └── .gitignore
+```
 
-## 면접 포인트
-
-**"왜 DTO를 썼나요?"**
-Entity 직접 노출 시 DB 스키마가 외부에 드러나고, JPA Lazy Loading 문제로
-무한 직렬화가 발생할 수 있습니다. API 스펙과 DB 스키마를 분리해 독립적으로 변경 가능하게 했습니다.
-
-**"컨테이너 시작 순서를 어떻게 보장하나요?"**
-`depends_on: - db`는 프로세스 시작만 보장합니다. MySQL이 실제로 쿼리를 받을 준비가
-됐는지는 `mysqladmin ping` healthcheck + `condition: service_healthy`로 보장합니다.
-
-**"시스템 장애를 어떻게 감지하나요?"**
-Spring Actuator의 `/actuator/health`가 DB 연결 상태 등을 자동 점검합니다.
-Docker HEALTHCHECK와 연동되어 컨테이너 레벨에서도 상태를 감지하며,
-이후 Prometheus + Grafana로 확장 가능한 구조입니다.
