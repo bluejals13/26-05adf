@@ -29,17 +29,18 @@ public class JwtProvider {
     }
 
     // 1. 토큰 생성
-    public String createToken(Long userId) {
-        Date now = new Date();
-        Date expiry = new Date(now.getTime() + expiration);
+    public String createToken(Long userId, String username) {
+    Date now = new Date();
+    Date expiry = new Date(now.getTime() + expiration);
 
-        return Jwts.builder()
-                .setSubject(String.valueOf(userId))
-                .setIssuedAt(now)
-                .setExpiration(expiry)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-    }
+    return Jwts.builder()
+            .setSubject(String.valueOf(userId))
+            .claim("username", username)
+            .setIssuedAt(now)
+            .setExpiration(expiry)
+            .signWith(key, SignatureAlgorithm.HS256)
+            .compact();
+}
 
     // 2. claims 공통 파서
     private Claims parseClaims(String token) {
