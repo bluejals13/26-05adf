@@ -16,40 +16,46 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
-@Configuration
-@EnableWebSecurity
+@Component
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtProvider jwtProvider;
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @Override
+    protected void doFilterInternal(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        FilterChain filterChain
+    ) throws ServletException, IOException {
 
-        http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> {})
-            .sessionManagement(sm ->
-                sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .authorizeHttpRequests(auth -> auth
+        String header = request.getHeader("Authorization");
 
-                // 인증 없이 허용
-                .requestMatchers("/api/auth/**").permitAll()
+        if (header == null || !header.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-                // 나머지는 인증 필요
-                .anyRequest().authenticated()
-            )
-            .addFilterBefore(
-                jwtAuthenticationFilter,
-                org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class
+        String token = header.substring(7);
+
+        if (!jwtProvider.validate(token)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        Long userId = jwtProvider.getUserId(token);
+
+        CustomUserPrincipal principal = new CustomUserPrincipal(userId);
+
+        UsernamePasswordAuthenticationToken auth =
+            new UsernamePasswordAuthenticationToken(
+                principal,
+                null,
+                List.of(new SimpleGrantedAuthority("ROLE_USER"))
             );
 
-        return http.build();
-    }
+        SecurityContextHolder.getContext().setAuthentication(auth);
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        filterChain.doFilter(request, response);
     }
 }
