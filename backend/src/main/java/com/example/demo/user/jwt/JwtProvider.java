@@ -17,23 +17,19 @@ public class JwtProvider {
     private String secretKey;
 
     @Value("${jwt.expiration}")
-    private long expiration; // ms 단위
+    private long expiration;
 
     private Key key;
 
     @PostConstruct
     public void init() {
-        if (secretKey == null || secretKey.getBytes(StandardCharsets.UTF_8).length < 32) {
-            throw new IllegalStateException("Invalid JWT secret (must be >= 32 bytes)");
-        }
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        this.key = Keys.hmacShaKeyFor(
+            secretKey.getBytes(StandardCharsets.UTF_8)
+        );
     }
 
-    // =========================
     // 1. 토큰 생성
-    // =========================
     public String createToken(Long userId) {
-
         Date now = new Date();
         Date expiry = new Date(now.getTime() + expiration);
 
@@ -45,22 +41,27 @@ public class JwtProvider {
                 .compact();
     }
 
-    // =========================
-    // 2. userId 추출
-    // =========================
-   public Long getUserId(String token) {
-    return Long.parseLong(parseClaims(token).getSubject());
-}
-
-    // =========================
-    // 3. 토큰 검증 (추가 권장)
-    // =========================
-public boolean validate(String token) {
-    try {
-        parseClaims(token);
-        return true;
-    } catch (JwtException | IllegalArgumentException e) {
-        return false;
+    // 2. claims 공통 파서
+    private Claims parseClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
-}
+
+    // 3. userId 추출
+    public Long getUserId(String token) {
+        return Long.parseLong(parseClaims(token).getSubject());
+    }
+
+    // 4. 검증
+    public boolean validate(String token) {
+        try {
+            parseClaims(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
 }
