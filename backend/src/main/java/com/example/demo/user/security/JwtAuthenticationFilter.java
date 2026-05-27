@@ -43,7 +43,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        Long userId = jwtProvider.getUserId(token);
+        try {
+            Long userId = jwtProvider.getUserId(token);
+
+            CustomUserPrincipal principal = new CustomUserPrincipal(userId);
+
+            UsernamePasswordAuthenticationToken auth =
+            new UsernamePasswordAuthenticationToken(
+                principal,
+                null,
+                List.of(new SimpleGrantedAuthority("ROLE_USER"))
+                );
+
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
+        } catch (Exception e) {
+            SecurityContextHolder.clearContext();
+         }
 
         CustomUserPrincipal principal = new CustomUserPrincipal(userId);
 
