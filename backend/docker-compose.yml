@@ -1,0 +1,77 @@
+
+
+services:
+
+  nginx:
+    build: ./@nginx
+    ports:
+      - "80:80"  # Nginx는 외부 8080 포트 사용
+    depends_on:
+      - backend
+    networks:
+      - app-net
+
+  backend:
+    build: .
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/eventdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+    ports:
+      - "8081:8080"
+    networks:
+      - app-net
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: eventdb
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-net
+    restart: unless-stopped
+
+  redis:
+    image: redis:7
+    networks:
+      - app-net
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - app-net
+
+#  loki:
+#    image: grafana/loki:2.9.0
+#    command: -config.file=/etc/loki/config.yml
+#    volumes:
+#      - ./logging:/etc/loki
+#    networks:
+#      - app-net
+
+#  promtail:
+#    image: grafana/promtail:2.9.0
+#    command: -config.file=/etc/promtail/config.yml
+#    volumes:
+#      - /var/lib/docker/containers:/var/lib/docker/containers
+#      - ./logging/promtail-config.yml:/etc/promtail/config.yml
+#    networks:
+#      - app-net
+
+volumes:
+  mysql_data:
+
+networks:
+  app-net:
+    driver: bridge
