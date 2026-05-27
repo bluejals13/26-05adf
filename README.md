@@ -73,9 +73,9 @@ java -version
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt install -y nodejs
 
-# 10. 프론트 에서 vite 템플릿 리액트
+# 10. 프론트 에서 vite 빌드
 cd frontend
-npm create vite@latest . -- --template react
+npm run build
 
 # 11. 노드 버전 과 위치
 node -v
