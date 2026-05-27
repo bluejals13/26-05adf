@@ -14,15 +14,18 @@ Prometheus + Grafana로 모니터링
 Docker Health Check 기반으로 서비스 의존성 제어
 
 
-## 핵심 설계 포인트
+# 핵심 설계 포인트
 
-| 관점 | 적용 내용 |
-|---|---|
-| 보안 | DTO/ 각 반응 및 요청 개별 관리, Entity 별도, non-root Docker 실행, .env 분리 |
-| 유지보수 | GlobalExceptionHandler, Service 계층 DTO 매핑, ResponseEntity |
-| 안정성 | DB Healthcheck + service_healthy 조건, Multi-stage Dockerfile |
-| 관측 가능성 | Spring Actuator /health /metrics, Docker HEALTHCHECK 연동 |
-| 확장성 | Strangler Fig Pattern (Vue → React 점진적 마이그레이션) |
+| 관점     | 적용 내용                                     |
+| ------ | ----------------------------------------- |
+| 보안     | DTO 분리, Entity 비노출, `.env` 분리           |
+| 안정성    | Healthcheck + `service_healthy`             |
+| 운영성    | Restart Policy 적용                         |
+| 관측 가능성 | Prometheus + Grafana + Exporter            |
+| 유지보수   | 계층 분리 (Controller / Service / Repository)|
+| 확장성    | Redis Cache, Loki 확장 고려                   |
+| 성능     | Redis 캐시 구조                               |
+| 운영 자동화 | Docker Compose 기반 통합 운영                  |
 
 # myapp2my
 
