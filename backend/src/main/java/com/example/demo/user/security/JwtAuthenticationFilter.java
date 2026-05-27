@@ -53,8 +53,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(auth);
 
-        } catch (Exception e) { // 필요하면 401 처리도 가능
-            SecurityContextHolder.clearContext();
+        } catch (Exception e) { // (hard auth) or soft auth
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
          }
 
         filterChain.doFilter(request, response);
