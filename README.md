@@ -1,11 +1,18 @@
-# SRE Skeleton Project
+# SRE Skeleton Project — myapp2my
 
-Vite React TypeScript dist 정적파일 서빙, Spring Boot gradlew/jar 서빙
-Nginx 에 결합 후 Docker Compose로 통합한 개발+ci/cd 포트폴리오 프로젝트입니다.
+React(Vite) + Spring Boot + MySQL 기반 서비스를 Docker Compose로 통합하고,
+Nginx Reverse Proxy·Redis Cache·Prometheus/Grafana 모니터링까지 포함한
+실전형 DevOps/SRE 포트폴리오 프로젝트입니다.
 
 ## 아키텍처 개요
-Browser → Nginx (80) → /api/* → Spring Boot (8080) → MySQL (3306)
-→ /      → React dist 정적 파일
+브라우저 요청은 Nginx가 받아:
+
+정적 파일은 React dist에서 직접 서빙
+/api/* 요청은 Spring Boot Backend로 Reverse Proxy
+Backend는 MySQL + Redis 사용
+Prometheus + Grafana로 모니터링
+Docker Health Check 기반으로 서비스 의존성 제어
+
 
 ## 핵심 설계 포인트
 
