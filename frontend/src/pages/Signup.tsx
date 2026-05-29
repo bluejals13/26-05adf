@@ -32,12 +32,13 @@ export default function Signup() {
         body: JSON.stringify({ username, password }),
       });
 
-       let data;
-     try {
-       data = await res.json();
-     } catch {
-       data = null;
-     }
+      let data = null;
+
+      try {
+        data = await res.json();
+      } catch {
+        data = null;
+      }
 
       if (!res.ok) {
         setErrorMessage(data?.message || "회원가입 실패");
@@ -90,9 +91,10 @@ export default function Signup() {
         )}
 
         <button type="submit" disabled={loading}>
-          {loading ? "가입 중..." : "회원가입"}
+          {loading && <p>가입 중...</p>}
         </button>
-<h4>아이디 2글자 이상, 비밀번호 3자 이상</h4>
+
+	<h4>아이디 2글자 이상, 비밀번호 3자 이상</h4>
       </form>
     </div>
   );
