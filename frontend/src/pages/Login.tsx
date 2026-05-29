@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { apiFetch } from '../api'
+import { validateLogin } from "../utils/validateAuth";
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -11,34 +12,45 @@ export default function Login() {
   const navigate = useNavigate()
 
   const login = async () => {
+    const error = validateLogin(username, password);
+
+    if (error) {
+        setErrorMessage(error);
+        return;
+    }
+
     try {
+      setErrorMessage("");
 
       const res = await apiFetch('/api/auth/login', {
         method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           username,
           password,
         }),
-      })
+      });
 
       if (!res.ok) {
-        // 서버 메시지 처리 가능
-      const data = await res.json().catch(() => null);
+        const data = await res.json().catch(() => null);
 
-      setErrorMessage(
-        data?.message || "로그인에 실패했습니다."
-      );
-        return
+        setErrorMessage(
+          data?.message || "로그인에 실패했습니다."
+        );
+
+        return;
       }
 
-      const token = await res.text()
+      const token = await res.text();
 
-      localStorage.setItem('token', token)
+      localStorage.setItem('token', token);
 
-      navigate('/main')
+      navigate('/main');
 
     } catch (err) {
-      console.error(err)
+      console.error(err);
       setErrorMessage("서버 오류가 발생했습니다.");
     }
   }
