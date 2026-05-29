@@ -1,28 +1,13 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 export default function Header() {
-  const navigate = useNavigate()
-  const [token, setToken] = useState(localStorage.getItem('token'))
-
-  useEffect(() => {
-    const syncToken = () => {
-      setToken(localStorage.getItem('token'))
-    }
-
-    window.addEventListener('storage', syncToken)
-    return () => window.removeEventListener('storage', syncToken)
-  }, [])
-
-  const logout = () => {
-    localStorage.removeItem('token')
-    setToken(null)
-    navigate('/login')
-  }
+  const navigate = useNavigate();
+  const { token, username, logout } = useAuth();
 
   return (
-    <header style={{ padding: 12, borderBottom: '1px solid #ddd' }}>
-      <nav style={{ display: 'flex', gap: 12 }}>
+    <header style={{ padding: 12, borderBottom: "1px solid #ddd" }}>
+      <nav style={{ display: "flex", gap: 12 }}>
         <Link to="/main">Main</Link>
         <Link to="/home">Home</Link>
         <Link to="/about">About</Link>
@@ -32,14 +17,24 @@ export default function Header() {
 
         {token ? (
           <>
-	    <Link to="/monitor">Monitor</Link>
+            <Link to="/monitor">Monitor</Link>
             <Link to="/dashboard">Dashboard</Link>
-            <button onClick={logout}>로그아웃</button>
+
+            <span style={{ marginLeft: "auto" }}>{username}님</span>
+
+            <button
+              onClick={() => {
+                logout();
+                navigate("/login");
+              }}
+            >
+              로그아웃
+            </button>
           </>
         ) : (
           <Link to="/login">Login</Link>
         )}
       </nav>
     </header>
-  )
+  );
 }
