@@ -20,25 +20,24 @@ export default function App() {
     <BrowserRouter>
       <Routes>
 
+        {/* Layout 없는 영역 */}
+        <Route element={<EmptyLayout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Route>
+
+        {/* 보호 영역 */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<Layout />}>		
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/monitor" element={<Monitor />} />
+          </Route> </Route>
+
         {/* Layout 있는 영역 */}
         <Route element={<Layout />}>
           <Route path="/" element={<Main />} />
           <Route path="/main" element={<Main />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-
-          {/* Monitor는 여기 중 하나로 명확하게 */}
-          <Route element={<ProtectedRoute />}>
-  		<Route path="/dashboard" element={<Dashboard />} />
-  		<Route path="/monitor" element={<Monitor />} />
-	  </Route>
-        </Route>
-
-        {/* Layout 없는 영역 */}
-        <Route element={<EmptyLayout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
         </Route>
 
       </Routes>
