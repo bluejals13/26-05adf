@@ -13,3 +13,8 @@
 ---
 ## Header.tsx
 
+
+---
+## ProtectedRoute.tsx
+-로그인 시 접근 가능 경로 / 게스트 시 네비
+
