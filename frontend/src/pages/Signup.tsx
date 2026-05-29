@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../api";
-import { validateSignup } from "../utils/validateSignup";
+import { validateSignup } from "../utils/validateAuth";
 
 export default function Signup() {
   const [username, setUsername] = useState("");
@@ -32,7 +32,12 @@ export default function Signup() {
         body: JSON.stringify({ username, password }),
       });
 
-      const data = await res.json();
+       let data;
+     try {
+       data = await res.json();
+     } catch {
+       data = null;
+     }
 
       if (!res.ok) {
         setErrorMessage(data?.message || "회원가입 실패");
