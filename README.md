@@ -14,7 +14,7 @@ Prometheus + Grafana로 모니터링
 Docker Health Check 기반으로 서비스 의존성 제어
 
 
-# 핵심 설계 포인트
+## 핵심 설계 포인트
 
 | 관점     | 적용 내용                                     |
 | ------ | ----------------------------------------- |
@@ -27,7 +27,7 @@ Docker Health Check 기반으로 서비스 의존성 제어
 | 성능     | Redis 캐시 구조                               |
 | 운영 자동화 | Docker Compose 기반 통합 운영                  |
 
-# myapp2my
+## myapp2my
 
 
 ## 설치
