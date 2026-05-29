@@ -7,8 +7,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 import Main from "./pages/Main";
 import Home from "./pages/Home";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
+//import About from "./pages/About";
+//import Contact from "./pages/Contact";
 
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
