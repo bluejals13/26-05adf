@@ -28,6 +28,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         HttpServletResponse response,
         FilterChain filterChain
     ) throws ServletException, IOException {
+        
+        String path = request.getServletPath();
+
+        // 🔥 로그인/회원가입은 JWT 검사 자체를 안 함
+        if (path.startsWith("/api/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String header = request.getHeader("Authorization");
 
@@ -36,10 +44,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = header.substring(7);
-        
+      
         // 선 실행 토큰 생성 / 등록
         try {
+            String token = header.substring(7);
             Long userId = jwtProvider.getUserId(token);
 
             CustomUserPrincipal principal = new CustomUserPrincipal(userId);
