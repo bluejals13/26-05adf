@@ -90,8 +90,19 @@ export default function Signup() {
           </div>
         )}
 
-        <button type="submit" disabled={loading}>
-          {loading && <p>가입 중...</p>}
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            padding: "10px 20px",
+            backgroundColor: loading ? "#ccc" : "#4caf50",
+            color: "#fff",
+            border: "none",
+            borderRadius: "5px",
+            cursor: loading ? "not-allowed" : "pointer",
+          }}
+        >
+          {loading ? "가입 중..." : "회원가입"}
         </button>
 
 	<h4>아이디 2글자 이상, 비밀번호 3자 이상</h4>
