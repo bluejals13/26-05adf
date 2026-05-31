@@ -46,7 +46,7 @@ public class SecurityConfig {
         return source;
     }
 
-    @Bean
+    @Bean // 보안 필터 체인 permitall 과 authenticated 등 구별
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         return http
