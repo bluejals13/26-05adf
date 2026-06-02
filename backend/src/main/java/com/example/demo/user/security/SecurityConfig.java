@@ -56,8 +56,10 @@ public class SecurityConfig {
                 sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers("/api/auth/**").permitAll()
+               .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+               .requestMatchers("/api/auth/**").permitAll()
+               .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+               .requestMatchers("/actuator/prometheus").permitAll()
                 .anyRequest().authenticated()
             )
             //.addFilterBefore(jwtAuthenticationFilter,
