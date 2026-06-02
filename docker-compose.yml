@@ -1,5 +1,4 @@
 
-
 services:
 
   nginx:
@@ -7,7 +6,7 @@ services:
       context: .
       dockerfile: nginx/Dockerfile
     ports:
-      - "80:80"  # Nginx는 외부 포트 80을 그대로 사용
+      - "${NGINX_PORT}:${NGINX_PORT}"  # Nginx는 외부 포트 80을 그대로 사용
     networks:
       - app-net
 
@@ -24,7 +23,7 @@ services:
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
     ports:
-      - "8080:8080"
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
     networks:
       - app-net
     restart: unless-stopped
@@ -55,9 +54,10 @@ services:
     container_name: prometheus
     volumes:
       - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
-    ports: []   # 제거
-    expose:
-      - "9090"
+    ports:  # 제거
+      - "${PROMQL_PORT}:${PROMQL_PORT}"
+#    expose:
+#      - "${PROMQL_PORT}"
     networks:
       - app-net
 
@@ -69,7 +69,7 @@ services:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_ID:-admin}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PW:-1234}
     ports:
-      - "3000:3000"
+      - "${GRAFANA_PORT}:${GRAFANA_PORT}"
     networks:
       - app-net
 
@@ -107,33 +107,3 @@ volumes:
 networks:
   app-net:
     driver: bridge
-
-#  loki:
-#    image: grafana/loki:2.9.0
-#    command: -config.file=/etc/loki/config.yml
-#    volumes:
-#      - ./logging:/etc/loki
-#    networks:
-#      - app-net
-
-#  promtail:
-#    image: grafana/promtail:2.9.0
-#    command: -config.file=/etc/promtail/config.yml
-#    volumes:
-#      - /var/lib/docker/containers:/var/lib/docker/containers
-#      - ./logging/promtail-config.yml:/etc/promtail/config.yml
-#    networks:
-#      - app-net
-
-
-#  frontend:
-#    build:
-#      context: .
-#      dockerfile: frontend/Dockerfile  # React 빌드용 Dockerfile
-#    ports:
-#      - "8081:8010"  # frontend는 외부 포트 8080을 사용
-#    depends_on:
-#      - backend
-#    networks:
-#      - app-net
-
