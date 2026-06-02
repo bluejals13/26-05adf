@@ -18,3 +18,7 @@ management:
     web:
       exposure:
         include: prometheus,health,info
+
+  endpoint:
+    health:
+      slow-details: always
