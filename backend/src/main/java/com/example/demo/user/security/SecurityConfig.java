@@ -62,13 +62,13 @@ public class SecurityConfig {
                .requestMatchers("/actuator/prometheus").permitAll()
                 .anyRequest().authenticated()
             )
-            //.addFilterBefore(jwtAuthenticationFilter,
-            //        UsernamePasswordAuthenticationFilter.class)
-            //.exceptionHandling(ex -> ex
-            //.authenticationEntryPoint((req, res, e) -> {
-            //res.setStatus(401);
-            //})
-            //)
+            .addFilterBefore(jwtAuthenticationFilter,
+                    UsernamePasswordAuthenticationFilter.class)
+            .exceptionHandling(ex -> ex
+            .authenticationEntryPoint((req, res, e) -> {
+            res.setStatus(401);
+            })
+            )
             .build();
     }
 
