@@ -1,0 +1,107 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  background: #0d1117;
+  color: #c9d1d9;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  font-size: 20px;
+  font-weight: 600;
+  color: #e6edf3;
+}
+
+/* CREATE FORM */
+.formRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.input {
+  height: 36px;
+  padding: 0 10px;
+  background: #161b22;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #58a6ff;
+  box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
+}
+
+.button {
+  height: 36px;
+  padding: 0 14px;
+  background: #238636;
+  color: white;
+  border: 1px solid #2ea043;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.button:hover {
+  background: #2ea043;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* TABLE HEADER */
+.tableHeader {
+  display: flex;
+  background: #161b22;
+  padding: 10px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid #30363d;
+  color: #e6edf3;
+}
+
+/* ROW */
+.tableRow {
+  display: flex;
+  padding: 10px;
+  border-bottom: 1px solid #21262d;
+  transition: background 0.15s ease;
+}
+
+.tableRow:hover {
+  background: #161b22;
+}
+
+.cell {
+  flex: 1;
+}
+
+/* ACTION BUTTON (GitHub danger style) */
+.actionBtn {
+  background: transparent;
+  color: #f85149;
+  border: 1px solid #f85149;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.actionBtn:hover {
+  background: #f85149;
+  color: #0d1117;
+}
+
+.actionBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
