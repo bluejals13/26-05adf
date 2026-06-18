@@ -1,5 +1,3 @@
-아래는 지금 구조를 기준으로 **실무용 인증/권한 시스템 문서 (Markdown 압축 정리본)**이야.
-바로 README나 노션에 넣어도 될 정도로 정리했어.
 
 ---
 
@@ -303,14 +301,10 @@ UI / Route에서 사용
 
 ---
 
-# 💡 한 줄 요약
+#  요약
 
-👉 “Zustand + React Query + RBAC 기반으로 잘 분리된 실무형 인증/권한 아키텍처”
+“Zustand + React Query + RBAC 기반으로 잘 분리된 실무형 인증/권한 아키텍처”
 
 ---
 
-원하면 다음 단계로
-👉 “이걸 진짜 대기업 구조 (NestJS / Spring Security 스타일)로 업그레이드”
-👉 “policy 기반 access control 구조 (can(), ability system)”
 
-까지도 확장 설계해줄게.
