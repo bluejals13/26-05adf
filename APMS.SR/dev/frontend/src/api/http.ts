@@ -20,7 +20,7 @@ export async function request<T>(
   url: string,
   options: RequestInit = {},
   retry = true
-): Promise<T> {  if (isLoggingOut) return null;
+): Promise<T> {  if (isLoggingOut) { throw new Error("Logging out"); }
   let token = getToken();
 
   let res = await fetch(url, {
