@@ -8,13 +8,13 @@ export function useAuth() {
   const token = useAuthStore((s) => s.token);
   const { data: user, isLoading: meLoading } = useMe();
 
-  const isLoading = !!token && meLoading;
+  const isLoading = Boolean(token) && meLoading;
 
   return {
     token,
     user,
     isLoading,
-    isLoggedIn: !!token && !!user,
+    isLoggedIn: Boolean(token) && !!user,
     logout: authService.logout,
   };
 }
