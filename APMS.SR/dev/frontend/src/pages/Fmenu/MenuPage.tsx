@@ -1,94 +1,27 @@
-import { useEffect, useState, useCallback } from "react";
-import { apiFetch } from "../../api/api";
+import { useState } from "react";
+import { useMenus } from "../../queries/useMenus";
+import { useMenuMutations } from "../../mutations/useMenuMutations";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { usePermissions } from "../../auth/hooks/usePermissions";
 
-import FullPageSpinner from "../../components/loading/FullPageSpinner";
-
 import styles from "./menu.module.css";
 
-type Menu = {
-  id: number;
-  name: string;
-  price: number;
-};
-
-type MenuRequest = {
-  name: string;
-  price: number;
-};
-
 export default function MenuPage() {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading: authLoading } = useAuth();
   const { hasPermission } = usePermissions(user);
+
+  const { data: menus = [], isLoading } = useMenus();
+  const { createMenu, deleteMenu } = useMenuMutations();
 
   const canRead = hasPermission("MENU_READ");
   const canCreate = hasPermission("MENU_CREATE");
   const canDelete = hasPermission("MENU_DELETE");
 
-  const [menus, setMenus] = useState<Menu[]>([]);
   const [name, setName] = useState("");
-  const [price, setPrice] = useState<number>(0);
+  const [price, setPrice] = useState(0);
 
-  const [actionLoading, setActionLoading] = useState<number | "create" | null>(null);  // 버튼 UX
-  const [setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  
-  const fetchMenus = useCallback(async () => {
-    if (!canRead) return;
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const data = await apiFetch<Menu[]>("/api/admin/menus");
-      setMenus(data);
-      
-    } catch {
-      setError("메뉴 조회 실패");
-    } finally {
-      setLoading(false);
-    }
-  }, [canRead]);
-
-  useEffect(() => {
-    fetchMenus();
-  }, [fetchMenus]);
-  
-  if (isLoading) return <FullPageSpinner />;
-
-  if (error) { return <div style={{ color: "red" }}>{error}</div>; }
-  
-  if (!canRead) { return <div>🚫 MENU_READ 권한이 없습니다</div>; }
-
-  const createMenu = async () => {
-    if (!name || price <= 0) return;
-    try {
-      setActionLoading("create");
-      await apiFetch("/admin/menus", {
-        method: "POST",
-        body: JSON.stringify({ name, price } satisfies MenuRequest),
-      });
-
-      setName("");
-      setPrice(0);
-      fetchMenus();
-    } finally {
-      setActionLoading(null);
-    }
-  };
-
-  const deleteMenu = async (id: number) => {
-    try {
-      setActionLoading(id);
-      await apiFetch(`/admin/menus/${id}`, {
-        method: "DELETE",
-      });
-      
-      setMenus((prev) => prev.filter((m) => m.id !== id));
-    } finally {
-      setActionLoading(null);
-    }
-  };
+  if (authLoading || isLoading) return <div>Loading...</div>;
+  if (!canRead) return <div>🚫 권한 없음</div>;
 
   return (
     <div className={styles.page}>
@@ -96,49 +29,44 @@ export default function MenuPage() {
 
       {canCreate && (
         <div className={styles.formRow}>
+          <input value={name} onChange={(e) => setName(e.target.value)} />
           <input
-            className={styles.input}
-            placeholder="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-
-          <input
-            className={styles.input}
             type="number"
-            placeholder="price"
             value={price}
             onChange={(e) => setPrice(Number(e.target.value))}
           />
 
-          <button className={styles.button} onClick={createMenu} 
-            disabled={ actionLoading === "create" || !name || price <= 0 }>
-            {actionLoading === "create" ? "Creating..." : "Create"}
+          <button
+            onClick={() =>
+              createMenu.mutate({ name, price })
+            }
+            disabled={createMenu.isPending}
+          >
+            {createMenu.isPending ? "Creating..." : "Create"}
           </button>
         </div>
       )}
 
       <div className={styles.tableHeader}>
-        <div className={styles.cell}>ID</div>
-        <div className={styles.cell}>Name</div>
-        <div className={styles.cell}>Price</div>
-        {canDelete && <div className={styles.cell}>Action</div>}
+        <div>ID</div>
+        <div>Name</div>
+        <div>Price</div>
+        {canDelete && <div>Action</div>}
       </div>
 
       {menus.map((menu) => (
-        <div className={styles.tableRow} key={menu.id}>
-          <div className={styles.cell}>{menu.id}</div>
-          <div className={styles.cell}>{menu.name}</div>
-          <div className={styles.cell}>{menu.price}</div>
+        <div key={menu.id} className={styles.tableRow}>
+          <div>{menu.id}</div>
+          <div>{menu.name}</div>
+          <div>{menu.price}</div>
 
           {canDelete && (
-            <div className={styles.cell}>
-              <button className={styles.actionBtn}
-                onClick={() => deleteMenu(menu.id)}
-                disabled={actionLoading === menu.id}>
-                {actionLoading === menu.id ? "..." : "Delete"}
-              </button>
-            </div>
+            <button
+              onClick={() => deleteMenu.mutate(menu.id)}
+              disabled={deleteMenu.isPending}
+            >
+              Delete
+            </button>
           )}
         </div>
       ))}
