@@ -3,6 +3,7 @@ import { useMenus } from "../../queries/useMenus";
 import { useMenuMutations } from "../../mutations/useMenuMutations";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { usePermissions } from "../../auth/hooks/usePermissions";
+import type { Menu } from "../../api/menu.api";
 
 import FullPageSpinner from "../../components/loading/FullPageSpinner";
 
@@ -12,7 +13,6 @@ export default function MenuPage() {
   const { user, isLoading: authLoading } = useAuth();
   const { hasPermission } = usePermissions(user);
 
-  const { isLoading } = useMenus();
   const { createMenu, deleteMenu } = useMenuMutations();
 
   const canRead = hasPermission("MENU_READ");
