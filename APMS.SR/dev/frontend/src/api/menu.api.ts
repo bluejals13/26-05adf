@@ -1,6 +1,6 @@
 // api/menu.api.ts		//메뉴 용 api
 
-import { apiFetch } from "../api/api";
+import { http } from "../api/http";
 
 export type Menu = {
   id: number;
@@ -14,16 +14,11 @@ export type MenuRequest = {
 };
 
 export const menuApi = {
-  getMenus: () => apiFetch<Menu[]>("/api/admin/menus"),
+  getMenus: () => http.get<Menu[]>("/api/admin/menus"),
 
   createMenu: (data: MenuRequest) =>
-    apiFetch("/api/admin/menus", {
-      method: "POST",
-      body: JSON.stringify(data),
-    }),
+    http.post("/api/admin/menus", data),
 
   deleteMenu: (id: number) =>
-    apiFetch(`/api/admin/menus/${id}`, {
-      method: "DELETE",
-    }),
+    http.post(`/api/admin/menus/${id}`, undefined),
 };
