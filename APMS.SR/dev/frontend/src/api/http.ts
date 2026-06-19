@@ -16,9 +16,7 @@ async function execute<T>(
   const token =
     useAuthStore.getState().token;
 
-  const headers = new Headers(
-    options.headers
-  );
+  const headers = new Headers(options.headers || {});
 
   if (token) {
     headers.set(
