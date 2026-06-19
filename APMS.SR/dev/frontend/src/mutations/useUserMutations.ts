@@ -11,14 +11,21 @@ export function useUserMutations() {
   const qc = useQueryClient();
 
   const changeStatus = useMutation({
-    mutationFn: userApi.changeStatus,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: userKeys.all });
-    },
-  });
+  mutationFn: ({
+    id,
+    status,
+  }: {
+    id: number;
+    status: UserStatus;
+  }) => userApi.changeStatus(id, status),
+
+  onSuccess: () => {
+    qc.invalidateQueries({ queryKey: ["users"] });
+  },
+});
 
   const deleteUser = useMutation({
-    mutationFn: userApi.deleteUser,
+    mutationFn: (id: number) => userApi.deleteUser(id),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: userKeys.all });
     },
