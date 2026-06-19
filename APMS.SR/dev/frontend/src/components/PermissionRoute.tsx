@@ -8,10 +8,6 @@ import type { Permission } from "../auth/auth.types";
 
 import type { User } from "../auth/auth.types";
 
-type Props = {
-  me?: User;
-};
-
 export function PermissionRoute({ permission }: { permission: Permission }) {
   const { user, isLoading } = useAuth();
 
