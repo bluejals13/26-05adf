@@ -6,6 +6,7 @@ export async function request<T>(
   url: string,
   options: RequestInit = {}
 ): Promise<T> {
+
   const res = await fetch(url, {
     ...options,
     credentials: "include",
@@ -16,5 +17,11 @@ export async function request<T>(
   });
 
   const text = await res.text();
-  return text ? JSON.parse(text) : null;
+
+  // ✅ 핵심: null 대신 T 타입 맞추기
+  if (!text) {
+    return {} as T;
+  }
+
+  return JSON.parse(text) as T;
 }
