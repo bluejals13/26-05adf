@@ -5,9 +5,6 @@ import { useAuth } from "../auth/hooks/useAuth";
 
 import type { User } from "../auth/auth.types";
 
-type Props = {
-  me?: User;
-};
 
 export default function Header() {
   const navigate = useNavigate();
