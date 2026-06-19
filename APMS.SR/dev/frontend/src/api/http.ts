@@ -20,7 +20,13 @@ export async function request<T>(
   url: string,
   options: RequestInit = {},
   retry = true
-): Promise<T> {  if (isLoggingOut) { throw new Error("Logging out"); }
+): Promise<T> {
+
+  // ✅ 핵심: logout race 완전 차단
+  if (isLoggingOut) {
+    throw new Error("Logging out");
+  }
+
   let token = getToken();
 
   let res = await fetch(url, {
@@ -28,7 +34,7 @@ export async function request<T>(
     headers: buildHeaders(token, options.headers),
     credentials: "include",
   });
-  
+
   if (res.ok) {
     return res.json();
   }
@@ -51,8 +57,6 @@ export async function request<T>(
     throw new Error("Refresh failed");
   }
 
-  useAuthStore.getState().setToken(newToken);
-
   token = newToken;
 
   res = await fetch(url, {
@@ -69,12 +73,3 @@ export async function request<T>(
 
   return res.json();
 }
-
-export const http = {
-  get: <T>(url: string) => request<T>(url),
-  post: <T>(url: string, body?: unknown, retry = true) =>
-    request<T>(url, {
-      method: "POST",
-      body: body ? JSON.stringify(body) : undefined,
-    }),
-};
