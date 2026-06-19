@@ -1,6 +1,6 @@
 // api/menu.api.ts		//메뉴 용 api
 
-import { http } from "../api/http";
+import { http } from "../api";
 
 export type Menu = {
   id: number;
