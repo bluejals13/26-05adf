@@ -1,7 +1,5 @@
 // auth/auth.service.ts						// 인증[ 로그인 , 로그아웃, api 토큰] 관리
 
-// auth/auth.service.ts
-
 import { http } from "../api";
 import { useAuthStore } from "../store/auth.store";
 import { queryClient } from "../queryClient";
