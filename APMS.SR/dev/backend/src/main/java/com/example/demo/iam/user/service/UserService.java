@@ -53,7 +53,13 @@ public class UserService {
     }
 
     // 로그인
-    public LoginResult login(LoginRequest req) {        
+    public LoginResult refresh(String refreshToken) {        
+
+         Long userId = jwtProvider.getUserId(refreshToken);
+
+        String saved = redisTemplate.opsForValue().get("refresh:" + userId);
+
+
         
         User user = userRepository.findByUsername(req.username())
                 .orElseThrow(() -> new BadCredentialsException("INVALID_CREDENTIALS"));
