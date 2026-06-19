@@ -13,7 +13,7 @@ export function useMe() {
     queryKey: ["me"],
     queryFn: () => http.get<User>("/api/users/me"),
 
-    enabled: !!token, // token 있을 때만 실행
+    enabled: !!token,
 
     staleTime: 1000 * 60 * 5,
     retry: false,
