@@ -6,6 +6,8 @@ import { useAuth } from "../auth/hooks/useAuth";
 //import type { User } from "../auth/auth.types";
 
 
+
+
 export default function Header() {
   const navigate = useNavigate();
   const { user, logout, isLoggedIn } = useAuth();
@@ -31,7 +33,7 @@ export default function Header() {
             <Link to="/dashboard">Dashboard</Link>
 
             <span style={{ marginLeft: "auto" }}>
-              {user?.username}님
+              {user?.username ?? ""}
             </span>
 
             <button onClick={handleLogout}>
