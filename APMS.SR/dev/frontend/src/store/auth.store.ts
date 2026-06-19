@@ -1,7 +1,7 @@
 // store/auth.store.ts	// 소비자 상태 (Zustand) 관리 	setToken
 
 import { create } from "zustand";
-import { authStorage } from "../auth/auth/auth.storage";
+import { authStorage } from "../../auth/auth.storage";
 
 type AuthState = {
   token: string | null;
