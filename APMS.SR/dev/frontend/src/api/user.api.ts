@@ -1,6 +1,6 @@
 // api/user.api.ts			//관리자 페이지 용 api
 
-import { apiFetch } from "../api/api";
+import { http } from "../api/http";
 
 export type UserStatus =
   | "ACTIVE"
@@ -16,16 +16,11 @@ export type User = {
 };
 
 export const userApi = {
-  getUsers: () => apiFetch<User[]>("/api/admin/users"),
+  getUsers: () => http.get<User[]>("/api/admin/users"),
 
   changeStatus: (id: number, status: UserStatus) =>
-    apiFetch(`/api/admin/users/${id}/status`, {
-      method: "PATCH",
-      body: JSON.stringify({ status }),
-    }),
+    http.post(`/api/admin/users/${id}/status`, { status }),
 
   deleteUser: (id: number) =>
-    apiFetch(`/api/admin/users/${id}`, {
-      method: "DELETE",
-    }),
+    http.post(`/api/admin/users/${id}`, undefined),
 };
