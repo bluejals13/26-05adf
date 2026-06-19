@@ -86,6 +86,12 @@ public class UserController {
             return ResponseEntity.ok(authService.refresh(refreshToken));
 
         } catch (Exception e) {
+            Cookie cookie = new Cookie("refreshToken", null);
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            httpResponse.addCookie(cookie);
+        
             return ResponseEntity.status(401).body("INVALID_REFRESH_TOKEN");
         }
     }
