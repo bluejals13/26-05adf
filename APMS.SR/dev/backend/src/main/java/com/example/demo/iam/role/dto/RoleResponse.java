@@ -16,7 +16,7 @@ public class RoleResponse {
     private String name;
     private Set<PermissionResponse> permissions;
 
-    public static RoleResponse from(com.example.demo.admin.role.domain.Role role) {
+    public static RoleResponse from(com.example.demo.iam.role.domain.Role role) {
         return RoleResponse.builder()
                 .id(role.getId())
                 .name(role.getName())
