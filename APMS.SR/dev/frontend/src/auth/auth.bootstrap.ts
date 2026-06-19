@@ -17,11 +17,9 @@ export async function bootstrapAuth() {
     
     await queryClient.prefetchQuery({
       queryKey: authKeys.me,
-      queryFn: () => http.get<User>("/users/me"),
-    });
-  } catch {
-    await queryClient.removeQueries({
-      queryKey: authKeys.me,
-    });
+      queryFn: () => http.get<User>("/users/me"), });
+    
+  } catch { await queryClient.removeQueries({ queryKey: authKeys.me, });
+    useAuthStore.getState().setToken(null);
   }
 }
