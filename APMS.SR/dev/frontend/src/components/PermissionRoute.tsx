@@ -9,7 +9,6 @@ import { usePermissions } from "../auth/hooks/usePermissions";
 
 
 export function PermissionRoute({ permission }: { permission: Permission }) {
-  const { user } = useAuth();
   const { user, isLoading } = useAuth();
 
   if (isLoading) return <FullPageSpinner />;
