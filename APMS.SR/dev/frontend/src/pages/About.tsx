@@ -3,7 +3,7 @@
 import { useMe } from "../queries/useMe";
 import { usePermissions } from "../auth/hooks/usePermissions";
 
-import FullPageSpinner from "../../components/loading/FullPageSpinner";
+import FullPageSpinner from "../components/loading/FullPageSpinner";
 
 import type { User } from "../auth/auth.types";
 
