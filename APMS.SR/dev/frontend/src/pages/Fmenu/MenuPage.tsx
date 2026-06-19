@@ -14,7 +14,9 @@ export default function MenuPage() {
   const { hasPermission } = usePermissions(user);
 
   const { createMenu, deleteMenu } = useMenuMutations();
-
+  
+  const { data: menus = [] } = useMenus(); // ✅ 추가
+  
   const canRead = hasPermission("MENU_READ");
   const canCreate = hasPermission("MENU_CREATE");
   const canDelete = hasPermission("MENU_DELETE");
