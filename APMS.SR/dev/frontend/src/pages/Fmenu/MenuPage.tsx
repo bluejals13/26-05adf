@@ -4,6 +4,8 @@ import { useMenuMutations } from "../../mutations/useMenuMutations";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { usePermissions } from "../../auth/hooks/usePermissions";
 
+import FullPageSpinner from "../../components/loading/FullPageSpinner";
+
 import styles from "./menu.module.css";
 
 export default function MenuPage() {
@@ -17,10 +19,11 @@ export default function MenuPage() {
   const canCreate = hasPermission("MENU_CREATE");
   const canDelete = hasPermission("MENU_DELETE");
 
+
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
 
-  if (authLoading || isLoading) return <div>Loading...</div>;
+  if (authLoading || isLoading) return <FullPageSpinner />;
   if (!canRead) return <div>🚫 권한 없음</div>;
 
   return (
