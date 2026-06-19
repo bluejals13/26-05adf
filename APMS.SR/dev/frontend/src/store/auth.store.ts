@@ -20,10 +20,10 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ token });
   },
 
-  logout: () => {
-    authStorage.clear();
-    set({ token: null });
-  },
+    logout: () => {
+      authStorage.clear();
+      set({ token: null });
+    },
 
   hydrate: () => {
     const token = authStorage.get();
