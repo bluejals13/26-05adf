@@ -10,8 +10,8 @@ export function useAuth() {
 
   return {
     token,
-    user: token ? user : null, // 🔥 핵심
-    isLoading: !!token && isLoading,
+    user,
+    isLoading,
     isLoggedIn: !!token && !!user,
     logout: authService.logout,
   };
