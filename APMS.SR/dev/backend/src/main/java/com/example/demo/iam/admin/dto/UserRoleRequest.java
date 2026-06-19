@@ -1,4 +1,4 @@
-package com.example.demo.iam.admin.user.dto;
+package com.example.demo.iam.admin.dto;
 
 import java.util.List;
 
