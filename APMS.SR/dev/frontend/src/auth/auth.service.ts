@@ -26,10 +26,8 @@ export const authService = {
       { username, password }
     );
 
-    // ✅ 단일 source of truth (store만 사용)
     useAuthStore.getState().setToken(res.accessToken);
 
-    // me preload
     await queryClient.prefetchQuery({
       queryKey: authKeys.me,
       queryFn: () => http.get<User>("/api/users/me"),
@@ -39,35 +37,40 @@ export const authService = {
   // 로그아웃
   async logout() {
     isLoggingOut = true;
-  
+
     try {
-      await http.post("/api/auth/logout", {}, false);
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
     } catch {}
-  
+
     refreshPromise = null;
-  
+
     useAuthStore.getState().logout();
-  
     queryClient.clear();
-  
+
     window.dispatchEvent(new Event("auth:logout"));
-    await new Promise((r) => setTimeout(r, 0));
+
     isLoggingOut = false;
   },
 
   // 토큰 갱신 (refresh)
   async refreshToken() {
-    if (isLoggingOut) { throw new Error("Logging out"); }
+    if (isLoggingOut) return null;
     if (refreshPromise) return refreshPromise;
 
     refreshPromise = (async () => {
-      try { if (isLoggingOut) return null;
+      try {
+        if (isLoggingOut) return null;
+
         const res = await http.post<{ accessToken: string }>(
           "/api/auth/refresh",
           {}
         );
-        if (isLoggingOut) { throw new Error("Logging out"); }
-        // ✅ store만 갱신
+
+        if (isLoggingOut) return null;
+
         useAuthStore.getState().setToken(res.accessToken);
 
         return res.accessToken;
