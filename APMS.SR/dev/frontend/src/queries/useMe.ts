@@ -2,7 +2,9 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { http } from "../api/http";
-import { User } from "../auth/auth.types";
+
+import type { User } from "../auth/auth.types";
+
 import { authKeys } from "../auth/auth.keys";
 import { useAuthStore } from "../store/auth.store";
 
