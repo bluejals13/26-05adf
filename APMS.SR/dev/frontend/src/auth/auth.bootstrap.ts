@@ -1,11 +1,13 @@
 // bootstrap/bootstrapAuth.tsx				// 리프레시 관리
 
+import { authService } from "../auth/auth.service";
+import { useAuthStore } from "../store/auth.store";
+import { queryClient } from "../queryClient";
+
 let bootstrapPromise: Promise<void> | null = null;
 
 export function bootstrapAuth() {
-  if (bootstrapPromise) {
-    return bootstrapPromise;
-  }
+  if (bootstrapPromise) return bootstrapPromise;
 
   bootstrapPromise = (async () => {
     try {
@@ -18,15 +20,6 @@ export function bootstrapAuth() {
       }
 
       useAuthStore.getState().setToken(token);
-
-      await queryClient.removeQueries({
-        queryKey: authKeys.me,
-      });
-
-      await queryClient.prefetchQuery({
-        queryKey: authKeys.me,
-        queryFn: () => http.get<User>("/api/users/me"),
-      });
     } catch {
       useAuthStore.getState().setToken(null);
       await queryClient.clear();
