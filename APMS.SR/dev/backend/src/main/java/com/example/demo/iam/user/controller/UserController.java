@@ -34,8 +34,6 @@ public class UserController {
 
     private final UserService userService;
     private final AuthService authService;
-    private final JwtProvider jwtProvider;
-    private final RedisTemplate<String, String> redisTemplate;
 
     // 회원가입
     @PostMapping("/auth/signup")
