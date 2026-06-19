@@ -15,7 +15,7 @@ export default function About() {
   const canDebug = hasPermission("DEBUG_READ");
 
 
-  if (isLoading) return <FullPageSpinner />;
+  //if (isLoading) return <FullPageSpinner />;
 
 
   if (isError) {
@@ -44,7 +44,7 @@ export default function About() {
 
 
       <h2>🧪 Debug Section</h2>
-      {canDebug && <div>DEBUG ENABLED</div>}
+      /*{canDebug && <div>DEBUG ENABLED</div>}*/
     </div>
   );
 }
