@@ -21,9 +21,7 @@ export default function AdminRoute({ permission }: AdminRouteProps) {
   if (permission && !hasPermission(permission)) { return <Navigate to="/403" replace />; }
 
   // 기본 admin gate (권한 기반)
-  const isAdmin =
-    hasPermission("ADMIN_ACCESS") ||
-    hasPermission("SYSTEM_ADMIN");
+  const isAdmin = me.roles.includes("ADMIN");
 
   if (!isAdmin) return <Navigate to="/403" replace />;
 
