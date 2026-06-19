@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { apiFetch } from "../../api/api";
-import { useAuth } from "../../auth/hooks/useAuth";
 import { usePermissions } from "../../auth/hooks/usePermissions";
+import { useMe } from "../../queries/useMe";
 
 import styles from "./permission.module.css";
 
@@ -30,9 +30,9 @@ type Permission = {
 };
 
 export default function PermissionPage() {
-  const { hasPermission } = usePermissions(me);
   const { data: me, isLoading: meLoading } = useMe();
-
+  const { hasPermission } = usePermissions(me);
+  
   const canView = hasPermission("PERMISSION_READ");
   
   const [selectedPermission, setSelectedPermission] = useState<PermissionDetail | null>(null);
