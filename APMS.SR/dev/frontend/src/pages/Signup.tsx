@@ -1,5 +1,7 @@
 // pages/Signup.tsx
 
+import { Link } from "react-router-dom";
+
 import { useSignupForm } from "../auth/hooks/useSignupForm";
 
 import "./Auth.css";
