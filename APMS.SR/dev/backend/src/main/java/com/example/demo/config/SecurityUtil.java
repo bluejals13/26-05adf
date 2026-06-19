@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.example.demo.user.security.CustomUserPrincipal;
+import com.example.demo.auth.security.CustomUserPrincipal;
 
 @Component
 @RequiredArgsConstructor
