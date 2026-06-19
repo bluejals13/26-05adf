@@ -26,20 +26,26 @@ export default function Login() {
       >
         <h2>로그인</h2>
 
-        <input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="아이디"
-        />
+        <div className="form-group">
+          <label>아이디</label>
+          <input
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
 
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="비밀번호"
-        />
+        <div className="form-group">
+          <label>비밀번호</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
 
-        {errorMessage && <p>{errorMessage}</p>}
+        {errorMessage && (
+          <p className="error-message">{errorMessage}</p>
+        )}
 
         <button disabled={isLoading}>
           {isLoading ? "로그인 중..." : "로그인"}
