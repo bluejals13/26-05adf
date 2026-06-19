@@ -78,8 +78,25 @@ public class UserController {
                     .map(Cookie::getValue)
                     .findFirst()
                     .orElse(null);
-
+            
             if (refreshToken == null) {
+                return ResponseEntity.status(401).body("NO_REFRESH_TOKEN");
+            }
+        
+            Long userId = jwtProvider.getUserId(refreshToken);
+        
+            String saved = redisTemplate.opsForValue()
+                        .get("refresh:" + userId);
+            
+
+            if (saved == null || !saved.equals(refreshToken)) {
+                
+                            // 🔥 쿠키 삭제 필수
+                Cookie cookie = new Cookie("refreshToken", null);
+                cookie.setPath("/");
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+                
                 return ResponseEntity.status(401).body("NO_REFRESH_TOKEN");
             }
 
