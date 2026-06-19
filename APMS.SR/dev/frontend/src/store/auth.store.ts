@@ -14,11 +14,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   token: null,
 
   setToken: (token) => {
-    if (token) {
-      authStorage.set(token);
-    } else {
-      authStorage.clear();
-    }
+    if (token) authStorage.set(token);
+    else authStorage.clear();
+    
     set({ token });
   },
 
