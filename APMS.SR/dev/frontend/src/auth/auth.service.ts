@@ -11,6 +11,11 @@ import type { User } from "./auth.types";
 let refreshPromise: Promise<string | null> | null = null;
 
 export const authService = {
+  
+  async signup(data: { username: string; email: string; password: string }) {
+    await http.post("/auth/signup", data);
+  }
+  
   async login(username: string, password: string) {
     const res = await http.post<{ accessToken: string }>(
       "/auth/login",
