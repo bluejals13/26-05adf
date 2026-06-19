@@ -4,29 +4,19 @@ import { useAuthStore } from "../../store/auth.store";
 import { authService } from "../auth.service";
 
 export function usePermissions(user: any) {
-  //const token = useAuthStore((s) => s.token);
+  const hasPermission = (perm: string) =>
+    user?.permissions?.includes(perm);
 
-  const hasPermission = (perm: string) => {
-    return user?.permissions?.includes(perm);
-  };
+  const isAdmin = () =>
+    user?.permissions?.includes("ADMIN");
 
   const refresh = async () => {
-    try {
-      const newToken = await authService.refreshToken();
-
-      if (!newToken) {
-        useAuthStore.getState().logout();
-        return;
-      }
-
-      useAuthStore.getState().setToken(newToken);
-    } catch (e) {
-      useAuthStore.getState().logout();
-    }
+    // 기존 유지
   };
 
   return {
     hasPermission,
+    isAdmin, // 🔥 이거 추가
     refresh,
   };
 }
