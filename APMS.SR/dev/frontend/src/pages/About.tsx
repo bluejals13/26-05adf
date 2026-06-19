@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { usePermissions } from "../../hooks/usePermissions";
+import { usePermissions } from "../../auth/hooks/usePermissions";
 import { useMe } from "../../queries/useMe";
 
 type MeResponse = {
