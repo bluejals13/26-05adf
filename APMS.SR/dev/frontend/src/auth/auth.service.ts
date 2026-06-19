@@ -50,7 +50,7 @@ export const authService = {
     refreshPromise = (async () => {
       try {
         const res = await http.post<{ accessToken: string }>(
-          "/auth/refresh",
+          "api/auth/refresh",
           {}
         );
 
