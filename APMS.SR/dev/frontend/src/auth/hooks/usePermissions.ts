@@ -7,12 +7,8 @@ export function usePermissions(user?: User) {
   const roles = user?.roles ?? [];
 
   return {
-    hasPermission: (perm: string) =>
-      permissions.includes(perm),
-
-    hasRole: (role: string) =>
-      roles.includes(role),
-
+    hasPermission: (perm: string) => permissions.includes(perm),
+    hasRole: (role: string) => roles.includes(role),
     isAdmin: roles.includes("ADMIN"),
   };
 }
