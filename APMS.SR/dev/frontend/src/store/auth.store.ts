@@ -5,7 +5,9 @@ import { authStorage } from "../auth/auth.storage";
 
 type AuthState = {
   token: string | null;
+  isGuest: boolean; // ✅ 추가
   setToken: (token: string | null) => void;
+  setGuest: () => void; // ✅ 추가
   logout: () => void;
   hydrate: () => void; // 👈 추가 (새로고침 복구)
 };
