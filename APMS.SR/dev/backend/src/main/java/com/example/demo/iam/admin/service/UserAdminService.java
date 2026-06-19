@@ -1,4 +1,4 @@
-package com.example.demo.iam.admin.user.service;
+package com.example.demo.iam.admin.service;
 //--
 import com.example.demo.audit.domain.AuditAction;
 import com.example.demo.audit.service.AuditService;
