@@ -1,7 +1,39 @@
 // api/http.ts
 
 import { useAuthStore } from "../store/auth.store";
-import { authService } from "../auth/auth.service";
+
+let refreshPromise: Promise<string | null> | null = null;
+
+async function refreshToken(): Promise<string | null> {
+  if (refreshPromise) return refreshPromise;
+
+  refreshPromise = (async () => {
+    try {
+      const res = await fetch("/api/auth/refresh", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!res.ok) return null;
+
+      const data = await res.json();
+
+      const token = data?.accessToken ?? null;
+
+      if (token) {
+        useAuthStore.getState().setToken(token);
+      }
+
+      return token;
+    } catch {
+      return null;
+    } finally {
+      refreshPromise = null;
+    }
+  })();
+
+  return refreshPromise;
+}
 
 export async function request<T>(
   url: string,
@@ -20,27 +52,20 @@ export async function request<T>(
     },
   });
 
-  // ✅ 정상 응답
-  if (res.ok) {
-    return res.json();
-  }
+  if (res.ok) return res.json();
 
-  // ❌ 401 → refresh 시도
+  // 🔥 401 → refresh (여기서만 처리)
   if (res.status === 401 && retry) {
-    const newToken = await authService.refreshToken();
+    const newToken = await refreshToken();
 
     if (!newToken) {
-      authService.logout();
+      useAuthStore.getState().logout();
       throw new Error("Unauthorized");
     }
-
-    // store 갱신은 refreshToken 내부에서 이미 처리됨
 
     return request<T>(url, options, false);
   }
 
-  // ❌ 기타 에러
   const text = await res.text();
-
   throw new Error(text || "Request failed");
 }
