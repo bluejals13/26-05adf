@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../auth.service";
-import { loginSchema } from "../auth.schema";
+import { signupSchema } from "../auth.schema";
 
 export function useSignupForm() {
   const navigate = useNavigate();
