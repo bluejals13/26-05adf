@@ -1,6 +1,6 @@
 // api/user.api.ts			//관리자 페이지 용 api
 
-import { http } from "../api/http";
+import { http } from "../api";
 
 export type UserStatus =
   | "ACTIVE"
