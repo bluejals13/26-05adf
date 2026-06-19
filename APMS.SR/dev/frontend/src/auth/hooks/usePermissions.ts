@@ -1,31 +1,32 @@
 // hooks/usePermissions.ts	// 타입 > 롤 퍼미션 > 훅  :  권한 계산 관리
 
+import { useAuthStore } from "../../store/auth.store";
+import { authService } from "../auth.service";
 
-import  { useAuth } from "../hooks/useAuth";
-import { usePermissions } from "../../auth/hooks/usePermissions";
-//import type { User, Permission, Role } from "../auth.types";
+export function usePermissions(user: any) {
+  const token = useAuthStore((s) => s.token);
 
-let bootstrapPromise: Promise<void> | null = null;
+  const hasPermission = (perm: string) => {
+    return user?.permissions?.includes(perm);
+  };
 
-export function bootstrapAuth() {
-  if (bootstrapPromise) return bootstrapPromise;
-
-  bootstrapPromise = (async () => {
+  const refresh = async () => {
     try {
-      const token = await authService.refreshToken();
+      const newToken = await authService.refreshToken();
 
-      if (!token) {
-        useAuthStore.getState().setToken(null);
-        queryClient.clear();
+      if (!newToken) {
+        useAuthStore.getState().logout();
         return;
       }
 
-      useAuthStore.getState().setToken(token);
-    } catch {
-      useAuthStore.getState().setToken(null);
-      queryClient.clear();
+      useAuthStore.getState().setToken(newToken);
+    } catch (e) {
+      useAuthStore.getState().logout();
     }
-  })();
+  };
 
-  return bootstrapPromise;
+  return {
+    hasPermission,
+    refresh,
+  };
 }
