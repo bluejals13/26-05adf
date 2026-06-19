@@ -16,6 +16,7 @@ type UserStatus =
 
 export default function UserAdminPage() {
   //const { user } = useAuth();
+  const token = useAuthStore((s) => s.token);
   const { hasPermission } = usePermissions(user);
 
   const canRead = hasPermission("USER_READ");
