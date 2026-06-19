@@ -1,7 +1,5 @@
 // api/http.ts
 
-import { authStorage } from "../auth/auth.storage";
-
 export async function request<T>(
   url: string,
   options: RequestInit = {}
