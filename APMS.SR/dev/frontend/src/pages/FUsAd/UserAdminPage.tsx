@@ -4,7 +4,7 @@ import styles from "./UserAdminPage.module.css";
 import { useUsers } from "../../queries/useUsers";
 import { useUserMutations } from "../../mutations/useUserMutations";
 import { usePermissions } from "../../auth/hooks/usePermissions";
-import { useAuthStore } from "../../store/auth.store";
+
 import { useAuth } from "../../auth/hooks/useAuth";
 import FullPageSpinner from "../../components/loading/FullPageSpinner";
 
