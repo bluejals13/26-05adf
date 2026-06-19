@@ -3,7 +3,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/hooks/useAuth";
 
-import type { User } from "../auth/auth.types";
+//import type { User } from "../auth/auth.types";
 
 
 export default function Header() {
