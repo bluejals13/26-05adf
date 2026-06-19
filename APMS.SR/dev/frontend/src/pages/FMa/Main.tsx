@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { usePermissions } from "../../auth/hooks/usePermissions";
 
-import FullPageSpinner from "../../components/FullPageSpinner";
+import FullPageSpinner from "../../components/loading/FullPageSpinner";
 
 import "./Main.css";
 
