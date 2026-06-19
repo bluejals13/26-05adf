@@ -22,17 +22,13 @@ export async function request<T>(
   retry = true
 ): Promise<T> {
   let token = getToken();
-
+  if (isLoggingOut) return null;
   let res = await fetch(url, {
     ...options,
     headers: buildHeaders(token, options.headers),
     credentials: "include",
   });
   
-  if (isLoggingOut) {
-    throw new Error("Logging out");
-  }
-
   if (res.ok) {
     return res.json();
   }
