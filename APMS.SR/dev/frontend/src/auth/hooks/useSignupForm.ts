@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService } from "../auth/auth.service";
-import { signupSchema } from "../auth/auth.schema";
+import { authService } from "../auth.service";
+import { loginSchema } from "../auth.schema";
 
 export function useSignupForm() {
   const navigate = useNavigate();
