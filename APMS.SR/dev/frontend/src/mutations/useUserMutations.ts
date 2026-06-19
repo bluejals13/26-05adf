@@ -1,7 +1,8 @@
 // mutations/useUserMutations.ts
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { userApi, UserStatus } from "../api/user.api";
+import { userApi } from "../api/user.api";
+import type { UserStatus } from "../api/user.api";
 
 export function useUserMutations() {
   const qc = useQueryClient();
