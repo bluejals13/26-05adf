@@ -5,7 +5,6 @@ import FullPageSpinner from "./loading/FullPageSpinner";
 import { useAuth } from "../auth/hooks/useAuth";
 
 import type { Permission } from "../auth/auth.types";
-import { usePermissions } from "../auth/hooks/usePermissions";
 
 
 export function PermissionRoute({ permission }: { permission: Permission }) {
