@@ -7,6 +7,7 @@ import { authKeys } from "./auth.keys";
 import type { User } from "./auth.types";
 
 let refreshPromise: Promise<string | null> | null = null;
+export let isLoggingOut = false;
 
 export const authService = {
   // 회원가입
@@ -37,28 +38,35 @@ export const authService = {
 
   // 로그아웃
   async logout() {
+    isLoggingOut = true;
+  
     try {
-      await http.post("/api/auth/logout", {});
-    } finally {
-      useAuthStore.getState().logout();
+      await http.post("/api/auth/logout", {}, false);
+    } catch {}
   
-      refreshPromise = null;
+    refreshPromise = null;
   
-      await queryClient.clear(); // 🔥 이것만으로 충분
-    }
+    useAuthStore.getState().logout();
+  
+    queryClient.clear();
+  
+    window.dispatchEvent(new Event("auth:logout"));
+  
+    isLoggingOut = false;
   },
 
   // 토큰 갱신 (refresh)
   async refreshToken() {
+    if (isLoggingOut) return null;
     if (refreshPromise) return refreshPromise;
 
     refreshPromise = (async () => {
-      try {
+      try { if (isLoggingOut) return null;
         const res = await http.post<{ accessToken: string }>(
           "/api/auth/refresh",
           {}
         );
-
+        if (isLoggingOut) return null;
         // ✅ store만 갱신
         useAuthStore.getState().setToken(res.accessToken);
 
