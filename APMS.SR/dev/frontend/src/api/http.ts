@@ -21,7 +21,13 @@ export async function request<T>(
   options: RequestInit = {},
   retry = true
 ): Promise<T> {
-  const token = getAccessToken();
+  const token = getAccessToken() ?? undefined;
+
+res = await fetch(url, {
+  ...options,
+  headers: buildHeaders(token, options.headers),
+  credentials: "include",
+});
 
   let res = await fetch(url, {
     ...options,
