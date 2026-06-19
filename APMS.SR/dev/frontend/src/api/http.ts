@@ -1,8 +1,8 @@
 import { useAuthStore } from "../store/auth.store";
 import { authService } from "../auth/auth.service";
 
-function getAccessToken() {
-  return useAuthStore.getState().token;
+function getToken() {
+  return useAuthStore.getState().token ?? undefined;
 }
 
 function buildHeaders(token?: string, base?: HeadersInit) {
@@ -21,34 +21,29 @@ export async function request<T>(
   options: RequestInit = {},
   retry = true
 ): Promise<T> {
-  const token = getAccessToken() ?? undefined;
+  let token = getToken();
 
-  // 1️⃣ 첫 요청
   let res = await fetch(url, {
     ...options,
     headers: buildHeaders(token, options.headers),
     credentials: "include",
   });
 
-  // 2️⃣ 정상 응답
   if (res.ok) {
     return res.json();
   }
 
-  // 3️⃣ 401 아닌 에러
   if (res.status !== 401) {
     throw await res.json().catch(() => ({
       message: "Request failed",
     }));
   }
 
-  // 4️⃣ refresh 제한
   if (!retry) {
     useAuthStore.getState().logout();
     throw new Error("Unauthorized");
   }
 
-  // 5️⃣ refresh
   const newToken = await authService.refreshToken();
 
   if (!newToken) {
@@ -58,10 +53,11 @@ export async function request<T>(
 
   useAuthStore.getState().setToken(newToken);
 
-  // 6️⃣ retry 요청 (새 header 필수)
+  token = newToken;
+
   res = await fetch(url, {
     ...options,
-    headers: buildHeaders(newToken, options.headers),
+    headers: buildHeaders(token, options.headers),
     credentials: "include",
   });
 
