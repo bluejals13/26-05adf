@@ -16,4 +16,4 @@ export const http = {
     ),
 };
 
-export const fetchMe = () => http.get("/users/me");
+export const fetchMe = () => http.get("api/users/me");
