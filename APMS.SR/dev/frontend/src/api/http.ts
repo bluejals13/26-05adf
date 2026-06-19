@@ -1,28 +1,15 @@
 import { useAuthStore } from "../store/auth.store";
 import { authService } from "../auth/auth.service";
 
-export async function request(url, options) {
+export async function request<T>(
+  url: string,
+  options: RequestInit = {},
+  retry = true
+): Promise<T> {
   const token = useAuthStore.getState().token;
 
-  const headers = new Headers();
+  const headers = new Headers(options.headers || {});
   headers.set("Content-Type", "application/json");
-
-  if (token) {
-    headers.set("Authorization", `Bearer ${token}`);
-  }
-
-  return fetch(url, {
-    ...options,
-    headers,
-    credentials: "include",
-  });
-}
-
-
-async function execute<T>(url: string, options: RequestInit, retry: boolean): Promise<T> {
-  const headers = new Headers();
-
-  const token = useAuthStore.getState().token;
 
   if (token) {
     headers.set("Authorization", `Bearer ${token}`);
@@ -45,8 +32,7 @@ async function execute<T>(url: string, options: RequestInit, retry: boolean): Pr
 
   if (!newToken) throw new Error("Refresh failed");
 
-  // ❗ 핵심: retry는 "완전히 새로 실행"
-  return execute<T>(url, options, false);
+  return request<T>(url, options, false);
 }
 
 
@@ -57,8 +43,5 @@ export const http = {
     request<T>(url, {
       method: "POST",
       body: body ? JSON.stringify(body) : undefined,
-      headers: {
-        "Content-Type": "application/json",
-      },
     }),
 };
