@@ -6,13 +6,15 @@ import { authService } from "../auth.service";
 
 export function useAuth() {
   const token = useAuthStore((s) => s.token);
-  const { data: user, isLoading } = useMe();
+  const { data: user, isLoading: meLoading } = useMe();
+
+  const isLoading = !!token && meLoading;
 
   return {
     token,
     user,
     isLoading,
-    isLoggedIn: !!token && !!user && !isLoading,
+    isLoggedIn: !!token && !!user,
     logout: authService.logout,
   };
 }
