@@ -41,12 +41,10 @@ export const authService = {
       await http.post("/api/auth/logout", {});
     } finally {
       useAuthStore.getState().logout();
+  
       refreshPromise = null;
-
-      await queryClient.removeQueries({
-        queryKey: authKeys.me,
-      });
-      await queryClient.clear();
+  
+      await queryClient.clear(); // 🔥 이것만으로 충분
     }
   },
 
