@@ -11,9 +11,9 @@ export async function request<T>(
 
 
 async function execute<T>(url: string, options: RequestInit, retry: boolean): Promise<T> {
-  const token = useAuthStore.getState().token; // ❗ retry마다 다시 실행됨
+  const headers = new Headers();
 
-  const headers = new Headers(options.headers || {});
+  const token = useAuthStore.getState().token;
 
   if (token) {
     headers.set("Authorization", `Bearer ${token}`);
