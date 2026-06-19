@@ -3,7 +3,10 @@
 import { Navigate, Outlet } from "react-router-dom";
 import FullPageSpinner from "../components/FullPageSpinner";
 import { useAuth } from "../auth/hooks/useAuth";
-import { usePermissions } from "../auth/usePermissions";
+
+import type { Permission } from "../auth/auth.types";
+import { usePermissions } from "../auth/hooks/usePermissions";
+
 
 export function PermissionRoute({ permission }: { permission: Permission }) {
   const { user } = useAuth();
