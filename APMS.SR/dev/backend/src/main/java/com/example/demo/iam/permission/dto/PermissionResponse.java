@@ -1,6 +1,6 @@
 package com.example.demo.iam.permission.dto;
 
-import com.example.demo.admin.permission.domain.Permission;
+import com.example.demo.iam.permission.domain.Permission;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
