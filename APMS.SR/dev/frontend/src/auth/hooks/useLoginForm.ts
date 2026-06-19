@@ -41,7 +41,7 @@ export function useLoginForm() {
     } catch (e: unknown) {
       const error = e as { message?: string };
       setErrorMessage(
-        e?.message === "INVALID_CREDENTIALS"
+        error.message === "INVALID_CREDENTIALS"
           ? "아이디 또는 비밀번호가 틀렸습니다"
           : "로그인 실패"
       );
