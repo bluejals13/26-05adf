@@ -3,7 +3,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import FullPageSpinner from "./loading/FullPageSpinner";
 import { useMe } from "../queries/useMe";
-import { usePermissions } from "../hooks/usePermissions";
+import { usePermissions } from "../auth/hooks/usePermissions";
 
 
 // 필요하면 string 기반으로 
