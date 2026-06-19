@@ -1,8 +1,19 @@
 import { useAuthStore } from "../store/auth.store";
 import { authService } from "../auth/auth.service";
 
-function getToken() {
+function getAccessToken() {
   return useAuthStore.getState().token;
+}
+
+function buildHeaders(token?: string, base?: HeadersInit) {
+  const headers = new Headers(base || {});
+  headers.set("Content-Type", "application/json");
+
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  return headers;
 }
 
 export async function request<T>(
@@ -10,37 +21,33 @@ export async function request<T>(
   options: RequestInit = {},
   retry = true
 ): Promise<T> {
-  const token = getToken();
+  const token = getAccessToken();
 
-  const headers = new Headers(options.headers || {});
-  headers.set("Content-Type", "application/json");
-
-  if (token) {
-    headers.set("Authorization", `Bearer ${token}`);
-  }
-
-  const res = await fetch(url, {
+  let res = await fetch(url, {
     ...options,
-    headers,
+    headers: buildHeaders(token, options.headers),
     credentials: "include",
   });
 
-  // 1. 정상 응답
+  // ✅ 정상
   if (res.ok) {
     return res.json();
   }
 
-  // 2. 401 아니면 그대로 에러
+  // ❌ 401 아닌 에러
   if (res.status !== 401) {
-    throw await res.json().catch(() => ({ message: "Request failed" }));
+    throw await res.json().catch(() => ({
+      message: "Request failed",
+    }));
   }
 
-  // 3. refresh 실패 방지
+  // ❌ refresh 1회 제한
   if (!retry) {
+    useAuthStore.getState().logout();
     throw new Error("Unauthorized");
   }
 
-  // 4. refresh token으로 재발급
+  // 🔥 refresh (단일 요청 보장)
   const newToken = await authService.refreshToken();
 
   if (!newToken) {
@@ -48,25 +55,22 @@ export async function request<T>(
     throw new Error("Refresh failed");
   }
 
-  // 5. store 업데이트 (이거 빠지면 계속 401 남)
   useAuthStore.getState().setToken(newToken);
 
-  // 6. ★ 중요: retry 시 headers 새로 생성
-  const retryHeaders = new Headers(options.headers || {});
-  retryHeaders.set("Content-Type", "application/json");
-  retryHeaders.set("Authorization", `Bearer ${newToken}`);
-
-  const retryRes = await fetch(url, {
+  // 🔥 중요: retry 요청은 반드시 새 headers
+  res = await fetch(url, {
     ...options,
-    headers: retryHeaders,
+    headers: buildHeaders(newToken, options.headers),
     credentials: "include",
   });
 
-  if (!retryRes.ok) {
-    throw await retryRes.json().catch(() => ({ message: "Request failed" }));
+  if (!res.ok) {
+    throw await res.json().catch(() => ({
+      message: "Request failed",
+    }));
   }
 
-  return retryRes.json();
+  return res.json();
 }
 
 export const http = {
