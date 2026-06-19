@@ -86,11 +86,12 @@ public class UserController {
             return ResponseEntity.ok(authService.refresh(refreshToken));
 
         } catch (Exception e) {
+            // 🔥 핵심: 쿠키 삭제
             Cookie cookie = new Cookie("refreshToken", null);
-            cookie.setHttpOnly(true);
             cookie.setPath("/");
+            cookie.setHttpOnly(true);
             cookie.setMaxAge(0);
-            httpResponse.addCookie(cookie);
+            response.addCookie(cookie);
         
             return ResponseEntity.status(401).body("INVALID_REFRESH_TOKEN");
         }
