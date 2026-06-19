@@ -1,20 +1,6 @@
-import { useAuthStore } from "../store/auth.store";
-import { authService, isLoggingOut } from "../auth/auth.service";
+// api/http.ts
 
-function getToken() {
-  return useAuthStore.getState().token ?? undefined;
-}
-
-function buildHeaders(token?: string, base?: HeadersInit) {
-  const headers = new Headers(base || {});
-  headers.set("Content-Type", "application/json");
-
-  if (token) {
-    headers.set("Authorization", `Bearer ${token}`);
-  }
-
-  return headers;
-}
+import { authStorage } from "../auth/auth.storage";
 
 export async function request<T>(
   url: string,
@@ -22,54 +8,36 @@ export async function request<T>(
   retry = true
 ): Promise<T> {
 
-  // ✅ 핵심: logout race 완전 차단
-  if (isLoggingOut) {
-    throw new Error("Logging out");
+  const token = authStorage.get();
+
+  const headers = new Headers(options.headers);
+
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
   }
 
-  let token = getToken();
+  if (
+    !(options.body instanceof FormData) &&
+    !headers.has("Content-Type")
+  ) {
+    headers.set("Content-Type", "application/json");
+  }
 
-  let res = await fetch(url, {
+  const res = await fetch(url, {
     ...options,
-    headers: buildHeaders(token, options.headers),
+    headers,
     credentials: "include",
   });
 
-  if (res.ok) {
-    return res.json();
-  }
-
-  if (res.status !== 401) {
-    throw await res.json().catch(() => ({
-      message: "Request failed",
-    }));
-  }
-
-  if (!retry) {
-    useAuthStore.getState().logout();
-    throw new Error("Unauthorized");
-  }
-
-  const newToken = await authService.refreshToken();
-
-  if (!newToken) {
-    useAuthStore.getState().logout();
-    throw new Error("Refresh failed");
-  }
-
-  token = newToken;
-
-  res = await fetch(url, {
-    ...options,
-    headers: buildHeaders(token, options.headers),
-    credentials: "include",
-  });
+  const text = await res.text();
+  const data = text ? JSON.parse(text) : null;
 
   if (!res.ok) {
-    throw await res.json().catch(() => ({
-      message: "Request failed",
-    }));
+    throw {
+      status: res.status,
+      data,
+    };
   }
 
-  return res.json();
+  return data;
 }
