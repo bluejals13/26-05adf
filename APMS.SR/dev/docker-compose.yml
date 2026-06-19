@@ -7,7 +7,6 @@ services:
       context: ./frontend
     volumes:
       - frontend_dist:/output
-    command: sh -c "npm install && npm run build"
 
   nginx:
     build:
