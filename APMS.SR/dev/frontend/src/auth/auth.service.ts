@@ -46,6 +46,7 @@ export const authService = {
       await queryClient.removeQueries({
         queryKey: authKeys.me,
       });
+      await queryClient.clear();
     }
   },
 
