@@ -57,7 +57,7 @@ export const authService = {
 
   // 토큰 갱신 (refresh)
   async refreshToken() {
-    if (isLoggingOut) return null;
+    if (isLoggingOut) { throw new Error("Logging out"); }
     if (refreshPromise) return refreshPromise;
 
     refreshPromise = (async () => {
@@ -66,7 +66,7 @@ export const authService = {
           "/api/auth/refresh",
           {}
         );
-        if (isLoggingOut) return null;
+        if (isLoggingOut) { throw new Error("Logging out"); }
         // ✅ store만 갱신
         useAuthStore.getState().setToken(res.accessToken);
 
