@@ -1,22 +1,12 @@
 
 
 services:
-
-  frontend-build:
-    build:
-      context: ./frontend
-    command: sh -c "npm install && npm run build && cp -r dist/* /output/"
-    volumes:
-      - frontend_dist:/output
-
   nginx:
     build:
       context: ./nginx
-      dockerfile: Dockerfile
+      dockerfile: nginx/Dockerfile
     ports:
       - "${NGINX_PORT}:${NGINX_PORT}"  # Nginx는 외부 포트 80을 그대로 사용
-    volumes:
-      - frontend_dist:/usr/share/nginx/html      
     networks:
       - app-net
 
