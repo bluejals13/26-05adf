@@ -6,7 +6,6 @@ import { usePermissions } from "../../auth/hooks/usePermissions";
 import type { Menu } from "../../api/menu.api";
 
 import FullPageSpinner from "../../components/loading/FullPageSpinner";
-
 import styles from "./menu.module.css";
 
 export default function MenuPage() {
@@ -14,16 +13,17 @@ export default function MenuPage() {
   const { hasPermission } = usePermissions(user);
 
   const { createMenu, deleteMenu } = useMenuMutations();
-  
-  const { data: menus = [] } = useMenus(); // ✅ 추가
-  
+
+  const { data: menus = [] } = useMenus(); // ✅ 핵심 수정
+
   const canRead = hasPermission("MENU_READ");
   const canCreate = hasPermission("MENU_CREATE");
   const canDelete = hasPermission("MENU_DELETE");
 
-
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
+
+  const [deletingId, setDeletingId] = useState<number | null>(null); // (선택 개선)
 
   if (authLoading) return <FullPageSpinner />;
   if (!canRead) return <div>🚫 권한 없음</div>;
@@ -42,9 +42,7 @@ export default function MenuPage() {
           />
 
           <button
-            onClick={() =>
-              createMenu.mutate({ name, price })
-            }
+            onClick={() => createMenu.mutate({ name, price })}
             disabled={createMenu.isPending}
           >
             {createMenu.isPending ? "Creating..." : "Create"}
@@ -59,7 +57,7 @@ export default function MenuPage() {
         {canDelete && <div>Action</div>}
       </div>
 
-      {menus.map((menu) => (
+      {menus.map((menu: Menu) => (
         <div key={menu.id} className={styles.tableRow}>
           <div>{menu.id}</div>
           <div>{menu.name}</div>
@@ -67,8 +65,13 @@ export default function MenuPage() {
 
           {canDelete && (
             <button
-              onClick={() => deleteMenu.mutate(menu.id)}
-              disabled={deleteMenu.isPending}
+              onClick={() => {
+                setDeletingId(menu.id);
+                deleteMenu.mutate(menu.id, {
+                  onSettled: () => setDeletingId(null),
+                });
+              }}
+              disabled={deletingId === menu.id}
             >
               Delete
             </button>
