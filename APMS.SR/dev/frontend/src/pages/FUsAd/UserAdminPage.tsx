@@ -15,7 +15,7 @@ type UserStatus =
   | "DELETED";
 
 export default function UserAdminPage() {
-  const { user } = useAuth();
+  //const { user } = useAuth();
   const { hasPermission } = usePermissions(user);
 
   const canRead = hasPermission("USER_READ");
