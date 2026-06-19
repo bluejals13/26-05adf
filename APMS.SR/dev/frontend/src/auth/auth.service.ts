@@ -51,7 +51,7 @@ export const authService = {
     queryClient.clear();
   
     window.dispatchEvent(new Event("auth:logout"));
-  
+    await new Promise((r) => setTimeout(r, 0));
     isLoggingOut = false;
   },
 
