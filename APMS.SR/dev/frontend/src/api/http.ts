@@ -20,9 +20,9 @@ export async function request<T>(
   url: string,
   options: RequestInit = {},
   retry = true
-): Promise<T> {
+): Promise<T> {  if (isLoggingOut) return null;
   let token = getToken();
-  if (isLoggingOut) return null;
+
   let res = await fetch(url, {
     ...options,
     headers: buildHeaders(token, options.headers),
