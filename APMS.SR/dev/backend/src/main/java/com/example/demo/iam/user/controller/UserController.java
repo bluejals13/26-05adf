@@ -41,7 +41,7 @@ public class UserController {
         return userService.signup(req);
     }
 
-    // 로그인 (쿠키 방식 refresh)
+    // 로그인
     @PostMapping("/auth/login")
     public LoginResponse login(
             @RequestBody LoginRequest req,
@@ -54,7 +54,7 @@ public class UserController {
         cookie.setHttpOnly(true);
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60 * 24 * 7);
-        cookie.setSecure(true); // 로컬이면 false, HTTPS면 true
+        cookie.setSecure(true);
 
         httpResponse.addCookie(cookie);
 
@@ -64,53 +64,50 @@ public class UserController {
         );
     }
 
-            // refresh
-        @PostMapping("/auth/refresh")
-        public ResponseEntity<?> refresh(
-                HttpServletRequest request,
-                HttpServletResponse response
-        ) {
-        
-            Cookie[] cookies = Optional
-                    .ofNullable(request.getCookies())
-                    .orElse(new Cookie[0]);
-        
-            String refreshToken = Arrays.stream(cookies)
-                    .filter(c -> "refreshToken".equals(c.getName()))
-                    .map(Cookie::getValue)
-                    .findFirst()
-                    .orElse(null);
-        
-            if (refreshToken == null) {
-                return ResponseEntity.status(401).body("NO_REFRESH_TOKEN");
-            }
-        
-            try {
-        
-                return ResponseEntity.ok(authService.refresh(refreshToken));
-        
-            } catch (Exception e) {
-        
-                // 쿠키 삭제 (필수)
-                Cookie cookie = new Cookie("refreshToken", null);
-                cookie.setPath("/");
-                cookie.setMaxAge(0);
-                cookie.setHttpOnly(true);
-        
-                response.addCookie(cookie);
-        
-                return ResponseEntity.status(401).body("INVALID_REFRESH_TOKEN");
-            }
+    // refresh
+    @PostMapping("/auth/refresh")
+    public ResponseEntity<?> refresh(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+
+        Cookie[] cookies = Optional
+                .ofNullable(request.getCookies())
+                .orElse(new Cookie[0]);
+
+        String refreshToken = Arrays.stream(cookies)
+                .filter(c -> "refreshToken".equals(c.getName()))
+                .map(Cookie::getValue)
+                .findFirst()
+                .orElse(null);
+
+        if (refreshToken == null) {
+            return ResponseEntity.status(401).body("NO_REFRESH_TOKEN");
+        }
+
+        try {
+            return ResponseEntity.ok(authService.refresh(refreshToken));
+
+        } catch (Exception e) {
+
+            Cookie cookie = new Cookie("refreshToken", null);
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            cookie.setHttpOnly(true);
+
+            response.addCookie(cookie);
+
+            return ResponseEntity.status(401).body("INVALID_REFRESH_TOKEN");
         }
     }
-    // 내 정보 조회
-    // 롤 퍼미션 관리자 용 미반응 겟미
+
+    // ✅ 여기부터 다시 클래스 내부
+
     @GetMapping("/users/me")
     public MeResponse getMe(@AuthenticationPrincipal CustomUserPrincipal principal) {
-        return userService.getMe(principal.getUserId()); // 로그인 및 보안 컨텍스트 용 유저반응 겟미
+        return userService.getMe(principal.getUserId());
     }
-        
-    // password change
+
     @PatchMapping("/users/me/password")
     public void updatePassword(
             @AuthenticationPrincipal CustomUserPrincipal principal,
@@ -118,18 +115,17 @@ public class UserController {
     ) {
         userService.updatePassword(principal.getUserId(), req);
     }
-    
-    // 디버그용
+
     @GetMapping("/debug/auth")
     public Object debug() {
         Authentication auth =
-        SecurityContextHolder.getContext().getAuthentication();
+                SecurityContextHolder.getContext().getAuthentication();
 
         return Map.of(
-            "auth", auth,
-            "authorities", auth.getAuthorities(),
-            "principal", auth.getPrincipal(),
-            "type", auth.getClass().getSimpleName()
+                "auth", auth,
+                "authorities", auth.getAuthorities(),
+                "principal", auth.getPrincipal(),
+                "type", auth.getClass().getSimpleName()
         );
-    }    
+    }
 }
