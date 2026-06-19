@@ -3,9 +3,9 @@ import styles from "./UserAdminPage.module.css";
 
 import { useUsers } from "../../queries/useUsers";
 import { useUserMutations } from "../../mutations/useUserMutations";
-import { useAuth } from "../../auth/hooks/useAuth";
 import { usePermissions } from "../../auth/hooks/usePermissions";
-
+import { useAuthStore } from "../../store/auth.store";
+import { useAuth } from "../../auth/hooks/useAuth";
 import FullPageSpinner from "../../components/loading/FullPageSpinner";
 
 type UserStatus =
@@ -15,7 +15,7 @@ type UserStatus =
   | "DELETED";
 
 export default function UserAdminPage() {
-  //const { user } = useAuth();
+  const { user } = useAuth();
   const token = useAuthStore((s) => s.token);
   const { hasPermission } = usePermissions(user);
 
