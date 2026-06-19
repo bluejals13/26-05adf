@@ -21,6 +21,7 @@ export default function UserAdminPage() {
   const canRead = hasPermission("USER_READ");
   const canUpdate = hasPermission("USER_UPDATE");
   const canDelete = hasPermission("USER_DELETE");
+  const canView = hasPermission("USER_READ");
 
   const { data: users = [], isLoading, error } = useUsers();
   const { changeStatus, deleteUser } = useUserMutations();
