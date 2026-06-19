@@ -1,7 +1,7 @@
 package com.example.demo.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import com.example.demo.user.exception.DuplicateUserException;
+import com.example.demo.user.common.exception.DuplicateUserException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
