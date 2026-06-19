@@ -1,13 +1,22 @@
 import { useAuthStore } from "../store/auth.store";
 import { authService } from "../auth/auth.service";
 
-export async function request<T>(
-  url: string,
-  options: RequestInit = {}
-): Promise<T> {
-  return execute<T>(url, options, true);
-}
+export async function request(url, options) {
+  const token = useAuthStore.getState().token;
 
+  const headers = new Headers();
+  headers.set("Content-Type", "application/json");
+
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  return fetch(url, {
+    ...options,
+    headers,
+    credentials: "include",
+  });
+}
 
 
 async function execute<T>(url: string, options: RequestInit, retry: boolean): Promise<T> {
