@@ -13,12 +13,12 @@ let refreshPromise: Promise<string | null> | null = null;
 export const authService = {
   
   async signup(data: { username: string; email: string; password: string }) {
-    await http.post("/auth/signup", data);
+    await http.post("api/auth/signup", data);
   },
   
   async login(username: string, password: string) {
     const res = await http.post<{ accessToken: string }>(
-      "/auth/login",
+      "api/auth/login",
       { username, password }
     );
 
@@ -26,13 +26,13 @@ export const authService = {
 
     await queryClient.prefetchQuery({
       queryKey: authKeys.me,
-      queryFn: () => http.get<User>("/users/me"),
+      queryFn: () => http.get<User>("api/users/me"),
     });
   },
 
   async logout() {
     try {
-      await http.post("/auth/logout", {});
+      await http.post("api/auth/logout", {});
     } finally {
       useAuthStore.getState().logout();
 
