@@ -25,8 +25,8 @@ import { useAuthStore } from "./store/auth.store";
 
 
 
-export default function App() { useAuthStore.getState().hydrate();
-  useEffect(() => {
+export default function App() {
+  useEffect(() => { useAuthStore.getState().hydrate();
     bootstrapAuth();
   }, []);
 
