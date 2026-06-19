@@ -21,7 +21,7 @@ export function useLoginForm() {
     });
 
     if (!result.success) {
-      const errors = result.error.flatten().fieldErrors;
+      const error = e as { message?: string };
 
       setErrorMessage(
         errors.username?.[0] ??
@@ -38,7 +38,7 @@ export function useLoginForm() {
       await authService.login(username, password);
 
       navigate("/");
-    } catch (e: any) {
+    } catch (e: unknown) {
       setErrorMessage(
         e?.message === "INVALID_CREDENTIALS"
           ? "아이디 또는 비밀번호가 틀렸습니다"
