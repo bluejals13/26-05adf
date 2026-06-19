@@ -4,7 +4,7 @@ import { useAuthStore } from "../../store/auth.store";
 import { authService } from "../auth.service";
 
 export function usePermissions(user: any) {
-  const token = useAuthStore((s) => s.token);
+  //const token = useAuthStore((s) => s.token);
 
   const hasPermission = (perm: string) => {
     return user?.permissions?.includes(perm);
