@@ -6,7 +6,7 @@ import { useUserMutations } from "../../mutations/useUserMutations";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { usePermissions } from "../../auth/hooks/usePermissions";
 
-//import type { User } from "../../api/user.api";
+import FullPageSpinner from "../../components/loading/FullPageSpinner";
 
 type UserStatus =
   | "ACTIVE"
@@ -21,7 +21,6 @@ export default function UserAdminPage() {
   const canRead = hasPermission("USER_READ");
   const canUpdate = hasPermission("USER_UPDATE");
   const canDelete = hasPermission("USER_DELETE");
-  const canView = hasPermission("USER_READ");
 
   const { data: users = [], isLoading, error } = useUsers();
   const { changeStatus, deleteUser } = useUserMutations();
@@ -46,9 +45,7 @@ export default function UserAdminPage() {
     return <div className={styles.denied}>USER_READ 권한 없음</div>;
   }
 
-  if (isLoading) {
-    return <div className={styles.loading}>로딩 중...</div>;
-  }
+  if (isLoading) return <FullPageSpinner />;
 
   if (error) {
     return <div className={styles.error}>에러 발생</div>;
