@@ -6,7 +6,7 @@ import { useUserMutations } from "../../mutations/useUserMutations";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { usePermissions } from "../../auth/hooks/usePermissions";
 
-import type { User } from "../../api/user.api";
+//import type { User } from "../../api/user.api";
 
 type UserStatus =
   | "ACTIVE"
