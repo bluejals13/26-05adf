@@ -23,7 +23,7 @@ export default function MenuPage() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
 
-  if (authLoading || isLoading) return <FullPageSpinner />;
+  if (authLoading) return <FullPageSpinner />;
   if (!canRead) return <div>🚫 권한 없음</div>;
 
   return (
