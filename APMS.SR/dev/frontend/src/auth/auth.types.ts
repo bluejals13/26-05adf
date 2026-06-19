@@ -6,7 +6,6 @@ export type Permission = string;
 export type User = {
   id: number;
   username: string;
-
   roles: Role[];
   permissions: Permission[];
 };
