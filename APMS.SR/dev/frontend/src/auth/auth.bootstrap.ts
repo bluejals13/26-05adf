@@ -12,7 +12,9 @@ export async function bootstrapAuth() {
     const token = await authService.refreshToken();
 
     if (!token) return;
-
+    
+    useAuthStore.getState().setToken(token);
+    
     await queryClient.prefetchQuery({
       queryKey: authKeys.me,
       queryFn: () => http.get<User>("/users/me"),
