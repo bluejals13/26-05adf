@@ -12,7 +12,7 @@ export default function MenuPage() {
   const { user, isLoading: authLoading } = useAuth();
   const { hasPermission } = usePermissions(user);
 
-  const { data: menus = [], isLoading } = useMenus();
+  const { isLoading } = useMenus();
   const { createMenu, deleteMenu } = useMenuMutations();
 
   const canRead = hasPermission("MENU_READ");
