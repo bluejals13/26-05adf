@@ -34,6 +34,8 @@ public class UserController {
 
     private final UserService userService;
     private final AuthService authService;
+    private final JwtProvider jwtProvider;
+    private final RedisTemplate<String, String> redisTemplate;
 
     // 회원가입
     @PostMapping("/auth/signup")
@@ -66,7 +68,7 @@ public class UserController {
 
     // refresh
     @PostMapping("/auth/refresh")
-    public ResponseEntity<?> refresh(HttpServletRequest request) {
+    public ResponseEntity<?> refresh( HttpServletRequest request, HttpServletResponse response ) {
         try {
 
             Cookie[] cookies = Optional
