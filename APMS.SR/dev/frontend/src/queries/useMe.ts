@@ -12,19 +12,14 @@ export function useMe() {
   const token = useAuthStore((state) => state.token);
 
   return useQuery({
-    queryKey: authKeys.me,
+    queryKey: ["me", token],
 
-    queryFn: () => http.get<User>("/api/users/me"), // ✅ 수정
+    queryFn: () => http.get<User>("/api/users/me"),
 
     enabled: !!token,
 
     staleTime: 1000 * 60 * 5,
-
     retry: false,
-
     refetchOnWindowFocus: false,
-
-    // 🔥 중요: token 바뀌면 자동 갱신
-    refetchOnMount: true,
   });
 }
