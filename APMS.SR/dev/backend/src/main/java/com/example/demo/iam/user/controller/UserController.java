@@ -64,40 +64,43 @@ public class UserController {
         );
     }
 
-    // refresh
-    @PostMapping("/auth/refresh")
-    public ResponseEntity<?> refresh( HttpServletRequest request, HttpServletResponse response ) {
-         {
-
+            // refresh
+        @PostMapping("/auth/refresh")
+        public ResponseEntity<?> refresh(
+                HttpServletRequest request,
+                HttpServletResponse response
+        ) {
+        
             Cookie[] cookies = Optional
                     .ofNullable(request.getCookies())
                     .orElse(new Cookie[0]);
-
+        
             String refreshToken = Arrays.stream(cookies)
                     .filter(c -> "refreshToken".equals(c.getName()))
                     .map(Cookie::getValue)
                     .findFirst()
                     .orElse(null);
-            
+        
             if (refreshToken == null) {
                 return ResponseEntity.status(401).body("NO_REFRESH_TOKEN");
             }
-
-           try {  return ResponseEntity.ok(authService.refresh(refreshToken));
-                
-            }
-
-            
-
-        } catch (Exception e) {
-            // 🔥 핵심: 쿠키 삭제
-            Cookie cookie = new Cookie("refreshToken", null);
-            cookie.setPath("/");
-            cookie.setHttpOnly(true);
-            cookie.setMaxAge(0);
-            response.addCookie(cookie);
         
-            return ResponseEntity.status(401).body("INVALID_REFRESH_TOKEN");
+            try {
+        
+                return ResponseEntity.ok(authService.refresh(refreshToken));
+        
+            } catch (Exception e) {
+        
+                // 쿠키 삭제 (필수)
+                Cookie cookie = new Cookie("refreshToken", null);
+                cookie.setPath("/");
+                cookie.setMaxAge(0);
+                cookie.setHttpOnly(true);
+        
+                response.addCookie(cookie);
+        
+                return ResponseEntity.status(401).body("INVALID_REFRESH_TOKEN");
+            }
         }
     }
     // 내 정보 조회
