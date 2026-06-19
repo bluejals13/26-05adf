@@ -12,10 +12,10 @@ export default function About() {
   const { data: me, isLoading, isError, error } = useMe();
   const { hasPermission } = usePermissions(me);
 
-  const canDebug = hasPermission("DEBUG_READ");
+  //const canDebug = hasPermission("DEBUG_READ");
 
 
-  //if (isLoading) return <FullPageSpinner />;
+  if (isLoading) return <FullPageSpinner />;
 
 
   if (isError) {
