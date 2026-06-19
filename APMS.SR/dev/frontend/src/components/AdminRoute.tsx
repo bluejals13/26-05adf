@@ -12,7 +12,7 @@ export default function AdminRoute({ permission }: { permission?: string }) {
   if (isLoading) return <FullPageSpinner />;
   if (!me) return <Navigate to="/login" replace />;
 
-  if (!isAdmin) return <Navigate to="/403" replace />;
+  if (!isAdmin()) return <Navigate to="/403" replace />;
 
   if (permission && !hasPermission(permission)) {
     return <Navigate to="/403" replace />;
