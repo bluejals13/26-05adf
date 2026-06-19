@@ -3,7 +3,7 @@ import { apiFetch } from "../../api/api";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { usePermissions } from "../../auth/hooks/usePermissions";
 
-//import FullPageSpinner from "../../components/loading/FullPageSpinner";
+import FullPageSpinner from "../../components/loading/FullPageSpinner";
 
 import styles from "./menu.module.css";
 
@@ -19,7 +19,7 @@ type MenuRequest = {
 };
 
 export default function MenuPage() {
-  const { isLoggedIn, user, isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
   const { hasPermission } = usePermissions(user);
 
   const canRead = hasPermission("MENU_READ");
@@ -54,9 +54,7 @@ export default function MenuPage() {
     fetchMenus();
   }, [fetchMenus]);
   
-  //if (isLoading) return <FullPageSpinner />;
-  
-  if (loading) { return <div>로딩 중...</div>; }
+  if (isLoading) return <FullPageSpinner />;
 
   if (error) { return <div style={{ color: "red" }}>{error}</div>; }
   
