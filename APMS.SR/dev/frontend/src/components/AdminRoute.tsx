@@ -1,7 +1,7 @@
 // components/AdminRoute.tsx			role 체크
 
 import { Navigate, Outlet } from "react-router-dom";
-import FullPageSpinner from "../../components/loading/FullPageSpinner";
+import FullPageSpinner from "./loading/FullPageSpinner";
 import { useMe } from "../queries/useMe";
 import { usePermissions } from "../hooks/usePermissions";
 
