@@ -5,7 +5,11 @@ import FullPageSpinner from "./loading/FullPageSpinner";
 import { useMe } from "../queries/useMe";
 import { usePermissions } from "../auth/hooks/usePermissions";
 import type { Permission } from "../auth/auth.types";
+import type { User } from "../auth/auth.types";
 
+type Props = {
+  me?: User;
+};
 // 필요하면 string 기반으로
 type AdminRouteProps = { permission?: Permission; };
 
