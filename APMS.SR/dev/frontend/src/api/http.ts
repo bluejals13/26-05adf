@@ -6,7 +6,6 @@ export async function request<T>(
   url: string,
   options: RequestInit = {}
 ): Promise<T> {
-
   const res = await fetch(url, {
     ...options,
     credentials: "include",
@@ -17,10 +16,7 @@ export async function request<T>(
   });
 
   const text = await res.text();
-
-  if (!text) {
-    return {} as T;
-  }
+  if (!text) return {} as T;
 
   return JSON.parse(text) as T;
 }
