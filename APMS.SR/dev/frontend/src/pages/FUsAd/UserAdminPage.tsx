@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
-import { apiFetch } from "../../api";
-import { usePermissions } from "../../hooks/usePermissions";
+import { useAuth } from "../../auth/hooks/useAuth";
+import { usePermissions } from "../../auth/hooks/usePermissions";
 import { useMe } from "../../queries/useMe";
 
 import styles from "./UserAdminPage.module.css";
