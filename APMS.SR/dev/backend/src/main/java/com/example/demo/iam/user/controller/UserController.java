@@ -82,12 +82,6 @@ public class UserController {
             if (refreshToken == null) {
                 return ResponseEntity.status(401).body("NO_REFRESH_TOKEN");
             }
-        
-            Long userId = jwtProvider.getUserId(refreshToken);
-        
-            String saved = redisTemplate.opsForValue()
-                        .get("refresh:" + userId);
-            
 
             if (saved == null || !saved.equals(refreshToken)) {
                 
