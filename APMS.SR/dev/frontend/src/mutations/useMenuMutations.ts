@@ -1,7 +1,8 @@
 // mutations/useMenuMutations.ts			//상태 변경 관리
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { menuApi, MenuRequest } from "../api/menu.api";
+import { menuApi } from "../api/menu.api";
+import type { MenuRequest } from "../api/menu.api";
 
 export function useMenuMutations() {
   const qc = useQueryClient();
