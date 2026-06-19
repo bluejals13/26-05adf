@@ -1,6 +1,8 @@
 // hooks/usePermissions.ts	// 타입 > 롤 퍼미션 > 훅  :  권한 계산 관리
 
-import type { User } from "../auth.types";
+const { user } = useAuth();
+
+const { hasPermission } = usePermissions(user ?? undefined);
 
 export function usePermissions(user?: User) {
   const permissions = user?.permissions ?? [];
