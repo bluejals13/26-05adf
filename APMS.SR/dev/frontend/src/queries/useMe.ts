@@ -8,17 +8,16 @@ import type { User } from "../auth/auth.types";
 import { useAuthStore } from "../store/auth.store";
 
 export function useMe() {
-  const token = useAuthStore((state) => state.token);
-
+  const { token } = useAuthStore();
+  
+  const isReady = token !== undefined; // 또는 hydrate 완료 flag
+  
   return useQuery({
-    queryKey: ["me", token],
-
-    queryFn: () => http.get<User>("/api/users/me"),
-
-    enabled: !!token,
-
-    staleTime: 1000 * 60 * 5,
-    retry: false,
+    queryKey: authKeys.me,
+    queryFn: () => http.get("/api/users/me"),
+    enabled: isReady,
+    staleTime: Infinity,
     refetchOnWindowFocus: false,
+    retry: false,
   });
 }
