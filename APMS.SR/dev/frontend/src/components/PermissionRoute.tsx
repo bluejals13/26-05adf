@@ -1,7 +1,7 @@
 // components/PermissionRoute.tsx		permission 체크
 
 import { Navigate, Outlet } from "react-router-dom";
-import FullPageSpinner from "../components/FullPageSpinner";
+import FullPageSpinner from "../../components/loading/FullPageSpinner";
 import { useAuth } from "../auth/hooks/useAuth";
 
 import type { Permission } from "../auth/auth.types";
