@@ -67,7 +67,7 @@ public class UserController {
     // refresh
     @PostMapping("/auth/refresh")
     public ResponseEntity<?> refresh( HttpServletRequest request, HttpServletResponse response ) {
-        try {
+         {
 
             Cookie[] cookies = Optional
                     .ofNullable(request.getCookies())
@@ -83,7 +83,7 @@ public class UserController {
                 return ResponseEntity.status(401).body("NO_REFRESH_TOKEN");
             }
 
-           if {  return ResponseEntity.ok(authService.refresh(refreshToken));
+           try {  return ResponseEntity.ok(authService.refresh(refreshToken));
                 
             }
 
