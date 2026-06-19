@@ -43,25 +43,29 @@ public class UserController {
 
     // 로그인
     @PostMapping("/auth/login")
-    public LoginResponse login(
-            @RequestBody LoginRequest req,
-            HttpServletResponse httpResponse
-    ) {
+    public ResponseEntity<?> refresh(HttpServletRequest request, HttpServletResponse response) {
 
-        LoginResult result = userService.login(req);
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) return ResponseEntity.status(401).body("NO_COOKIE");
 
-        Cookie cookie = new Cookie("refreshToken", result.refreshToken());
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(60 * 60 * 24 * 7);
-        cookie.setSecure(true);
+        String refreshToken = Arrays.stream(cookies)
+            .filter(c -> "refreshToken".equals(c.getName()))
+            .map(Cookie::getValue)
+            .findFirst()
+            .orElse(null);
 
-        httpResponse.addCookie(cookie);
+        if (refreshToken == null) { return ResponseEntity.status(401).body("NO_REFRESH_TOKEN"); }
 
-        return new LoginResponse(
-                result.accessToken(),
-                result.grantType()
-        );
+        try { return ResponseEntity.ok(authService.refresh(refreshToken));
+        } catch (Exception e) {
+
+            Cookie cookie = new Cookie("refreshToken", null);
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+    
+            return ResponseEntity.status(401).body("INVALID_REFRESH");
+        }
     }
 
     // refresh
