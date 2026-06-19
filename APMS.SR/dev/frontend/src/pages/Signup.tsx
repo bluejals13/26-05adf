@@ -2,6 +2,8 @@
 
 import { useSignupForm } from "../auth/hooks/useSignupForm";
 
+import "./Auth.css";
+
 export default function Signup() {
   const {
     username,
@@ -26,24 +28,38 @@ export default function Signup() {
       >
         <h2>회원가입</h2>
 
-        <input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="아이디"
-        />
+<div className="form-group">
+          <label>아이디</label>
+          <input
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
 
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="비밀번호"
-        />
+        <div className="form-group">
+          <label>비밀번호</label>
+          <input
+            type="password"
+            value={password}
+            autoComplete="new-password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
 
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="이메일"
-        />
+        <div className="form-group">
+          <label>이메일</label>
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        
+        {errorMessage && (
+          <p className="error-message">{errorMessage}</p>
+        )}
+        <p className="switch-auth">
+          이미 계정이 있나요? <Link to="/login">로그인</Link>
+        </p>
 
         {errorMessage && <p>{errorMessage}</p>}
 
