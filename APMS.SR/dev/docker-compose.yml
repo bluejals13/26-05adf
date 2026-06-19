@@ -11,7 +11,7 @@ services:
 
   nginx:
     build:
-      context: .
+      context: ./nginx/default.conf 
       dockerfile: nginx/Dockerfile
     ports:
       - "${NGINX_PORT}:${NGINX_PORT}"  # Nginx는 외부 포트 80을 그대로 사용
