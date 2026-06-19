@@ -53,46 +53,45 @@ public class UserService {
     }
 
     // 로그인
-    public LoginResult refresh(String refreshToken) {        
+    public LoginResult login(LoginRequest req) {
 
-         Long userId = jwtProvider.getUserId(refreshToken);
-
-        String saved = redisTemplate.opsForValue().get("refresh:" + userId);
-
-
-        
         User user = userRepository.findByUsername(req.username())
                 .orElseThrow(() -> new BadCredentialsException("INVALID_CREDENTIALS"));
-
+    
         if (!passwordEncoder.matches(req.password(), user.getPassword())) {
             throw new BadCredentialsException("INVALID_CREDENTIALS");
         }
-                
-        System.out.println("password raw = " + req.password());
-        System.out.println("password db  = " + user.getPassword());
-        
-        System.out.println("match = " + passwordEncoder.matches(req.password(), user.getPassword()));
-        // 접근 과 redis 연결 가
+    
         String accessToken = jwtProvider.createAccessToken(user.getId(), user.getUsername());
         String jti = jwtProvider.getJti(accessToken);
-
+    
         redisTemplate.opsForValue().set(
-            "active-jti:" + user.getId(),
-            jti,
-            Duration.ofMinutes(30)
-            );
-        
-        // 접근 과 redis 연결 나
-        // 리프레시 와 redis 연결 가
-        String refreshToken = jwtProvider.createRefreshToken(user.getId());
-        
-        // redisTemplate.delete("refresh:" + user.getId()); // 기존 세션 제거 (명확하게)
-
-        redisTemplate.opsForValue().set( // 새 세션 저장
-            "refresh:" + user.getId(),
-            refreshToken,
-            Duration.ofMinutes(30)
+                "active-jti:" + user.getId(),
+                jti,
+                Duration.ofMinutes(30)
         );
+    
+        String refreshToken = jwtProvider.createRefreshToken(user.getId());
+    
+        redisTemplate.opsForValue().set(
+                "refresh:" + user.getId(),
+                refreshToken,
+                Duration.ofDays(7)
+        );
+    
+        return new LoginResult(accessToken, "Bearer", refreshToken);
+    }
+            // 접근 과 redis 연결 나
+            // 리프레시 와 redis 연결 가
+            String refreshToken = jwtProvider.createRefreshToken(user.getId());
+            
+            // redisTemplate.delete("refresh:" + user.getId()); // 기존 세션 제거 (명확하게)
+    
+            redisTemplate.opsForValue().set( // 새 세션 저장
+                "refresh:" + user.getId(),
+                refreshToken,
+                Duration.ofMinutes(30)
+            );
         // 리프레시 와 redis 연결 나
         
         return new LoginResult(accessToken, "Bearer", refreshToken);
