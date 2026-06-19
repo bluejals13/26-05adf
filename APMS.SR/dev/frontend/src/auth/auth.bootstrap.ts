@@ -7,10 +7,13 @@ import { useAuthStore } from "../store/auth.store";
 import { http } from "../api/http";
 import type { User } from "../auth/auth.types";
 
+let bootstrapped = false;
+
 export async function bootstrapAuth() {
   try {
     const token = await authService.refreshToken();
-
+    if (bootstrapped) return;
+    bootstrapped = true;
     if (!token) {
       useAuthStore.getState().setToken(null);
       await queryClient.clear();
