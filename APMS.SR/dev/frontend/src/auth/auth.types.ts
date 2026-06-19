@@ -13,6 +13,9 @@ export const Permissions = {
   USER_READ: "USER_READ",
   USER_WRITE: "USER_WRITE",
   USER_DELETE: "USER_DELETE",
+
+  ADMIN_ACCESS: "ADMIN_ACCESS",
+  SYSTEM_ADMIN: "SYSTEM_ADMIN",
 } as const;
 
 export type Permission =
