@@ -1,4 +1,4 @@
-package com.example.demo.iam.admin.user.service;
+package com.example.demo.iam.admin.service;
 
 import com.example.demo.iam.user.domain.User;
 import com.example.demo.iam.user.repository.UserRepository;
