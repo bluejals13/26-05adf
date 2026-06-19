@@ -3,7 +3,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { userApi } from "../api/user.api";
 import { useAuthStore } from "../store/auth.store";
-import { useAuth } from "../auth/hooks/useAuth";
 
 export function useUsers() {
   const token = useAuthStore((s) => s.token);
