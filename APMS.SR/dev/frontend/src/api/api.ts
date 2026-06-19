@@ -1,6 +1,6 @@
 // api.ts HTTP만
 
-import { authStorage } from "./auth/auth.storage";	// jwt 토큰 키 get, set, clear
+import { authStorage } from "../auth/auth.storage";	// jwt 토큰 키 get, set, clear
 import { http } from "../api/http";
 
 export const fetchMe = () => http.get("/users/me");
