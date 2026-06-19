@@ -13,7 +13,7 @@ export function useMe() {
 
   return useQuery({
     queryKey: authKeys.me,
-    queryFn: () => http.get<User>("/users/me"),
+    queryFn: () => http.get<User>("api/users/me"),
     enabled: !!token,
 
     staleTime: 1000 * 60 * 5,
