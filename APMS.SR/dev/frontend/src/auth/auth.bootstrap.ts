@@ -3,7 +3,7 @@
 import { authService } from "../auth/auth.service";
 import { queryClient } from "../queryClient";
 import { authKeys } from "../auth/auth.keys";
-import { useAuthStore } from "../store/auth.store";
+
 import { http } from "../api/http";
 import { User } from "../auth/auth.types";
 
