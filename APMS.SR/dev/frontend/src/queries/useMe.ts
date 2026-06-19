@@ -1,5 +1,6 @@
 // queries/useMe.ts	// 서버 상태 (리액트 쿼리) 관리 	staleTime
 
+
 import { useQuery } from "@tanstack/react-query";
 import { http } from "../api/http";
 import type { User } from "../auth/auth.types";
@@ -11,7 +12,8 @@ export function useMe() {
   return useQuery<User>({
     queryKey: ["me"],
     queryFn: () => http.get<User>("/api/users/me"),
-    enabled: !!token,
+
+    enabled: !!token, // token 있을 때만 실행
 
     staleTime: 1000 * 60 * 5,
     retry: false,
