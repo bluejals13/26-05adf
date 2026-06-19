@@ -95,10 +95,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {    // 각 �
             
             // active-jti 없고            
             // 현재 활성 토큰이 아니면 실패
-            if (activeJti == null)  {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
-            }
+            if (activeJti == null) {return response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);}
             
             //if (!jti.equals(activeJti)) { response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); return; }
             
