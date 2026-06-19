@@ -6,11 +6,11 @@ import { userApi } from "../api/user.api";
 import { useAuth } from "../auth/hooks/useAuth";
 
 export function useUsers() {
-  const { user, isLoading } = useAuth();
+  const token = useAuthStore((s) => s.token);
 
   return useQuery({
     queryKey: ["users"],
     queryFn: userApi.getUsers,
-    enabled: !!user && !isLoading,
+    enabled: !!token,
   });
 }
