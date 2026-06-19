@@ -4,12 +4,9 @@ import type { User, Permission, Role } from "../auth.types";
 import { RolePermissions } from "../auth.types";
 
 export function usePermissions(user?: User) {
-  const permissions = new Set<Permission>(
-    user?.roles.flatMap(role => RolePermissions[role]) ?? []
-  );
-
   return {
-    hasPermission: (perm: Permission) => permissions.has(perm),
+    hasPermission: (perm: Permission) =>
+      user?.permissions.includes(perm) ?? false,
 
     hasRole: (role: Role) =>
       user?.roles.includes(role) ?? false,
