@@ -6,6 +6,7 @@ import { useAuthStore } from "../store/auth.store";
 import { queryClient } from "../queryClient";
 import { authKeys } from "./auth.keys";
 
+import type { User } from "./auth.types";
 
 let refreshPromise: Promise<string | null> | null = null;
 
