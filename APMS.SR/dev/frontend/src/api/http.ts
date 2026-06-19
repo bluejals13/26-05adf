@@ -1,5 +1,5 @@
 import { useAuthStore } from "../store/auth.store";
-import { authService } from "../auth/auth.service";
+import { authService, isLoggingOut } from "../auth/auth.service";
 
 function getToken() {
   return useAuthStore.getState().token ?? undefined;
@@ -28,6 +28,10 @@ export async function request<T>(
     headers: buildHeaders(token, options.headers),
     credentials: "include",
   });
+  
+  if (isLoggingOut) {
+    throw new Error("Logging out");
+  }
 
   if (res.ok) {
     return res.json();
