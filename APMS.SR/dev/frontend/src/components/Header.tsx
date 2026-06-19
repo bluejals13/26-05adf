@@ -3,6 +3,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/hooks/useAuth";
 
+import type { User } from "../auth/auth.types";
+
+type Props = {
+  me?: User;
+};
+
 export default function Header() {
   const navigate = useNavigate();
   const { user, logout, isLoggedIn } = useAuth();
