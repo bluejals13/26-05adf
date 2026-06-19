@@ -83,18 +83,11 @@ public class UserController {
                 return ResponseEntity.status(401).body("NO_REFRESH_TOKEN");
             }
 
-            if (saved == null || !saved.equals(refreshToken)) {
+           try {  return ResponseEntity.ok(authService.refresh(refreshToken));
                 
-                            // 🔥 쿠키 삭제 필수
-                Cookie cookie = new Cookie("refreshToken", null);
-                cookie.setPath("/");
-                cookie.setMaxAge(0);
-                response.addCookie(cookie);
-                
-                return ResponseEntity.status(401).body("NO_REFRESH_TOKEN");
             }
 
-            return ResponseEntity.ok(authService.refresh(refreshToken));
+            
 
         } catch (Exception e) {
             // 🔥 핵심: 쿠키 삭제
