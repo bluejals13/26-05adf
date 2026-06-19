@@ -8,15 +8,11 @@ export function useAuth() {
   const token = useAuthStore((s) => s.token);
   const { data: user, isLoading } = useMe();
 
-  const logout = async () => {
-    await authService.logout();
-  };
-
   return {
     token,
     user,
-    logout,
     isLoading,
     isLoggedIn: !!token && !!user && !isLoading,
+    logout: authService.logout,
   };
 }
