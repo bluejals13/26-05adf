@@ -1,16 +1,14 @@
 // pages/About.tsx		//로그인 계정의 롤 퍼미션 토큰 확인 용 페이지
 
 import { useMe } from "../queries/useMe";
-import { usePermissions } from "../auth/hooks/usePermissions";
+//import { usePermissions } from "../auth/hooks/usePermissions";
 
 import FullPageSpinner from "../components/loading/FullPageSpinner";
-
-import type { User } from "../auth/auth.types";
 
 
 export default function About() {
   const { data: me, isLoading, isError, error } = useMe();
-  const { hasPermission } = usePermissions(me);
+  //const { hasPermission } = usePermissions(me);
 
   //const canDebug = hasPermission("DEBUG_READ");
 
@@ -44,7 +42,7 @@ export default function About() {
 
 
       <h2>🧪 Debug Section</h2>
-      /*{canDebug && <div>DEBUG ENABLED</div>}*/
+      {/* canDebug UI removed */}
     </div>
   );
 }
