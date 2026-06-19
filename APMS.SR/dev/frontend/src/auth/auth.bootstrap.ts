@@ -7,7 +7,7 @@ import { useAuthStore } from "../store/auth.store";
 import { queryClient } from "../queryClient";
 
 let bootstrapPromise: Promise<void> | null = null;
-let bootstrapped = false;
+//let bootstrapped = false;
 let failed = false;
 
 export function bootstrapAuth() {
