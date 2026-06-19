@@ -5,7 +5,9 @@ import FullPageSpinner from "../components/FullPageSpinner";
 import { useMe } from "../queries/useMe";
 import { usePermissions } from "../hooks/usePermissions";
 
-type AdminRouteProps = { permission?: string; // 필요하면 string 기반으로 };
+
+// 필요하면 string 기반으로 
+type AdminRouteProps = { permission?: string; };
 
 export default function AdminRoute({ permission }: AdminRouteProps) {
   const { data: me, isLoading } = useMe();
