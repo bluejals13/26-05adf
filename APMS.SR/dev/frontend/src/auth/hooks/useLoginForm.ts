@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService } from "../auth/auth.service";
-import { loginSchema } from "../auth/auth.schema";
+import { authService } from "../auth.service";
+import { loginSchema } from "../auth.schema";
 
 export function useLoginForm() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export function useLoginForm() {
     });
 
     if (!result.success) {
-      const error = e as { message?: string };
+        const errors = result.error.flatten().fieldErrors;
 
       setErrorMessage(
         errors.username?.[0] ??
@@ -39,6 +39,7 @@ export function useLoginForm() {
 
       navigate("/");
     } catch (e: unknown) {
+      const error = e as { message?: string };
       setErrorMessage(
         e?.message === "INVALID_CREDENTIALS"
           ? "아이디 또는 비밀번호가 틀렸습니다"
