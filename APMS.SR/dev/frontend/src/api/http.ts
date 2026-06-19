@@ -23,37 +23,32 @@ export async function request<T>(
 ): Promise<T> {
   const token = getAccessToken() ?? undefined;
 
-res = await fetch(url, {
-  ...options,
-  headers: buildHeaders(token, options.headers),
-  credentials: "include",
-});
-
+  // 1️⃣ 첫 요청
   let res = await fetch(url, {
     ...options,
     headers: buildHeaders(token, options.headers),
     credentials: "include",
   });
 
-  // ✅ 정상
+  // 2️⃣ 정상 응답
   if (res.ok) {
     return res.json();
   }
 
-  // ❌ 401 아닌 에러
+  // 3️⃣ 401 아닌 에러
   if (res.status !== 401) {
     throw await res.json().catch(() => ({
       message: "Request failed",
     }));
   }
 
-  // ❌ refresh 1회 제한
+  // 4️⃣ refresh 제한
   if (!retry) {
     useAuthStore.getState().logout();
     throw new Error("Unauthorized");
   }
 
-  // 🔥 refresh (단일 요청 보장)
+  // 5️⃣ refresh
   const newToken = await authService.refreshToken();
 
   if (!newToken) {
@@ -63,7 +58,7 @@ res = await fetch(url, {
 
   useAuthStore.getState().setToken(newToken);
 
-  // 🔥 중요: retry 요청은 반드시 새 headers
+  // 6️⃣ retry 요청 (새 header 필수)
   res = await fetch(url, {
     ...options,
     headers: buildHeaders(newToken, options.headers),
