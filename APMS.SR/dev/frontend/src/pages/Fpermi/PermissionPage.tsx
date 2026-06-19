@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { apiFetch } from "../../api";
-import { useAuth } from "../../hooks/useAuth";
-import { usePermissions } from "../../hooks/usePermissions";
+import { apiFetch } from "../../api/api";
+import { useAuth } from "../../auth/hooks/useAuth";
+import { usePermissions } from "../../auth/hooks/usePermissions";
 
 import styles from "./permission.module.css";
 
