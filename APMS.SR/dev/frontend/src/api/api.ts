@@ -1,6 +1,6 @@
 // api.ts HTTP만
 
-import { request } from "./http";
+import { http } from "../api";
 
 export const http = {
   get: <T>(url: string) => request<T>(url),
