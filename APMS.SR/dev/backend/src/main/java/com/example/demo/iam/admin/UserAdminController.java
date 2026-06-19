@@ -6,7 +6,7 @@ import com.example.demo.iam.admin.dto.UserRoleRequest;
 import com.example.demo.iam.admin.dto.UserStatusRequest;
 import com.example.demo.iam.admin.dto.AdminUserResponse;
 
-import com.example.demo.admin.config.SecurityUtil;
+import com.example.demo.config.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
