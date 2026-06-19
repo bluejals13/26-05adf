@@ -3,6 +3,15 @@
 import { authStorage } from "../auth/auth.storage";	// jwt 토큰 키 get, set, clear
 import { http } from "../api/http";
 
+export const http = {
+  get: <T>(url: string) => request<T>(url),
+  post: <T>(url: string, body?: unknown, retry = true) =>
+    request<T>(url, {
+      method: "POST",
+      body: body ? JSON.stringify(body) : undefined,
+    }, retry),
+};
+
 export const fetchMe = () => http.get("/users/me");
 
 export async function apiFetch<T>(
