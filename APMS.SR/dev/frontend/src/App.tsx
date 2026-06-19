@@ -21,6 +21,9 @@ import PermissionPage from "./pages/Fpermi/PermissionPage";
 import UserAdminPage from "./pages/FUsAd/UserAdminPage";
 
 import { bootstrapAuth } from "./auth/auth.bootstrap";
+import { useAuthStore } from "./store/auth.store";
+
+useAuthStore.getState().hydrate();
 
 export default function App() {
   useEffect(() => {
