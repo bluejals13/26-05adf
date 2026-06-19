@@ -113,7 +113,8 @@ services:
 
 volumes:
   mysql_data:
-
+  frontend_dist:
+  
 networks:
   app-net:
     driver: bridge
