@@ -1,6 +1,6 @@
 // auth/auth.service.ts						// 인증[ 로그인 , 로그아웃, api 토큰] 관리
 
-import { fetchMe } from "../api/api";
+// import { fetchMe } from "../api/api";
 import { http } from "../api/http";
 import { useAuthStore } from "../store/auth.store";
 import { queryClient } from "../queryClient";
