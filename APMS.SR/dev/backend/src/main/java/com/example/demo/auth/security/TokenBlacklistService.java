@@ -10,7 +10,7 @@ import com.example.demo.auth.jwt.JwtProvider;
 
 @Service
 @RequiredArgsConstructor
-public class TokenBlacklistService {    // 각 계정의 리프레시 토큰 내부 각 항목, 예) 만료 시간, 토큰 파서 등
+public class TokenBlacklistService {    // 이미 발급된 토큰 차단    “탈취된 토큰 / 로그아웃 이후 요청 차단”
 
     private final RedisTemplate<String, String> redisTemplate;
     private final JwtProvider jwtProvider;
