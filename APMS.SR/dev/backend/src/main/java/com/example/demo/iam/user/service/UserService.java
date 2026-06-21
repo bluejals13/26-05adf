@@ -93,8 +93,8 @@ public class UserService {
     
         redisTemplate.delete( REFRESH_KEY + userId );
         
-        tokenBlacklistService.blacklist(accessToken, 30);    // 블랙리스트 추가 로 리프레시 제한
-        tokenBlacklistService.blacklist(refreshToken, 30);
+        tokenBlacklistService.blacklist(accessToken);    // 블랙리스트 추가 로 리프레시 제한
+        tokenBlacklistService.blacklist(refreshToken);
     }
         
 
