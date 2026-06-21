@@ -1,31 +1,14 @@
 package com.example.demo.iam.user.controller;
 
-import com.example.demo.iam.user.dto.*;
-//--
-import com.example.demo.auth.security.AuthService;
-
-import com.example.demo.iam.user.service.UserService;
-
+import com.example.demo.iam.user.dto.MeResponse;
+import com.example.demo.iam.user.dto.UpdatePasswordRequest;
 import com.example.demo.auth.security.CustomUserPrincipal;
-//--
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.example.demo.iam.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.util.Map;
-
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/users")
