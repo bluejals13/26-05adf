@@ -69,3 +69,26 @@ export async function request<T>(
   const text = await res.text();
   throw new Error(text || "Request failed");
 }
+
+export const http = {
+  get: <T>(url: string) =>
+    request<T>(url, { method: "GET" }),
+
+  post: <T>(url: string, body?: unknown) =>
+    request<T>(url, {
+      method: "POST",
+      body: body ? JSON.stringify(body) : undefined,
+    }),
+
+  put: <T>(url: string, body?: unknown) =>
+    request<T>(url, {
+      method: "PUT",
+      body: body ? JSON.stringify(body) : undefined,
+    }),
+
+  delete: <T>(url: string) =>
+    request<T>(url, { method: "DELETE" }),
+};
+
+export { refreshToken };
+
