@@ -16,7 +16,7 @@ public class TokenBlacklistService {    // 이미 발급된 토큰 차단    “
     private final JwtProvider jwtProvider;
 
     // blacklist 등록
-    public void blacklist(String token, long ttl) {
+    public void blacklist(String token) {
         
         long remain =
         jwtProvider.parseClaims(token)
