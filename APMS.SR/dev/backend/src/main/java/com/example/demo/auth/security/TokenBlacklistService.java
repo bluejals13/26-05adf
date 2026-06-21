@@ -25,7 +25,7 @@ public class TokenBlacklistService {    // 이미 발급된 토큰 차단    “
         - System.currentTimeMillis();
 
         
-        String jti = jwtProvider.getJti(ttl);
+        String jti = jwtProvider.getJti(token);
         redisTemplate.opsForValue().set(
                 "blacklist:" + jti,
                 "true",
