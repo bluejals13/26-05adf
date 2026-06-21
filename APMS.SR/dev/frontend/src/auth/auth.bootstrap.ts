@@ -3,15 +3,18 @@
 import { authService } from "../auth/auth.service";
 import { useAuthStore } from "../store/auth.store";
 import { queryClient } from "../queryClient";
+import { refreshToken } from "../api/http";
+
+
 
 let bootstrapPromise: Promise<void> | null = null;
 
-export function bootstrapAuth() {
+export function bootstrapAuth(): Promise<void> {
   if (bootstrapPromise) return bootstrapPromise;
 
   bootstrapPromise = (async () => {
     try {
-      const token = await authService.refreshToken();
+      const token = await refreshToken();
 
       if (!token) {
         useAuthStore.getState().setToken(null);
