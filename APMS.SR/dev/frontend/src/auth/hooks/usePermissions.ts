@@ -2,13 +2,14 @@
 
 //import { useAuthStore } from "../../store/auth.store";
 //import { authService } from "../auth.service";
+import type { User } from "../auth.types";
 
-export function usePermissions(user: any) {
+export function usePermissions(user?: User | null) {
   const hasPermission = (perm: string) =>
-    user?.permissions?.includes(perm);
+    user?.permissions?.includes(perm) ?? false;
 
   const isAdmin = () =>
-    user?.permissions?.includes("ADMIN");
+    user?.permissions?.includes("ADMIN") ?? false;
 
   const refresh = async () => {
     // 기존 유지
