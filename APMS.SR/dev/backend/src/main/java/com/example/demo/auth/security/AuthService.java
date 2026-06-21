@@ -1,20 +1,25 @@
 package com.example.demo.auth.security;
 
 import com.example.demo.auth.jwt.JwtProvider;
+import com.example.demo.auth.security.TokenBlacklistService;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.stereotype.Service;
-
-import com.example.demo.iam.user.dto.TokenResponse;
 import com.example.demo.iam.user.domain.User;
+import com.example.demo.iam.user.dto.LoginRequest;
+import com.example.demo.iam.user.dto.LoginResult;
+import com.example.demo.iam.user.dto.TokenResponse;
+
 import com.example.demo.iam.user.repository.UserRepository;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import io.jsonwebtoken.Claims;
-import java.time.Duration; // 시간
+
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.time.Duration;
 
 
 
@@ -28,6 +33,8 @@ public class AuthService {    //    jti 접근 토큰 로직 관리 파일
     
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;    // 로그인 시 비번 검증 부분
+    
+    private final TokenBlacklistService blacklistService;    
     
     private static final String ACCESS_KEY = "auth:access:";
     private static final String REFRESH_KEY = "auth:refresh:";
@@ -48,16 +55,14 @@ public class AuthService {    //    jti 접근 토큰 로직 관리 파일
         }
 
         String accessToken = jwtProvider.createAccessToken(user.getId(), user.getUsername());
-        String jti = jwtProvider.getJti(accessToken);
+        String refreshToken = jwtProvider.createRefreshToken(user.getId());
 
         redisTemplate.opsForValue().set(
                 ACCESS_KEY + user.getId(),
                 jti,
                 Duration.ofMinutes(30)
         );
-
-        String refreshToken = jwtProvider.createRefreshToken(user.getId());
-
+        
         redisTemplate.opsForValue().set(
                 REFRESH_KEY + user.getId(),
                 refreshToken,
@@ -91,7 +96,7 @@ public class AuthService {    //    jti 접근 토큰 로직 관리 파일
         
         String saved = redisTemplate.opsForValue().get(REFRESH_KEY + userId);
         
-        if (!saved.equals(refreshToken)) {                // 없으면 or 리프레시와 다르면
+        if (saved == null || !saved.equals(refreshToken)) {                // 없으면 or 리프레시와 다르면
             throw new BadCredentialsException("INVALID_REFRESH_TOKEN");
         }
         
@@ -101,8 +106,6 @@ public class AuthService {    //    jti 접근 토큰 로직 관리 파일
         String newAccess = jwtProvider.createAccessToken(userId, user.getUsername());
         String newRefresh = jwtProvider.createRefreshToken(userId);
         
-        // 접근 활성jti 설정
-        String newJti = jwtProvider.getJti(newAccessToken);
         
         redisTemplate.opsForValue().set(
                 ACCESS_KEY + userId,
