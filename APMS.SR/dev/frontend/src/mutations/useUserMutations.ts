@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { userApi } from "../api/user.api";
-import type { User, UserStatus } from "../auth/auth.types";// ✅ 추가
+import type { UserStatus } from "../auth/auth.types";
 
 export const userKeys = {
   all: ["users"] as const,
