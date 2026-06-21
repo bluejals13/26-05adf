@@ -3,18 +3,17 @@ package com.example.demo.iam.user.service;
 import com.example.demo.iam.user.domain.User;
 import com.example.demo.iam.user.dto.*;
 import com.example.demo.auth.security.*;
-//--
+
 import com.example.demo.common.exception.DuplicateUserException;
 import com.example.demo.common.exception.UserNotFoundException;
-//--
-//--
+
 import com.example.demo.auth.jwt.JwtProvider;
-//--
+
 import com.example.demo.iam.user.repository.UserRepository;
-//--
+
 import com.example.demo.iam.role.domain.Role;
 import com.example.demo.iam.permission.domain.Permission;
-//--
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,15 +28,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final RedisTemplate<String, String> redisTemplate;
+    // private final RedisTemplate<String, String> redisTemplate;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtProvider jwtProvider;
+    // private final JwtProvider jwtProvider;
     
-    private static final String ACCESS_KEY = "auth:access:";
-    private static final String REFRESH_KEY = "auth:refresh:";
+    // private static final String ACCESS_KEY = "auth:access:";
+    // private static final String REFRESH_KEY = "auth:refresh:";
     
-    private final TokenBlacklistService tokenBlacklistService;
+    // private final TokenBlacklistService tokenBlacklistService;
     
     // 회원가입
     @Transactional
