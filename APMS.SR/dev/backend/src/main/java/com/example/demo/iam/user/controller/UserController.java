@@ -32,6 +32,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class UserController {
 
+    private final CookieUtils cookieUtils;    // 유저 컨트롤러 쿠키유틸
     private final UserService userService;
     private final AuthService authService;
 
@@ -43,9 +44,9 @@ public class UserController {
 
     // 로그인
     @PostMapping("/auth/login")
-    public ResponseEntity<?> refresh(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<?> refresh(@RequestBody LoginRequest req,, HttpServletResponse response) {
 
-        LoginResult result = userService.login(req);
+        LoginResult result = authService.login(req);
     
         Cookie cookie = new Cookie(
                 "refreshToken",
@@ -60,11 +61,10 @@ public class UserController {
         response.addCookie(cookie);
     
         return ResponseEntity.ok(
-                new LoginResult(
-                        result.accessToken(),
-                        result.tokenType(),
-                        null
-                )
+                Map.of(
+                "accessToken", result.accessToken(),
+                "tokenType", result.tokenType()
+            )
         );
     }
 
@@ -105,10 +105,11 @@ public class UserController {
 
         } catch (Exception e) {
 
-            Cookie cookie = new Cookie("refreshToken", null);
+            Cookie cookie = new Cookie("refreshToken", "");
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true);
             cookie.setPath("/");
             cookie.setMaxAge(0);
-            cookie.setHttpOnly(true);
 
             response.addCookie(cookie);
 
