@@ -133,6 +133,15 @@ public class UserService {
                 permissions
         );
     }
+    
+    // 로그아웃 redis 초기화
+    public void logout(Long userId) {
+    
+        redisTemplate.delete( "auth:access:" + userId );
+    
+        redisTemplate.delete( "auth:refresh:" + userId );
+    }
+        
 
     // 비밀번호 변경
     @Transactional
