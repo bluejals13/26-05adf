@@ -16,80 +16,27 @@ import org.springframework.transaction.annotation.Transactional;
 import io.jsonwebtoken.Claims;
 import java.time.Duration; // 시간
 
+
+
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {    //    jti 접근 토큰 로직 관리 파일
 
     private final JwtProvider jwtProvider;
     private final RedisTemplate<String, String> redisTemplate;
+    
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;    // 로그인 시 비번 검증 부분
     
     private static final String ACCESS_KEY = "auth:access:";
     private static final String REFRESH_KEY = "auth:refresh:";
     
-    private final PasswordEncoder passwordEncoder;    // 로그인 시 비번 검증 부분
     
     
-    public TokenResponse refresh(String refreshToken) {
-
-        if (!jwtProvider.validateToken(refreshToken)) {        //    jwt 리프레시 토큰 없으면 버림
-            throw new BadCredentialsException("INVALID_REFRESH_TOKEN");
-            }
-
-        // 0. parse once
-        Claims claims = jwtProvider.parseClaims(refreshToken);
-
-        // String type = claims.get("type", String.class);
-
-        if (!"refresh".equals(claims.get("type"))) {                        //    리프레시 타입과 다르면 버림
-            throw new BadCredentialsException("INVALID_REFRESH_TOKEN");
-            }
-
-        // 1. 토큰에서 userId 추출
-        Long userId = Long.parseLong(claims.getSubject());
-        
-        String saved = redisTemplate.opsForValue()
-                .get(REFRESH_KEY + userId);
-        
-        if (saved == null || !saved.equals(refreshToken)) {                // 없으면 or 리프레시와 다르면
-            throw new BadCredentialsException("INVALID_REFRESH_TOKEN");
-        }
-        
-        // 유저레포 에서 id 확인
-        User user = userRepository.findById(userId)
-                .orElseThrow();
-        
-        String newAccessToken =
-                jwtProvider.createAccessToken(
-                        user.getId(),
-                        user.getUsername()
-                );
-        
-        String newRefreshToken =
-                jwtProvider.createRefreshToken(
-                        user.getId()
-                );
-        
-        // 접근 활성jti 설정
-        String newJti = jwtProvider.getJti(newAccessToken);
-        
-        redisTemplate.opsForValue().set(
-                ACCESS_KEY + userId,
-                newJti,
-                Duration.ofMinutes(30)
-        );
-        
-        redisTemplate.opsForValue().set(
-                REFRESH_KEY + userId,
-                newRefreshToken,
-                Duration.ofDays(7)
-        );
-        
-        return new TokenResponse( newAccessToken, newRefreshToken );
-    }
     
     
-        // 로그인
+    // 로그인
     @Transactional
     public LoginResult login(LoginRequest req) {
 
@@ -119,5 +66,72 @@ public class AuthService {    //    jti 접근 토큰 로직 관리 파일
 
         return new LoginResult(accessToken, "Bearer", refreshToken);
     }
+    
+    
+    
+    
+    // 리프레시
+    public TokenResponse refresh(String refreshToken) {
+
+        if (!jwtProvider.validateToken(refreshToken)) {                // jwt 리프레시 토큰 없으면 버림
+            throw new BadCredentialsException("INVALID_REFRESH_TOKEN");
+            }
+
+        // 0. parse once
+        Claims claims = jwtProvider.parseClaims(refreshToken);
+
+        // String type = claims.get("type", String.class);
+
+        if (!"refresh".equals(claims.get("type"))) {                    // 리프레시 타입과 다르면 버림
+            throw new BadCredentialsException("INVALID_REFRESH_TOKEN");
+            }
+
+        // 1. 토큰에서 userId 추출
+        Long userId = Long.parseLong(claims.getSubject());
+        
+        String saved = redisTemplate.opsForValue().get(REFRESH_KEY + userId);
+        
+        if (!saved.equals(refreshToken)) {                // 없으면 or 리프레시와 다르면
+            throw new BadCredentialsException("INVALID_REFRESH_TOKEN");
+        }
+        
+        // 유저레포 에서 id 확인
+        User user = userRepository.findById(userId).orElseThrow();
+        
+        String newAccess = jwtProvider.createAccessToken(userId, user.getUsername());
+        String newRefresh = jwtProvider.createRefreshToken(userId);
+        
+        // 접근 활성jti 설정
+        String newJti = jwtProvider.getJti(newAccessToken);
+        
+        redisTemplate.opsForValue().set(
+                ACCESS_KEY + userId,
+                newJti,
+                Duration.ofMinutes(30)
+        );
+        
+        redisTemplate.opsForValue().set(
+                REFRESH_KEY + userId,
+                newRefreshToken,
+                Duration.ofDays(7)
+        );
+        
+        return new TokenResponse( newAccessToken, newRefreshToken );
+    }
+    
+    
+    
+    
+    // 로그아웃 redis 초기화
+    public void logout(Long userId, String accessToken, String refreshToken) {
+    
+        redisTemplate.delete( ACCESS_KEY + userId );
+    
+        redisTemplate.delete( REFRESH_KEY + userId );
+        
+        if (accessToken != null) { tokenBlacklistService.blacklist(accessToken); }   // 블랙리스트 추가 로 리프레시 제한
+        if (refreshToken != null) { tokenBlacklistService.blacklist(refreshToken); }
+    }
+
     
 }
