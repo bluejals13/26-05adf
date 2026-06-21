@@ -75,9 +75,7 @@ public ResponseEntity<Void> logout(
 ) {
 
     String accessToken = extractAccessToken(request);
-    String refreshToken = extractRefreshToken(request);
-
-    deleteRefreshCookie(response);
+    String refreshToken = extractRefreshToken(request);  
     
     
     authService.logout(
