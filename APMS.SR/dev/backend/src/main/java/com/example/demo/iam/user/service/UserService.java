@@ -9,7 +9,7 @@ import com.example.demo.iam.user.repository.UserRepository;
 import com.example.demo.iam.role.domain.Role;
 import com.example.demo.iam.permission.domain.Permission;
 
-import com.example.demo.common.exception.UserNotFoundException;
+import com.example.demo.common.exception.DuplicateUserException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,13 +20,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.iam.user.dto.SignupRequest;
 import com.example.demo.iam.user.dto.UserResponse;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
     
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
+    
+    private static final String ACCESS_KEY = "auth:access:";
+    private static final String REFRESH_KEY = "auth:refresh:";
     
     // 회원가입
     @Transactional
