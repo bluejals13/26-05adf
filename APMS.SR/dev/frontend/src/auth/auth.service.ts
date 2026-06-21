@@ -38,11 +38,14 @@ export const authService = {
         method: "POST",
         credentials: "include",
       });
-    } catch {}
+    } finally {
+      useAuthStore.getState().logout();
 
-    useAuthStore.getState().logout();
-    queryClient.clear();
+      queryClient.clear();
 
-    window.dispatchEvent(new Event("auth:logout"));
+      window.dispatchEvent(
+        new Event("auth:logout")
+      );
+    }
   },
 };
