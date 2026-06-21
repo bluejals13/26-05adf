@@ -45,27 +45,27 @@ public class UserController {
     @PostMapping("/auth/login")
     public ResponseEntity<?> refresh(HttpServletRequest request, HttpServletResponse response) {
 
-        Cookie[] cookies = request.getCookies();
-        if (cookies == null) return ResponseEntity.status(401).body("NO_COOKIE");
-
-        String refreshToken = Arrays.stream(cookies)
-            .filter(c -> "refreshToken".equals(c.getName()))
-            .map(Cookie::getValue)
-            .findFirst()
-            .orElse(null);
-
-        if (refreshToken == null) { return ResponseEntity.status(401).body("NO_REFRESH_TOKEN"); }
-
-        try { return ResponseEntity.ok(authService.refresh(refreshToken));
-        } catch (Exception e) {
-
-            Cookie cookie = new Cookie("refreshToken", null);
-            cookie.setPath("/");
-            cookie.setMaxAge(0);
-            response.addCookie(cookie);
+        LoginResult result = userService.login(req);
     
-            return ResponseEntity.status(401).body("INVALID_REFRESH");
-        }
+        Cookie cookie = new Cookie(
+                "refreshToken",
+                result.refreshToken()
+        );
+    
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(60 * 60 * 24 * 7);
+    
+        response.addCookie(cookie);
+    
+        return ResponseEntity.ok(
+                new LoginResult(
+                        result.accessToken(),
+                        result.tokenType(),
+                        null
+                )
+        );
     }
 
     // refresh
@@ -90,7 +90,18 @@ public class UserController {
         }
 
         try {
-            return ResponseEntity.ok(authService.refresh(refreshToken));
+            TokenResponse token = authService.refresh(refreshToken);
+            
+            Cookie cookie = new Cookie( "refreshToken", token.refreshToken() );
+            
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true);
+            cookie.setPath("/");
+            cookie.setMaxAge(60 * 60 * 24 * 7);
+            
+            response.addCookie(cookie);
+            
+            return ResponseEntity.ok( Map.of( "accessToken", token.accessToken() ));
 
         } catch (Exception e) {
 
@@ -104,6 +115,24 @@ public class UserController {
             return ResponseEntity.status(401).body("INVALID_REFRESH_TOKEN");
         }
     }
+    
+    
+    @PostMapping("/auth/logout")
+    public ResponseEntity<Void> logout(
+            @AuthenticationPrincipal
+            CustomUserPrincipal principal,
+            HttpServletResponse response
+    ) {
+    
+        authService.logout(principal.getUserId());            // 로그인기능 내부 계정에서 로그아웃
+    
+        response.addCookie( cookieUtils.deleteRefreshCookie() );    //쿠키 삭제
+    
+        return ResponseEntity.noContent().build();
+    }
+    
+    
+    
 
     // ✅ 여기부터 다시 클래스 내부
 
