@@ -87,13 +87,14 @@ public class UserService {
     }
     
     // 로그아웃 redis 초기화
-    public void logout(Long userId, String accessToken) {
+    public void logout(Long userId, String accessToken, String refreshToken) {
     
         redisTemplate.delete( ACCESS_KEY + userId );
     
         redisTemplate.delete( REFRESH_KEY + userId );
         
         tokenBlacklistService.blacklist(accessToken);    // 블랙리스트 추가 로 리프레시 제한
+        tokenBlacklistService.blacklist(refreshToken);
     }
         
 
