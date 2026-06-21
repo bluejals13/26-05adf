@@ -54,7 +54,8 @@ public class AuthService {    //    jti 접근 토큰 로직 관리 파일
         if (!passwordEncoder.matches(req.password(), user.getPassword())) {
             throw new BadCredentialsException("INVALID_CREDENTIALS");
         }
-
+        String jti = UUID.randomUUID().toString();
+        
         String accessToken = jwtProvider.createAccessToken(user.getId(), user.getUsername());
         String refreshToken = jwtProvider.createRefreshToken(user.getId());
 
@@ -120,7 +121,7 @@ public class AuthService {    //    jti 접근 토큰 로직 관리 파일
                 Duration.ofDays(7)
         );
         
-        return new TokenResponse( newAccessToken, newRefreshToken );
+        return new TokenResponse( newAccess, newRefresh );
     }
     
     
