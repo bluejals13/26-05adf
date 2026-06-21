@@ -68,30 +68,36 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(
-            @AuthenticationPrincipal CustomUserPrincipal principal,
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) {
+public ResponseEntity<Void> logout(
+        @AuthenticationPrincipal CustomUserPrincipal principal,
+        HttpServletRequest request,
+        HttpServletResponse response
+) {
 
-        authService.logout(
-                principal.getUserId(),
-                extractAccessToken(request),
-                extractRefreshToken(request)
-        );
+    String accessToken = extractAccessToken(request);
+    String refreshToken = extractRefreshToken(request);
+    
+    authService.logout(principal.getUserId(), accessToken);
 
-        authService.logout(principal.getUserId(), accessToken, refreshToken);
+    deleteRefreshCookie(response);
+    
+    
+    authService.logout(
+            principal.getUserId(),
+            accessToken,
+            refreshToken
+    );
 
-        Cookie cookie = new Cookie("refreshToken", null);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
+    // refresh token cookie 삭제
+    Cookie cookie = new Cookie("refreshToken", null);
+    cookie.setHttpOnly(true);
+    cookie.setSecure(true);
+    cookie.setPath("/");
+    cookie.setMaxAge(0);
+    response.addCookie(cookie);
 
-        response.addCookie(cookie);
-
-        return ResponseEntity.noContent().build();
-    }
+    return ResponseEntity.noContent().build();
+}
 
     private String extractRefreshToken(HttpServletRequest request) {
         if (request.getCookies() == null) return null;
