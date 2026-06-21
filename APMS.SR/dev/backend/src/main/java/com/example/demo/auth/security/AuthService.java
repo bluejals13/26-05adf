@@ -39,31 +39,44 @@ public class AuthService {    //    jti 접근 토큰 로직 관리 파일
 
         // 1. 토큰에서 userId 추출
         Long userId = Long.parseLong(claims.getSubject());
-
-        // 2. Redis에서 저장된 refreshToken 조회
+        
         String saved = redisTemplate.opsForValue()
-                .get("refresh:" + userId);
-
-        // 3. 검증 null 값 이나 혹은 없는 경우(로그아웃, 재로그인) refreshToken 과 비교 후 기존 토큰 차단
-        if (saved == null || !saved.equals(refreshToken)) {
+                .get("auth:refresh:" + userId);
+        
+        if (saved == null || !saved.equals(refreshToken)) {                // 없으면 or 리프레시와 다르면
             throw new BadCredentialsException("INVALID_REFRESH_TOKEN");
         }
-
-        // 4. 유저 조회
+        
+        // 유저레포 에서 id 확인
         User user = userRepository.findById(userId)
-                .orElseThrow();    //    (() ->    new BadCredentialsException("USER_NOT_FOUND") );
-
-        // 5. 새로운 접근 토큰 발급 username -> role 변경 예정 * 리프레시 토큰은 무관함
+                .orElseThrow();
+        
         String newAccessToken =
-            jwtProvider.createAccessToken(user.getId(), user.getUsername());
-
+                jwtProvider.createAccessToken(
+                        user.getId(),
+                        user.getUsername()
+                );
+        
+        String newRefreshToken =
+                jwtProvider.createRefreshToken(
+                        user.getId()
+                );
+        
+        // 접근 활성jti 설정
         String newJti = jwtProvider.getJti(newAccessToken);
+        
         redisTemplate.opsForValue().set(
-            "active-jti:" + userId,
-            newJti,
-            Duration.ofMinutes(30)
-            );
-
-        return new TokenResponse(newAccessToken);
+                "auth:access:" + userId,
+                newJti,
+                Duration.ofMinutes(30)
+        );
+        
+        redisTemplate.opsForValue().set(
+                "auth:refresh:" + userId,
+                newRefreshToken,
+                Duration.ofDays(7)
+        );
+        
+        return new TokenResponse( newAccessToken, newRefreshToken );
     }
 }
