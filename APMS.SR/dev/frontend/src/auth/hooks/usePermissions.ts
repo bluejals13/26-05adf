@@ -4,20 +4,19 @@
 //import { authService } from "../auth.service";
 import type { User } from "../auth.types";
 
-export function usePermissions(user?: User | null) {
-  const hasPermission = (perm: string) =>
-    user?.permissions?.includes(perm) ?? false;
+export function usePermissions( user?: User | null ) {
+  const hasPermission = ( permission: string ) => user?.permissions.includes(permission) ?? false;
+
+  const hasRole = (role: string) =>
+    user?.roles.includes(role) ?? false;
 
   const isAdmin = () =>
-    user?.permissions?.includes("ADMIN") ?? false;
-
-  const refresh = async () => {
-    // 기존 유지
-  };
+    hasRole("ADMIN") ||
+    hasPermission("ADMIN");
 
   return {
     hasPermission,
-    isAdmin, // 🔥 이거 추가
-    refresh,
+    hasRole,
+    isAdmin,
   };
 }
