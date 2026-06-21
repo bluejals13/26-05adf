@@ -2,19 +2,6 @@
 
 import { http } from "../api/http";
 
-export type UserStatus =
-  | "ACTIVE"
-  | "SUSPENDED"
-  | "DELETE_PENDING"
-  | "DELETED";
-
-export type User = {
-  id: number;
-  username: string;
-  permissions: string[];
-  status: UserStatus;
-};
-
 export const userApi = {
   getUsers: () => http.get<User[]>("/api/admin/users"),
 
