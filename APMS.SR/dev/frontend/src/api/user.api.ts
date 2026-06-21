@@ -1,6 +1,7 @@
 // api/user.api.ts			//관리자 페이지 용 api
 
 import { http } from "../api/http";
+import type { User } from "./auth.types";
 
 export const userApi = {
   getUsers: () => http.get<User[]>("/api/admin/users"),
