@@ -23,9 +23,6 @@ export default function UserAdminPage() {
   const { data: users = [], isLoading, error } = useUsers();
   const { changeStatus, deleteUser } = useUserMutations();
 
-  const { changeStatus, deleteUser } =
-    useUserMutations();
-
   const activeUsers = useMemo(
     () =>
       users.filter(
