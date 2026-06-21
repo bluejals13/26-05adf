@@ -83,6 +83,31 @@ public class UserService {
         return new LoginResult(accessToken, "Bearer", refreshToken);
     }
 
+    // 로그인 결과 리프레시 관련 로직
+    public LoginResult refresh(String refreshToken) {
+
+        validate(refreshToken);
+    
+        Long userId = jwtProvider.getUserId(refreshToken);
+    
+        String newAccess = jwtProvider.createAccessToken(userId);
+    
+        String newRefresh = jwtProvider.createRefreshToken(userId);
+    
+        redisTemplate.opsForValue().set(
+                "auth:refresh:" + userId,
+                newRefresh,
+                Duration.ofDays(7)
+        );
+    
+        return new LoginResult(
+                newAccess,
+                "Bearer",
+                newRefresh
+        );
+    }
+    
+
     // 내 정보 조회
     public MeResponse getMe(Long userId) {
 
