@@ -33,7 +33,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
-
+    
+    private static final String ACCESS_KEY = "auth:access:";
+    private static final String REFRESH_KEY = "auth:refresh:";
+    
+    
     // 회원가입
     @Transactional
     public UserResponse signup(SignupRequest req) {
@@ -52,60 +56,7 @@ public class UserService {
         return new UserResponse(saved.getId(), saved.getUsername());
     }
 
-    // 로그인
-    @Transactional
-    public LoginResult login(LoginRequest req) {
 
-        User user = userRepository.findByUsername(req.username())
-                .orElseThrow(() -> new BadCredentialsException("INVALID_CREDENTIALS"));
-
-        if (!passwordEncoder.matches(req.password(), user.getPassword())) {
-            throw new BadCredentialsException("INVALID_CREDENTIALS");
-        }
-
-        String accessToken = jwtProvider.createAccessToken(user.getId(), user.getUsername());
-        String jti = jwtProvider.getJti(accessToken);
-
-        redisTemplate.opsForValue().set(
-                "auth:access:" + user.getId(),
-                jti,
-                Duration.ofMinutes(30)
-        );
-
-        String refreshToken = jwtProvider.createRefreshToken(user.getId());
-
-        redisTemplate.opsForValue().set(
-                "auth:refresh:" + user.getId(),
-                refreshToken,
-                Duration.ofDays(7)
-        );
-
-        return new LoginResult(accessToken, "Bearer", refreshToken);
-    }
-
-    // 로그인 결과 리프레시 관련 로직
-    public LoginResult refresh(String refreshToken) {
-
-        validate(refreshToken);
-    
-        Long userId = jwtProvider.getUserId(refreshToken);
-    
-        String newAccess = jwtProvider.createAccessToken(userId);
-    
-        String newRefresh = jwtProvider.createRefreshToken(userId);
-    
-        redisTemplate.opsForValue().set(
-                "auth:refresh:" + userId,
-                newRefresh,
-                Duration.ofDays(7)
-        );
-    
-        return new LoginResult(
-                newAccess,
-                "Bearer",
-                newRefresh
-        );
-    }
     
 
     // 내 정보 조회
@@ -137,9 +88,9 @@ public class UserService {
     // 로그아웃 redis 초기화
     public void logout(Long userId) {
     
-        redisTemplate.delete( "auth:access:" + userId );
+        redisTemplate.delete( ACCESS_KEY + userId );
     
-        redisTemplate.delete( "auth:refresh:" + userId );
+        redisTemplate.delete( REFRESH_KEY + userId );
     }
         
 
@@ -155,8 +106,8 @@ public class UserService {
 
         user.updatePassword(passwordEncoder.encode(req.password()));
 
-        redisTemplate.delete("auth:access:" + userId);
-        redisTemplate.delete("auth:refresh:" + userId);
+        redisTemplate.delete(ACCESS_KEY + userId);
+        redisTemplate.delete(REFRESH_KEY + userId);
     }
 
     private User getUser(Long userId) {
