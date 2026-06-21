@@ -8,8 +8,7 @@ import { usePermissions } from "../../auth/hooks/usePermissions";
 import { useAuth } from "../../auth/hooks/useAuth";
 import FullPageSpinner from "../../components/loading/FullPageSpinner";
 
-import type { UserStatus } from "../../auth/auth.types";
-import { User } from "../../auth/auth.types";
+import type { User, UserStatus } from "../../auth/auth.types";
 
 
 export default function UserAdminPage() {
@@ -26,7 +25,7 @@ export default function UserAdminPage() {
   const activeUsers = useMemo(
     () =>
       users.filter(
-        (u: AdminUser) =>
+        (u: User) =>
           u.status !== "DELETED" &&
           u.status !== "DELETE_PENDING"
       ),
@@ -36,7 +35,7 @@ export default function UserAdminPage() {
   const pendingUsers = useMemo(
     () =>
       users.filter(
-        (u: AdminUser) =>
+        (u: User) =>
           u.status === "DELETE_PENDING"
       ),
     [users]
