@@ -5,7 +5,7 @@ import com.example.demo.auth.jwt.JwtProvider;
 import com.example.demo.iam.user.repository.UserRepository;
 import com.example.demo.iam.user.domain.User;
 import com.example.demo.iam.user.domain.UserStatus;
-package com.example.demo.auth.security.TokenBlacklistService;
+import com.example.demo.auth.security.TokenBlacklistService;
 
 import jakarta.servlet.FilterChain;                // 서브렛 http 요청 가로체기 및 jwt 검사
 import jakarta.servlet.ServletException;
