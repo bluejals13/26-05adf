@@ -3,9 +3,19 @@
 export type Role = string;
 export type Permission = string;
 
-export type User = {
+export type UserStatus =
+  | "ACTIVE"
+  | "SUSPENDED"
+  | "DELETE_PENDING"
+  | "DELETED";
+
+export interface User {
   id: number;
   username: string;
+
+  status: UserStatus;
+
   roles: Role[];
   permissions: Permission[];
-};
+}
+
