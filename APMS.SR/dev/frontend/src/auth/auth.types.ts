@@ -9,6 +9,14 @@ export type UserStatus =
   | "DELETE_PENDING"
   | "DELETED";
 
+export interface AdminUser {
+  id: number;
+  username: string;
+  status: UserStatus;
+  roles: string[];
+  permissions: string[];
+}
+
 export interface User {
   id: number;
   username: string;
