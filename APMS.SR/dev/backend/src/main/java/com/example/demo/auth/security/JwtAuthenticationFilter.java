@@ -61,8 +61,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = header.substring(7);
 
-        // 1. JWT 검증
+        // 0. JWT 검증
         if (!jwtProvider.validateToken(token)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+                
+        // 1. 블랙리스트 체크 (최우선)
+        if (tokenBlacklistService.isBlacklisted(token)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -73,13 +79,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         System.out.println("userId=" + userId);
         System.out.println("jti=" + jti);
-        
-        // 1. 블랙리스트 체크 (최우선)
-        if (tokenBlacklistService.isBlacklisted(token)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-        
+
         
         // 2. Redis session check (SAFE MODE)
         String activeJti = redisTemplate.opsForValue()
