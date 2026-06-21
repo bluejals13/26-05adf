@@ -3,36 +3,34 @@ package com.example.demo.iam.user.service;
 import com.example.demo.iam.user.domain.User;
 import com.example.demo.iam.user.dto.MeResponse;
 import com.example.demo.iam.user.dto.UpdatePasswordRequest;
-
+import com.example.demo.iam.user.dto.SignupRequest;
+import com.example.demo.iam.user.dto.UserResponse;
 import com.example.demo.iam.user.repository.UserRepository;
-
 import com.example.demo.iam.role.domain.Role;
 import com.example.demo.iam.permission.domain.Permission;
-
 import com.example.demo.common.exception.DuplicateUserException;
+import com.example.demo.common.exception.UserNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.example.demo.iam.user.dto.SignupRequest;
-import com.example.demo.iam.user.dto.UserResponse;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    
+    private final RedisTemplate<String, String> redisTemplate;
+
     private static final String ACCESS_KEY = "auth:access:";
     private static final String REFRESH_KEY = "auth:refresh:";
-    
-    // 회원가입
+
     @Transactional
     public UserResponse signup(SignupRequest req) {
 
@@ -50,10 +48,6 @@ public class UserService {
         return new UserResponse(saved.getId(), saved.getUsername());
     }
 
-
-    
-
-    // 내 정보 조회
     public MeResponse getMe(Long userId) {
 
         User user = userRepository.findWithRolesById(userId)
@@ -78,14 +72,12 @@ public class UserService {
                 permissions
         );
     }
-    
-        
 
-    // 비밀번호 변경
     @Transactional
     public void updatePassword(Long userId, UpdatePasswordRequest req) {
 
-        User user = getUser(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("유저 없음"));
 
         if (req.password().length() < 8) {
             throw new IllegalArgumentException("PASSWORD_TOO_SHORT");
@@ -95,10 +87,5 @@ public class UserService {
 
         redisTemplate.delete(ACCESS_KEY + userId);
         redisTemplate.delete(REFRESH_KEY + userId);
-    }
-
-    private User getUser(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("유저 없음"));
     }
 }
