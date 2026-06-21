@@ -1,6 +1,6 @@
 // bootstrap/bootstrapAuth.tsx				// 리프레시 관리
 
-import { authService } from "../auth/auth.service";
+// import { authService } from "../auth/auth.service";
 import { useAuthStore } from "../store/auth.store";
 import { queryClient } from "../queryClient";
 import { refreshToken } from "../api/http";
