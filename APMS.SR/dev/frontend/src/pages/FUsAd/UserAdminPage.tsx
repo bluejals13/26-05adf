@@ -8,7 +8,7 @@ import { usePermissions } from "../../auth/hooks/usePermissions";
 import { useAuth } from "../../auth/hooks/useAuth";
 import FullPageSpinner from "../../components/loading/FullPageSpinner";
 
-import type { AdminUser, UserStatus } from "../../auth/auth.types";
+import type { User, UserStatus } from "../../auth/auth.types";
 
 
 
