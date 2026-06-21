@@ -5,7 +5,9 @@ import { authStorage } from "../auth/auth.storage";
 
 type AuthState = {
   token: string | null;
+
   setToken: (token: string | null) => void;
+
   logout: () => void;
   hydrate: () => void;
 };
@@ -20,13 +22,14 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ token });
   },
 
-    logout: () => {
-      authStorage.clear();
-      set({ token: null });
-    },
+  logout: () => {
+    authStorage.clear();
+    set({ token: null });
+  },
 
   hydrate: () => {
-    const token = authStorage.get();
-    set({ token });
+    set({
+      token: authStorage.get(),
+    });
   },
 }));
