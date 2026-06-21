@@ -8,15 +8,12 @@ import { usePermissions } from "../../auth/hooks/usePermissions";
 import { useAuth } from "../../auth/hooks/useAuth";
 import FullPageSpinner from "../../components/loading/FullPageSpinner";
 
-type UserStatus =
-  | "ACTIVE"
-  | "SUSPENDED"
-  | "DELETE_PENDING"
-  | "DELETED";
+import type { AdminUser, UserStatus } from "../../auth/auth.types";
+
+
 
 export default function UserAdminPage() {
   const { user } = useAuth();
-  //const token = useAuthStore((s) => s.token);
   const { hasPermission } = usePermissions(user);
 
   const canRead = hasPermission("USER_READ");
@@ -26,10 +23,13 @@ export default function UserAdminPage() {
   const { data: users = [], isLoading, error } = useUsers();
   const { changeStatus, deleteUser } = useUserMutations();
 
+  const { changeStatus, deleteUser } =
+    useUserMutations();
+
   const activeUsers = useMemo(
     () =>
       users.filter(
-        (u) =>
+        (u: AdminUser) =>
           u.status !== "DELETED" &&
           u.status !== "DELETE_PENDING"
       ),
@@ -38,12 +38,19 @@ export default function UserAdminPage() {
 
   const pendingUsers = useMemo(
     () =>
-      users.filter((u) => u.status === "DELETE_PENDING"),
+      users.filter(
+        (u: AdminUser) =>
+          u.status === "DELETE_PENDING"
+      ),
     [users]
   );
 
   if (!canRead) {
-    return <div className={styles.denied}>USER_READ 권한 없음</div>;
+    return (
+      <div className={styles.denied}>
+        USER_READ 권한 없음
+      </div>
+    );
   }
 
   if (isLoading) return <FullPageSpinner />;
