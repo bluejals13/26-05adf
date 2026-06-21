@@ -1,42 +1,30 @@
 package com.example.demo.iam.user.service;
 
 import com.example.demo.iam.user.domain.User;
-import com.example.demo.iam.user.dto.*;
-import com.example.demo.auth.security.*;
-
-import com.example.demo.common.exception.DuplicateUserException;
-import com.example.demo.common.exception.UserNotFoundException;
-
-import com.example.demo.auth.jwt.JwtProvider;
+import com.example.demo.iam.user.dto.MeResponse;
+import com.example.demo.iam.user.dto.UpdatePasswordRequest;
 
 import com.example.demo.iam.user.repository.UserRepository;
 
 import com.example.demo.iam.role.domain.Role;
 import com.example.demo.iam.permission.domain.Permission;
 
+import com.example.demo.common.exception.UserNotFoundException;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.redis.core.RedisTemplate;
 
-import java.time.Duration; // 시간
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-
-    // private final RedisTemplate<String, String> redisTemplate;
+    
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    // private final JwtProvider jwtProvider;
-    
-    // private static final String ACCESS_KEY = "auth:access:";
-    // private static final String REFRESH_KEY = "auth:refresh:";
-    
-    // private final TokenBlacklistService tokenBlacklistService;
+
     
     // 회원가입
     @Transactional
