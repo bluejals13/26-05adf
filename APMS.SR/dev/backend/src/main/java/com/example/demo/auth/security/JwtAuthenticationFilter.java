@@ -5,6 +5,7 @@ import com.example.demo.auth.jwt.JwtProvider;
 import com.example.demo.iam.user.repository.UserRepository;
 import com.example.demo.iam.user.domain.User;
 import com.example.demo.iam.user.domain.UserStatus;
+package com.example.demo.auth.security.TokenBlacklistService;
 
 import jakarta.servlet.FilterChain;                // 서브렛 http 요청 가로체기 및 jwt 검사
 import jakarta.servlet.ServletException;
@@ -33,7 +34,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
     private final RedisTemplate<String, String> redisTemplate;
     private final UserRepository userRepository;
-
+    private final TokenBlacklistService tokenBlacklistService;
+    
+    
+    
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -69,7 +73,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         System.out.println("userId=" + userId);
         System.out.println("jti=" + jti);
-
+        
+        // 1. 블랙리스트 체크 (최우선)
+        if (tokenBlacklistService.isBlacklisted(token)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+        
+        
         // 2. Redis session check (SAFE MODE)
         String activeJti = redisTemplate.opsForValue()
                 .get("active-jti:" + userId);
