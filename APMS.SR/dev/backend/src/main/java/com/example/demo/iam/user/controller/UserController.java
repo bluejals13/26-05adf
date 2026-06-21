@@ -28,138 +28,22 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
-    private final CookieUtils cookieUtils;    // 유저 컨트롤러 쿠키유틸
     private final UserService userService;
-    private final AuthService authService;
 
-    // 회원가입
-    @PostMapping("/auth/signup")
-    public UserResponse signup(@RequestBody SignupRequest req) {
-        return userService.signup(req);
-    }
-
-    // 로그인
-    @PostMapping("/auth/login")
-    public ResponseEntity<?> refresh(@RequestBody LoginRequest req,, HttpServletResponse response) {
-
-        LoginResult result = authService.login(req);
-    
-        Cookie cookie = new Cookie(
-                "refreshToken",
-                result.refreshToken()
-        );
-    
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(60 * 60 * 24 * 7);
-    
-        response.addCookie(cookie);
-    
-        return ResponseEntity.ok(
-                Map.of(
-                "accessToken", result.accessToken(),
-                "tokenType", result.tokenType()
-            )
-        );
-    }
-
-    // refresh
-    @PostMapping("/auth/refresh")
-    public ResponseEntity<?> refresh(
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) {
-
-        Cookie[] cookies = Optional
-                .ofNullable(request.getCookies())
-                .orElse(new Cookie[0]);
-
-        String refreshToken = Arrays.stream(cookies)
-                .filter(c -> "refreshToken".equals(c.getName()))
-                .map(Cookie::getValue)
-                .findFirst()
-                .orElse(null);
-
-        if (refreshToken == null) {
-            return ResponseEntity.status(401).body("NO_REFRESH_TOKEN");
-        }
-
-        try {
-            TokenResponse token = authService.refresh(refreshToken);
-            
-            Cookie cookie = new Cookie( "refreshToken", token.refreshToken() );
-            
-            cookie.setHttpOnly(true);
-            cookie.setSecure(true);
-            cookie.setPath("/");
-            cookie.setMaxAge(60 * 60 * 24 * 7);
-            
-            response.addCookie(cookie);
-            
-            return ResponseEntity.ok( Map.of( "accessToken", token.accessToken() ));
-
-        } catch (Exception e) {
-
-            Cookie cookie = new Cookie("refreshToken", "");
-            cookie.setHttpOnly(true);
-            cookie.setSecure(true);
-            cookie.setPath("/");
-            cookie.setMaxAge(0);
-
-            response.addCookie(cookie);
-
-            return ResponseEntity.status(401).body("INVALID_REFRESH_TOKEN");
-        }
-    }
-    
-    
-    @PostMapping("/auth/logout")
-    public ResponseEntity<Void> logout(
-            @AuthenticationPrincipal
-            CustomUserPrincipal principal,
-            HttpServletResponse response
-    ) {
-    
-        authService.logout(principal.getUserId());            // 로그인기능 내부 계정에서 로그아웃
-    
-        response.addCookie( cookieUtils.deleteRefreshCookie() );    //쿠키 삭제
-    
-        return ResponseEntity.noContent().build();
-    }
-    
-    
-    
-
-    // ✅ 여기부터 다시 클래스 내부
-
-    @GetMapping("/users/me")
-    public MeResponse getMe(@AuthenticationPrincipal CustomUserPrincipal principal) {
+    @GetMapping("/me")
+    public MeResponse me(@AuthenticationPrincipal CustomUserPrincipal principal) {
         return userService.getMe(principal.getUserId());
     }
 
-    @PatchMapping("/users/me/password")
+    @PatchMapping("/me/password")
     public void updatePassword(
             @AuthenticationPrincipal CustomUserPrincipal principal,
             @RequestBody UpdatePasswordRequest req
     ) {
         userService.updatePassword(principal.getUserId(), req);
-    }
-
-    @GetMapping("/debug/auth")
-    public Object debug() {
-        Authentication auth =
-                SecurityContextHolder.getContext().getAuthentication();
-
-        return Map.of(
-                "auth", auth,
-                "authorities", auth.getAuthorities(),
-                "principal", auth.getPrincipal(),
-                "type", auth.getClass().getSimpleName()
-        );
     }
 }
