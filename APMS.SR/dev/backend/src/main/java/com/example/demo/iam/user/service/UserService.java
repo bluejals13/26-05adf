@@ -67,7 +67,7 @@ public class UserService {
         String jti = jwtProvider.getJti(accessToken);
 
         redisTemplate.opsForValue().set(
-                "active-jti:" + user.getId(),
+                "auth:access:" + user.getId(),
                 jti,
                 Duration.ofMinutes(30)
         );
@@ -75,7 +75,7 @@ public class UserService {
         String refreshToken = jwtProvider.createRefreshToken(user.getId());
 
         redisTemplate.opsForValue().set(
-                "refresh:" + user.getId(),
+                "auth:refresh:" + user.getId(),
                 refreshToken,
                 Duration.ofDays(7)
         );
@@ -121,8 +121,8 @@ public class UserService {
 
         user.updatePassword(passwordEncoder.encode(req.password()));
 
-        redisTemplate.delete("active-jti:" + userId);
-        redisTemplate.delete("refresh:" + userId);
+        redisTemplate.delete("auth:access:" + userId);
+        redisTemplate.delete("auth:refresh:" + userId);
     }
 
     private User getUser(Long userId) {
