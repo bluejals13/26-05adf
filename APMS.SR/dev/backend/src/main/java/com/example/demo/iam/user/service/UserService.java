@@ -91,6 +91,8 @@ public class UserService {
         redisTemplate.delete( ACCESS_KEY + userId );
     
         redisTemplate.delete( REFRESH_KEY + userId );
+        
+        tokenBlacklistService.blacklist(accessToken);    // 블랙리스트 추가
     }
         
 
