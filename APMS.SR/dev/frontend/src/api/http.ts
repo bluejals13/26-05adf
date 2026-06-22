@@ -2,9 +2,13 @@
 
 import { useAuthStore } from "../store/auth.store";
 
-let refreshPromise: Promise<string | null> | null = null;
+type TokenResponse = {
+  accessToken: string;
+};
 
-async function refreshToken(): Promise<string | null> {
+let refreshPromise: Promise<TokenResponse | null> | null = null;
+
+export async function refreshToken(): Promise<TokenResponse | null> {
   if (refreshPromise) return refreshPromise;
 
   refreshPromise = (async () => {
@@ -16,15 +20,14 @@ async function refreshToken(): Promise<string | null> {
 
       if (!res.ok) return null;
 
-      const data = await res.json();
+      const data: TokenResponse = await res.json();
 
-      const token = data?.accessToken ?? null;
+      if (!data?.accessToken) return null;
 
-      if (token) {
-        useAuthStore.getState().setToken(token);
-      }
+      // 🔥 refresh 성공 시 store 업데이트
+      useAuthStore.getState().setToken(data.accessToken);
 
-      return token;
+      return data;
     } catch {
       return null;
     } finally {
@@ -51,30 +54,37 @@ export async function request<T>(
       ...(options.headers || {}),
     },
   });
-  
+
+  // 🔥 401 handling
   if (res.status === 401 && retry) {
     const isAuthEndpoint =
       url.includes("/api/auth/login") ||
       url.includes("/api/auth/logout") ||
       url.includes("/api/auth/signup");
-  
+
     if (isAuthEndpoint) {
       throw new Error("Unauthorized");
     }
-  
+
     const newToken = await refreshToken();
-  
-    if (!data?.accessToken) {
+
+    if (!newToken?.accessToken) {
       useAuthStore.getState().logout();
       throw new Error("Unauthorized");
     }
-    useAuthStore.getState().setToken(data.accessToken);
-    
+
+    // 🔥 중요: refresh 후 token 재주입
+    useAuthStore.getState().setToken(newToken.accessToken);
+
     return request<T>(url, options, false);
   }
 
-  const text = await res.text();
-  throw new Error(text || "Request failed");
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || "Request failed");
+  }
+
+  return res.json();
 }
 
 export const http = {
@@ -98,4 +108,3 @@ export const http = {
 };
 
 export { refreshToken };
-
