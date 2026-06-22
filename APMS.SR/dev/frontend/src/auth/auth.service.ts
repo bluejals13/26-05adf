@@ -4,7 +4,7 @@ import { http } from "../api/http";
 import { useAuthStore } from "../store/auth.store";
 import { queryClient } from "../queryClient";
 import { authKeys } from "./auth.keys";
-import type { User } from "./auth.types";
+// import type { User } from "./auth.types";
 
 export const authService = {
   // 회원가입
@@ -18,7 +18,8 @@ export const authService = {
 
   // 로그인
   async login(username: string, password: string) {
-    const res = await http.post("/api/auth/login", { username, password });
+    type LoginResponse = { accessToken: string; };
+    const res = await http.post<LoginResponse>("/api/auth/login", { username, password });
 
     useAuthStore.getState().setToken(res.accessToken);
 
