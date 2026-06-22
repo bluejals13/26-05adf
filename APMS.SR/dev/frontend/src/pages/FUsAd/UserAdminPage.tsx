@@ -90,7 +90,7 @@ export default function UserAdminPage() {
             <div>{user.id}</div>
             <div>{user.username}</div>
             <div>{user.status}</div>
-            <div>{user.permissions.join(", ")}</div>
+            <div>{Array.isArray(user.permissions) ? user.permissions.join(", ") : "-"}</div>
 
             {(canUpdate || canDelete) && (
               <div className={styles.actions}>
