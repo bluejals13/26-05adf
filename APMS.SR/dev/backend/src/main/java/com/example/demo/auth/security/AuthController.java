@@ -63,6 +63,7 @@ public class AuthController {
         cookie.setMaxAge(60 * 60 * 24 * 7);
 
         response.addCookie(cookie);
+        System.out.println("refresh :" + principal);
 
         return ResponseEntity.ok(token);
     }
@@ -77,6 +78,9 @@ public ResponseEntity<Void> logout(
     String accessToken = extractAccessToken(request);
     String refreshToken = extractRefreshToken(request);  
     
+    System.out.println("principal = " + principal);
+    System.out.println("accessToken = " + accessToken);
+    System.out.println("refreshToken = " + refreshToken);
     
     authService.logout(
             principal.getUserId(),
