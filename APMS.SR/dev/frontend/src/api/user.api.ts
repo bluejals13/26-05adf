@@ -3,12 +3,20 @@
 import { http } from "../api/http";
 import type { User, UserStatus } from "../auth/auth.types";
 
+type ApiResponse<T> = {
+  data: T;
+};
+
 export const userApi = {
   getUsers: async (): Promise<User[]> => {
-    const data = await http.get<any[]>("/api/admin/users");
+    const res = await http.get<ApiResponse<any[]>>("/api/admin/users");
 
-    return data.map((u) => ({
-      ...u,
+    const list = res?.data ?? [];
+
+    return list.map((u) => ({
+      id: u.id,
+      username: u.username,
+      status: u.status,
       roles: u.roles ?? [],
       permissions: u.permissions ?? [],
     }));
@@ -18,5 +26,5 @@ export const userApi = {
     http.post(`/api/admin/users/${id}/status`, { status }),
 
   deleteUser: (id: number) =>
-    http.post(`/api/admin/users/${id}`, undefined),
+    http.post(`/api/admin/users/${id}`, {}),
 };
