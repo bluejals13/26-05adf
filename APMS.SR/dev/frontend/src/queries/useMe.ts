@@ -13,18 +13,12 @@ export function useMe() {
     queryKey: ["me"],
     queryFn: () => http.get<User>("/api/users/me"),
 
-    enabled: !!token && useAuthStore.getState().token === token,
+    enabled: !!token,
 
     staleTime: 1000 * 10 * 2,
     retry: false,
     refetchOnWindowFocus: true,
   });
   
-    return {
-    ...query,
-    isStale: query.isStale,
-    fetchStatus: query.fetchStatus,
-    dataUpdatedAt: query.dataUpdatedAt,
-  };
   
 }
