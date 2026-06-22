@@ -11,7 +11,16 @@ import { useAuth } from "../auth/hooks/useAuth";
 export default function Header() {
   const navigate = useNavigate();
   const { user, logout, isLoggedIn } = useAuth();
-
+  const { isStale, fetchStatus, dataUpdatedAt } = useMe();
+  
+  useEffect(() => {
+    console.log("AUTH STATE", {
+      token,
+      user,
+      isLoggedIn,
+    });
+  }, [token, user, isLoggedIn]);
+  
   const handleLogout = async () => {
     await logout();
     navigate("/login");
@@ -35,6 +44,14 @@ export default function Header() {
             <span style={{ marginLeft: "auto" }}>
               {user?.username ?? ""}
             </span>
+            
+            <div style={{ fontSize: 12, marginLeft: 20, color: "gray" }}>
+              <div>stale: {String(isStale)}</div>
+              <div>fetch: {fetchStatus}</div>
+              <div>
+                updated: {new Date(dataUpdatedAt).toLocaleTimeString()}
+              </div>
+            </div>
 
             <button onClick={handleLogout}>
               로그아웃
