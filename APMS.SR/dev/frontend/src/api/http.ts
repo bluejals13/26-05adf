@@ -51,18 +51,21 @@ export async function request<T>(
       ...(options.headers || {}),
     },
   });
-
-  if (res.ok) return res.json();
-
-  // 🔥 401 → refresh (여기서만 처리)
-  if (res.status === 401 && retry) {
+  
+  const isLogout = url === "/api/auth/logout";
+  
+  if (
+    res.status === 401 &&
+    retry &&
+    !isLogout
+  ) {
     const newToken = await refreshToken();
-
+  
     if (!newToken) {
       useAuthStore.getState().logout();
       throw new Error("Unauthorized");
     }
-
+  
     return request<T>(url, options, false);
   }
 
