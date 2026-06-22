@@ -92,11 +92,19 @@ public class AuthService {
         return new TokenResponse(newAccessToken, newRefreshToken);
     }
 
-    public void logout(Long userId, String accessToken, String refreshToken) {    // 로그아웃
-        
-        redisTemplate.delete(REFRESH_KEY + userId);
-        redisTemplate.delete(ACCESS_KEY + userId);
-        blacklistService.blacklist(refreshToken);
-        blacklistService.blacklist(accessToken);
+    public void logout(String accessToken, String refreshToken) {    // 로그아웃
+    
+        Long userId = null;
+    
+        if (refreshToken != null) { userId = Long.parseLong(jwtProvider.parseClaims(refreshToken).getSubject()); }
+    
+        if (userId != null) {
+            redisTemplate.delete(ACCESS_KEY + userId);
+            redisTemplate.delete(REFRESH_KEY + userId);
+        }
+    
+        if (accessToken != null) { blacklistService.blacklist(accessToken); }
+    
+        if (refreshToken != null) { blacklistService.blacklist(refreshToken); }
     }
 }
