@@ -46,11 +46,11 @@ public class AuthService {
         String accessToken = jwtProvider.createAccessToken(user.getId(), user.getUsername());
         String refreshToken = jwtProvider.createRefreshToken(user.getId());
 
-        String jti = UUID.randomUUID().toString();
+        String jti = jwtProvider.parseClaims(refreshToken).getId();
 
         redisTemplate.opsForValue().set(
                 REFRESH_KEY + user.getId(),
-                refreshToken,
+                jti,
                 Duration.ofDays(7)
         );
 
@@ -68,12 +68,12 @@ public class AuthService {
         if (!"refresh".equals(claims.get("type"))) {
             throw new BadCredentialsException("INVALID_REFRESH_TOKEN");
         }
-
+        
         Long userId = Long.parseLong(claims.getSubject());
 
-        String saved = redisTemplate.opsForValue().get(REFRESH_KEY + userId);
+        String redisJti  = redisTemplate.opsForValue().get(REFRESH_KEY + userId);
 
-        if (saved == null || !saved.equals(refreshToken)) {
+        if (redisJti == null || !redisJti.equals(claims.getId())) {
             throw new BadCredentialsException("INVALID_REFRESH_TOKEN");
         }
 
@@ -81,25 +81,23 @@ public class AuthService {
 
         String newAccessToken = jwtProvider.createAccessToken(userId, user.getUsername());
         String newRefreshToken = jwtProvider.createRefreshToken(userId);
-        String newJti = UUID.randomUUID().toString();
-
+        String newJti = jwtProvider.parseClaims(newRefreshToken).getId();
+        
         redisTemplate.opsForValue().set(
                 REFRESH_KEY + userId,
-                newRefreshToken,
+                newJti,
                 Duration.ofDays(7)
         );
-
+        
         return new TokenResponse(newAccessToken, newRefreshToken);
     }
 
     public void logout(Long userId, String accessToken, String refreshToken) {
-
-
+        
         redisTemplate.delete(REFRESH_KEY + userId);
-
-
-        if (refreshToken != null) {
-            blacklistService.blacklist(refreshToken);
+    
+        if (accessToken != null) {
+            blacklistService.blacklist(accessToken);
         }
     }
 }
