@@ -82,10 +82,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         
         // 2. Redis session check (SAFE MODE)
-        String activeJti = redisTemplate.opsForValue()
+        // String activeJti = redisTemplate.opsForValue()
                 .get("active-jti:" + userId);
 
-        System.out.println("activeJti=" + activeJti);
+        // System.out.println("activeJti=" + activeJti);
 
         if (activeJti != null && !activeJti.equals(jti)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
