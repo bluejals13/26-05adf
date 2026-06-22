@@ -15,8 +15,16 @@ export function useMe() {
 
     enabled: !!token && useAuthStore.getState().token === token,
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 10 * 2,
     retry: false,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
   });
+  
+    return {
+    ...query,
+    isStale: query.isStale,
+    fetchStatus: query.fetchStatus,
+    dataUpdatedAt: query.dataUpdatedAt,
+  };
+  
 }
