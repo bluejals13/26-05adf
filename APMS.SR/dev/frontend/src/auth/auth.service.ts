@@ -22,10 +22,7 @@ export const authService = {
 
     useAuthStore.getState().setToken(res.accessToken);
 
-    await queryClient.prefetchQuery({
-      queryKey: authKeys.me,
-      queryFn: () => http.get<User>("/api/users/me"),
-    });
+    await queryClient.invalidateQueries({ queryKey: authKeys.me });
   },
 
   // 로그아웃
