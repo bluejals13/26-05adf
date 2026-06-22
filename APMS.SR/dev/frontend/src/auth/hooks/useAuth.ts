@@ -6,7 +6,7 @@ import { authService } from "../auth.service";
 
 export function useAuth() {
   const token = useAuthStore((s) => s.token);
-  const { data: user, isLoading } = useMe();
+  const { data: user, isLoading, isError } = useMe();
 
   return {
     token,
