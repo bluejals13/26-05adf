@@ -95,9 +95,8 @@ public class AuthService {
     public void logout(Long userId, String accessToken, String refreshToken) {    // 로그아웃
         
         redisTemplate.delete(REFRESH_KEY + userId);
-    
-        if (accessToken != null) {
-            blacklistService.blacklist(accessToken);
-        }
+        redisTemplate.delete(ACCESS_KEY + userId);
+        blacklistService.blacklist(refreshToken);
+        blacklistService.blacklist(accessToken);
     }
 }
