@@ -32,6 +32,7 @@ export const authService = {
     } finally {
       useAuthStore.getState().logout();
 
+      queryClient.cancelQueries();
       queryClient.clear();
 
       window.dispatchEvent(
