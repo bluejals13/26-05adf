@@ -13,7 +13,7 @@ export function useMe() {
     queryKey: ["me"],
     queryFn: () => http.get<User>("/api/users/me"),
 
-    enabled: !!token,
+    enabled: !!token && useAuthStore.getState().token === token,
 
     staleTime: 1000 * 60 * 5,
     retry: false,
