@@ -28,8 +28,7 @@ export const authService = {
 
   // 로그아웃
   async logout() { const token = useAuthStore.getState().token;
-  try { await http.post( "/api/auth/logout", {}, 
-      { headers: { Authorization: `Bearer ${token}`, }, } );
+  try { await http.post( "/api/auth/logout", {} );
     } finally {
       useAuthStore.getState().logout();
       queryClient.cancelQueries();
