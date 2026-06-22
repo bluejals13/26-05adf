@@ -22,8 +22,8 @@ export default function UserAdminPage() {
   const { hasPermission } = usePermissions(user);
 
   const canRead = hasPermission("USER_READ");
-  //const canUpdate = hasPermission("USER_UPDATE");
-  //const canDelete = hasPermission("USER_DELETE");
+  const canUpdate = hasPermission("USER_UPDATE");
+  const canDelete = hasPermission("USER_DELETE");
 
   const { data: users = [], isLoading, error } = useUsers(token);
   
