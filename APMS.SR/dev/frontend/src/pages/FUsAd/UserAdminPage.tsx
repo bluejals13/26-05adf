@@ -14,6 +14,8 @@ import type { User, UserStatus } from "../../auth/auth.types";
 export default function UserAdminPage() {
   const { user, isLoading: authLoading } = useAuth();
   
+  console.log("STEP1");
+  
   if (authLoading) return <FullPageSpinner />;
   if (!user) return null;
   
@@ -23,11 +25,16 @@ export default function UserAdminPage() {
   const canRead = hasPermission("USER_READ");
   const canUpdate = hasPermission("USER_UPDATE");
   const canDelete = hasPermission("USER_DELETE");
-
+  
+  console.log("STEP2");
+  
   const { data: users = [], isLoading, error } = useUsers();
+  
+  console.log("STEP3");
   
   const { changeStatus, deleteUser } = useUserMutations();
   
+  console.log("STEP4");
     
   if (isLoading) return <FullPageSpinner />;
   if (error) return <div>에러</div>;
@@ -42,7 +49,9 @@ export default function UserAdminPage() {
         u.status !== "DELETE_PENDING"
     );
   }, [safeUsers]);
-
+  
+  console.log("STEP5");
+  
   const pendingUsers = useMemo(
     () =>
       users.filter(
@@ -51,6 +60,8 @@ export default function UserAdminPage() {
       ),
     [users]
   );
+  
+  console.log("STEP6");
   
   if (!Array.isArray(users)) return <FullPageSpinner />;
 
