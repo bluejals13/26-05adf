@@ -25,7 +25,7 @@ export async function refreshToken(): Promise<TokenResponse | null> {
       if (!data?.accessToken) return null;
 
       // 🔥 refresh 성공 시 store 업데이트
-      useAuthStore.getState().setToken(data.accessToken);
+      //useAuthStore.getState().setToken(data.accessToken);
 
       return data;
     } catch {
