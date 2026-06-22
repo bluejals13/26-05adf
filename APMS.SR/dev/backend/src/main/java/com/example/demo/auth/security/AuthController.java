@@ -43,9 +43,8 @@ public class AuthController {
         System.out.println("LOGIN ==================== ");        
         
         response.addCookie(cookie);
-        System.out.println("principal = " + principal);
-        System.out.println("accessToken = " + accessToken);
-        System.out.println("refreshToken = " + refreshToken);
+        System.out.println("accessToken = " + result.accessToken());
+        System.out.println("refreshToken = " + result.refreshToken());
         
         return ResponseEntity.ok(
                 new LoginResult(result.accessToken(), "Bearer", null)
@@ -71,9 +70,8 @@ public class AuthController {
         System.out.println("REFRESH ==================== ");        
         
         response.addCookie(cookie);
-        System.out.println("principal = " + principal);
-        System.out.println("accessToken = " + accessToken);
-        System.out.println("refreshToken = " + refreshToken);
+        System.out.println("accessToken = " + result.accessToken());
+        System.out.println("refreshToken = " + result.refreshToken());
 
         return ResponseEntity.ok(token);
     }
