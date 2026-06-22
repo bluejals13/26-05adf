@@ -91,10 +91,10 @@ export const http = {
   get: <T>(url: string) =>
     request<T>(url, { method: "GET" }),
 
-  post: <T>(url: string, body?: unknown) =>
+  post: <T>(url: string, body?: unknown, options?: RequestInit) =>
     request<T>(url, {
       method: "POST",
-      body: body ? JSON.stringify(body) : undefined,
+      body: body ? JSON.stringify(body) : undefined, ...options,
     }),
 
   put: <T>(url: string, body?: unknown) =>
