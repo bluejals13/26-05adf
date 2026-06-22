@@ -10,7 +10,7 @@ import { useMe } from "../queries/useMe";
 
 export default function Header() {
   const navigate = useNavigate();
-  const { user, logout, isLoggedIn } = useAuth();
+  const { token, user, logout, isLoggedIn } = useAuth();
   const { data: user, isLoading, isError } = useMe();
   
   useEffect(() => {
