@@ -27,7 +27,7 @@ export const authService = {
   },
 
   // 로그아웃
-  async logout() { const token = useAuthStore.getState().token;
+  async logout() {
   try { await http.post( "/api/auth/logout", {} );
     } finally {
       useAuthStore.getState().logout();
