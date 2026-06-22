@@ -9,13 +9,13 @@ import { useAuthStore } from "../store/auth.store";
 export function useMe() {
   const token = useAuthStore((s) => s.token);
 
-  return useQuery<User>({
+  return useQuery<User>({  // 중요 보안 혹은 실시간이 필요시 사용 쿼리
     queryKey: ["me"],
     queryFn: () => http.get<User>("/api/users/me"),
 
     enabled: !!token,
 
-    staleTime: 1000 * 10 * 2,
+    staleTime: 1000 * 10 * 2,  // 20 초 간격 확인
     retry: false,
     refetchOnWindowFocus: true,
   });
