@@ -12,10 +12,10 @@ import type { User, UserStatus } from "../../auth/auth.types";
 
 
 export default function UserAdminPage() {
-  const { user } = useAuth();
+  const { user, authLoading } = useAuth();
   const { hasPermission } = usePermissions(user);
 
-  const canRead = hasPermission("USER_READ");
+  const canRead = user && hasPermission("USER_READ");
   const canUpdate = hasPermission("USER_UPDATE");
   const canDelete = hasPermission("USER_DELETE");
 
@@ -40,7 +40,9 @@ export default function UserAdminPage() {
       ),
     [users]
   );
-
+  
+  if (isLoading) return <FullPageSpinner />;
+  
   if (!canRead) {
     return (
       <div className={styles.denied}>
@@ -49,7 +51,7 @@ export default function UserAdminPage() {
     );
   }
 
-  if (isLoading) return <FullPageSpinner />;
+  if (authLoading) return <FullPageSpinner />;
 
   if (error) {
     return <div className={styles.error}>에러 발생</div>;
