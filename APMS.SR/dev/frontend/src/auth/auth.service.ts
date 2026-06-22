@@ -18,10 +18,7 @@ export const authService = {
 
   // 로그인
   async login(username: string, password: string) {
-    const res = await http.post<{ accessToken: string }>(
-      "/api/auth/login",
-      { username, password }
-    );
+    const res = await http.post("/api/auth/login", { username, password });
 
     useAuthStore.getState().setToken(res.accessToken);
 
