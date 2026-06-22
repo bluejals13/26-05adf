@@ -78,14 +78,17 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
-        @AuthenticationPrincipal CustomUserPrincipal principal,
-        HttpServletRequest request,
-        HttpServletResponse response
+            HttpServletRequest request,
+            HttpServletResponse response
 ) {
 
     String accessToken = extractAccessToken(request);
     String refreshToken = extractRefreshToken(request);  
     
+    Long userId = null;
+    
+    if (refreshToken != null) { userId = jwtProvider.parseClaims(refreshToken).getSubjectAsLong(); }
+        
     System.out.println("LOGOUT ==================== ");
     
     System.out.println("principal = " + principal);
@@ -93,15 +96,13 @@ public class AuthController {
     System.out.println("refreshToken = " + refreshToken);
     
     authService.logout(
-            principal.getUserId(),
+            userId,
             accessToken,
             refreshToken
     );
 
     // refresh token cookie 삭제
     Cookie cookie = new Cookie("refreshToken", null);
-    cookie.setHttpOnly(true);
-    cookie.setSecure(true);
     cookie.setPath("/");
     cookie.setMaxAge(0);
     response.addCookie(cookie);
