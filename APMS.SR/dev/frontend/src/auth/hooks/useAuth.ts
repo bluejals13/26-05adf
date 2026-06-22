@@ -12,6 +12,7 @@ export function useAuth() {
     token,
     user,
     isLoading,
+    isError,    
     isLoggedIn: !!token && !!user,
     logout: authService.logout,
   };
