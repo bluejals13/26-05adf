@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
-
+    
     private final AuthService authService;
-
+    private final JwtProvider jwtProvider;
+    
+    
     @PostMapping("/login")
     public ResponseEntity<LoginResult> login(
             @RequestBody LoginRequest req,
@@ -96,11 +98,7 @@ public class AuthController {
     System.out.println("accessToken = " + accessToken);
     System.out.println("refreshToken = " + refreshToken);
     
-    authService.logout(
-            userId,
-            accessToken,
-            refreshToken
-    );
+    authService.logout(accessToken, refreshToken);
 
     // refresh token cookie 삭제
     Cookie cookie = new Cookie("refreshToken", null);
