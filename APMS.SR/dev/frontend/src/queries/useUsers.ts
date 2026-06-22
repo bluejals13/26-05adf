@@ -4,11 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 import { userApi } from "../api/user.api";
 // import { useAuthStore } from "../store/auth.store";
 
-export function useUsers() {
-
   return useQuery({
     queryKey: ["users"],
     queryFn: userApi.getUsers,
-    enabled,
+    enabled: !!token,
+    initialData: [],
   });
 }
