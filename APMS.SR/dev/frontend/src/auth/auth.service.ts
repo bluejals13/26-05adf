@@ -33,11 +33,7 @@ export const authService = {
 
   // 로그아웃
   async logout() {
-    try {
-      await fetch("/api/auth/logout", {
-        method: "POST",
-        credentials: "include",
-      });
+    try { await http.post("/api/auth/logout");
     } finally {
       useAuthStore.getState().logout();
 
