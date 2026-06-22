@@ -91,7 +91,6 @@ public class AuthController {
         
     System.out.println("LOGOUT ==================== ");
     
-    System.out.println("principal = " + principal);
     System.out.println("accessToken = " + accessToken);
     System.out.println("refreshToken = " + refreshToken);
     
