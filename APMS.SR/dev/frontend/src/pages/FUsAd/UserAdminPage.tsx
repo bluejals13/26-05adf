@@ -14,7 +14,7 @@ import type { User, UserStatus } from "../../auth/auth.types";
 export default function UserAdminPage() {
   const { user, isLoading: authLoading } = useAuth();
   
-  console.log("STEP1");
+  // console.log("STEP1");
   
 
   
@@ -25,15 +25,15 @@ export default function UserAdminPage() {
   const canUpdate = hasPermission("USER_UPDATE");
   const canDelete = hasPermission("USER_DELETE");
   
-  console.log("STEP2");
+  // console.log("STEP2");
   
   const { data: users = [], isLoading, error } = useUsers();
   
-  console.log("STEP3");
+  // console.log("STEP3");
   
   const { changeStatus, deleteUser } = useUserMutations();
   
-  console.log("STEP4");
+  // console.log("STEP4");
 
 
   
@@ -47,7 +47,7 @@ export default function UserAdminPage() {
     );
   }, [safeUsers]);
   
-  console.log("STEP5");
+  // console.log("STEP5");
   
   const pendingUsers = useMemo(
     () =>
@@ -58,7 +58,7 @@ export default function UserAdminPage() {
     [users]
   );
   
-  console.log("STEP6");
+  // console.log("STEP6");
   
   //const permissions = user.permissions ?? [];
   
