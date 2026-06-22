@@ -62,6 +62,10 @@ export default function UserAdminPage() {
   
   //const permissions = user.permissions ?? [];
   
+  onsole.log("users data:", data);
+  console.log("loading:", isLoading);
+  console.log("error:", error);
+
   
   if (authLoading) return <FullPageSpinner />;
   if (!user) return null;
