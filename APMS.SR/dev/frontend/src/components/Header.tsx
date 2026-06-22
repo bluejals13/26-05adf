@@ -48,11 +48,11 @@ export default function Header() {
             </span>
             
             <div style={{ fontSize: 12, marginLeft: 20, color: "gray" }}>
-              <div>stale: {String(isStale)}</div>
-              <div>fetch: {fetchStatus}</div>
-              <div>
-                updated: {new Date(dataUpdatedAt).toLocaleTimeString()}
-              </div>
+              <div>token: {token ? "YES" : "NO"}</div>
+              <div>user: {user ? user.username : "NONE"}</div>
+              <div>loggedIn: {String(!!token && !!user)}</div>
+              <div>loading: {String(isLoading)}</div>
+              <div>error: {String(isError)}</div>
             </div>
 
             <button onClick={handleLogout}>
