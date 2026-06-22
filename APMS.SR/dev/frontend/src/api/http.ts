@@ -64,11 +64,12 @@ export async function request<T>(
   
     const newToken = await refreshToken();
   
-    if (!newToken) {
+    if (!data?.accessToken) {
       useAuthStore.getState().logout();
       throw new Error("Unauthorized");
     }
-  
+    useAuthStore.getState().setToken(data.accessToken);
+    
     return request<T>(url, options, false);
   }
 
