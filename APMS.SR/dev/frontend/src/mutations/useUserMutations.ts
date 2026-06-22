@@ -2,12 +2,8 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { userApi } from "../api/user.api";
+import { userKeys } from "../queries/useUsers";
 import type { UserStatus } from "../auth/auth.types";
-
-export const userKeys = {
-  all: ["users"] as const,
-  detail: (id: number) => ["users", id] as const,
-};
 
 export function useUserMutations() {
   const qc = useQueryClient();
@@ -28,6 +24,7 @@ export function useUserMutations() {
 
   const deleteUser = useMutation({
     mutationFn: (id: number) => userApi.deleteUser(id),
+
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: userKeys.all });
     },
