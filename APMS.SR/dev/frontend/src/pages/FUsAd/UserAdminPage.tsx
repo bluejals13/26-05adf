@@ -4,7 +4,7 @@ import styles from "./UserAdminPage.module.css";
 import { useUsers } from "../../queries/useUsers";
 import { useUserMutations } from "../../mutations/useUserMutations";
 import { usePermissions } from "../../auth/hooks/usePermissions";
-import { useAuthStore } from "../../store/auth.store";
+// import { useAuthStore } from "../../store/auth.store";
 import { useAuth } from "../../auth/hooks/useAuth";
 import FullPageSpinner from "../../components/loading/FullPageSpinner";
 
@@ -24,7 +24,7 @@ export default function UserAdminPage() {
   const canUpdate = hasPermission("USER_UPDATE");
   const canDelete = hasPermission("USER_DELETE");
 
-  const { data: users = [], isLoading, error } = useUsers(token);
+  const { data: users = [], isLoading, error } = useUsers();
   
   const { changeStatus, deleteUser } = useUserMutations();
   
