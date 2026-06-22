@@ -60,6 +60,9 @@ export default function UserAdminPage() {
   
   console.log("STEP6");
   
+  const permissions = user.permissions ?? [];
+  
+  
   if (authLoading) return <FullPageSpinner />;
   if (!user) return null;
   if (isLoading) return <FullPageSpinner />;
@@ -90,7 +93,7 @@ export default function UserAdminPage() {
             <div>{user.id}</div>
             <div>{user.username}</div>
             <div>{user.status}</div>
-            <div>{Array.isArray(user.permissions) ? user.permissions.join(", ") : "-"}</div>
+            <div>{permissions.length ? permissions.join(", ") : "-"}</div>
 
             {(canUpdate || canDelete) && (
               <div className={styles.actions}>
