@@ -52,13 +52,16 @@ export async function request<T>(
     },
   });
   
-  const isLogout = url === "/api/auth/logout";
+  if (res.status === 401 && retry) {
+    const isAuthEndpoint =
+      url.includes("/api/auth/login") ||
+      url.includes("/api/auth/logout") ||
+      url.includes("/api/auth/signup");
   
-  if (
-    res.status === 401 &&
-    retry &&
-    !isLogout
-  ) {
+    if (isAuthEndpoint) {
+      throw new Error("Unauthorized");
+    }
+  
     const newToken = await refreshToken();
   
     if (!newToken) {
