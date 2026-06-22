@@ -49,12 +49,6 @@ public class AuthService {
         String jti = UUID.randomUUID().toString();
 
         redisTemplate.opsForValue().set(
-                ACCESS_KEY + user.getId(),
-                jti,
-                Duration.ofMinutes(30)
-        );
-
-        redisTemplate.opsForValue().set(
                 REFRESH_KEY + user.getId(),
                 refreshToken,
                 Duration.ofDays(7)
@@ -90,12 +84,6 @@ public class AuthService {
         String newJti = UUID.randomUUID().toString();
 
         redisTemplate.opsForValue().set(
-                ACCESS_KEY + userId,
-                newJti,
-                Duration.ofMinutes(30)
-        );
-
-        redisTemplate.opsForValue().set(
                 REFRESH_KEY + userId,
                 newRefreshToken,
                 Duration.ofDays(7)
@@ -106,12 +94,9 @@ public class AuthService {
 
     public void logout(Long userId, String accessToken, String refreshToken) {
 
-        redisTemplate.delete(ACCESS_KEY + userId);
+
         redisTemplate.delete(REFRESH_KEY + userId);
 
-        if (accessToken != null) {
-            blacklistService.blacklist(accessToken);
-        }
 
         if (refreshToken != null) {
             blacklistService.blacklist(refreshToken);
