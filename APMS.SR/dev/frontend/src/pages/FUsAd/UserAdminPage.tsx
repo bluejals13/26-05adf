@@ -62,7 +62,7 @@ export default function UserAdminPage() {
   
   //const permissions = user.permissions ?? [];
   
-  console.log("users data:", data);
+  console.log("users data:", user);
   console.log("loading:", isLoading);
   console.log("error:", error);
 
