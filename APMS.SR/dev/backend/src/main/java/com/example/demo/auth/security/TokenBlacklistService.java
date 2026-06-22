@@ -23,9 +23,12 @@ public class TokenBlacklistService {    // 이미 발급된 토큰 차단    “
                    .getExpiration()
                    .getTime()
         - System.currentTimeMillis();
-
+        
+        if (remain <= 0) { return; // 이미 만료된 토큰은 blacklist 의미 없음
+        }
         
         String jti = jwtProvider.getJti(token);
+        
         redisTemplate.opsForValue().set(
                 "blacklist:" + jti,
                 "true",
