@@ -24,8 +24,7 @@ export async function refreshToken(): Promise<TokenResponse | null> {
 
       if (!data?.accessToken) return null;
 
-      // 🔥 refresh 성공 시 store 업데이트
-      //useAuthStore.getState().setToken(data.accessToken);
+      console.log("🔥 refresh called");
 
       return data;
     } catch {
@@ -72,7 +71,7 @@ export async function request<T>(
       useAuthStore.getState().logout();
       throw new Error("Unauthorized");
     }
-
+    console.log("🔁 retry request", url);
     // 🔥 중요: refresh 후 token 재주입
     useAuthStore.getState().setToken(newToken.accessToken);
 
