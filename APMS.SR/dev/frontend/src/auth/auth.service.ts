@@ -28,7 +28,7 @@ export const authService = {
 
   // 로그아웃
   async logout() {
-    try { await http.post("/api/auth/logout");
+    try { await http.post("/api/auth/logout", {}, { credentials: "include" });
     } finally {
       useAuthStore.getState().logout();
 
