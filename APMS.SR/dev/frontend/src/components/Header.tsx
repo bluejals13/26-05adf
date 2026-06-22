@@ -10,18 +10,17 @@ import { useMe } from "../queries/useMe";
 
 export default function Header() {
   const navigate = useNavigate();
-  const { token, user, logout, isLoggedIn } = useAuth();
+  const { token, logout, isLoggedIn } = useAuth();
   const { data: user, isLoading, isError } = useMe();
   
   useEffect(() => {
     console.log("AUTH DEBUG", {
       token,
-      hasUser: !!user,
       isLoggedIn: !!token && !!user,
       isLoading,
       isError,
     });
-  }, [token, user, isLoading, isError]);
+  }, [token, isLoading, isError]);
   
   const handleLogout = async () => {
     await logout();
@@ -49,7 +48,6 @@ export default function Header() {
             
             <div style={{ fontSize: 12, marginLeft: 20, color: "gray" }}>
               <div>token: {token ? "YES" : "NO"}</div>
-              <div>user: {user ? user.username : "NONE"}</div>
               <div>loggedIn: {String(!!token && !!user)}</div>
               <div>loading: {String(isLoading)}</div>
               <div>error: {String(isError)}</div>
