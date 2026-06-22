@@ -16,8 +16,7 @@ export default function UserAdminPage() {
   
   console.log("STEP1");
   
-  if (authLoading) return <FullPageSpinner />;
-  if (!user) return null;
+
   
   
   const { hasPermission } = usePermissions(user);
@@ -35,10 +34,8 @@ export default function UserAdminPage() {
   const { changeStatus, deleteUser } = useUserMutations();
   
   console.log("STEP4");
-    
-  if (isLoading) return <FullPageSpinner />;
-  if (error) return <div>에러</div>;
-  if (!canRead) return <div className={styles.denied}> USER_READ 권한 없음</div>;
+
+
   
   const safeUsers = Array.isArray(users) ? users : [];
   
@@ -63,6 +60,11 @@ export default function UserAdminPage() {
   
   console.log("STEP6");
   
+  if (authLoading) return <FullPageSpinner />;
+  if (!user) return null;
+  if (isLoading) return <FullPageSpinner />;
+  if (error) return <div>에러</div>;
+  if (!canRead) return <div className={styles.denied}> USER_READ 권한 없음</div>;
   if (!Array.isArray(users)) return <FullPageSpinner />;
 
   if (error) {
