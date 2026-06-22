@@ -6,6 +6,7 @@ import type { UserStatus } from "../auth/auth.types";
 
 export const userKeys = {
   all: ["users"] as const,
+  detail: (id: number) => ["users", id] as const,
 };
 
 export function useUserMutations() {
@@ -21,7 +22,7 @@ export function useUserMutations() {
     }) => userApi.changeStatus(id, status),
 
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["users"] });
+      qc.invalidateQueries({ queryKey: userKeys.all });
     },
   });
 
