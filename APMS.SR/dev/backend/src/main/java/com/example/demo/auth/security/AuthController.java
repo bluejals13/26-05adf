@@ -7,6 +7,8 @@ import com.example.demo.iam.user.dto.TokenResponse;
 import com.example.demo.auth.security.AuthService;
 import com.example.demo.auth.security.CustomUserPrincipal;
 
+import com.example.demo.auth.jwt.JwtProvider;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
