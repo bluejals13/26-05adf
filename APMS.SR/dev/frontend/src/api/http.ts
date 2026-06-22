@@ -107,4 +107,3 @@ export const http = {
     request<T>(url, { method: "DELETE" }),
 };
 
-export { refreshToken };
