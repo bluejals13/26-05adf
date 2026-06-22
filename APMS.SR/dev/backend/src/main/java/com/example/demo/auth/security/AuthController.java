@@ -38,9 +38,15 @@ public class AuthController {
         cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60 * 24 * 7);
-
+        
+        
+        System.out.println("LOGIN ==================== ");        
+        
         response.addCookie(cookie);
-
+        System.out.println("principal = " + principal);
+        System.out.println("accessToken = " + accessToken);
+        System.out.println("refreshToken = " + refreshToken);
+        
         return ResponseEntity.ok(
                 new LoginResult(result.accessToken(), "Bearer", null)
         );
@@ -61,15 +67,19 @@ public class AuthController {
         cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60 * 24 * 7);
-
+        
+        System.out.println("REFRESH ==================== ");        
+        
         response.addCookie(cookie);
-        System.out.println("refresh :" + principal);
+        System.out.println("principal = " + principal);
+        System.out.println("accessToken = " + accessToken);
+        System.out.println("refreshToken = " + refreshToken);
 
         return ResponseEntity.ok(token);
     }
 
     @PostMapping("/logout")
-public ResponseEntity<Void> logout(
+    public ResponseEntity<Void> logout(
         @AuthenticationPrincipal CustomUserPrincipal principal,
         HttpServletRequest request,
         HttpServletResponse response
@@ -77,6 +87,8 @@ public ResponseEntity<Void> logout(
 
     String accessToken = extractAccessToken(request);
     String refreshToken = extractRefreshToken(request);  
+    
+    System.out.println("LOGOUT ==================== ");
     
     System.out.println("principal = " + principal);
     System.out.println("accessToken = " + accessToken);
