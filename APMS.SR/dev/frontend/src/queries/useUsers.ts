@@ -10,6 +10,6 @@ export function useUsers() {
   return useQuery({
     queryKey: ["users"],
     queryFn: userApi.getUsers,
-    enabled: !!token,
+    enabled: !!me,
   });
 }
