@@ -87,7 +87,9 @@ public class AuthController {
     
     Long userId = null;
     
-    if (refreshToken != null) { userId = jwtProvider.parseClaims(refreshToken).getSubjectAsLong(); }
+    if (refreshToken != null) { try { userId = Long.parseLong(jwtProvider.parseClaims(refreshToken).getSubject());
+        } catch (Exception ignored) {}
+    }
         
     System.out.println("LOGOUT ==================== ");
     
