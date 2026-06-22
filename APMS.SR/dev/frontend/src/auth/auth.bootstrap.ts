@@ -5,7 +5,7 @@ import { useAuthStore } from "../store/auth.store";
 import { queryClient } from "../queryClient";
 import { refreshToken } from "../api/http";
 
-
+type TokenResponse = { accessToken: string; };
 
 let bootstrapPromise: Promise<void> | null = null;
 
@@ -14,15 +14,11 @@ export function bootstrapAuth(): Promise<void> {
 
   bootstrapPromise = (async () => {
     try {
-      const token = await refreshToken();
+      const data = await refreshToken();
 
-      if (!token?.accessToken) {
-        useAuthStore.getState().setToken(null);
-        await queryClient.clear();
-        return;
-      }
+      if (!data?.accessToken) { useAuthStore.getState().setToken(null); return; }
 
-      useAuthStore.getState().setToken(token.accessToken);
+      useAuthStore.getState().setToken(data.accessToken);
     } catch {
       useAuthStore.getState().setToken(null);
       await queryClient.clear();
