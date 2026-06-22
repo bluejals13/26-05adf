@@ -32,16 +32,16 @@ export default function UserAdminPage() {
   if (isLoading) return <FullPageSpinner />;
   if (error) return <div>에러</div>;
   if (!canRead) return <div className={styles.denied}> USER_READ 권한 없음</div>;
-
-
-  const activeUsers = useMemo( () => { 
-    if (!Array.isArray(users)) return [];
-    return users.filter( (u: User) =>
-          u.status !== "DELETED" &&
-          u.status !== "DELETE_PENDING"
-      ); },
-    [users]
-  ); 
+  
+  const safeUsers = Array.isArray(users) ? users : [];
+  
+  const activeUsers = useMemo(() => {
+    return safeUsers.filter(
+      (u) =>
+        u.status !== "DELETED" &&
+        u.status !== "DELETE_PENDING"
+    );
+  }, [safeUsers]);
 
   const pendingUsers = useMemo(
     () =>
@@ -52,7 +52,7 @@ export default function UserAdminPage() {
     [users]
   );
   
-
+  if (!Array.isArray(users)) return <FullPageSpinner />;
 
   if (error) {
     return <div className={styles.error}>에러 발생</div>;
