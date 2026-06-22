@@ -12,26 +12,26 @@ import type { User, UserStatus } from "../../auth/auth.types";
 
 
 export default function UserAdminPage() {
-  const { user } = useAuth();
+  const { user, isLoading: authLoading } = useAuth();
+
+  if (authLoading) return <FullPageSpinner />;
+  if (!user) return null;
+  
+  
   const { hasPermission } = usePermissions(user);
 
-  const canRead = user && hasPermission("USER_READ");
+  const canRead = hasPermission("USER_READ");
   const canUpdate = hasPermission("USER_UPDATE");
   const canDelete = hasPermission("USER_DELETE");
 
   const { data: users = [], isLoading, error } = useUsers();
+  
   const { changeStatus, deleteUser } = useUserMutations();
   
     
   if (isLoading) return <FullPageSpinner />;
-  
-  if (!canRead) {
-    return (
-      <div className={styles.denied}>
-        USER_READ 권한 없음
-      </div>
-    );
-  }
+  if (error) return <div>에러</div>;
+  if (!canRead) return <div className={styles.denied}> USER_READ 권한 없음</div>;
 
 
   const activeUsers = useMemo( () => { 
