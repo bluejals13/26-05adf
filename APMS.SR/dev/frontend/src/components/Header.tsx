@@ -15,11 +15,10 @@ export default function Header() {
   
   useEffect(() => {
     console.log("AUTH STATE", {
-      token,
       user,
       isLoggedIn,
     });
-  }, [token, user, isLoggedIn]);
+  }, [user, isLoggedIn]);
   
   const handleLogout = async () => {
     await logout();
