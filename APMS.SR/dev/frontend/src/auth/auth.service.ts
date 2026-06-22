@@ -23,7 +23,7 @@ export const authService = {
 
     useAuthStore.getState().setToken(res.accessToken);
 
-    await queryClient.invalidateQueries({ queryKey: authKeys.me });
+    await queryClient.invalidateQueries({ queryKey: authKeys.me() });
   },
 
   // 로그아웃
