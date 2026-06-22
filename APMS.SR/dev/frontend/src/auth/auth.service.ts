@@ -27,17 +27,14 @@ export const authService = {
   },
 
   // 로그아웃
-  async logout() {
-    try { await http.post("/api/auth/logout", {}, { credentials: "include" });
+  async logout() { const token = useAuthStore.getState().token;
+  try { await http.post( "/api/auth/logout", {}, 
+      { headers: { Authorization: `Bearer ${token}`, }, } );
     } finally {
       useAuthStore.getState().logout();
-
       queryClient.cancelQueries();
       queryClient.clear();
-
-      window.dispatchEvent(
-        new Event("auth:logout")
-      );
+      window.dispatchEvent(new Event("auth:logout"));
     }
   },
 };
