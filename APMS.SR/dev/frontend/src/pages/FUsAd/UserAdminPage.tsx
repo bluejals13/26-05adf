@@ -13,7 +13,6 @@ import type { User, UserStatus } from "../../auth/auth.types";
 
 export default function UserAdminPage() {
   const { user, isLoading: authLoading } = useAuth();
-  const { token } = useAuthStore();  
   
   if (authLoading) return <FullPageSpinner />;
   if (!user) return null;
