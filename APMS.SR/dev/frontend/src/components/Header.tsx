@@ -11,14 +11,17 @@ import { useMe } from "../queries/useMe";
 export default function Header() {
   const navigate = useNavigate();
   const { user, logout, isLoggedIn } = useAuth();
-  const { isStale, fetchStatus, dataUpdatedAt } = useMe();
+  const { data: user, isLoading, isError } = useMe();
   
   useEffect(() => {
-    console.log("AUTH STATE", {
-      user,
-      isLoggedIn,
+    console.log("AUTH DEBUG", {
+      token,
+      hasUser: !!user,
+      isLoggedIn: !!token && !!user,
+      isLoading,
+      isError,
     });
-  }, [user, isLoggedIn]);
+  }, [token, user, isLoading, isError]);
   
   const handleLogout = async () => {
     await logout();
