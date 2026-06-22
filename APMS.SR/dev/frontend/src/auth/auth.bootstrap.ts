@@ -16,13 +16,13 @@ export function bootstrapAuth(): Promise<void> {
     try {
       const token = await refreshToken();
 
-      if (!token) {
+      if (!token?.accessToken) {
         useAuthStore.getState().setToken(null);
         await queryClient.clear();
         return;
       }
 
-      useAuthStore.getState().setToken(token);
+      useAuthStore.getState().setToken(token.accessToken);
     } catch {
       useAuthStore.getState().setToken(null);
       await queryClient.clear();
