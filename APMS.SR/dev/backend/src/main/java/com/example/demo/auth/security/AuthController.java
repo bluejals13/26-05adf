@@ -70,8 +70,8 @@ public class AuthController {
         System.out.println("REFRESH ==================== ");        
         
         response.addCookie(cookie);
-        System.out.println("accessToken = " + result.accessToken());
-        System.out.println("refreshToken = " + result.refreshToken());
+        System.out.println("accessToken = " + token.accessToken());
+        System.out.println("refreshToken = " + token.refreshToken());
 
         return ResponseEntity.ok(token);
     }
