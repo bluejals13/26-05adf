@@ -12,7 +12,7 @@ import type { User, UserStatus } from "../../auth/auth.types";
 
 
 export default function UserAdminPage() {
-  const { user, authLoading } = useAuth();
+  const { user } = useAuth();
   const { hasPermission } = usePermissions(user);
 
   const canRead = user && hasPermission("USER_READ");
@@ -41,7 +41,6 @@ export default function UserAdminPage() {
     [users]
   );
   
-  if (isLoading) return <FullPageSpinner />;
   
   if (!canRead) {
     return (
