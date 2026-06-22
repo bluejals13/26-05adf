@@ -34,7 +34,7 @@ public class AuthService {
     private static final String REFRESH_KEY = "auth:refresh:";
 
     @Transactional
-    public LoginResult login(LoginRequest req) {
+    public LoginResult login(LoginRequest req) {    // 로그인
 
         User user = userRepository.findByUsername(req.username())
                 .orElseThrow(() -> new BadCredentialsException("INVALID_CREDENTIALS"));
@@ -57,7 +57,7 @@ public class AuthService {
         return new LoginResult(accessToken, "Bearer", refreshToken);
     }
 
-    public TokenResponse refresh(String refreshToken) {
+    public TokenResponse refresh(String refreshToken) {    // redis 로테 리프레시
 
         if (!jwtProvider.validateToken(refreshToken)) {
             throw new BadCredentialsException("INVALID_REFRESH_TOKEN");
@@ -92,7 +92,7 @@ public class AuthService {
         return new TokenResponse(newAccessToken, newRefreshToken);
     }
 
-    public void logout(Long userId, String accessToken, String refreshToken) {
+    public void logout(Long userId, String accessToken, String refreshToken) {    // 로그아웃
         
         redisTemplate.delete(REFRESH_KEY + userId);
     
