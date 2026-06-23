@@ -90,19 +90,19 @@ export const http = {
   get: <T>(url: string) =>
     request<T>(url, { method: "GET" }),
 
-  post: <T>(url: string, body?: unknown, options?: RequestInit) =>
+  post: <T>(url: string, body?: unknown, options?: RequestInit) => {
     console.log("POST METHOD", url)
     return request<T>(url, {
       method: "POST",
       body: body ? JSON.stringify(body) : undefined, ...options,
-    }),
+    });},
   
-  patch: <T>(url: string, body?: unknown) =>
+  patch: <T>(url: string, body?: unknown) => {
   console.log("PATCH METHOD", url)
   return request<T>(url, {
     method: "PATCH",
     body: body ? JSON.stringify(body) : undefined,
-  }),
+  });},
   
   put: <T>(url: string, body?: unknown) =>
     request<T>(url, {
