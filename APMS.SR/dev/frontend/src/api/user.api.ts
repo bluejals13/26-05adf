@@ -23,7 +23,7 @@ export const userApi = {
 
   changeStatus: (id: number, status: UserStatus) => {
     console.log("PATCH CALLED");
-    return http.post(`/api/admin/users/${id}/status`, { status })},
+    return http.patch(`/api/admin/users/${id}/status`, { status })},
 
   deleteUser: (id: number) =>
     http.delete(`/api/admin/users/${id}`),
