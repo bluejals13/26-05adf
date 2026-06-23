@@ -29,7 +29,7 @@ export default function UserAdminPage() {
     enabled: !!user,
   });
 
-  const users=data ?? [];
+  //const users=data ?? [];
   const refreshing = isFetching && !isLoading;
 
   const { changeStatus, deleteUser } = useUserMutations();
