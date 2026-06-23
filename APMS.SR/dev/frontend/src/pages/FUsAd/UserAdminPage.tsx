@@ -24,6 +24,7 @@ export default function UserAdminPage() {
     data: users,
     isLoading,
     isFetching,
+    error,
   } = useUsers({
     enabled: !!user,
   });
