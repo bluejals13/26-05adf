@@ -100,17 +100,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 5. authorities build
         List<GrantedAuthority> authorities = new ArrayList<>();
-
+        
+        // ROLE
         user.getRoles().forEach(r ->
                 authorities.add(new SimpleGrantedAuthority("ROLE_" + r.getName()))
         );
 
-        user.getRoles().forEach(r ->
-                r.getPermissions().forEach(p ->
-                        authorities.add(new SimpleGrantedAuthority(p.getName()))
-                )
-        );
-
+        // PERMISSION
+        user.getRoles().stream()
+            .flatMap(r -> r.getPermissions().stream())
+            .map(p -> new SimpleGrantedAuthority(p.getName()))
+            .forEach(authorities::add);
+        
+        System.out.println("AUTH = " + authorities);
+        
         // 6. Security context
         CustomUserPrincipal principal = new CustomUserPrincipal(userId);
 
