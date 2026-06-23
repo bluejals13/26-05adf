@@ -39,7 +39,7 @@ public class UserAdminController {
         userAdminService.deleteUser(adminId, id);
     }
     
-    @PreAuthorize("hasAuthority('USER_UPDATE')")
+    @PreAuthorize("hasAuthority('USER_STATUS_UPDATE')")
     @PatchMapping("/{id}/status")
     public void changeStatus(
             @PathVariable Long id,
