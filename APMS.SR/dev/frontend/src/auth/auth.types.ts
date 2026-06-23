@@ -16,3 +16,15 @@ export interface User {
   roles: Role[];
   permissions: Permission[];
 }
+
+export type Menu = {
+  id: number;
+  name: string;
+  price: number;
+};
+
+export type MenuRequest = {
+  name: string;
+  price: number;
+};
+
