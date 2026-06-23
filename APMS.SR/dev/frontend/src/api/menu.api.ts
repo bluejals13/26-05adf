@@ -1,17 +1,8 @@
 // api/menu.api.ts		//메뉴 용 api
 
 import { http } from "../api/http";
+import type { Menu, MenuRequest } from "../auth/auth.types";
 
-export type Menu = {
-  id: number;
-  name: string;
-  price: number;
-};
-
-export type MenuRequest = {
-  name: string;
-  price: number;
-};
 
 export const menuApi = {
   getMenus: () => http.get<Menu[]>("/api/admin/menus"),
@@ -20,5 +11,5 @@ export const menuApi = {
     http.post("/api/admin/menus", data),
 
   deleteMenu: (id: number) =>
-    http.post(`/api/admin/menus/${id}`, undefined),
+    http.delete(`/api/admin/menus/${id}`, undefined),
 };
