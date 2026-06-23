@@ -21,7 +21,7 @@ export default function UserAdminPage() {
 
   // ✅ user 있을 때만 users API 실행
   const {
-    data: users,
+    data: users = [],
     isLoading,
     isFetching,
     error,
@@ -29,24 +29,21 @@ export default function UserAdminPage() {
     enabled: !!user,
   });
 
-  //const users=data ?? [];
   const refreshing = isFetching && !isLoading;
 
   const { changeStatus, deleteUser } = useUserMutations();
 
-  const safeUsers = Array.isArray(users) ? users : [];
-
   const activeUsers = useMemo(() => {
-    return safeUsers.filter(
+    return users.filter(
       (u) => u.status !== "DELETED" && u.status !== "DELETE_PENDING"
     );
-  }, [safeUsers]);
+  }, [users]);
 
   const pendingUsers = useMemo(() => {
-    return safeUsers.filter(
+    return users.filter(
       (u) => u.status === "DELETE_PENDING"
     );
-  }, [safeUsers]);
+  }, [users]);
 
   // 🔍 debug
   console.log("auth user:", user);
