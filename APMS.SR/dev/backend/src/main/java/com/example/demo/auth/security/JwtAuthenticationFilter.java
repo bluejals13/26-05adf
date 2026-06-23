@@ -45,20 +45,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        String path = request.getServletPath();
-        String header = request.getHeader("Authorization");
-        String token = header.substring(7);      
+        String path = request.getServletPath(); 
         
         if (path.startsWith("/api/auth/")) {
             filterChain.doFilter(request, response);
             return;
         }
-
+        
+        String header = request.getHeader("Authorization");
+        
         if (header == null || !header.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
-
+        
+        String token = header.substring(7);     
+        
         // 0. JWT 검증
         if (!jwtProvider.validateToken(token)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
