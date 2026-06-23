@@ -41,7 +41,7 @@ export async function request<T>(
   url: string,
   options: RequestInit = {},
   retry = true
-): Promise<T> {
+): Promise<T> {  console.log("REQUEST CALLED");
   const token = useAuthStore.getState().token;
 
   const res = await fetch(url, {
