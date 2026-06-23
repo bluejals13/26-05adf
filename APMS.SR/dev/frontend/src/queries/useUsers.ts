@@ -16,7 +16,6 @@ export function useUsers(options?: {
 
     enabled: options?.enabled ?? true,
 
-    initialData: [],
     retry: 1,
 
     staleTime: 1000 * 10,
