@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { menuApi } from "../api/menu.api";
-import type { MenuRequest } from "../api/menu.api";
+import type { MenuRequest } from "../auth/auth.types";
 
 export function useMenuMutations() {
   const qc = useQueryClient();
