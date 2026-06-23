@@ -21,7 +21,7 @@ export default function UserAdminPage() {
 
   // ✅ user 있을 때만 users API 실행
   const {
-    data: users,
+    data,
     isLoading,
     isFetching,
     error,
@@ -30,6 +30,7 @@ export default function UserAdminPage() {
   });
 
   const users=data ?? [];
+  const refreshing = isFetching && !isLoading;
 
   const { changeStatus, deleteUser } = useUserMutations();
 
