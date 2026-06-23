@@ -21,7 +21,7 @@ export default function UserAdminPage() {
 
   // ✅ user 있을 때만 users API 실행
   const {
-    data,
+    data: users,
     isLoading,
     isFetching,
     error,
