@@ -7,7 +7,7 @@ import type { User, UserStatus } from "../auth/auth.types";
 export const userApi = {
   getUsers: async (): Promise<User[]> => {
     
-    const res = await http.get<User[]>("/api/admin/users");
+    const list = await http.get<User[]>("/api/admin/users");
     
     
     console.log("USER API RESPONSE", res);
