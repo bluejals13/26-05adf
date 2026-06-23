@@ -11,5 +11,5 @@ export const menuApi = {
     http.post("/api/admin/menus", data),
 
   deleteMenu: (id: number) =>
-    http.delete(`/api/admin/menus/${id}`, undefined),
+    http.delete(`/api/admin/menus/${id}`),
 };
