@@ -91,15 +91,15 @@ export const http = {
     request<T>(url, { method: "GET" }),
 
   post: <T>(url: string, body?: unknown, options?: RequestInit) =>
-    console.log("POST METHOD", url);
-    request<T>(url, {
+    console.log("POST METHOD", url)
+    return request<T>(url, {
       method: "POST",
       body: body ? JSON.stringify(body) : undefined, ...options,
     }),
   
   patch: <T>(url: string, body?: unknown) =>
-  console.log("PATCH METHOD", url);
-  request<T>(url, {
+  console.log("PATCH METHOD", url)
+  return request<T>(url, {
     method: "PATCH",
     body: body ? JSON.stringify(body) : undefined,
   }),
