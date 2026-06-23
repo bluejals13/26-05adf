@@ -107,10 +107,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         );
 
         // PERMISSION
-        user.getRoles().stream()
-            .flatMap(r -> r.getPermissions().stream())
-            .map(p -> new SimpleGrantedAuthority(p.getName()))
-            .forEach(authorities::add);
+
+        user.getRoles().forEach(r ->
+            r.getPermissions().forEach(p ->
+                authorities.add(new SimpleGrantedAuthority(p.getName()))
+                )
+            );
         
         System.out.println("AUTH = " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
         
