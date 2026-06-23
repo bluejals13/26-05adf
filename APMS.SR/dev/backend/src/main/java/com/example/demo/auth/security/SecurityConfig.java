@@ -86,6 +86,15 @@ public class SecurityConfig {         // 기본 접근 보안설정
             .accessDeniedHandler((req, res, e) -> {
                 e.printStackTrace();
                 res.setStatus(403);
+                res.setContentType("application/json;charset=UTF-8");
+                
+                res.getWriter().write("""
+                    {
+                        "success": false,
+                        "code": "FORBIDDEN",
+                        "message": "권한이 없습니다"
+                    }
+                """);
             })
             )
             .build();
