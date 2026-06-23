@@ -11,7 +11,8 @@ export const userApi = {
   getUsers: async (): Promise<User[]> => {
     const res = await http.get<ApiResponse<any[]>>("/api/admin/users");
 
-    const list = res?.data ?? [];
+    const list = res.data.data;
+
     console.log("USER API RESPONSE", res);
 
     return list.map((u) => ({
