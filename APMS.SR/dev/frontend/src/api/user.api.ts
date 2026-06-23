@@ -3,16 +3,13 @@
 import { http } from "../api/http";
 import type { User, UserStatus } from "../auth/auth.types";
 
-type ApiResponse<T> = {
-  data: T;
-};
 
 export const userApi = {
   getUsers: async (): Promise<User[]> => {
-    const res = await http.get<ApiResponse<User[]>>("/api/admin/users");
-
-    const list = res.data.data;
-
+    
+    const res = await http.get<User[]>("/api/admin/users");
+    
+    
     console.log("USER API RESPONSE", res);
 
     return list.map((u) => ({
