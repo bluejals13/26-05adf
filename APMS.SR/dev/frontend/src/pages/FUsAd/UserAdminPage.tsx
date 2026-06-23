@@ -7,7 +7,7 @@ import { usePermissions } from "../../auth/hooks/usePermissions";
 import { useAuth } from "../../auth/hooks/useAuth";
 import FullPageSpinner from "../../components/loading/FullPageSpinner";
 
-import type { User, UserStatus } from "../../auth/auth.types";
+import type { UserStatus } from "../../auth/auth.types";
 
 export default function UserAdminPage() {
   const { user, isLoading: authLoading } = useAuth();
