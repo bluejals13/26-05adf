@@ -46,20 +46,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         String path = request.getServletPath();
-
+        String header = request.getHeader("Authorization");
+        String token = header.substring(7);      
+        
         if (path.startsWith("/api/auth/")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String header = request.getHeader("Authorization");
-
         if (header == null || !header.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
-
-        String token = header.substring(7);
 
         // 0. JWT 검증
         if (!jwtProvider.validateToken(token)) {
@@ -114,7 +112,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 )
             );
         
-        System.out.println("AUTH = " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+        
         
         // 6. Security context
         CustomUserPrincipal principal = new CustomUserPrincipal(userId);
@@ -125,9 +123,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         null,
                         authorities
                 );
-
+        
         SecurityContextHolder.getContext().setAuthentication(auth);
-
+        System.out.println("AUTH = " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+        
         filterChain.doFilter(request, response);
     }
 }
