@@ -22,7 +22,8 @@ export const userApi = {
   },
 
   changeStatus: (id: number, status: UserStatus) =>
-    http.patch(`/api/admin/users/${id}/status`, { status }),
+    console.log("PATCH CALLED");
+    http.post(`/api/admin/users/${id}/status`, { status }),
 
   deleteUser: (id: number) =>
     http.delete(`/api/admin/users/${id}`),
