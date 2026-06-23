@@ -16,7 +16,7 @@ export default function UserAdminPage() {
   const { hasPermission } = usePermissions(user);
 
   const canRead = hasPermission("USER_READ");
-  const canUpdate = hasPermission("USER_UPDATE");
+  const canUpdate = hasPermission("USER_STATUS_UPDATE");
   const canDelete = hasPermission("USER_DELETE");
 
   // ✅ user 있을 때만 users API 실행
