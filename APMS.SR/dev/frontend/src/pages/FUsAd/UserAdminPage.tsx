@@ -70,7 +70,7 @@ export default function UserAdminPage() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>User Admin</h1>
-   {isFetching && (
+   {refreshing && (
     <div className={styles.refresh}>
       사용자 정보 갱신중...
     </div>
