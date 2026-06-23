@@ -52,6 +52,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         
+        if (request.getMethod().equals("OPTIONS")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
         String header = request.getHeader("Authorization");
         
         if (header == null || !header.startsWith("Bearer ")) {
@@ -126,9 +131,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         authorities
                 );
         
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        System.out.println("AUTH = " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        
-        filterChain.doFilter(request, response);
+        try {
+            
+            SecurityContextHolder.getContext().setAuthentication(auth);
+            System.out.println("AUTH = " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+            
+            filterChain.doFilter(request, response);
+        } finally {
+            SecurityContextHolder.clearContext();
+        }
     }
 }
