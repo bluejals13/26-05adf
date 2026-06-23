@@ -95,7 +95,13 @@ export const http = {
       method: "POST",
       body: body ? JSON.stringify(body) : undefined, ...options,
     }),
-
+  
+  patch: <T>(url: string, body?: unknown) =>
+  request<T>(url, {
+    method: "PATCH",
+    body: body ? JSON.stringify(body) : undefined,
+  }),
+  
   put: <T>(url: string, body?: unknown) =>
     request<T>(url, {
       method: "PUT",
