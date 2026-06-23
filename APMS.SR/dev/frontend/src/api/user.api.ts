@@ -9,7 +9,7 @@ type ApiResponse<T> = {
 
 export const userApi = {
   getUsers: async (): Promise<User[]> => {
-    const res = await http.get<ApiResponse<[]>>("/api/admin/users");
+    const res = await http.get<ApiResponse<User[]>>("/api/admin/users");
 
     const list = res.data.data;
 
