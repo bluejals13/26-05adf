@@ -28,6 +28,8 @@ export default function UserAdminPage() {
     enabled: !!user,
   });
 
+  const users=data ?? [];
+
   const { changeStatus, deleteUser } = useUserMutations();
 
   const safeUsers = Array.isArray(users) ? users : [];
