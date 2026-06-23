@@ -3,7 +3,7 @@ import { useMenus } from "../../queries/useMenus";
 import { useMenuMutations } from "../../mutations/useMenuMutations";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { usePermissions } from "../../auth/hooks/usePermissions";
-import type { Menu } from "../../api/menu.api";
+import type { Menu } from "../../auth/auth.types";
 
 import FullPageSpinner from "../../components/loading/FullPageSpinner";
 import styles from "./menu.module.css";
