@@ -10,7 +10,7 @@ export const userApi = {
     const list = await http.get<User[]>("/api/admin/users");
     
     
-    console.log("USER API RESPONSE", res);
+    console.log("USER API RESPONSE", list);
 
     return list.map((u) => ({
       id: u.id,
