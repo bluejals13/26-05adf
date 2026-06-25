@@ -74,7 +74,7 @@ public class RoleAdminService {
 
     public void deleteRole(Long adminId, Long roleId) {
         
-        User user = userRepository.findById(adminId)
+        User user = roleRepository.findById(adminId)
             .orElseThrow(() -> new IllegalArgumentException("Role not found"));
         
         String before = role.getName();
