@@ -83,9 +83,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Claims claims = jwtProvider.parseClaims(token);
         //String jti = claims.getId();
         Long userId = Long.parseLong(claims.getSubject());
-
+        
         System.out.println("userId=" + userId);
         
+        List<GrantedAuthority> authorities = userService.getAuthorities(userId);
         
         // 6. Security context
         CustomUserPrincipal principal = new CustomUserPrincipal(userId);
