@@ -56,8 +56,8 @@ public class RoleAdminService {
         );
     }
 
-    public void updateRole(Long adminId, Long id, RoleRequest request) {
-        Role role = roleRepository.findById(id)
+    public void updateRole(Long adminId, Long roleId, RoleRequest request) {
+        Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new IllegalArgumentException("Role not found"));
         String before = role.getName();
         role.updateName(request.getName());
@@ -74,7 +74,7 @@ public class RoleAdminService {
 
     public void deleteRole(Long adminId, Long roleId) {
         
-        User user = roleRepository.findById(adminId)
+        Role role = roleRepository.findById(roleId)
             .orElseThrow(() -> new IllegalArgumentException("Role not found"));
         
         String before = role.getName();
