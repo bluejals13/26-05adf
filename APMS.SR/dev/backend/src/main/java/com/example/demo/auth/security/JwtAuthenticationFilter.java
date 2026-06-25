@@ -4,6 +4,7 @@ import com.example.demo.auth.jwt.JwtProvider;
 
 import com.example.demo.auth.security.UserAuthorityService;
 
+import com.example.demo.iam.user.service.UserService;
 import com.example.demo.iam.user.repository.UserRepository;
 import com.example.demo.iam.user.domain.User;
 import com.example.demo.iam.user.domain.UserStatus;
@@ -24,6 +25,7 @@ import org.springframework.web.filter.OncePerRequestFilter;    // 요청 당 1�
 import org.springframework.data.redis.core.RedisTemplate;    // redis 템플릿 으로 캐시 운용
 
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import io.jsonwebtoken.Claims;
 import java.io.IOException;
 import java.util.ArrayList;
