@@ -1,6 +1,8 @@
 package com.example.demo.auth.security;
 
 import com.example.demo.auth.jwt.JwtProvider;
+import com.example.demo.auth.security.TokenBlacklistService;
+
 import com.example.demo.iam.user.domain.User;
 import com.example.demo.iam.user.dto.LoginRequest;
 import com.example.demo.iam.user.dto.LoginResult;
@@ -37,6 +39,8 @@ public class AuthService {
 
     @Transactional
     public LoginResult login(LoginRequest req) {    // 로그인
+        
+        if (blacklistService.isBlacklisted(refreshToken)) { return; }
 
         User user = userRepository.findByUsername(req.username())
                 .orElseThrow(() -> new BadCredentialsException("INVALID_CREDENTIALS"));
@@ -49,33 +53,36 @@ public class AuthService {
         String refreshToken = jwtProvider.createRefreshToken(user.getId());
         
         String currentJti = redisTemplate.opsForValue().get(REFRESH_KEY + user.getId());    // redis 에서 리프레시 , 유저 확인
-        
-        if (currentJti != null) {    // 중복 로그인 예외처리    && !forceLogin  강제 로그인 
-            throw new DuplicateUserException("INVALID_AlreadyLogged");
-        }
+         
         
         String jti = jwtProvider.parseClaims(refreshToken).getId();
         
         redisTemplate.opsForValue().set(
                 REFRESH_KEY + user.getId(),
-                jti,
+                jti,    // 랜덤 uuid 적용
                 Duration.ofDays(7)
         );
-
+        
         return new LoginResult(accessToken, "Bearer", refreshToken);
     }
 
     public TokenResponse refresh(String refreshToken) {    // redis 로테 리프레시
-
+        
+        
+        if (blacklistService.isBlacklisted(refreshToken)) { return; }
+        
         if (!jwtProvider.validateToken(refreshToken)) {
             throw new BadCredentialsException("INVALID_REFRESH_TOKEN");
         }
-
+        
+        redisTemplate.delete(key);
+        
         Claims claims = jwtProvider.parseClaims(refreshToken);
-
+        
         if (!"refresh".equals(claims.get("type"))) {
             throw new BadCredentialsException("INVALID_REFRESH_TOKEN");
         }
+        
         
         Long userId = Long.parseLong(claims.getSubject());
 
@@ -102,17 +109,17 @@ public class AuthService {
 
     public void logout(String accessToken, String refreshToken) {    // 로그아웃
     
-        Long userId = null;
-    
-        if (refreshToken != null) { userId = Long.parseLong(jwtProvider.parseClaims(refreshToken).getSubject()); }
-    
-        if (userId != null) {
-            redisTemplate.delete(ACCESS_KEY + userId);
-            redisTemplate.delete(REFRESH_KEY + userId);
+        if (accessToken != null) {
+            blacklistService.blacklist(accessToken);
         }
     
-        if (accessToken != null) { blacklistService.blacklist(accessToken); }
+        if (refreshToken != null) {
+            Claims claims = jwtProvider.parseClaims(refreshToken);
+            Long userId = Long.parseLong(claims.getSubject());
     
-        if (refreshToken != null) { blacklistService.blacklist(refreshToken); }
+            redisTemplate.delete(REFRESH_KEY + userId);
+    
+            blacklistService.blacklist(refreshToken);
+        }
     }
 }
