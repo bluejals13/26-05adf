@@ -49,7 +49,7 @@ public class RolePermissionService {
             throw new IllegalArgumentException("Some permissions not found");
         }
 
-        role.setPermissions(permissions);
+        role.setPermissions(newPermissions);
         
         auditService.log(
                 adminId,
