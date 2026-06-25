@@ -51,7 +51,7 @@ public class AuthService {
         String currentJti = redisTemplate.opsForValue().get(REFRESH_KEY + user.getId());    // redis 에서 리프레시 , 유저 확인
         
         if (currentJti != null) {    // 중복 로그인 예외처리    && !forceLogin  강제 로그인 
-            throw new BadCredentialsException("INVALID_AlreadyLogged");
+            throw new DuplicateUserException("INVALID_AlreadyLogged");
         }
         
         String jti = jwtProvider.parseClaims(refreshToken).getId();
