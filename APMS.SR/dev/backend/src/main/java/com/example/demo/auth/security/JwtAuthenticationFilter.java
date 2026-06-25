@@ -87,10 +87,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         System.out.println("userId=" + userId);
         
         
-        
         // 6. Security context
         CustomUserPrincipal principal = new CustomUserPrincipal(userId);
-
+        
         UsernamePasswordAuthenticationToken auth =
                 new UsernamePasswordAuthenticationToken(
                         principal,
