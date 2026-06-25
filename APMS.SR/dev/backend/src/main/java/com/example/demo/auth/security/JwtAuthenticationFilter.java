@@ -88,7 +88,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         
         System.out.println("userId=" + userId);
         
-        List<GrantedAuthority> authorities = userService.getAuthorities(userId);
+        List<GrantedAuthority> authorities = userAuthorityService.getAuthorities(userId);
         
         // 6. Security context
         CustomUserPrincipal principal = new CustomUserPrincipal(userId);
