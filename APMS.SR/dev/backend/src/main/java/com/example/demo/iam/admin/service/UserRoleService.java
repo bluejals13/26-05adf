@@ -35,7 +35,9 @@ public class UserRoleService {
 
         User user = userRepository.findById(userId)
             .orElseThrow();
-
+        
+        Set<Role> beforeRoles = new HashSet<>(user.getRoles());
+        
         Set<Role> roles = new HashSet<>(
             roleRepository.findAllById(roleIds)
         );
@@ -48,8 +50,19 @@ public class UserRoleService {
 
         auditService.log(
             adminId,
-            AuditAction.ROLE_ASSIGN,
-            userId
+            AuditAction.ROLE_UPDATE,
+            "USER",
+            userId,
+            beforeRoles.stream()
+                    .map(Role::getName)
+                    .sorted()
+                    .toList()
+                    .toString(),
+            newRoles.stream()
+                    .map(Role::getName)
+                    .sorted()
+                    .toList()
+                    .toString()
         );
     }
 }
