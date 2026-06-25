@@ -1,7 +1,6 @@
 package com.example.demo.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import com.example.demo.common.exception.AlreadyLoggedInException;
 import com.example.demo.common.exception.UserNotFoundException;
 import com.example.demo.common.exception.DuplicateUserException;
 import org.springframework.http.ResponseEntity;
