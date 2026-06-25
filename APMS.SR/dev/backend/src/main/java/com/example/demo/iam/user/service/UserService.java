@@ -50,7 +50,7 @@ public class UserService {
 
     public MeResponse getMe(Long userId) {
 
-        User user = userRepository.findWithRolesById(userId)
+        User user = userRepository.findWithRolesAndPermissionsById(userId)
                 .orElseThrow(() -> new UserNotFoundException("유저 없음"));
 
         List<String> roles = user.getRoles()
