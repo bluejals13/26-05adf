@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         "roles",
         "roles.permissions"
     })
-    Optional<User> findWithRolesById(Long id);
+    Optional<User> findWithRolesAndPermissionsById(Long id);
     
     @Query("""
             select distinct u
