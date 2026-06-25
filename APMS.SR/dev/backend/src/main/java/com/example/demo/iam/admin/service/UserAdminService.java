@@ -48,7 +48,21 @@ public class UserAdminService {
     
     @Transactional
     public void deleteUser(Long adminId, Long userId) {                          // 계정 삭제
-        changeStatus(adminId, userId, UserStatus.DELETE_PENDING);
+        User user = userRepository.findById(userId)
+            .orElseThrow();
+        
+        UserStatus before = user.getStatus();        
+        
+        user.changeStatus(UserStatus.DELETE_PENDING);
+        
+        auditService.log(
+            adminId,
+            AuditAction.USER_DELETE,
+            "USER",
+            userId,
+            before.name(),
+            status.DELETE_PENDING.name()
+        );
     }
     
     //public void restoreUser(Long adminId, Long userId)
