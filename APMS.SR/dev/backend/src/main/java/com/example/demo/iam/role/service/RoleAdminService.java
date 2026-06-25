@@ -73,7 +73,6 @@ public class RoleAdminService {
     }
 
     public void deleteRole(Long adminId, Long roleId) {
-        roleRepository.deleteById(id);
         
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("Role not found"));
@@ -81,8 +80,6 @@ public class RoleAdminService {
         String before = role.getName();
         
         roleRepository.delete(role);
-        
-        user.changeStatus(status);
         
         auditService.log(
                 adminId,
