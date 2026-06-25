@@ -1,6 +1,8 @@
 package com.example.demo.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import com.example.demo.common.exception.AlreadyLoggedInException;
+import com.example.demo.common.exception.UserNotFoundException;
 import com.example.demo.common.exception.DuplicateUserException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,7 +15,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // 회원 중복
+    // 회원 가입 계정 중복
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> handleBadRequest(IllegalArgumentException e) {
         return ResponseEntity
@@ -28,6 +30,16 @@ public class GlobalExceptionHandler {
             "message", "UNAUTHORIZED",
             "detail", e.getMessage()
         ));
+    }
+
+    @ExceptionHandler(DuplicateUserException.class)
+    public ResponseEntity<?> handleDuplicateUser(DuplicateUserException e) {
+        return ResponseEntity
+                .status(409)
+                .body(Map.of(
+                        "code", "DUPLICATE_USER",
+                        "message", e.getMessage()
+                ));
     }
 
     // 나머지 모든 예외
