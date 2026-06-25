@@ -24,6 +24,16 @@ public class UserAdminService {
     private final AuditService auditService;
     private LocalDateTime createdAt;
     
+    private void validateTransition(
+        UserStatus current,
+        UserStatus target
+    ) {
+        if (current == UserStatus.DELETED) {
+            throw new IllegalStateException("삭제된 사용자는 상태 변경 불가");
+        }
+    }
+    
+    
     public List<AdminUserResponse> getUsers() {
         return userRepository.findAll().stream()
             .map(user -> new AdminUserResponse(
@@ -37,36 +47,31 @@ public class UserAdminService {
     
     
     @Transactional
-    public void deleteUser(Long adminId, Long userId) {
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        //userRepository.delete(user);
-        user.changeStatus(UserStatus.DELETE_PENDING);
-
-        auditService.log(
-                adminId,
-                AuditAction.USER_STATUS_CHANGE,
-                userId
-        );
+    public void deleteUser(Long adminId, Long userId) {                          // 계정 삭제
+        changeStatus(adminId, userId, UserStatus.DELETE_PENDING);
     }
     
     //public void restoreUser(Long adminId, Long userId)
     //public void hardDeleteUser(Long adminId, Long userId)
     
     @Transactional
-    public void changeStatus(Long adminId, Long userId, UserStatus status) {
+    public void changeStatus(Long adminId, Long userId, UserStatus status) {    // 계정 상태 변경 [활성] > [정지]
 
         User user = userRepository.findById(userId)
             .orElseThrow();
-
+        
+        UserStatus before = user.getStatus();        
+        
+        validateTransition(user.getStatus(), status);
+        
         user.changeStatus(status);
-
+        
         auditService.log(
             adminId,
             AuditAction.USER_STATUS_CHANGE,
-            userId
+            userId,
+            before,
+            status
         );
     }
 }
