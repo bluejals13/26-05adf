@@ -7,7 +7,6 @@ import com.example.demo.iam.user.dto.LoginResult;
 import com.example.demo.iam.user.dto.TokenResponse;
 import com.example.demo.iam.user.repository.UserRepository;
 
-import com.example.demo.common.exception.GlobalExceptionHandler;
 
 import io.jsonwebtoken.Claims;
 
