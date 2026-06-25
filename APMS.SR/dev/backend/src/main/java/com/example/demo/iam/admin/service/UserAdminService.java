@@ -61,7 +61,7 @@ public class UserAdminService {
             "USER",
             userId,
             before.name(),
-            status.DELETE_PENDING.name()
+            UserStatus.DELETE_PENDING.name()
         );
     }
     
