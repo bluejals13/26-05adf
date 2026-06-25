@@ -2,7 +2,7 @@ package com.example.demo.auth.security;
 
 import com.example.demo.auth.jwt.JwtProvider;
 
-//import com.example.demo.auth.security.UserDetailsService;
+import com.example.demo.auth.security.UserDetailsService;
 
 import com.example.demo.iam.user.repository.UserRepository;
 import com.example.demo.iam.user.domain.User;
