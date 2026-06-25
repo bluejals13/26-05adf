@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final RedisTemplate<String, String> redisTemplate;
     private final UserRepository userRepository;
     private final TokenBlacklistService tokenBlacklistService;
-    private final UserService userService;
+    private final UserAuthorityService userAuthorityService;
     
     
     @Override
