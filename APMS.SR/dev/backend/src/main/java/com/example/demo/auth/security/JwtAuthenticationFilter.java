@@ -94,7 +94,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // if (activeJti != null && !activeJti.equals(jti)) { response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); return; }
 
         // 3. User load
-        User user = userRepository.findWithRolesById(userId)
+        User user = userRepository.findWithRolesAndPermissionsById(userId)
                 .orElseThrow();
 
         // 4. user status check
