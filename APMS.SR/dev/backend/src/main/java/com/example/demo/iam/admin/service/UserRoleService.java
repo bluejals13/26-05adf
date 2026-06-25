@@ -58,7 +58,7 @@ public class UserRoleService {
                     .sorted()
                     .toList()
                     .toString(),
-            newRoles.stream()
+            Roles.stream()
                     .map(Role::getName)
                     .sorted()
                     .toList()
