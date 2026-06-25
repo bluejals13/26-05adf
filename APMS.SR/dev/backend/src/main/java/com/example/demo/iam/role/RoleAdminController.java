@@ -25,8 +25,10 @@ public class RoleAdminController {
     private Long getAdminId() {
         Authentication auth =
                 SecurityContextHolder.getContext().getAuthentication();
-
-        return Long.valueOf(auth.getName()); // (전제: name = userId)
+        
+        CustomUserDetails user = (CustomUserDetails) auth.getPrincipal();
+        
+        return user.getId(); // (전제: name = userId)
     }
     
     @PreAuthorize("hasAuthority('ROLE_READ')")
