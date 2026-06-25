@@ -7,6 +7,8 @@ import com.example.demo.iam.role.service.RoleAdminService;
 import com.example.demo.iam.role.service.RolePermissionService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +21,14 @@ public class RoleAdminController {
 
     private final RoleAdminService roleAdminService;
     private final RolePermissionService rolePermissionService;
+    
+    private Long getAdminId() {
+        Authentication auth =
+                SecurityContextHolder.getContext().getAuthentication();
 
+        return Long.valueOf(auth.getName()); // (전제: name = userId)
+    }
+    
     @PreAuthorize("hasAuthority('ROLE_READ')")
     @GetMapping
     public List<RoleResponse> getRoles() {
@@ -29,26 +38,26 @@ public class RoleAdminController {
     @PreAuthorize("hasAuthority('ROLE_CREATE')")
     @PostMapping
     public void createRole(@RequestBody RoleRequest request) {
-        roleAdminService.createRole(request);
+        roleAdminService.createRole(getAdminId(), request);
     }
 
     @PreAuthorize("hasAuthority('ROLE_UPDATE')")
     @PatchMapping("/{id}")
     public void updateRole(@PathVariable Long id,
                            @RequestBody RoleRequest request) {
-        roleAdminService.updateRole(id, request);
+        roleAdminService.updateRole(getAdminId(), id, request);
     }
 
     @PreAuthorize("hasAuthority('ROLE_DELETE')")
     @DeleteMapping("/{id}")
     public void deleteRole(@PathVariable Long id) {
-        roleAdminService.deleteRole(id);
+        roleAdminService.deleteRole(getAdminId(), id);
     }
 
     @PreAuthorize("hasAuthority('ROLE_PERMISSION_MANAGE')")
     @PostMapping("/{roleId}/permissions")
     public void assignPermissions(@PathVariable Long roleId,
                                    @RequestBody RolePermissionRequest request) {
-        rolePermissionService.assignPermissions(roleId, request.permissionIds());
+        rolePermissionService.assignPermissions(getAdminId(), roleId, request.permissionIds());
     }
 }
