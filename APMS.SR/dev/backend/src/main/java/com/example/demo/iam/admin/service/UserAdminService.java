@@ -69,9 +69,10 @@ public class UserAdminService {
         auditService.log(
             adminId,
             AuditAction.USER_STATUS_CHANGE,
+            "USER",
             userId,
-            before,
-            status
+            before.name(),
+            status.name()
         );
     }
 }
