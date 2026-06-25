@@ -79,11 +79,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         Claims claims = jwtProvider.parseClaims(token);
-        String jti = claims.getId();
+        //String jti = claims.getId();
         Long userId = Long.parseLong(claims.getSubject());
 
         System.out.println("userId=" + userId);
-        System.out.println("jti=" + jti);
+        //System.out.println("jti=" + jti);
 
         
         // 2. Redis session check (SAFE MODE)
@@ -131,14 +131,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         authorities
                 );
         
-        try {
             
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            System.out.println("AUTH = " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        System.out.println("AUTH = " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
             
-            filterChain.doFilter(request, response);
-        } finally {
-            //SecurityContextHolder.clearContext();
-        }
+        filterChain.doFilter(request, response);
+
     }
 }
