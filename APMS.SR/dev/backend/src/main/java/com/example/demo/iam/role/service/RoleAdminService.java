@@ -1,7 +1,8 @@
 package com.example.demo.iam.role.service;
 //--
 import com.example.demo.audit.domain.AuditAction;
-//--
+import com.example.demo.audit.service.AuditService;
+
 import com.example.demo.iam.role.domain.Role;
 import com.example.demo.iam.role.dto.RoleRequest;
 import com.example.demo.iam.role.dto.RoleResponse;
@@ -23,7 +24,8 @@ import java.util.List;
 public class RoleAdminService {
 
     private final RoleRepository roleRepository;
-
+    private final AuditService auditService;
+    
     public List<RoleResponse> getRoles() {            // 순수 롤 조회 용
         return roleRepository.findAllWithPermissions()
                 .stream()
@@ -40,20 +42,55 @@ public class RoleAdminService {
                 .toList();
     }
 
-    public void createRole(RoleRequest request) {
+    public void createRole(Long adminId, RoleRequest request) {
         Role role = Role.create(request.getName());
-        role.updateName(request.getName());
         roleRepository.save(role);
+        
+        auditService.log(
+                adminId,
+                AuditAction.ROLE_UPDATE,
+                "ROLE",
+                role.getId(),
+                null,
+                role.getName()
+        );
     }
 
-    public void updateRole(Long id, RoleRequest request) {
+    public void updateRole(Long adminId, Long id, RoleRequest request) {
         Role role = roleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Role not found"));
-
+        String before = role.getName();
         role.updateName(request.getName());
+        
+        auditService.log(
+                adminId,
+                AuditAction.ROLE_UPDATE,
+                "ROLE",
+                roleId,
+                before,
+                role.getName()
+        );
     }
 
-    public void deleteRole(Long id) {
+    public void deleteRole(Long adminId, Long roleId) {
         roleRepository.deleteById(id);
+        
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new IllegalArgumentException("Role not found"));
+        
+        String before = role.getName();
+        
+        roleRepository.delete(role);
+        
+        user.changeStatus(status);
+        
+        auditService.log(
+                adminId,
+                AuditAction.ROLE_DELETE,
+                "ROLE",
+                roleId,
+                before,
+                null
+        );
     }
 }
