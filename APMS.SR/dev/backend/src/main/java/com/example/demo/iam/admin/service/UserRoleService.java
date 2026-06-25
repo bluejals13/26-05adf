@@ -50,7 +50,7 @@ public class UserRoleService {
 
         auditService.log(
             adminId,
-            AuditAction.ROLE_UPDATE,
+            AuditAction.USER_ROLE_UPDATE,
             "USER",
             userId,
             beforeRoles.stream()
