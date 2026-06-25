@@ -2,6 +2,8 @@ package com.example.demo.auth.security;
 
 import com.example.demo.auth.jwt.JwtProvider;
 
+//import com.example.demo.auth.security.UserDetailsService;
+
 import com.example.demo.iam.user.repository.UserRepository;
 import com.example.demo.iam.user.domain.User;
 import com.example.demo.iam.user.domain.UserStatus;
@@ -83,41 +85,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Long userId = Long.parseLong(claims.getSubject());
 
         System.out.println("userId=" + userId);
-        //System.out.println("jti=" + jti);
-
-        
-        // 2. Redis session check (SAFE MODE)
-        // String activeJti = redisTemplate.opsForValue().get("active-jti:" + userId);
-
-        // System.out.println("activeJti=" + activeJti);
-
-        // if (activeJti != null && !activeJti.equals(jti)) { response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); return; }
-
-        // 3. User load
-        User user = userRepository.findWithRolesAndPermissionsById(userId)
-                .orElseThrow();
-
-        // 4. user status check
-        if (user.getStatus() != UserStatus.ACTIVE) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
-
-        // 5. authorities build
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        
-        // ROLE
-        user.getRoles().forEach(r ->
-                authorities.add(new SimpleGrantedAuthority("ROLE_" + r.getName()))
-        );
-
-        // PERMISSION
-
-        user.getRoles().forEach(r ->
-            r.getPermissions().forEach(p ->
-                authorities.add(new SimpleGrantedAuthority(p.getName()))
-                )
-            );
         
         
         
