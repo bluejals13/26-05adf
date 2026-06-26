@@ -82,7 +82,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         
                 
         // 1. 블랙리스트 체크 (최우선)
-        if ((jti != null && tokenBlacklistService.isBlacklisted(jti)) {
+        if (jti != null && tokenBlacklistService.isBlacklisted(jti)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
