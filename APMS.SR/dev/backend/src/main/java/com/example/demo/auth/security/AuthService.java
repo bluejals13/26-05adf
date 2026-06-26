@@ -70,7 +70,7 @@ public class AuthService {
 
     public TokenResponse refresh(String refreshToken) {    // redis 로테 리프레시
         
-        Claims claims = jwtProvider.parseClaims(accessToken);
+        Claims claims = jwtProvider.parseClaims(refreshToken);
         Long userId = Long.parseLong(claims.getSubject());
         String jti = claims.getId();
         
