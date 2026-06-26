@@ -49,7 +49,7 @@ public class AuthService {
             throw new BadCredentialsException("INVALID_CREDENTIALS");
         }
         if (user.getStatus() != UserStatus.ACTIVE) {        //
-            throw new DisabledException("User not active");
+            throw new BadCredentialsException("User not active");
         }
         
         // 1. sessionId 생성 (refresh 역할)
@@ -81,7 +81,7 @@ public class AuthService {
         String jti = claims.getId();
         
         //if (blacklistService.isBlacklisted(refreshToken)) { throw new BadCredentialsException("블랙리스트 토큰"); }        
-        User user = userRepository.findByUsername(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BadCredentialsException("INVALID_CREDENTIALS"));
         
         if ((user.getStatus() != UserStatus.ACTIVE) && (user.getStatus() != UserStatus.SUSPENDED)) {
