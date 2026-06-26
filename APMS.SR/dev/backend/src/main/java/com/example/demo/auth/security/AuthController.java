@@ -37,7 +37,7 @@ public class AuthController {
 
         LoginResult result = authService.login(req);
 
-        Cookie cookie = new Cookie("refreshToken", result.refreshToken());
+        Cookie cookie = new Cookie("sessionId", result.sessionId());
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/");
@@ -48,7 +48,7 @@ public class AuthController {
         
         response.addCookie(cookie);
         System.out.println("accessToken = " + result.accessToken());
-        System.out.println("refreshToken = " + result.refreshToken());
+        System.out.println("sessionId = " + result.refreshToken());
         
         return ResponseEntity.ok(
                 new LoginResult(result.accessToken(), "Bearer", result.sessionId())
@@ -66,7 +66,7 @@ public class AuthController {
         
         TokenResponse token = authService.refresh(accessToken, sessionId);
 
-        Cookie cookie = new Cookie("refreshToken", token.refreshToken());
+        Cookie cookie = new Cookie("sessionId", token.sessionId());
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/");
@@ -76,7 +76,7 @@ public class AuthController {
         
         response.addCookie(cookie);
         System.out.println("accessToken = " + token.accessToken());
-        System.out.println("refreshToken = " + token.refreshToken());
+        System.out.println("sessionId = " + token.sessionId());
 
         return ResponseEntity.ok(token);
     }
@@ -99,7 +99,7 @@ public class AuthController {
     System.out.println("LOGOUT ==================== ");
     
     System.out.println("accessToken = " + accessToken);
-    System.out.println("refreshToken = " + refreshToken);
+    System.out.println("sessionId = " + sessionId);
     
     authService.logout(accessToken);
 
