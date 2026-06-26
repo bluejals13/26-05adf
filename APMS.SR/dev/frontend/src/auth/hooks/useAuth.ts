@@ -4,7 +4,7 @@ import { useMe } from "../../queries/useMe";
 import { useAuthStore } from "../../store/auth.store";
 import { authService } from "../auth.service";
 
-export function useAuth() {
+export function useAuth() {    // 로그인 상태 가져오기
   const token = useAuthStore((s) => s.token);
   const { data: user, isLoading, isError } = useMe();
 
