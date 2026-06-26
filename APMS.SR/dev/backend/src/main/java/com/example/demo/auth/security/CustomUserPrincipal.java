@@ -3,6 +3,7 @@ package com.example.demo.auth.security;
 import com.example.demo.iam.user.domain.User;
 
 import lombok.AllArgsConstructor;
+import java.util.Collection;
 import lombok.Getter;
 
 @Getter
