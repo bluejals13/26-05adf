@@ -78,9 +78,9 @@ public class AuthService {
         
         //if (blacklistService.isBlacklisted(refreshToken)) { throw new BadCredentialsException("블랙리스트 토큰"); }        
         
-        if (redisSession == null || !redisSession.equals(sessionId)) { throw new BadCredentialsException("거부된 세션"); }
+        if (!redisSession.equals(sessionId)) { throw new BadCredentialsException("거부된 세션"); }
                 
-        String newSessionId = UUID.randomUUID().toString();
+        // String newSessionId = UUID.randomUUID().toString();
         
         //if (!"refresh".equals(claims.get("type"))) { throw new BadCredentialsException("INVALID_REFRESH_TOKEN"); }
         
@@ -109,7 +109,7 @@ public class AuthService {
         
         String newAccessToken = jwtProvider.createAccessToken(userId, userName);
         
-        return new TokenResponse(newAccessToken, newSessionId);
+        return new TokenResponse(newAccessToken, sessionId);
     }
 
     public void logout(String accessToken) {    // 로그아웃
