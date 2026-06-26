@@ -76,16 +76,21 @@ public class AuthService {
     public TokenResponse refresh(String refreshToken) {    // redis 로테 리프레시
         
         Claims claims = jwtProvider.parseClaims(refreshToken);
+        
         Long userId = Long.parseLong(claims.getSubject());
         String jti = claims.getId();
         
+        //if (blacklistService.isBlacklisted(refreshToken)) { throw new BadCredentialsException("블랙리스트 토큰"); }        
+        User user = userRepository.findByUsername(userId)
+                .orElseThrow(() -> new BadCredentialsException("INVALID_CREDENTIALS"));
+        
+        if ((user.getStatus() != UserStatus.ACTIVE) || (user.getStatus() != UserStatus.SUSPENDED)) {
+            throw new BadCredentialsException("거부된 세션"); }
+        
         String storedJti  = redisTemplate.opsForValue().get(REFRESH_KEY + userId);    // redis 리프레시 토큰
         
-        //if (blacklistService.isBlacklisted(refreshToken)) { throw new BadCredentialsException("블랙리스트 토큰"); }        
-        
         if (storedJti  == null || !storedJti.equals(jti)) {
-            throw new BadCredentialsException("거부된 세션"); }
-                
+            throw new BadCredentialsException("거부된 세션"); }                
         
         //String newredisSession = jwtProvider.createRefreshToken(userId);
         //String newJti = jwtProvider.parseClaims(newredisSession).getId();
