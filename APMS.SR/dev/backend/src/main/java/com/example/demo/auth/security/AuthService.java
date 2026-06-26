@@ -105,7 +105,7 @@ public class AuthService {
         
         String newAccessToken = jwtProvider.createAccessToken(userId, userName);
         
-        return new TokenResponse(newAccessToken, sessionId);
+        return new TokenResponse(newAccessToken);
     }
 
     public void logout(String accessToken) {    // 로그아웃
