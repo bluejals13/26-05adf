@@ -16,6 +16,7 @@ export const useAuthStore = create(
   persist<AuthState>(
     (set) => ({
       token: null,
+      isLoggedOut: false,
       setToken: (t) => set({ token: t }),
       logout: () => set({ token: null, isLoggedOut: true }),
       resetLogoutFlag: () => set({ isLoggedOut: false }),
