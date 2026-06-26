@@ -92,6 +92,10 @@ export const http = {
     console.log("POST METHOD", url)
     return request<T>(url, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(options?.headers || {}),
+      },
       body: body ? JSON.stringify(body) : undefined, ...options,
     });},
   
