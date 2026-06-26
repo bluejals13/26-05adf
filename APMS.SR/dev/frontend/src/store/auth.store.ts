@@ -19,9 +19,9 @@ export const useAuthStore = create(
       token: null,
       revoked: false,
       isLoggedOut: false,
-      setToken: (t) => set({ token: t }),
-      login: (token) => set({ token, isLoggedOut: false, revoked: false }),
-      logout: () => set({ token: null, isLoggedOut: true, revoked: true }),
+      setToken: (token: string | null) => void;           // refresh 전용
+      login: (token) => set({ token, isLoggedOut: false, revoked: false }),  // 로그인 전용
+      logout: () => set({ token: null, isLoggedOut: true, revoked: true }),  // 로그아웃 전용
     }),
     {
       name: STORAGE_KEYS.auth,
