@@ -70,6 +70,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         
         String token = header.substring(7);     
         
+        Claims claims = jwtProvider.parseClaims(token);
+        Long userId = Long.parseLong(claims.getSubject());
+        String jti = claims.getId();
+        
         // 0. JWT 검증
         if (!jwtProvider.validateToken(token)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -77,14 +81,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
                 
         // 1. 블랙리스트 체크 (최우선)
-        if (tokenBlacklistService.isBlacklisted(token)) {
+        if (tokenBlacklistService.isBlacklisted(jti)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
-        Claims claims = jwtProvider.parseClaims(token);
-        //String jti = claims.getId();
-        Long userId = Long.parseLong(claims.getSubject());
         
         System.out.println("userId=" + userId);
         
