@@ -92,14 +92,14 @@ public class AuthController {
     
     Long userId = null;
     
-    if (refreshToken != null) { try { userId = Long.parseLong(jwtProvider.parseClaims(refreshToken).getSubject());
+    if (refreshToken != null) { try { userId = Long.parseLong(jwtProvider.parseClaims(sessionId).getSubject());
         } catch (Exception ignored) {}
     }
         
     System.out.println("LOGOUT ==================== ");
     
     System.out.println("accessToken = " + accessToken);
-    System.out.println("sessionId = " + result.sessionId());
+    System.out.println("sessionId = " + sessionId);
     
     authService.logout(accessToken);
 
