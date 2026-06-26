@@ -19,7 +19,7 @@ export function useMe() {
   }, []);
   
   return useQuery<User>({  // 중요 보안 혹은 실시간이 필요시 사용 쿼리
-    queryKey: authKeys.me(),
+    queryKey: [...authKeys.me(), token], // 🔥 핵심
     queryFn: () => http.get("/api/users/me"),
 
     enabled: !!token,
