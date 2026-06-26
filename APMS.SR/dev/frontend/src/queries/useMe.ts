@@ -13,11 +13,7 @@ export function useMe() {
   // hydration guard (핵심)
   //const [hydrated, setHydrated] = useState(false);
   const token = useAuthStore((s) => s.token);
-  
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
-  
+
   return useQuery<User>({  // 중요 보안 혹은 실시간이 필요시 사용 쿼리
     queryKey: [...authKeys.me(), token], // 🔥 핵심
     queryFn: () => http.get("/api/users/me"),
