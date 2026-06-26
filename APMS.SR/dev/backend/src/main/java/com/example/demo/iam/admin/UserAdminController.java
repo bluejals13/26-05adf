@@ -32,7 +32,7 @@ public class UserAdminController {
     
     @PreAuthorize("hasAuthority('USER_DELETE')")
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public void deleteUser(@PathVariable Long id) {    // 계정 삭제 대기 권한
 
         Long adminId = securityUtil.getUserId();
 
@@ -41,7 +41,7 @@ public class UserAdminController {
     
     @PreAuthorize("hasAuthority('USER_DELETE')")
     @DeleteMapping("/{id}")
-    public void harddeleteUser(@PathVariable Long id) {
+    public void harddeleteUser(@PathVariable Long id) {// 계정 영구 삭제 권한
 
         Long adminId = securityUtil.getUserId();
 
