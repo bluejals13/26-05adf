@@ -49,24 +49,18 @@ export async function request<T>(
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(token ? { 
+      Authorization: `Bearer ${token}` 
+      } : {}),
       ...(options.headers || {}),
-    },
+    }
   });
 
   // 🔥 401 handling
   if (res.status === 401 && retry) {
-    const isAuthEndpoint =
-      url.includes("/api/auth/login") ||
-      url.includes("/api/auth/logout") ||
-      url.includes("/api/auth/signup");
-
-    if (isAuthEndpoint) {
-      throw new Error("Unauthorized");
-    }
-
     const newToken = await refreshToken();
 
+    //if (isAuthEndpoint) { throw new Error("Unauthorized"); 
     if (!newToken?.accessToken) {
       useAuthStore.getState().logout();
       //queryClient.clear(); // 중요
@@ -76,7 +70,13 @@ export async function request<T>(
     // 🔥 중요: refresh 후 token 재주입
     useAuthStore.getState().setToken(newToken.accessToken);
 
-    return request<T>(url, options, false);
+    return request<T>(url, {
+      ...options, 
+      headers: {
+        ...options.headers,
+        Authorization: `Bearer ${newToken.accessToken}`,
+      },
+    }, false);
   }
 
   if (!res.ok) {
