@@ -57,7 +57,7 @@ public class UserAdminService {
         
         auditService.log(
             adminId,
-            AuditAction.DELETE_PENDING,
+            AuditAction.USER_DELETE,
             "USER",
             userId,
             before.name(),
@@ -70,15 +70,15 @@ public class UserAdminService {
         User user = userRepository.findById(userId)
             .orElseThrow();
         
-        if (current =! UserStatus.DELETE_PENDING) { throw new IllegalStateException("삭제 대기 계정이 아닙니다"); }
-            
-        UserStatus before = user.getStatus();        
+        UserStatus before = user.getStatus(); 
+        
+        if (before =! UserStatus.DELETE_PENDING) { throw new IllegalStateException("삭제 대기 계정이 아닙니다"); }
         
         user.changeStatus(UserStatus.DELETED);
         
         auditService.log(
             adminId,
-            AuditAction.DELETED,
+            AuditAction.USER_DELETE,
             "USER",
             userId,
             before.name(),
