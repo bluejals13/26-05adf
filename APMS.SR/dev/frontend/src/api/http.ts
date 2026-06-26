@@ -9,7 +9,9 @@ type TokenResponse = {
 let refreshPromise: Promise<TokenResponse | null> | null = null;
 
 export async function refreshToken(): Promise<TokenResponse | null> {
+  const isLoggedOut = useAuthStore.getState().isLoggedOut;
   if (refreshPromise) return refreshPromise;
+  if (isLoggedOut) return null;   // 🔥 핵심 가드
 
   refreshPromise = (async () => {
     try {
