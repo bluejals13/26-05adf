@@ -1,5 +1,7 @@
 package com.example.demo.auth.security;
 
+import com.example.demo.iam.user.domain.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
