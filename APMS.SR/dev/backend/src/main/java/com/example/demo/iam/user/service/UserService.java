@@ -44,7 +44,7 @@ public class UserService {
         User user = new User(
                 req.username(),
                 passwordEncoder.encode(req.password()),
-                req.email(),
+                req.email()
         );
 
         User saved = userRepository.save(user);
