@@ -13,7 +13,7 @@ export const authService = {    // 로그인 이벤트
     email: string;
     password: string;
   }) {
-    await http.post("/api/auth/signup", data);
+    await http.post("/api/users/signup", data);
   },
 
   // 로그인
