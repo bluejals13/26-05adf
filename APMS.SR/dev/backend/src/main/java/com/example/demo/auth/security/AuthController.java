@@ -104,6 +104,8 @@ public class AuthController {
 
     // refresh token cookie 삭제
     Cookie cookie = new Cookie("refreshToken", null);
+    cookie.setHttpOnly(true);
+    cookie.setSecure(true);
     cookie.setPath("/");
     cookie.setMaxAge(0);
     response.addCookie(cookie);
