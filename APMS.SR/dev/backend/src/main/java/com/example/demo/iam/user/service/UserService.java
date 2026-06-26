@@ -37,15 +37,19 @@ public class UserService {
         if (userRepository.existsByUsername(req.username())) {
             throw new DuplicateUserException("이미 존재하는 유저");
         }
+        if (userRepository.existsByEmail(req.email())) {
+            throw new DuplicateUserException("이미 사용된 이메일");
+        }
 
         User user = new User(
                 req.username(),
-                passwordEncoder.encode(req.password())
+                passwordEncoder.encode(req.password()),
+                req.email(),
         );
 
         User saved = userRepository.save(user);
 
-        return new UserResponse(saved.getId(), saved.getUsername());
+        return new UserResponse(saved.getId(), saved.getUsername(), saved.email());
     }
 
     public MeResponse getMe(Long userId) {
