@@ -47,9 +47,9 @@ public class UserAdminService {
     
     
     @Transactional
-    public void deleteUser(Long adminId, Long userId) {    // 삭제 대기
+    public void softdeleteUser(Long adminId, Long userId) {    // 삭제 대기
         User user = userRepository.findById(userId)
-            .orElseThrow();
+            .orElseThrow(() -> new IllegalStateException("User not found: " + userId));
         
         UserStatus before = user.getStatus();        
         
@@ -66,9 +66,9 @@ public class UserAdminService {
     }
     
     @Transactional
-    public void harddeleteUser(Long adminId, Long userId) {    // 영구 삭제
+    public void deleteUser(Long adminId, Long userId) {    // 영구 삭제
         User user = userRepository.findById(userId)
-            .orElseThrow();
+            .orElseThrow(() -> new IllegalStateException("User not found: " + userId));
         
         UserStatus before = user.getStatus(); 
         
