@@ -6,7 +6,7 @@ type TokenResponse = {
   accessToken: string;
 };
 
-let refreshPromise: Promise<TokenResponse | null> | null = null;
+let refreshPromise: Promise<TokenResponse | null> | null = null;  //401 retry에서도 보호 필요
 
 export async function refreshToken(): Promise<TokenResponse | null> {
   if (refreshPromise) return refreshPromise;
