@@ -113,6 +113,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             // JWT 파싱/만료/변조 대비
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            //SecurityContextHolder.clearContext();
         }
     }
 }
