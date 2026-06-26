@@ -5,13 +5,14 @@ import { useAuthStore } from "../store/auth.store";
 type TokenResponse = {
   accessToken: string;
 };
+//  isLoggedOut: false;
+//  revoked: false;
 
-let authRevoked = false;
 let refreshPromise: Promise<TokenResponse | null> | null = null;
 
 export async function refreshToken(): Promise<TokenResponse | null> {
   if (refreshPromise) return refreshPromise;
-  if (authRevoked) return null;   // 🔥 핵심 가드
+  if (useAuthStore.getState().revoked) return null;   // 🔥 핵심 가드
 
   refreshPromise = (async () => {
     try {
@@ -59,7 +60,7 @@ export async function request<T>(
   });
 
   // 🔥 401 handling
-  if (res.status === 401 && retry) {
+  if (res.status === 401 && retry && !useAuthStore.getState().revoked)) {
     const newToken = await refreshToken();
 
     //if (isAuthEndpoint) { throw new Error("Unauthorized"); 
