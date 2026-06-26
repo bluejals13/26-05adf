@@ -65,7 +65,7 @@ public class AuthService {
         );
         
         
-        return new LoginResult(accessToken, refreshToken);
+        return new LoginResult(accessToken, "Bearer", refreshToken);
     }
 
     public TokenResponse refresh(String refreshToken) {    // redis 로테 리프레시
