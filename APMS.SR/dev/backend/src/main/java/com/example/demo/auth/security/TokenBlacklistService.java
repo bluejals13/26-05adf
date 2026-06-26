@@ -19,12 +19,6 @@ public class TokenBlacklistService {    // 이미 발급된 토큰 차단    “
         
         if (expirationMillis <= 0) { return; }
         
-        redisTemplate.opsForValue().set(
-                "blacklist:" + jti,
-                "1",
-                Duration.ofMillis(expirationMillis)
-        );
-        
         redisTemplate.opsForValue().set("blacklist:" + jti, "1", Duration.ofMillis(expirationMillis));
     }
 
