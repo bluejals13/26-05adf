@@ -66,7 +66,7 @@ public class AuthController {
         
         TokenResponse token = authService.refresh(accessToken, sessionId);
 
-        Cookie cookie = new Cookie("sessionId", token.sessionId());
+        Cookie cookie = new Cookie("sessionId",sessionId );
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/");
