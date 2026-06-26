@@ -84,7 +84,7 @@ public class AuthService {
         User user = userRepository.findByUsername(userId)
                 .orElseThrow(() -> new BadCredentialsException("INVALID_CREDENTIALS"));
         
-        if ((user.getStatus() != UserStatus.ACTIVE) || (user.getStatus() != UserStatus.SUSPENDED)) {
+        if ((user.getStatus() != UserStatus.ACTIVE) && (user.getStatus() != UserStatus.SUSPENDED)) {
             throw new BadCredentialsException("거부된 세션"); }
         
         String storedJti  = redisTemplate.opsForValue().get(REFRESH_KEY + userId);    // redis 리프레시 토큰
