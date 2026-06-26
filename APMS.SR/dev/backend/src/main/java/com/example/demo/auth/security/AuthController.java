@@ -51,7 +51,7 @@ public class AuthController {
         System.out.println("refreshToken = " + result.refreshToken());
         
         return ResponseEntity.ok(
-                new LoginResult(result.accessToken(), "Bearer", null)
+                new LoginResult(result.accessToken(), "Bearer", result.sessionId())
         );
     }
 
@@ -61,9 +61,10 @@ public class AuthController {
             HttpServletResponse response
     ) {
 
-        String refreshToken = extractRefreshToken(request);
-
-        TokenResponse token = authService.refresh(refreshToken);
+        String accessToken = extractAccessToken(request);
+        String sessionId = extractRefreshToken(request);
+        
+        TokenResponse token = authService.refresh(accessToken, sessionId);
 
         Cookie cookie = new Cookie("refreshToken", token.refreshToken());
         cookie.setHttpOnly(true);
@@ -100,7 +101,7 @@ public class AuthController {
     System.out.println("accessToken = " + accessToken);
     System.out.println("refreshToken = " + refreshToken);
     
-    authService.logout(accessToken, refreshToken);
+    authService.logout(accessToken);
 
     // refresh token cookie 삭제
     Cookie cookie = new Cookie("refreshToken", null);
