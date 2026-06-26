@@ -10,8 +10,6 @@ import { useEffect, useState } from "react";
 
 export function useMe() {
   const isLoggedOut = useAuthStore((s) => s.isLoggedOut);
-  // hydration guard (핵심)
-  //const [hydrated, setHydrated] = useState(false);
   const token = useAuthStore((s) => s.token);
 
   return useQuery<User>({  // 중요 보안 혹은 실시간이 필요시 사용 쿼리
