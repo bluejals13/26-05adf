@@ -99,12 +99,12 @@ public class AuthController {
     System.out.println("LOGOUT ==================== ");
     
     System.out.println("accessToken = " + accessToken);
-    System.out.println("sessionId = " + sessionId);
+    System.out.println("sessionId = " + result.sessionId());
     
     authService.logout(accessToken);
 
     // refresh token cookie 삭제
-    Cookie cookie = new Cookie("refreshToken", null);
+    Cookie cookie = new Cookie("sessionId", null);
     cookie.setHttpOnly(true);
     cookie.setSecure(true);
     cookie.setPath("/");
@@ -118,7 +118,7 @@ public class AuthController {
         if (request.getCookies() == null) return null;
 
         for (Cookie c : request.getCookies()) {
-            if ("refreshToken".equals(c.getName())) {
+            if ("sessionId".equals(c.getName())) {
                 return c.getValue();
             }
         }
