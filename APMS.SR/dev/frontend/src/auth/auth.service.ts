@@ -6,7 +6,7 @@ import { queryClient } from "../queryClient";
 //import { authKeys } from "./auth.keys";
 // import type { User } from "./auth.types";
 
-export const authService = {
+export const authService = {    // 로그인 이벤트
   // 회원가입
   async signup(data: {
     username: string;
