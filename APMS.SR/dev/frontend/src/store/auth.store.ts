@@ -10,12 +10,14 @@ type AuthState = {
   setToken: (t: string | null) => void;
   logout: () => void;
   resetLogoutFlag: () => void;
+  revoked: boolean;
 };
 
 export const useAuthStore = create(
   persist<AuthState>(
     (set) => ({
       token: null,
+      revoked: false,
       isLoggedOut: false,
       setToken: (t) => set({ token: t }),
       logout: () => set({ token: null, isLoggedOut: true }),
