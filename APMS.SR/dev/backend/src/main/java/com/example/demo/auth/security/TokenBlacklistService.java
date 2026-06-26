@@ -6,25 +6,18 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 
-import com.example.demo.auth.jwt.JwtProvider;
+//import com.example.demo.auth.jwt.JwtProvider;
 
 @Service
 @RequiredArgsConstructor
 public class TokenBlacklistService {    // 이미 발급된 토큰 차단    “탈취된 토큰 / 로그아웃 이후 요청 차단”
 
     private final RedisTemplate<String, String> redisTemplate;
-    private final JwtProvider jwtProvider;
     
     // blacklist 등록
-    public void blacklist(String jti) {
+    public void blacklist(String jti, long expirationMillis) {
         
-        Claims claims = jwtProvider.parseClaims(token);
-        
-        String jti = claims.getId();
-        
-        long remainMillis =
-                claims.getExpiration().getTime()
-                - System.currentTimeMillis();
+        long remainMillis = jti - expirationMillis;
         
         if (remainMillis <= 0) { return; }
         
