@@ -17,14 +17,12 @@ public class TokenBlacklistService {    // 이미 발급된 토큰 차단    “
     // blacklist 등록
     public void blacklist(String jti, long expirationMillis) {
         
-        long remainMillis = jti - expirationMillis;
-        
-        if (remainMillis <= 0) { return; }
+        if (expirationMillis <= 0) { return; }
         
         redisTemplate.opsForValue().set(
                 "blacklist:" + jti,
                 "1",
-                Duration.ofMillis(remainMillis)
+                Duration.ofMillis(expirationMillis)
         );
         
         redisTemplate.opsForValue().set("blacklist:" + jti, "1", Duration.ofMillis(expirationMillis));
