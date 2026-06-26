@@ -6,8 +6,10 @@ import { STORAGE_KEYS } from "../constants/keys";
 
 type AuthState = {
   token: string | null;
+  isLoggedOut: boolean;
   setToken: (t: string | null) => void;
   logout: () => void;
+  resetLogoutFlag: () => void;
 };
 
 export const useAuthStore = create(
@@ -15,7 +17,8 @@ export const useAuthStore = create(
     (set) => ({
       token: null,
       setToken: (t) => set({ token: t }),
-      logout: () => set({ token: null }),
+      logout: () => set({ token: null, isLoggedOut: true }),
+      resetLogoutFlag: () => set({ isLoggedOut: false }),
     }),
     {
       name: STORAGE_KEYS.auth,
