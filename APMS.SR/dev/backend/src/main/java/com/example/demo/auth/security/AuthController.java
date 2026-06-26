@@ -48,7 +48,7 @@ public class AuthController {
         
         response.addCookie(cookie);
         System.out.println("accessToken = " + result.accessToken());
-        System.out.println("sessionId = " + result.refreshToken());
+        System.out.println("sessionId = " + result.sessionId());
         
         return ResponseEntity.ok(
                 new LoginResult(result.accessToken(), "Bearer", result.sessionId())
