@@ -20,7 +20,7 @@ import PermissionPage from "./pages/Fpermi/PermissionPage";
 import UserAdminPage from "./pages/FUsAd/UserAdminPage";
 
 import { useEffect, useState } from "react";
-import { bootstrapAuth } from "./auth/bootstrapAuth";
+import { bootstrapAuth } from "./auth/auth.bootstrap";
 
 export default function App() {
 	const [ready, setReady] = useState(false);
