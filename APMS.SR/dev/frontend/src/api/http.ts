@@ -60,7 +60,7 @@ export async function request<T>(
   });
 
   // 🔥 401 handling
-  if (res.status === 401 && retry && !useAuthStore.getState().revoked)) {
+  if (res.status === 401 && retry && !useAuthStore.getState().revoked) {
     const newToken = await refreshToken();
 
     //if (isAuthEndpoint) { throw new Error("Unauthorized"); 
@@ -71,7 +71,7 @@ export async function request<T>(
     }
     console.log("🔁 retry request", url);
     // 🔥 중요: refresh 후 token 재주입
-    useAuthStore.getState().setToken(newToken.accessToken);
+    useAuthStore.getState().login(newToken.accessToken);
 
     return request<T>(url, {
       ...options, 
