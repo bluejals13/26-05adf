@@ -70,6 +70,8 @@ public class UserAdminService {
         User user = userRepository.findById(userId)
             .orElseThrow();
         
+        if (current =! UserStatus.DELETE_PENDING) { throw new IllegalStateException("삭제 대기 계정이 아닙니다"); }
+            
         UserStatus before = user.getStatus();        
         
         user.changeStatus(UserStatus.DELETED);
