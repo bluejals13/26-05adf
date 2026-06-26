@@ -7,6 +7,8 @@ import { refreshToken } from "../api/http";
 let bootstrapPromise: Promise<void> | null = null;
 
 export function bootstrapAuth(): Promise<void> {
+  const isLoggedOut = useAuthStore.getState().isLoggedOut;
+  if (isLoggedOut) return;
   if (bootstrapPromise) return bootstrapPromise;
 
   bootstrapPromise = (async () => {
