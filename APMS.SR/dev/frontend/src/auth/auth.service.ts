@@ -33,6 +33,7 @@ export const authService = {    // 로그인 이벤트
       queryClient.cancelQueries();
       queryClient.clear();
       useAuthStore.getState().logout();
+      useAuthStore.getState().resetLogoutFlag();
       window.dispatchEvent(new Event("auth:logout"));
     }
   },
