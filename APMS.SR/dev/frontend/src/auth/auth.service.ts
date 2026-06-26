@@ -32,7 +32,7 @@ export const authService = {    // 로그인 이벤트
     } finally {
     // 1. state 먼저 잠금
     useAuthStore.getState().logout();
-    useAuthStore.getState().resetLogoutFlag();
+    
     // 2. query 정리
     await queryClient.resetQueries();
     //queryClient.clear();
