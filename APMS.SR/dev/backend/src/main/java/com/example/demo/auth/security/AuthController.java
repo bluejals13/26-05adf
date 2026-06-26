@@ -99,7 +99,7 @@ public class AuthController {
     System.out.println("LOGOUT ==================== ");
     
     System.out.println("accessToken = " + accessToken);
-    System.out.println("sessionId = " + sessionId);
+    System.out.println("sessionId = " + refreshToken);
     
     authService.logout(accessToken);
 
