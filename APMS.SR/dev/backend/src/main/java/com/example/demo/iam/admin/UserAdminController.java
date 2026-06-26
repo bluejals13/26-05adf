@@ -40,7 +40,7 @@ public class UserAdminController {
     }
     
     @PreAuthorize("hasAuthority('USER_DELETE')")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/hard")
     public void harddeleteUser(@PathVariable Long id) {// 계정 영구 삭제 권한
 
         Long adminId = securityUtil.getUserId();
