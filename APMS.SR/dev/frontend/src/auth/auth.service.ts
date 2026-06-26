@@ -30,14 +30,16 @@ export const authService = {    // 로그인 이벤트
   async logout() {
   try { await http.post( "/api/auth/logout", {} );
     } finally {
-      // 1. state 먼저 잠금
-      useAuthStore.getState().logout();
-      useAuthStore.getState().resetLogoutFlag();
-      // 2. query 정리
-      await queryClient.resetQueries();
-      //queryClient.clear();
-      // 3. 이벤트
-      window.dispatchEvent(new Event("auth:logout"));
+    // 1. state 먼저 잠금
+    useAuthStore.getState().logout();
+    useAuthStore.getState().resetLogoutFlag();
+    // 2. query 정리
+    await queryClient.resetQueries();
+    //queryClient.clear();
+    
+    // 3. 이벤트
+    window.dispatchEvent(new Event("auth:logout"));
+    
     }
   },
 };
