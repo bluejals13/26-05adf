@@ -62,7 +62,7 @@ public class AuthController {
     ) {
 
         String accessToken = extractAccessToken(request);
-        //String refreshToken = extractRefreshToken(request);
+        String refreshToken = extractRefreshToken(request);
         
         TokenResponse token = authService.refresh(refreshToken);
 
