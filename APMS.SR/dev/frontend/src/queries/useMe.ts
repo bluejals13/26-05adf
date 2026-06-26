@@ -15,7 +15,7 @@ export function useMe() {
     queryKey: [...authKeys.me(), token], // 🔥 핵심
     queryFn: () => http.get("/api/users/me"),
 
-    enabled: !!token && !isLoggedOut,
+    enabled: !!token,
 
     retry: 0,
     refetchOnWindowFocus: false,
