@@ -82,8 +82,8 @@ public class AuthService {
             throw new BadCredentialsException("거부된 세션"); }
                 
         
-        String newredisSession = jwtProvider.createRefreshToken(userId);
-        String newJti = jwtProvider.parseClaims(newredisSession).getId();
+        //String newredisSession = jwtProvider.createRefreshToken(userId);
+        //String newJti = jwtProvider.parseClaims(newredisSession).getId();
         
         //if (!"refresh".equals(claims.get("type"))) { throw new BadCredentialsException("INVALID_REFRESH_TOKEN"); }
         
