@@ -39,7 +39,7 @@ public class UserAdminController {
         userAdminService.deleteUser(adminId, id);
     }
     
-    @PreAuthorize("hasAuthority('DELETED')")
+    @PreAuthorize("hasAuthority('USER_DELETE')")
     @DeleteMapping("/{id}")
     public void harddeleteUser(@PathVariable Long id) {
 
