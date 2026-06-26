@@ -1,4 +1,4 @@
-// bootstrap/bootstrapAuth.tsx				// 리프레시 관리
+// auth/bootstrapAuth.tsx				// 리프레시 관리
 
 import { useAuthStore } from "../store/auth.store";
 import { queryClient } from "../queryClient";
