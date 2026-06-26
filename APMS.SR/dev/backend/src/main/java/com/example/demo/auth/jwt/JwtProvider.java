@@ -105,10 +105,10 @@ public class JwtProvider {    // 각 토큰 제공 파일
         try {
             parseClaims(token);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            
+        } catch (JwtException e) {
+            log.error("JWT FAIL TYPE = {}", e.getClass().getSimpleName());
+            log.error("JWT FAIL MSG = {}", e.getMessage());
             // 필요 시 로그
-            log.warn("JWT validation failed: {}", e.getMessage());
             
             return false;
         }
@@ -120,5 +120,5 @@ public class JwtProvider {    // 각 토큰 제공 파일
         return parseClaims(token)
             .get("role", String.class);
     }
-    
+
 }
