@@ -7,6 +7,8 @@ import com.example.demo.iam.user.domain.User;
 import com.example.demo.iam.user.dto.LoginRequest;
 import com.example.demo.iam.user.dto.LoginResult;
 import com.example.demo.iam.user.dto.TokenResponse;
+import com.example.demo.iam.user.domain.UserStatus;
+
 import com.example.demo.iam.user.repository.UserRepository;
 
 import com.example.demo.common.exception.DuplicateUserException;
@@ -45,6 +47,9 @@ public class AuthService {
 
         if (!passwordEncoder.matches(req.password(), user.getPassword())) {    // 비번 매치 예외처리
             throw new BadCredentialsException("INVALID_CREDENTIALS");
+        }
+        if (user.getStatus() != UserStatus.ACTIVE) {        //
+            throw new DisabledException("User not active");
         }
         
         // 1. sessionId 생성 (refresh 역할)
