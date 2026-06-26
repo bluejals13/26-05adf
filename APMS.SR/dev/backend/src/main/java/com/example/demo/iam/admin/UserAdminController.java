@@ -36,7 +36,7 @@ public class UserAdminController {
 
         Long adminId = securityUtil.getUserId();
 
-        userAdminService.deleteUser(adminId, id);
+        userAdminService.softdeleteUser(adminId, id);
     }
     
     @PreAuthorize("hasAuthority('USER_DELETE')")
@@ -45,7 +45,7 @@ public class UserAdminController {
 
         Long adminId = securityUtil.getUserId();
 
-        userAdminService.harddeleteUser(adminId, id);
+        userAdminService.deleteUser(adminId, id);
     }
     
     @PreAuthorize("hasAuthority('USER_STATUS_UPDATE')")
