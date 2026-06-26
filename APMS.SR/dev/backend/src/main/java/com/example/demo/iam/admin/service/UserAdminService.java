@@ -84,6 +84,8 @@ public class UserAdminService {
             before.name(),
             UserStatus.DELETED.name()
         );
+        
+        userRepository.delete(user);
     }
     //public void restoreUser(Long adminId, Long userId)
     //public void hardDeleteUser(Long adminId, Long userId)
