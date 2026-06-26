@@ -88,11 +88,11 @@ public class AuthController {
 ) {
 
     String accessToken = extractAccessToken(request);
-    String refreshToken = extractRefreshToken(request);  
+    String sessionId = extractRefreshToken(request);  
     
     Long userId = null;
     
-    if (sessionId != null) { try { userId = Long.parseLong(jwtProvider.parseClaims(sessionId).getSubject());
+    if (refreshToken != null) { try { userId = Long.parseLong(jwtProvider.parseClaims(refreshToken).getSubject());
         } catch (Exception ignored) {}
     }
         
