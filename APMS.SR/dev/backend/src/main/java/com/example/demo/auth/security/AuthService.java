@@ -113,9 +113,11 @@ public class AuthService {
     }
 
     public void logout(String accessToken) {    // 로그아웃
-        
-        Claims claims = jwtProvider.parseClaims(accessToken);
-        Long userId = Long.parseLong(claims.getSubject());
+        if (accessToken != null) {
+            //blacklistService.blacklist(accessToken);
+            Claims claims = jwtProvider.parseClaims(accessToken);
+            Long userId = Long.parseLong(claims.getSubject());
+        }
         
         //if (refreshToken != null) {
             //Claims claims = jwtProvider.parseClaims(refreshToken);
@@ -125,8 +127,5 @@ public class AuthService {
         // Redis 세션 삭제 = 즉시 로그아웃
         redisTemplate.delete(SESSION_KEY + userId);
 
-        if (accessToken != null) {
-            //blacklistService.blacklist(accessToken);
-        }
     }
 }
