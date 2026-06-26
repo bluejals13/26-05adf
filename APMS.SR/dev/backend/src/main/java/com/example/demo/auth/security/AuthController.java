@@ -76,7 +76,7 @@ public class AuthController {
         
         response.addCookie(cookie);
         System.out.println("accessToken = " + token.accessToken());
-        System.out.println("sessionId = " + token.sessionId());
+        System.out.println("sessionId = " + sessionId);
 
         return ResponseEntity.ok(token);
     }
