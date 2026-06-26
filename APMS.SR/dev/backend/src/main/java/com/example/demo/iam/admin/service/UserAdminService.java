@@ -57,7 +57,7 @@ public class UserAdminService {
         
         auditService.log(
             adminId,
-            AuditAction.USER_DELETE,
+            AuditAction.DELETE_PENDING,
             "USER",
             userId,
             before.name(),
