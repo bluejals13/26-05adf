@@ -108,7 +108,9 @@ public class AuthService {
     
             redisTemplate.delete(REFRESH_KEY + userId);
     
-            blacklistService.blacklist(refreshToken);
+         if (blacklistService.isBlacklisted(refreshToken)) {
+            throw new UnauthorizedException();
+            }
         }
     }
 }
