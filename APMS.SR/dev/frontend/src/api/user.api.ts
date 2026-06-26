@@ -27,4 +27,7 @@ export const userApi = {
 
   deleteUser: (id: number) =>
     http.delete(`/api/admin/users/${id}`),
+
+  deleteUser: (id: number) =>
+    http.delete(`/api/admin/users/${id}/hard`),
 };
