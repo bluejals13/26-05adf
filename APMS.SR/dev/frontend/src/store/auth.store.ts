@@ -4,6 +4,8 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { STORAGE_KEYS } from "../constants/keys";
 
+let isHydrated = false;
+
 type AuthState = {
   token: string | null;
   setToken: (t: string | null) => void;
@@ -19,8 +21,9 @@ export const useAuthStore = create(
     }),
     {
       name: STORAGE_KEYS.auth,
-      onRehydrateStorage: () => (state) => {
-        state._hydrated = true;},
+      onRehydrateStorage: () => () => {
+      isHydrated = true;
+    },
     }
   )
 );
