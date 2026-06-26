@@ -69,14 +69,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        
         String token = header.substring(7);     
-        try {
-            if (token == null) {    // 회원가입 시
-                chain.doFilter(request, response);
-                return;
-            }
-                
+        
+        try {       
             // 4. JWT 검증 (먼저)
             if (!jwtProvider.validateToken(token)) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
