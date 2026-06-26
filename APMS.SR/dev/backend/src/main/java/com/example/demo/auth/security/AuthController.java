@@ -37,7 +37,7 @@ public class AuthController {
 
         LoginResult result = authService.login(req);
 
-        Cookie cookie = new Cookie("sessionId", result.sessionId());
+        Cookie cookie = new Cookie("refreshToken", result.refreshToken());
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/");
@@ -46,12 +46,12 @@ public class AuthController {
         
         System.out.println("LOGIN ==================== ");        
         
-        response.addCookie(cookie);
+        response.addCookie(refreshCookie);
         System.out.println("accessToken = " + result.accessToken());
-        System.out.println("sessionId = " + result.sessionId());
+        System.out.println("refreshToken = " + result.refreshToken());
         
         return ResponseEntity.ok(
-                new LoginResult(result.accessToken(), "Bearer", result.sessionId())
+                new LoginResult(result.accessToken(), "Bearer", result.refreshToken())
         );
     }
 
@@ -62,11 +62,11 @@ public class AuthController {
     ) {
 
         String accessToken = extractAccessToken(request);
-        String sessionId = extractSessionId(request);
+        String refreshToken = extractRefreshToken(request);
         
-        TokenResponse token = authService.refresh(accessToken, sessionId);
+        TokenResponse token = authService.refresh(accessToken, refreshToken);
 
-        Cookie cookie = new Cookie("sessionId",sessionId );
+        Cookie cookie = new Cookie("refreshToken", result.refreshToken());
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/");
@@ -74,9 +74,9 @@ public class AuthController {
         
         System.out.println("REFRESH ==================== ");        
         
-        response.addCookie(cookie);
+        response.addCookie(refreshCookie);
         System.out.println("accessToken = " + token.accessToken());
-        System.out.println("sessionId = " + sessionId);
+        System.out.println("refreshToken = " + refreshToken);
 
         return ResponseEntity.ok(token);
     }
@@ -93,7 +93,7 @@ public class AuthController {
     authService.logout(accessToken);
         
     // refresh token cookie 삭제
-    Cookie cookie = new Cookie("sessionId", null);
+    Cookie cookie = new Cookie("refreshToken", result.refreshToken());
     cookie.setHttpOnly(true);
     cookie.setSecure(true);
     cookie.setPath("/");
@@ -107,16 +107,16 @@ public class AuthController {
     
     System.out.println("accessToken = " + accessToken);
     
-    response.addCookie(cookie);
+    response.addCookie(refreshCookie);
 
     return ResponseEntity.noContent().build();
 }
 
-    private String extractSessionId(HttpServletRequest request) {
+    private String extractRefreshToken(HttpServletRequest request) {
         if (request.getCookies() == null) return null;
 
         for (Cookie c : request.getCookies()) {
-            if ("sessionId".equals(c.getName())) {
+            if ("refreshToken".equals(c.getName())) {
                 return c.getValue();
             }
         }
