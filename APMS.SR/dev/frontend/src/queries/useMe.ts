@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 export function useMe() {
   const isLoggedOut = useAuthStore((s) => s.isLoggedOut);
   // hydration guard (핵심)
-  const [hydrated, setHydrated] = useState(false);
+  //const [hydrated, setHydrated] = useState(false);
   const token = useAuthStore((s) => s.token);
   
   useEffect(() => {
