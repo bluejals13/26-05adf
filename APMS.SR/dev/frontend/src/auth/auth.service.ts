@@ -34,8 +34,8 @@ export const authService = {    // 로그인 이벤트
       useAuthStore.getState().logout();
       useAuthStore.getState().resetLogoutFlag();
       // 2. query 정리
-      await queryClient.cancelQueries();
-      queryClient.clear();
+      await queryClient.resetQueries();
+      //queryClient.clear();
       // 3. 이벤트
       window.dispatchEvent(new Event("auth:logout"));
     }
