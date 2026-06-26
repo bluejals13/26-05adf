@@ -7,24 +7,25 @@ import { refreshToken } from "../api/http";
 let bootstrapPromise: Promise<void> | null = null;
 
 export function bootstrapAuth(): Promise<void> {
-
-  if (useAuthStore.getState().Token) { return Promise.resolve(); }
-  if (bootstrapPromise) return bootstrapPromise;
+  if (bootstrapPromise) {
+    return bootstrapPromise;
+  }
 
   bootstrapPromise = (async () => {
     try {
       const data = await refreshToken();
 
-      if (!data?.accessToken) {
-        useAuthStore.getState().setToken(null);
-        await queryClient.clear();
-        return;
+      if (data?.accessToken) {
+        // refresh 성공 → access token 저장
+        useAuthStore.getState().setToken(data.accessToken);
+      } else {
+        // refresh 실패 → 비로그인 상태
+        useAuthStore.getState().logout();
+        queryClient.clear();
       }
-
-      useAuthStore.getState().setToken(data.accessToken);
     } catch {
-      useAuthStore.getState().setToken(null);
-      await queryClient.clear();
+      useAuthStore.getState().logout();
+      queryClient.clear();
     } finally {
       bootstrapPromise = null;
     }
