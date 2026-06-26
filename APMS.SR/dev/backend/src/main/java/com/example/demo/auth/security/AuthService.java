@@ -112,8 +112,11 @@ public class AuthService {
         return new TokenResponse(newAccessToken, newSessionId);
     }
 
-    public void logout(Long userId, String accessToken) {    // 로그아웃
-    
+    public void logout(String accessToken) {    // 로그아웃
+        
+        Claims claims = jwtProvider.parseClaims(accessToken);
+        Long userId = Long.parseLong(claims.getSubject());
+        
         //if (refreshToken != null) {
             //Claims claims = jwtProvider.parseClaims(refreshToken);
             //Long userId = Long.parseLong(claims.getSubject());
