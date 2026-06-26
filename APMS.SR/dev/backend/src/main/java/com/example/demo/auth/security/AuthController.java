@@ -83,32 +83,29 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
-            HttpServletRequest request,
-            HttpServletResponse response
+            HttpServletRequest request
 ) {
 
     String accessToken = extractAccessToken(request);
-    String refreshToken = extractRefreshToken(request);  
-    
-    Long userId = null;
-    
-    if (refreshToken != null) { try { userId = Long.parseLong(jwtProvider.parseClaims(refreshToken).getSubject());
-        } catch (Exception ignored) {}
-    }
-        
-    System.out.println("LOGOUT ==================== ");
-    
-    System.out.println("accessToken = " + accessToken);
-    System.out.println("sessionId = " + refreshToken);
+    //String refreshToken = extractRefreshToken(request);  
     
     authService.logout(accessToken);
-
+        
     // refresh token cookie 삭제
     Cookie cookie = new Cookie("sessionId", null);
     cookie.setHttpOnly(true);
     cookie.setSecure(true);
     cookie.setPath("/");
     cookie.setMaxAge(0);
+        
+    //if (refreshToken != null) { try { userId = Long.parseLong(jwtProvider.parseClaims(refreshToken).getSubject());
+        //} catch (Exception ignored) {}
+    //}
+        
+    System.out.println("LOGOUT ==================== ");
+    
+    System.out.println("accessToken = " + accessToken);
+    
     response.addCookie(cookie);
 
     return ResponseEntity.noContent().build();
