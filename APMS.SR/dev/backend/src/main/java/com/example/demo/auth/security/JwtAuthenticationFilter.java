@@ -8,7 +8,7 @@ import com.example.demo.iam.user.service.UserService;
 import com.example.demo.iam.user.repository.UserRepository;
 import com.example.demo.iam.user.domain.User;
 import com.example.demo.iam.user.domain.UserStatus;
-//import com.example.demo.auth.security.TokenBlacklistService;
+import com.example.demo.auth.security.TokenBlacklistService;
 
 import jakarta.servlet.FilterChain;                // 서브렛 http 요청 가로체기 및 jwt 검사
 import jakarta.servlet.ServletException;
@@ -77,10 +77,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
                 
         // 1. 블랙리스트 체크 (최우선)
-        //if (tokenBlacklistService.isBlacklisted(token)) {
-            //response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            //return;
-        //}
+        if (tokenBlacklistService.isBlacklisted(token)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
 
         Claims claims = jwtProvider.parseClaims(token);
         //String jti = claims.getId();
