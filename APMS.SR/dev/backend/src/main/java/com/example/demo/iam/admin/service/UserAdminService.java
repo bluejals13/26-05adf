@@ -47,7 +47,7 @@ public class UserAdminService {
     
     
     @Transactional
-    public void deleteUser(Long adminId, Long userId) {                          // 계정 삭제
+    public void deleteUser(Long adminId, Long userId) {    // 삭제 대기
         User user = userRepository.findById(userId)
             .orElseThrow();
         
@@ -65,11 +65,29 @@ public class UserAdminService {
         );
     }
     
+    @Transactional
+    public void harddeleteUser(Long adminId, Long userId) {    // 영구 삭제
+        User user = userRepository.findById(userId)
+            .orElseThrow();
+        
+        UserStatus before = user.getStatus();        
+        
+        user.changeStatus(UserStatus.DELETED);
+        
+        auditService.log(
+            adminId,
+            AuditAction.DELETED,
+            "USER",
+            userId,
+            before.name(),
+            UserStatus.DELETED.name()
+        );
+    }
     //public void restoreUser(Long adminId, Long userId)
     //public void hardDeleteUser(Long adminId, Long userId)
     
     @Transactional
-    public void changeStatus(Long adminId, Long userId, UserStatus status) {    // 계정 상태 변경 [활성] > [정지]
+    public void changeStatus(Long adminId, Long userId, UserStatus status) {    // 계정 상태 변경
 
         User user = userRepository.findById(userId)
             .orElseThrow();
