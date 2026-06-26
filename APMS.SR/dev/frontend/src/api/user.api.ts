@@ -26,8 +26,5 @@ export const userApi = {
     return http.patch(`/api/admin/users/${id}/status`, { status })},
 
   deleteUser: (id: number) =>
-    http.delete(`/api/admin/users/${id}`),
-
-  harddeleteUser: (id: number) =>
     http.delete(`/api/admin/users/${id}/hard`),
 };
