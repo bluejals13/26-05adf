@@ -19,10 +19,18 @@ import MenuPage from "./pages/Fmenu/MenuPage";
 import PermissionPage from "./pages/Fpermi/PermissionPage";
 import UserAdminPage from "./pages/FUsAd/UserAdminPage";
 
-
+import { useEffect, useState } from "react";
+import { bootstrapAuth } from "./auth/bootstrapAuth";
 
 export default function App() {
-
+	const [ready, setReady] = useState(false);
+	
+	useEffect(() => {
+	  bootstrapAuth().finally(() => setReady(true));
+	}, []);
+	
+	if (!ready) return null;
+	
   return (
     <BrowserRouter>
       <Routes>
