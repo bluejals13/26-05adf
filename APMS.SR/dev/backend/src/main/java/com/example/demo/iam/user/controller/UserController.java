@@ -1,5 +1,6 @@
 package com.example.demo.iam.user.controller;
 
+import com.example.demo.iam.user.dto.UserResponse;
 import com.example.demo.iam.user.dto.MeResponse;
 import com.example.demo.iam.user.dto.UpdatePasswordRequest;
 import com.example.demo.auth.security.CustomUserPrincipal;
