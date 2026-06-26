@@ -1,7 +1,7 @@
 package com.example.demo.auth.security;
 
 import com.example.demo.auth.jwt.JwtProvider;
-import com.example.demo.auth.security.TokenBlacklistService;
+//import com.example.demo.auth.security.TokenBlacklistService;
 
 import com.example.demo.iam.user.domain.User;
 import com.example.demo.iam.user.dto.LoginRequest;
