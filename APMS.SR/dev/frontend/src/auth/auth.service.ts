@@ -23,16 +23,16 @@ export const authService = {
 
     useAuthStore.getState().setToken(res.accessToken);
 
-    await queryClient.invalidateQueries({ queryKey: authKeys.me() });
+    //await queryClient.invalidateQueries({ queryKey: authKeys.me() });
   },
 
   // 로그아웃
   async logout() {
   try { await http.post( "/api/auth/logout", {} );
     } finally {
-      useAuthStore.getState().logout();
       queryClient.cancelQueries();
       queryClient.clear();
+      useAuthStore.getState().logout();
       window.dispatchEvent(new Event("auth:logout"));
     }
   },
