@@ -34,8 +34,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenBlacklistService blacklistService;
 
-    //private static final String ACCESS_KEY = "auth:access:";
-    private static final String SESSION_KEY = "auth:session:";
+    private static final String ACCESS_KEY = "auth:access:";
+    private static final String REFRESH_KEY = "auth:refresh:";
 
     @Transactional
     public LoginResult login(LoginRequest req) {    // 로그인
@@ -48,37 +48,37 @@ public class AuthService {
         }
         
         // 1. sessionId 생성 (refresh 역할)
-        String sessionId = UUID.randomUUID().toString();
+        //String sessionId = UUID.randomUUID().toString();
         
-        //String accessToken = jwtProvider.createAccessToken(user.getId(), user.getUsername());
-        //String refreshToken = jwtProvider.createRefreshToken(user.getId());
+        String accessToken = jwtProvider.createAccessToken(user.getId(), user.getUsername());
+        String refreshToken = jwtProvider.createRefreshToken(user.getId());
         
         //String currentJti = redisTemplate.opsForValue().get(REFRESH_KEY + user.getId());    // redis 에서 리프레시 , 유저 확인
         
-        //String jti = jwtProvider.parseClaims(refreshToken).getId();
+        String jti = jwtProvider.parseClaims(refreshToken).getId();
         
         // 2. Redis 저장 (단일 source of truth)
         redisTemplate.opsForValue().set(
-                SESSION_KEY + user.getId(),
-                sessionId,    // 랜덤 uuid 적용
+                REFRESH_KEY + user.getId(),
+                jti,    // 랜덤 uuid 적용
                 Duration.ofDays(7)
         );
         
-        String accessToken = jwtProvider.createAccessToken(user.getId(), user.getUsername());
         
-        return new LoginResult(accessToken, "Bearer", sessionId);
+        return new LoginResult(accessToken, refreshToken);
     }
 
-    public TokenResponse refresh(String accessToken, String sessionId) {    // redis 로테 리프레시
+    public TokenResponse refresh(String refreshToken) {    // redis 로테 리프레시
         
         Claims claims = jwtProvider.parseClaims(accessToken);
         Long userId = Long.parseLong(claims.getSubject());
+        String jti = claims.getId();
         
-        String redisSession = redisTemplate.opsForValue().get(SESSION_KEY + userId);
+        String storedJti  = redisTemplate.opsForValue().get(REFRESH_KEY + userId);    // redis 리프레시 토큰
         
         //if (blacklistService.isBlacklisted(refreshToken)) { throw new BadCredentialsException("블랙리스트 토큰"); }        
         
-        if (redisSession == null || !redisSession.equals(sessionId)) {
+        if (storedJti  == null || !storedJti.equals(jti)) {
             throw new BadCredentialsException("거부된 세션"); }
                 
         
@@ -89,17 +89,19 @@ public class AuthService {
         
         
         //Long userId = Long.parseLong(claims.getSubject());
-
-        //String redisJti  = redisTemplate.opsForValue().get(REFRESH_KEY + userId);
-
-        //if (redisJti == null || !redisJti.equals(claims.getId())) { throw new BadCredentialsException("INVALID_REFRESH_TOKEN"); }
         
         //User user = userRepository.findById(userId).orElseThrow();
         
         // rotation (atomic이 더 좋음)
         
-        //String newRefreshToken = jwtProvider.createRefreshToken(userId);
-        //String newJti = jwtProvider.parseClaims(newRefreshToken).getId();
+        String newRefreshToken = jwtProvider.createRefreshToken(userId);
+        String newJti = jwtProvider.parseClaims(newRefreshToken).getId();
+        
+        redisTemplate.opsForValue().set(
+                REFRESH_KEY + userId,
+                newJti,    // 랜덤 uuid 적용
+                Duration.ofDays(7)
+        );
         
         String userName = userRepository.findById(userId)
             .orElseThrow()
@@ -117,7 +119,7 @@ public class AuthService {
             String jti = claims.getId();
             long expirationMillis = claims.getExpiration().getTime() - System.currentTimeMillis();
             blacklistService.blacklist(jti, expirationMillis);
-            redisTemplate.delete(SESSION_KEY + userId);
+            redisTemplate.delete(REFRESH_KEY + userId);
         }
         
         //if (refreshToken != null) {
