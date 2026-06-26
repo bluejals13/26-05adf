@@ -69,7 +69,7 @@ export async function request<T>(
 
     if (!newToken?.accessToken) {
       useAuthStore.getState().logout();
-      queryClient.clear(); // 중요
+      //queryClient.clear(); // 중요
       throw new Error("Unauthorized");
     }
     console.log("🔁 retry request", url);
