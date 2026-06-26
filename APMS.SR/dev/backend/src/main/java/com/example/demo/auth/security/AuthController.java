@@ -88,7 +88,7 @@ public class AuthController {
 ) {
 
     String accessToken = extractAccessToken(request);
-    String sessionId = extractRefreshToken(request);  
+    String refreshToken = extractRefreshToken(request);  
     
     Long userId = null;
     
