@@ -21,7 +21,7 @@ export function useMe() {
     queryKey: authKeys.me(),
     queryFn: () => http.get("/api/users/me"),
 
-    enabled: isReady && !!token,
+    enabled: hydrated && !!token,
 
     retry: 0,
     refetchOnWindowFocus: false,
