@@ -70,8 +70,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         
         String token = header.substring(7);     
         
-        Long userId = Long.parseLong(claims.getSubject());
-        String jti = claims.getId();
         
         // 0. JWT 검증 후 파서
         if (!jwtProvider.validateToken(token)) {
@@ -85,6 +83,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
+        Long userId = Long.parseLong(claims.getSubject());
+        String jti = claims.getId();
         
         System.out.println("userId=" + userId);
         
