@@ -22,9 +22,8 @@ export async function refreshToken(): Promise<TokenResponse | null> {
 
       const data: TokenResponse = await res.json();
       console.log("🔥 refresh called");
-      return data?.accessToken ? data : null;
       
-      return data;
+      return data?.accessToken ? data : null;
     } catch {
       return null;
     } finally {
