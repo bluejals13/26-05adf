@@ -21,7 +21,7 @@ export const authService = {    // 로그인 이벤트
     type LoginResponse = { accessToken: string; };
     const res = await http.post<LoginResponse>("/api/auth/login", { username, password });
 
-    useAuthStore.getState().setToken(res.accessToken);
+    useAuthStore.getState().login(res.accessToken);
 
     //await queryClient.invalidateQueries({ queryKey: authKeys.me() });
   },
