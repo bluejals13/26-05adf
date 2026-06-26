@@ -102,6 +102,7 @@ public class JwtProvider {    // 각 토큰 제공 파일
 
     // 4. 중복 등 예외처리 시 검증
     public boolean validateToken(String token) { //expired / malformed / signature error 구분 추가
+        if (token == null || token.isBlank()) { return false; }    // null 값 회원가입 시
         try {
             parseClaims(token);
             return true;
