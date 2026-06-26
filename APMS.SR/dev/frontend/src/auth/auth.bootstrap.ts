@@ -8,7 +8,7 @@ let bootstrapPromise: Promise<void> | null = null;
 
 export function bootstrapAuth(): Promise<void> {
   const isLoggedOut = useAuthStore.getState().isLoggedOut;
-  if (isLoggedOut) return;
+  if (isLoggedOut) return bootstrapPromise;
   if (bootstrapPromise) return bootstrapPromise;
 
   bootstrapPromise = (async () => {
