@@ -117,15 +117,16 @@ public class AuthService {
             //blacklistService.blacklist(accessToken);
             Claims claims = jwtProvider.parseClaims(accessToken);
             Long userId = Long.parseLong(claims.getSubject());
+            
+            redisTemplate.delete(SESSION_KEY + userId);
         }
         
         //if (refreshToken != null) {
             //Claims claims = jwtProvider.parseClaims(refreshToken);
             //Long userId = Long.parseLong(claims.getSubject());
-    
+        
             //redisTemplate.delete(REFRESH_KEY + userId);
         // Redis 세션 삭제 = 즉시 로그아웃
-        redisTemplate.delete(SESSION_KEY + userId);
-
+        
     }
 }
