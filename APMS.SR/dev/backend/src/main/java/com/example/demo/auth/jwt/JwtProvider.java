@@ -56,7 +56,7 @@ public class JwtProvider {    // 각 토큰 제공 파일
 
     return Jwts.builder()
             .setSubject(String.valueOf(userId))
-            //.setId(jti) // 🔥 핵심
+            .setId(jti) // 🔥 핵심
             .claim("username", username) 
             //.claim("type", "access") // 나중에 필터 에서 string = claims.get("type" ~~~~) \n if (!"access".equals(type))
             .setIssuedAt(now)
@@ -101,7 +101,7 @@ public class JwtProvider {    // 각 토큰 제공 파일
     }
 
     // 4. 중복 등 예외처리 시 검증
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token) { //expired / malformed / signature error 구분 추가
         try {
             parseClaims(token);
             return true;
