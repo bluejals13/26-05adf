@@ -78,9 +78,10 @@ public class AuthService {
         
         //if (blacklistService.isBlacklisted(refreshToken)) { throw new BadCredentialsException("블랙리스트 토큰"); }        
         
-        if (!redisSession.equals(sessionId)) { throw new BadCredentialsException("거부된 세션"); }
+        if (redisSession == null || !redisSession.equals(sessionId)) {
+            throw new BadCredentialsException("거부된 세션"); }
                 
-        // String newSessionId = UUID.randomUUID().toString();
+        
         
         //if (!"refresh".equals(claims.get("type"))) { throw new BadCredentialsException("INVALID_REFRESH_TOKEN"); }
         
@@ -98,11 +99,6 @@ public class AuthService {
         //String newRefreshToken = jwtProvider.createRefreshToken(userId);
         //String newJti = jwtProvider.parseClaims(newRefreshToken).getId();
         
-        redisTemplate.opsForValue().set(
-                SESSION_KEY + userId,
-                newSessionId,
-                Duration.ofDays(7)
-        );
         String userName = userRepository.findById(userId)
             .orElseThrow()
             .getUsername();
