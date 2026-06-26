@@ -92,7 +92,7 @@ public class AuthController {
     
     Long userId = null;
     
-    if (refreshToken != null) { try { userId = Long.parseLong(jwtProvider.parseClaims(sessionId).getSubject());
+    if (sessionId != null) { try { userId = Long.parseLong(jwtProvider.parseClaims(sessionId).getSubject());
         } catch (Exception ignored) {}
     }
         
