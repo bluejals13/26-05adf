@@ -26,6 +26,8 @@ public class User {
     @Column(unique = true)
     private String username;
 
+    private String email
+
     private String password;
 
     private LocalDateTime passwordChangedAt; // 비번 변경 시간
@@ -35,16 +37,17 @@ public class User {
     private UserStatus status;
 
     // 기본 생성자 (핵심 수정)
-    public User(String username, String password) {
+    public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
+        this.email = email;
         this.passwordChangedAt = null;
         this.status = UserStatus.ACTIVE;
     }
 
     // 팩토리 메서드
-    public static User create(String username, String encodedPassword) {
-        return new User(username, encodedPassword);
+    public static User create(String username, String encodedPassword, String email) {
+        return new User(username, encodedPassword, email);
     }
 
     public void updatePassword(String encodedPassword) {
