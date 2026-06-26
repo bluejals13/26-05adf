@@ -46,7 +46,7 @@ public class AuthController {
         
         System.out.println("LOGIN ==================== ");        
         
-        response.addCookie(refreshCookie);
+        response.addCookie(cookie);
         System.out.println("accessToken = " + result.accessToken());
         System.out.println("refreshToken = " + result.refreshToken());
         
@@ -74,7 +74,7 @@ public class AuthController {
         
         System.out.println("REFRESH ==================== ");        
         
-        response.addCookie(refreshCookie);
+        response.addCookie(cookie);
         System.out.println("accessToken = " + token.accessToken());
         System.out.println("refreshToken = " + refreshToken);
 
@@ -107,7 +107,7 @@ public class AuthController {
     
     System.out.println("accessToken = " + accessToken);
     
-    response.addCookie(refreshCookie);
+    response.addCookie(cookie);
 
     return ResponseEntity.noContent().build();
 }
