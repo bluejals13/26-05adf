@@ -112,7 +112,8 @@ public class AuthService {
         if (accessToken != null) {
             Claims claims = jwtProvider.parseClaims(accessToken);
             Long userId = Long.parseLong(claims.getSubject());
-            blacklistService.blacklist(accessToken);
+            String jti = jwtProvider.parseClaims(accessToken).getId();
+            blacklistService.blacklist(jti);
             redisTemplate.delete(SESSION_KEY + userId);
         }
         
