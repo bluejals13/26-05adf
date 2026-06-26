@@ -19,7 +19,7 @@ export const useAuthStore = create(
       token: null,
       revoked: false,
       isLoggedOut: false,
-      setToken: (token: string | null) => void;           // refresh 전용
+      setToken: (token) => set({ token }),           // refresh 전용
       login: (token) => set({ token, isLoggedOut: false, revoked: false }),  // 로그인 전용
       logout: () => set({ token: null, isLoggedOut: true, revoked: true }),  // 로그아웃 전용
     }),
