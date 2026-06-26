@@ -51,7 +51,7 @@ public class AuthController {
         System.out.println("refreshToken = " + result.refreshToken());
         
         return ResponseEntity.ok(
-                new LoginResult(result.accessToken(), "Bearer", sessionId)
+                new LoginResult(result.accessToken(), "Bearer", result.sessionId())
         );
     }
 
