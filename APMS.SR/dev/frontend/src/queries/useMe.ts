@@ -16,7 +16,6 @@ export function useMe() {
 
     enabled: !!token,
 
-    staleTime: 1000 * 10 * 2,  // 20 초 간격 확인
     retry: false,
     refetchOnWindowFocus: true,
   });
