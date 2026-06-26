@@ -4,5 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 
 public record SignupRequest(
         String username,
-        String password
+        String password,
+        String email
 ){}
