@@ -88,12 +88,12 @@ public class AuthController {
 ) {
 
     String accessToken = extractAccessToken(request);
-    //String refreshToken = extractRefreshToken(request);  
+    String refreshToken = extractRefreshToken(request);  
     
     authService.logout(accessToken);
         
     // refresh token cookie 삭제
-    Cookie cookie = new Cookie("refreshToken", result.refreshToken());
+    Cookie cookie = new Cookie("refreshToken", refreshToken);
     cookie.setHttpOnly(true);
     cookie.setSecure(true);
     cookie.setPath("/");
