@@ -109,7 +109,7 @@ public class AuthService {
         
         String newAccessToken = jwtProvider.createAccessToken(userId, userName);
         
-        return new TokenResponse(newAccessToken);
+        return new TokenResponse(newAccessToken, newRefreshToken);
     }
 
     public void logout(String accessToken) {    // 로그아웃
