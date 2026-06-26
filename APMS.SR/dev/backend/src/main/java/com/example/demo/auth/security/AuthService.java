@@ -114,10 +114,9 @@ public class AuthService {
 
     public void logout(String accessToken) {    // 로그아웃
         if (accessToken != null) {
-            //blacklistService.blacklist(accessToken);
             Claims claims = jwtProvider.parseClaims(accessToken);
             Long userId = Long.parseLong(claims.getSubject());
-            
+            blacklistService.blacklist(accessToken);
             redisTemplate.delete(SESSION_KEY + userId);
         }
         
