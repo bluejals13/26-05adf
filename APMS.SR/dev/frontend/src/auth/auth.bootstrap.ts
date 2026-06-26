@@ -4,6 +4,8 @@ import { useAuthStore } from "../store/auth.store";
 import { queryClient } from "../queryClient";
 import { refreshToken } from "../api/http";
 
+import { authKeys } from "../auth/auth.keys";
+
 let bootstrapPromise: Promise<void> | null = null;
 
 export function bootstrapAuth(): Promise<void> {
@@ -21,7 +23,7 @@ export function bootstrapAuth(): Promise<void> {
       } else {
         // refresh 실패 → 비로그인 상태
         useAuthStore.getState().logout();
-        queryClient.clear();
+        queryClient.resetQueries({ queryKey: authKeys.all });
       }
     } catch {
       useAuthStore.getState().logout();
