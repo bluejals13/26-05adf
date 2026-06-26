@@ -72,7 +72,7 @@ public class UserAdminService {
         
         UserStatus before = user.getStatus(); 
         
-        if (before =! UserStatus.DELETE_PENDING) { throw new IllegalStateException("삭제 대기 계정이 아닙니다"); }
+        if (before != UserStatus.DELETE_PENDING) { throw new IllegalStateException("삭제 대기 계정이 아닙니다"); }
         
         user.changeStatus(UserStatus.DELETED);
         
