@@ -1,7 +1,7 @@
 package com.example.demo.auth.security;
 
 import com.example.demo.auth.jwt.JwtProvider;
-//import com.example.demo.auth.security.TokenBlacklistService;
+import com.example.demo.auth.security.TokenBlacklistService;
 
 import com.example.demo.iam.user.domain.User;
 import com.example.demo.iam.user.dto.LoginRequest;
@@ -32,7 +32,7 @@ public class AuthService {
     private final RedisTemplate<String, String> redisTemplate;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    // private final TokenBlacklistService blacklistService;
+    private final TokenBlacklistService blacklistService;
 
     //private static final String ACCESS_KEY = "auth:access:";
     private static final String SESSION_KEY = "auth:session:";
