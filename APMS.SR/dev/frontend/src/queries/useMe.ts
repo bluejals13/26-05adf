@@ -9,6 +9,7 @@ import { useAuthStore } from "../store/auth.store";
 import { useEffect, useState } from "react";
 
 export function useMe() {
+  const isLoggedOut = useAuthStore((s) => s.isLoggedOut);
   // hydration guard (핵심)
   const [hydrated, setHydrated] = useState(false);
   const token = useAuthStore((s) => s.token);
@@ -21,7 +22,7 @@ export function useMe() {
     queryKey: authKeys.me(),
     queryFn: () => http.get("/api/users/me"),
 
-    enabled: hydrated && !!token,
+    enabled: hydrated && !!token && !isLoggedOut,
 
     retry: 0,
     refetchOnWindowFocus: false,
