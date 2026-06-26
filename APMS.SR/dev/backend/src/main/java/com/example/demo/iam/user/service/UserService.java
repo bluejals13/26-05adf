@@ -49,7 +49,7 @@ public class UserService {
 
         User saved = userRepository.save(user);
 
-        return new UserResponse(saved.getId(), saved.getUsername(), saved.email());
+        return new UserResponse(saved.getId(), saved.getUsername(), saved.getEmail());
     }
 
     public MeResponse getMe(Long userId) {
