@@ -147,7 +147,7 @@ export default function UserAdminPage() {
 
               <button
                 className={styles.danger}
-                onClick={() => harddeleteUser.mutate(u.id)}
+                onClick={() => deleteUser.mutate(u.id)}
               >
                 영구삭제
               </button>
