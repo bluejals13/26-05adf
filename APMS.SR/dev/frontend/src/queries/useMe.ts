@@ -6,7 +6,7 @@ import { http } from "../api/http";
 import { authKeys } from "../auth/auth.keys";
 import type { User } from "../auth/auth.types";
 import { useAuthStore } from "../store/auth.store";
-import { useEffect, useState } from "react";
+//import { useEffect, useState } from "react";
 
 export function useMe() {
   const isLoggedOut = useAuthStore((s) => s.isLoggedOut);
