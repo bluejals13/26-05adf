@@ -39,6 +39,15 @@ public class UserAdminController {
         userAdminService.deleteUser(adminId, id);
     }
     
+    @PreAuthorize("hasAuthority('DELETED')")
+    @DeleteMapping("/{id}")
+    public void harddeleteUser(@PathVariable Long id) {
+
+        Long adminId = securityUtil.getUserId();
+
+        userAdminService.harddeleteUser(adminId, id);
+    }
+    
     @PreAuthorize("hasAuthority('USER_STATUS_UPDATE')")
     @PatchMapping("/{id}/status")
     public void changeStatus(
