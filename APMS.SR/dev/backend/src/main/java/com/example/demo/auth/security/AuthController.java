@@ -83,7 +83,8 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
-            HttpServletRequest request
+            HttpServletRequest request,
+            HttpServletResponse response
 ) {
 
     String accessToken = extractAccessToken(request);
