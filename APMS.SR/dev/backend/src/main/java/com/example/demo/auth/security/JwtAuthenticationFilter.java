@@ -72,6 +72,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         
         String token = header.substring(7);     
         try {
+            if (token == null) {    // 회원가입 시
+                chain.doFilter(request, response);
+                return;
+            }
                 
             // 4. JWT 검증 (먼저)
             if (!jwtProvider.validateToken(token)) {
