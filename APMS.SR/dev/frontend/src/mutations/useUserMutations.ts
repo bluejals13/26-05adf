@@ -29,6 +29,14 @@ export function useUserMutations() {
       qc.invalidateQueries({ queryKey: userKeys.all });
     },
   });
+  
+  const harddeleteUser = useMutation({
+    mutationFn: (id: number) => userApi.harddeleteUser(id),
 
-  return { changeStatus, deleteUser };
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: userKeys.all });
+    },
+  });
+  
+  return { changeStatus, deleteUser, harddeleteUser };
 }
