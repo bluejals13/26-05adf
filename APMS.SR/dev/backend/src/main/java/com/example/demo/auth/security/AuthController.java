@@ -62,7 +62,7 @@ public class AuthController {
     ) {
 
         String accessToken = extractAccessToken(request);
-        String sessionId = extractRefreshToken(request);
+        String sessionId = extractSessionId(request);
         
         TokenResponse token = authService.refresh(accessToken, sessionId);
 
@@ -112,7 +112,7 @@ public class AuthController {
     return ResponseEntity.noContent().build();
 }
 
-    private String extractRefreshToken(HttpServletRequest request) {
+    private String extractSessionId(HttpServletRequest request) {
         if (request.getCookies() == null) return null;
 
         for (Cookie c : request.getCookies()) {
