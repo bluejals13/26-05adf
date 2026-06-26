@@ -20,7 +20,7 @@ export const useAuthStore = create(
     {
       name: STORAGE_KEYS.auth,
       onRehydrateStorage: () => (state) => {
-        state._hydrated = true;
+        state._hydrated = true;},
     }
   )
 );
