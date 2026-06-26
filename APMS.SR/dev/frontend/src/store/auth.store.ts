@@ -20,7 +20,7 @@ export const useAuthStore = create(
       revoked: false,
       isLoggedOut: false,
       setToken: (t) => set({ token: t }),
-      logout: () => set({ token: null, isLoggedOut: true }),
+      logout: () => set({ token: null, isLoggedOut: true, revoked: true }),
       resetLogoutFlag: () => set({ isLoggedOut: false }),
     }),
     {
