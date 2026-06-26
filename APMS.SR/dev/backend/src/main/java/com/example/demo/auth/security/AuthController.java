@@ -62,11 +62,11 @@ public class AuthController {
     ) {
 
         String accessToken = extractAccessToken(request);
-        String refreshToken = extractRefreshToken(request);
+        //String refreshToken = extractRefreshToken(request);
         
         TokenResponse token = authService.refresh(refreshToken);
 
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
+        Cookie cookie = new Cookie("refreshToken", token.refreshToken());
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/");
