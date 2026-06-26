@@ -16,7 +16,12 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-
+    
+    @PostMapping("/signup")
+    public UserResponse signup(@RequestBody SignupRequest req) {
+        return userService.signup(req);
+    }
+    
     @GetMapping("/me")
     public MeResponse me(@AuthenticationPrincipal CustomUserPrincipal principal) {
         return userService.getMe(principal.getUserId());
