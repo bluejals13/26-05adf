@@ -29,7 +29,7 @@ public class TokenBlacklistService {    // 이미 발급된 토큰 차단    “
         
         String jti = jwtProvider.getJti(token);
         
-        redisTemplate.opsForValue().get("blacklist:" + jti) != null
+        redisTemplate.opsForValue().get("blacklist:" + jti) != null;
     }
 
     // 체크
