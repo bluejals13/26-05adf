@@ -2,6 +2,8 @@ package com.example.demo.auth.security;
 
 import com.example.demo.iam.user.domain.User;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import lombok.AllArgsConstructor;
 import java.util.Collection;
 import lombok.Getter;
