@@ -59,11 +59,11 @@ export default function MenuPage() {
 
       {menus.map((menu: Menu) => (
         <div key={menu.id} className={styles.tableRow}>
-          <div className={styles.cell}>{menu.id}</div>
-          <div className={styles.cell}> {menu.name}</div>
-          <div className={styles.cell}>{menu.price}</div>
+          <div className={styles.cell} data-label="ID">{menu.id}</div>
+          <div className={styles.cell} data-label="Name"> {menu.name}</div>
+          <div className={styles.cell} data-label="Price">{menu.price}</div>
           
-          <div className={styles.cell}>
+          <div>
             
           {canDelete && (
             <button className={styles.actionBtn}
