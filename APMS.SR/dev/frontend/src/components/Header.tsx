@@ -33,7 +33,7 @@ export default function Header() {
     <header className="header">
 
       {/* 왼쪽 */}
-      <div className="left">
+      <div className="navUser">
       
           {isLoggedIn ? (
             <>
@@ -42,7 +42,7 @@ export default function Header() {
           </>
         ) : (
           <>
-            <nav className="authNav">
+            <nav className="nav">
               <Link to="/signup">Signup</Link>
               <Link to="/login">Login</Link>
             </nav>
@@ -51,7 +51,7 @@ export default function Header() {
         </div>
       
       {/* 오른쪽 */}             
-      <div className="right">
+      <div className="topBar">
           
         <button className="menuButton"
           onClick={() => setMenuOpen(!menuOpen)} > ☰ </button>
