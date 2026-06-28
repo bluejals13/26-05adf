@@ -77,10 +77,11 @@ export default function MenuPage() {
             >
               Delete
             </button>
+            )}
           </div>
-          )}
-        </div>
+         </div>
       ))}
     </div>
+  </div>
   );
 }
