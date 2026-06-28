@@ -10,11 +10,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 /* 햄버거 기본 숨김 */
 .menuButton {
   display: none;
+  margin-left: auto; /* ⭐ 혹시 밀림 방지 */
   background: none;
   border: none;
   font-size: 24px;
@@ -25,7 +27,6 @@
 .nav {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: 10px;
 
   width: 100%;
@@ -37,7 +38,7 @@
   display: flex;
   align-items: flex-start;
   flex-direction: row;
-  font-size: 22px;
+  font-size: 24px;
   gap: 10px;
 }
 
