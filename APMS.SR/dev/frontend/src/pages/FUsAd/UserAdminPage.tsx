@@ -121,7 +121,6 @@ export default function UserAdminPage() {
 			  </>
 			  )}
               </div>
-            )}
           </div>
         ))}
       </div>
