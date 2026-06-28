@@ -2,10 +2,19 @@
 /* 햄버거 기본 숨김 */
 .menuButton {
   display: none;
-  margin-left: auto; /* ⭐ 혹시 밀림 방지 */
   border: none;
+  margin-left: auto; /* ⭐ 혹시 밀림 방지 */
+
+  background: var(--primary);
+  color: white;
+  
   font-size: 18px;
   cursor: pointer;
+  transition: .2s;
+}
+
+.menuButton:hover {
+  opacity: .9;
 }
 
 /* dir 영역 */
@@ -29,6 +38,8 @@
 @media (max-width: 768px) {
   .menuButton {
     display: block;
+    width: 100%;
+    margin: 15px 0;
     justify-content: flex-end;
   }
 
@@ -45,6 +56,9 @@
     font-size: 16px;
     font-weight: 500;
     gap: 6px;
+    opacity: 0;
+
+    transition: all .3s ease;
   }
   
   /* 메뉴 */
