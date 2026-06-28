@@ -54,7 +54,7 @@
 .header,
 .row {
   display: grid;
-  grid-template-columns: 80px 2fr 140px 80px 120px;
+  grid-template-columns: 80px 2fr 100px 100px 140px;
   align-items: center;
   padding: 12px;
   border-radius: 10px;
