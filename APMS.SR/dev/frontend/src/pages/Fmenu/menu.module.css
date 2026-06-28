@@ -150,7 +150,7 @@
   .tableRow {
     grid-template-columns: 40px 1fr 60px 80px;
     column-gap: 6px;
-    padding: 10px 8px;
+    padding: 6px 6px;
     font-size: 13px;
   }
 
@@ -165,7 +165,7 @@
 
   /* delete button compact */
   .actionBtn {
-    padding: 4px 6px;
+    padding: 4px 4px;
     font-size: 11px;
     border-radius: 6px;
   }
@@ -195,7 +195,7 @@
   }
 
   .rowMeta span {
-    padding: 2px 6px;
+    padding: 2px 4px;
     border-radius: 6px;
     background: #161b22;
     border: 1px solid #30363d;
@@ -203,7 +203,7 @@
 
   /* delete button */
   .actionBtn {
-    padding: 6px 10px;
+    padding: 6px 6px;
     font-size: 12px;
   }
 
