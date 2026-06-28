@@ -5,10 +5,10 @@
   border-bottom: 1px solid #ddd;
 }
 
-/* 왼쪽: 로고 + 햄버거 */
-.topBar {
+/* ⭐ 핵심: 좌/우 분리 */
+.navUser {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
 }
@@ -23,23 +23,27 @@
   cursor: pointer;
 }
 
-/* 기본: 데스크톱에서는 메뉴 보임 */
+/* 메뉴 */
 .nav {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-
   width: 100%;
 }
 
-
-.navLinks,
-.navUser {
+/* 왼쪽 영역 */
+.left {
   display: flex;
-  align-items: flex-start;
-  font-size: 22px;
+  align-items: center;
   gap: 12px;
 }
+
+/* 오른쪽 영역 */
+.right {
+  display: flex;
+  align-items: center;
+}
+
 
 @media (max-width: 768px) {
   .menuButton {
