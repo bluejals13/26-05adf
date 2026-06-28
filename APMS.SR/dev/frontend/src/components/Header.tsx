@@ -31,6 +31,30 @@ export default function Header() {
 
   return (
     <header className="header">
+      
+      <div className="navUser">
+          
+          {isLoggedIn ? (
+            <>
+              <span> {user?.username} </span>
+            
+            <div style={{ fontSize: 12, marginLeft: 20, color: "gray" }}>
+              <div>token: {token ? "YES" : "NO"}</div>
+              <div>loggedIn: {String(!!token && !!user)}</div>
+              <div>loading: {String(isLoading)}</div>
+              <div>error: {String(isError)}</div>
+            </div>
+
+            <button onClick={handleLogout}> Logout </button>
+          </>
+        ) : (
+          <>
+            <Link to="/signup">Signup</Link>
+            <Link to="/login">Login</Link>
+          </>
+          )}
+      </div>
+      
       <div className="topBar">
         
         <button
@@ -61,29 +85,8 @@ export default function Header() {
           
         </div>
         
-        <div className="navUser">
-          
-          {isLoggedIn ? (
-            <>
-              <span> {user?.username} </span>
-            
-            <div style={{ fontSize: 12, marginLeft: 20, color: "gray" }}>
-              <div>token: {token ? "YES" : "NO"}</div>
-              <div>loggedIn: {String(!!token && !!user)}</div>
-              <div>loading: {String(isLoading)}</div>
-              <div>error: {String(isError)}</div>
-            </div>
-
-            <button onClick={handleLogout}> Logout </button>
-          </>
-        ) : (
-          <>
-            <Link to="/signup">Signup</Link>
-            <Link to="/login">Login</Link>
-          </>
-          )}
-        </div>
       </nav>
+      
     </header>
   );
 }
