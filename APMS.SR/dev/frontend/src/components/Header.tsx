@@ -36,9 +36,9 @@ export default function Header() {
           
           {isLoggedIn ? (
             <>
-              <button onClick={handleLogout}> Logout </button>              
+              <span> {user?.username} </span>            
               
-              <span> {user?.username} </span>
+              <button onClick={handleLogout}> Logout </button>  
             
             <div style={{ fontSize: 12, marginLeft: 20, color: "gray" }}>
               <div>token: {token ? "YES" : "NO"}</div>
