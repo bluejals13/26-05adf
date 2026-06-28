@@ -52,7 +52,6 @@ export default function Header() {
         
       {/* 메인 메뉴 */}
       <nav className={`nav ${menuOpen ? "open" : ""}`}>
-      {menuOpen ? ( div
           
         {isLoggedIn && (
           <>
