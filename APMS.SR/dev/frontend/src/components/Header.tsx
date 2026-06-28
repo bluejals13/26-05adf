@@ -54,7 +54,7 @@ export default function Header() {
             <Link to="/login">Login</Link>
           </>
           )}
-      </div>
+
       
                 
       <div className="topBar">
@@ -64,22 +64,24 @@ export default function Header() {
       </div>
       
       <nav className={`nav ${menuOpen ? "open" : ""}`}>
-        <div className="navLinks">
-          <Link to="/" className="logo">Main</Link>
-          <Link to="/home">Home</Link>
-          <Link to="/about">About</Link>
-          <Link to="/contact">Contact</Link>
+
           
         {isLoggedIn && (
           <>
             <Link to="/monitor">Monitor</Link>
             <Link to="/dashboard">Dashboard</Link>
-                                           
+                                             
           </>
         )}
           
+          
+        <Link to="/home">Home</Link>
+        <Link to="/contact">Contact</Link>
+        <Link to="/about">About</Link>
+        <Link to="/" className="logo">Main</Link>
+          
+
         </div>
-        
         
       </nav>
       
