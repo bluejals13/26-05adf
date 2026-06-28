@@ -123,7 +123,7 @@
 }
 
 @media (max-width: 768px) {
-
+  /* page padding */
   .page {
     padding: 12px;
   }
@@ -147,37 +147,51 @@
     display: none;
   }
 
-  /* ROW → CARD 형태 */
+  /* ROW → 2줄 구조 */
   .tableRow {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
 
-    gap: 10px;
-    padding: 14px;
-
-    border-radius: 12px;
+    gap: 6px;
+    padding: 12px;
   }
 
-  /* 각 셀을 라벨처럼 보이게 */
-  .cell {
+  /* 1번째 줄: meta + action */
+  .rowTop {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 10px;
-
-    font-size: 14px;
+  }
+  
+  /* ID + price */
+  .rowMeta {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    font-size: 13px;
     color: #c9d1d9;
   }
 
-  .cell::before {
-    content: attr(data-label);
-    color: #8b949e;
+  .rowMeta span {
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: #161b22;
+    border: 1px solid #30363d;
+  }
+
+  /* delete button */
+  .actionBtn {
+    padding: 6px 10px;
     font-size: 12px;
   }
 
-  /* ACTION 버튼 */
-  .actionBtn,
-  .button {
-    width: 100%;
+  /* 2번째 줄: name */
+  .rowBottom {
+    font-size: 14px;
+    color: #e6edf3;
+    padding-left: 2px;
+    word-break: break-word;
   }
 }
