@@ -56,7 +56,17 @@ export default function Header() {
           )}
       </div>
       
-        
+                
+      <div className="topBar">
+          
+        <button
+          className="menuButton"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
+        </button>
+      </div>
+      
       <nav className={`nav ${menuOpen ? "open" : ""}`}>
         <div className="navLinks">
           <Link to="/" className="logo">Main</Link>
@@ -77,16 +87,6 @@ export default function Header() {
           
         </div>
         
-        
-        <div className="topBar">
-          
-          <button
-            className="menuButton"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            ☰
-          </button>
-        </div>
         
       </nav>
       
