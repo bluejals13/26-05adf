@@ -2,7 +2,7 @@
 /* 유저 아이디 스타일 */
 .username {
   display: inline-block;
-  font-size: 14px;
+  font-size: 24px;
   
   padding: 4px 6px;
   border-radius: 999px;
@@ -23,14 +23,14 @@
   background: rgba(248, 81, 73, 0.12);
   color: white;
   
-  border-color: rgba(248, 81, 73, 0.3);
+  border-color: #58a6ff;
   
   cursor: pointer;
   transition: 0.2s;
 }
 
 .logoutBtn:hover {
-  background: #58a6ff;
+  background: rgba(248, 81, 73, 0.3);
   transform: translateY(-2px);
 }
 
