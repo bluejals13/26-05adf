@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/hooks/useAuth";
 import { useMe } from "../queries/useMe";
 
-import styles from "./Header.css";
+import "./Header.css";
 
 
 
