@@ -1,7 +1,6 @@
 .header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   padding: 8px;
   border-bottom: 1px solid #ddd;
 }
@@ -9,8 +8,8 @@
 /* 왼쪽: 로고 + 햄버거 */
 .topBar {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 6px;
 }
 
 /* 햄버거 기본 숨김 */
@@ -25,16 +24,21 @@
 /* 기본: 데스크톱에서는 메뉴 보임 */
 .nav {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+
+  width: 100%;
 }
+
 
 .navLinks,
 .navUser {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: row;
   font-size: 22px;
-  gap: 6px;
+  gap: 10px;
 }
 
 @media (max-width: 768px) {
@@ -44,20 +48,16 @@
 
   .nav {
     display: none;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    gap: 10px;
   }
 
   .nav.open {
     display: flex;
+    flex-direction: column;
   }
 
   .navLinks,
   .navUser {
     flex-direction: column;
-    align-items: flex-start;
     width: 100%;
   }
 }
