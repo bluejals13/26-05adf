@@ -1,9 +1,3 @@
-.header {
-  display: flex;
-  flex-direction: column;
-  padding: 4px 6px;
-  border-bottom: 1px solid #ddd;
-}
 
 /* 햄버거 기본 숨김 */
 .menuButton {
