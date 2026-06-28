@@ -59,12 +59,14 @@ export default function MenuPage() {
 
       {menus.map((menu: Menu) => (
         <div key={menu.id} className={styles.tableRow}>
-          <div>{menu.id}</div>
-          <div>{menu.name}</div>
-          <div>{menu.price}</div>
-
+          <div className={styles.cell}>{menu.id}</div>
+          <div className={styles.cell}> {menu.name}</div>
+          <div className={styles.cell}>{menu.price}</div>
+          
+          <div className={styles.cell}>
+            
           {canDelete && (
-            <button
+            <button className={styles.actionBtn}
               onClick={() => {
                 setDeletingId(menu.id);
                 deleteMenu.mutate(menu.id, {
@@ -75,6 +77,7 @@ export default function MenuPage() {
             >
               Delete
             </button>
+          </div>
           )}
         </div>
       ))}
