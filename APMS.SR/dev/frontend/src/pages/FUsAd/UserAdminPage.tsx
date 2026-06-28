@@ -30,7 +30,6 @@ export default function UserAdminPage() {
   });
 
   const refreshing = isFetching && !isLoading;
-
   const { changeStatus, deleteUser } = useUserMutations();
 
   const activeUsers = useMemo(() => {
@@ -79,7 +78,8 @@ export default function UserAdminPage() {
           <div>ID</div>
           <div>Username</div>
           <div>Status</div>
-          <div style={{ textAlign: "right" }}>Actions</div>
+          <div style={{ textAlign: "right" }}>[활성/정지]</div>
+		  <div>삭제</div>
         </div>
 
         {activeUsers.map((u) => (
@@ -87,7 +87,7 @@ export default function UserAdminPage() {
             <div>{u.id}</div>
             <div>{u.username}</div>
             <div>{u.status}</div>
-
+			  
             {(canUpdate || canDelete) && (
               <div className={styles.actions}>
                 {canUpdate && (
@@ -106,7 +106,7 @@ export default function UserAdminPage() {
                 )}
 
                 {canDelete && (
-                  <button
+                  <button className={`${styles.button} ${styles.primaryBtn}`}
                     onClick={() =>
                       changeStatus.mutate({
                         id: u.id,
