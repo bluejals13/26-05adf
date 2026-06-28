@@ -8,7 +8,7 @@
 /* 왼쪽: 로고 + 햄버거 */
 .topBar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
 }
@@ -26,8 +26,7 @@
 /* 기본: 데스크톱에서는 메뉴 보임 */
 .nav {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  justify-content: flex-end;
   gap: 8px;
 
   width: 100%;
