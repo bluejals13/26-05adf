@@ -9,7 +9,7 @@
 /* HEADER */
 .title {
   font-size: 24px;
-  font-weight: 400;
+  font-weight: 600;
   margin-bottom: 24px;
   color: #e6edf3;
 }
@@ -150,14 +150,13 @@
   color: #8b949e;
 }
 
-/* BUTTONS */
+/* BUTTONS   cursor: pointer; */
 .button {
-  padding: 6px 8px;
+  padding: 6px 10px;
   border-radius: 8px;
-  font-size: 12px;
-  font-weight: 400;
-  cursor: pointer;
-  border: 4px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid transparent;
   transition: all 0.15s ease;
 }
 
