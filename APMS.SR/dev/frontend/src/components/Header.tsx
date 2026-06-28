@@ -31,7 +31,6 @@ export default function Header() {
 
   return (
     <header className="header">
-      <Link to="/" className="logo">Main</Link>
       <div className="topBar">
         
         <button
@@ -44,6 +43,7 @@ export default function Header() {
         
       <nav className={`nav ${menuOpen ? "open" : ""}`}>
         <div className="navLinks">
+          <Link to="/" className="logo">Main</Link>
           <Link to="/home">Home</Link>
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
