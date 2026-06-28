@@ -79,8 +79,7 @@ export default function UserAdminPage() {
           <div>ID</div>
           <div>Username</div>
           <div>Status</div>
-          <div>Permissions</div>
-          {(canUpdate || canDelete) && <div>Actions</div>}
+          <div style={{ textAlign: "right" }}>Actions</div>
         </div>
 
         {activeUsers.map((u) => (
@@ -88,7 +87,6 @@ export default function UserAdminPage() {
             <div>{u.id}</div>
             <div>{u.username}</div>
             <div>{u.status}</div>
-            <div>{u.permissions.join(", ")}</div>
 
             {(canUpdate || canDelete) && (
               <div className={styles.actions}>
@@ -131,9 +129,10 @@ export default function UserAdminPage() {
           <h2 className={styles.sectionTitle}>삭제 대기</h2>
 
           {pendingUsers.map((u) => (
-            <div key={u.id} className={styles.row}>
+            <div key={u.id} className={styles.pendingRow}>
               <div>{u.username}</div>
 
+	    <div style={{ display: "flex", gap: 8 }}>
               <button
                 onClick={() =>
                   changeStatus.mutate({
@@ -146,15 +145,17 @@ export default function UserAdminPage() {
               </button>
 
               <button
-                className={styles.danger}
+                className={`${styles.button} ${styles.dangerBtn}`}
                 onClick={() => deleteUser.mutate(u.id)}
               >
                 영구삭제
               </button>
             </div>
+        </div>
           ))}
         </>
       )}
     </div>
   );
 }
+
