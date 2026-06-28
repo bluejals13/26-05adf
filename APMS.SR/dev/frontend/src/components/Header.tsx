@@ -31,9 +31,8 @@ export default function Header() {
 
   return (
     <header className="header">
+      <Link to="/" className="logo">Main</Link>
       <div className="topBar">
-        
-        <Link to="/" className="logo">Main</Link>
         
         <button
           className="menuButton"
