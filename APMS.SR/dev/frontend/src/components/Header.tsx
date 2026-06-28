@@ -3,12 +3,14 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/hooks/useAuth";
 import { useMe } from "../queries/useMe";
-//import type { User } from "../auth/auth.types";
+
+import styles from "./Header.css";
 
 
 
 
 export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { token, logout, isLoggedIn } = useAuth();
   const { data: user, isLoading, isError } = useMe();
@@ -29,8 +31,17 @@ export default function Header() {
 
   return (
     <header style={{ padding: 12, borderBottom: "1px solid #ddd" }}>
-      <nav style={{ display: "flex", gap: 12, alignItems: "center" }}>
+      <div className="topBar">
         <Link to="/">Main</Link>
+    
+        <button
+          className="menuButton"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
+        </button>
+      </div>
+      <nav className={`nav ${menuOpen ? "open" : ""}`}>
         <Link to="/home">Home</Link>
         <Link to="/about">About</Link>
         <Link to="/contact">Contact</Link>
@@ -42,9 +53,7 @@ export default function Header() {
             <Link to="/monitor">Monitor</Link>
             <Link to="/dashboard">Dashboard</Link>
 
-            <span style={{ marginLeft: "auto" }}>
-              {user?.username ?? ""}
-            </span>
+            <span> {user?.username} </span>
             
             <div style={{ fontSize: 12, marginLeft: 20, color: "gray" }}>
               <div>token: {token ? "YES" : "NO"}</div>
