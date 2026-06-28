@@ -32,19 +32,8 @@ export default function Header() {
   return (
     <header style={{ padding: 12, borderBottom: "1px solid #ddd" }}>
       <div className="topBar">
+        
         <Link to="/">Main</Link>
-    
-        <button
-          className="menuButton"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          ☰
-        </button>
-      </div>
-      <nav className={`nav ${menuOpen ? "open" : ""}`}>
-        <Link to="/home">Home</Link>
-        <Link to="/about">About</Link>
-        <Link to="/contact">Contact</Link>
 
         {!isLoggedIn && <Link to="/signup">Signup</Link>}
 
@@ -69,6 +58,19 @@ export default function Header() {
         ) : (
           <Link to="/login">Login</Link>
         )}
+    
+        <button
+          className="menuButton"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
+        </button>
+      </div>
+      <nav className={`nav ${menuOpen ? "open" : ""}`}>
+        <Link to="/home">Home</Link>
+        <Link to="/about">About</Link>
+        <Link to="/contact">Contact</Link>
+        
       </nav>
     </header>
   );
