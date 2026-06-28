@@ -65,6 +65,12 @@ export default function MenuPage() {
           
           <div className={styles.actionCell}>
             
+          {canUpdate && (
+            <button className={styles.actionBtn}>
+              Update
+            </button>
+          )}
+            
           {canDelete && (
             <button className={styles.actionBtn}
               onClick={() => {
