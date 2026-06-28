@@ -54,10 +54,12 @@
 .header,
 .row {
   display: grid;
-  grid-template-columns: 80px minmax(0, 2fr) 160px 160px 160px;
+  grid-template-columns: 80px minmax(0, 2fr) 160px 160px 140px;
   align-items: center;
   padding: 8px;
   border-radius: 10px;
+  column-gap: 16px;
+  
   white-space: nowrap; /* ✔ 이게 맞는 줄바꿈 방지 */
 }
 
@@ -76,14 +78,34 @@
   }
 
   .row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas:
+      "id name status"
+      "actions actions delete";
+
+  /* 각 컬럼 배치 */
+  .row > div:nth-child(1) {
+    grid-area: id;
   }
 
-  .actions {
-    width: 100%;
+  .row > div:nth-child(2) {
+    grid-area: name;
+  }
+
+  .row > div:nth-child(3) {
+    grid-area: status;
+  }
+
+  .row > div:nth-child(4) {
+    grid-area: actions;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .row > div:nth-child(5) {
+    grid-area: delete;
+    display: flex;
     justify-content: flex-end;
   }
 }
