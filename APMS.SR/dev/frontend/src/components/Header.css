@@ -30,13 +30,6 @@
   width: 100%;
 }
 
-/* 오른쪽 영역 */
-.topBar {
-  display: flex;
-  align-items: flex-end;
-  gap: 12px;
-}
-
 
 @media (max-width: 768px) {
   .menuButton {
