@@ -18,7 +18,7 @@ export default function MenuPage() {
 
   const canRead = hasPermission("MENU_READ");
   const canCreate = hasPermission("MENU_CREATE");
-  const canUpdate = hasPermission("");            // MENU_UPDATE
+  //const canUpdate = hasPermission("");            // MENU_UPDATE
   const canDelete = hasPermission("MENU_DELETE");
     
   const [name, setName] = useState("");
