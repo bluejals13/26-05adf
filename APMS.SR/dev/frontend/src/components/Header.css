@@ -11,7 +11,7 @@
   margin-left: auto; /* ⭐ 혹시 밀림 방지 */
   background: none;
   border: none;
-  font-size: 22px;
+  font-size: 18px;
   cursor: pointer;
 }
 
@@ -35,6 +35,7 @@
 @media (max-width: 768px) {
   .menuButton {
     display: block;
+    justify-content: flex-end;
   }
 
   .nav.open {
