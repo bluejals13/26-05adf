@@ -5,14 +5,6 @@
   border-bottom: 1px solid #ddd;
 }
 
-/* ⭐ 핵심: 좌/우 분리 */
-.navUser {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
 /* 햄버거 기본 숨김 */
 .menuButton {
   display: none;
@@ -23,6 +15,13 @@
   cursor: pointer;
 }
 
+/* 왼쪽 영역 */
+.navUser {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
 /* 메뉴 */
 .nav {
   display: flex;
@@ -31,15 +30,8 @@
   width: 100%;
 }
 
-/* 왼쪽 영역 */
-.left {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-}
-
 /* 오른쪽 영역 */
-.right {
+.topBar {
   display: flex;
   align-items: flex-end;
   gap: 12px;
@@ -51,6 +43,17 @@
     display: block;
   }
 
+  .nav.open {
+    display: flex;
+  }
+
+  /* 왼쪽 영역 */
+  .navUser {
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  /* 메뉴 */
   .nav {
     display: none;
     flex-direction: column;
@@ -58,21 +61,5 @@
     font-size: 12px;
     gap: 2px;
   }
-
-  .nav.open {
-    display: flex;
-  }
-
-/* 왼쪽 영역 */
-.left {
-  flex-direction: column;
-  gap: 2px;
-}
-
-/* 오른쪽 영역 */
-.right {
-  flex-direction: column;
-  gap: 2px;
-}
   
 }
