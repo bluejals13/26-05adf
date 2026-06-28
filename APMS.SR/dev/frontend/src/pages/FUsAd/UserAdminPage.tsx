@@ -78,7 +78,7 @@ export default function UserAdminPage() {
           <div>ID</div>
           <div>Username</div>
           <div>Status</div>
-          <div style={{ textAlign: "right" }}>[활성/정지]</div>
+          <div style={{ textAlign: "right" }}>Action</div>
 		  <div>삭제</div>
         </div>
 
