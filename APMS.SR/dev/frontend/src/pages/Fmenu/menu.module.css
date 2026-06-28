@@ -7,7 +7,7 @@
 
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 /* TITLE */
@@ -20,10 +20,10 @@
 /* FORM */
 .formRow {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
   align-items: center;
-  padding: 12px;
+  padding: 8px;
   background: #161b22;
   border: 1px solid #30363d;
   border-radius: 10px;
@@ -31,7 +31,7 @@
 
 .input {
   height: 36px;
-  padding: 0 10px;
+  padding: 0 8px;
   background: #0d1117;
   color: #c9d1d9;
   border: 1px solid #30363d;
@@ -47,7 +47,7 @@
 /* BUTTON (primary match user admin vibe) */
 .button {
   height: 36px;
-  padding: 0 14px;
+  padding: 0 10px;
   background: rgba(88, 166, 255, 0.12);
   color: #58a6ff;
   border: 1px solid rgba(88, 166, 255, 0.3);
@@ -67,7 +67,7 @@
   display: grid;
   grid-template-columns: 40px 1fr 80px 200px;
   align-items: center;
-  padding: 10px 12px;
+  padding: 6px 8px;
   border-radius: 10px;
   column-gap: 12px;
 }
@@ -131,7 +131,7 @@
 @media (max-width: 768px) {
   /* page padding */
   .page {
-    padding: 12px;
+    padding: 8px;
   }
 
   /* FORM */
@@ -151,7 +151,7 @@
     grid-template-columns: 40px 60px 60px 1fr;
     column-gap: 6px;
     padding: 6px 6px;
-    font-size: 7px;
+    font-size: 4px;
   }
 
   .tableHeader {
@@ -165,8 +165,8 @@
 
   /* delete button compact */
   .actionBtn {
-    padding: 4px 4px;
-    font-size: 5px;
+    padding: 2px 4px;
+    font-size: 6px;
     border-radius: 6px;
   }
 
@@ -182,7 +182,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
   
   /* ID + price */
@@ -190,7 +190,7 @@
     display: flex;
     gap: 6px;
     align-items: center;
-    font-size: 5px;
+    font-size: 4px;
     color: #c9d1d9;
   }
 
@@ -204,12 +204,12 @@
   /* delete button */
   .actionBtn {
     padding: 6px 6px;
-    font-size: 5px;
+    font-size: 6px;
   }
 
   /* 2번째 줄: name */
   .rowBottom {
-    font-size: 5px;
+    font-size: 4px;
     color: #e6edf3;
     padding-left: 2px;
     word-break: break-word;
