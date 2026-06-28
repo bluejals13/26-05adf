@@ -1,7 +1,7 @@
 .header {
   display: flex;
   flex-direction: column;
-  padding: 8px;
+  padding: 4px;
   border-bottom: 1px solid #ddd;
 }
 
@@ -19,6 +19,7 @@
 .navUser {
   display: flex;
   align-items: flex-start;
+  font-size: 22px;
   gap: 12px;
 }
 
