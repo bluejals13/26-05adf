@@ -155,20 +155,9 @@
   padding: 6px 10px;
   border-radius: 8px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 400;
   cursor: pointer;
   border: 1px solid transparent;
-  transition: all 0.15s ease;
-}
-
-/* DELETE BUTTON (GitHub danger style) */
-.button {
-  padding: 6px 10px;
-  background: transparent;
-  border: 1px solid #f85149;
-  border-radius: 6px;
-  color: #f85149;
-  cursor: pointer;
   transition: all 0.15s ease;
 }
 
