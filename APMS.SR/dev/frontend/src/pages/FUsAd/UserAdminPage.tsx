@@ -87,9 +87,9 @@ export default function UserAdminPage() {
             <div>{u.id}</div>
             <div>{u.username}</div>
             <div>{u.status}</div>
-			  
+
+			  <div className={styles.actions}>
             {(canUpdate || canDelete) && (
-              <div className={styles.actions}>
                 {canUpdate && (
                   <select
                     value={u.status}
