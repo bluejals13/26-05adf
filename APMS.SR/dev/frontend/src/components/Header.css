@@ -27,7 +27,7 @@
 .nav {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   gap: 8px;
 
   width: 100%;
@@ -37,7 +37,7 @@
 .navLinks,
 .navUser {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   font-size: 20px;
   gap: 16px;
 }
