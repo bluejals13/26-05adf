@@ -105,7 +105,8 @@ export default function UserAdminPage() {
                     <option value="SUSPENDED">SUSPENDED</option>
                   </select>
                 )}
-
+			</div>
+			<div className={styles.actions}>
                 {canDelete && (
                   <button className={`${styles.button} ${styles.primaryBtn}`}
                     onClick={() =>
