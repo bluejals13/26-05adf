@@ -54,7 +54,7 @@
 .header,
 .row {
   display: grid;
-  grid-template-columns: 80px 2fr 100px 100px 140px;
+  grid-template-columns: 80px minmax(0, 2fr) 140px 100px 140px;
   align-items: center;
   padding: 8px;
   border-radius: 10px;
@@ -105,13 +105,15 @@
 .actions {
   display: flex;
   gap: 8px;
-  justify-content: flex-end;
   flex-wrap: nowrap;
+  justify-content: flex-end;
 }
 
 .actions select {
   padding: 6px 10px;
   border-radius: 8px;
+  min-width: 0;
+  width: 100%;
   border: 1px solid #30363d;
   background: #0d1117;
   color: #c9d1d9;
