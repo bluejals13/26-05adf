@@ -1,5 +1,5 @@
 .header {
-  padding: 12px;
+  padding: 10px;
   border-bottom: 1px solid #ddd;
 }
 
@@ -13,7 +13,7 @@
   display: none;
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 24px;
   cursor: pointer;
 }
 
@@ -28,7 +28,8 @@
 .navUser {
   display: flex;
   align-items: center;
-  gap: 12px;
+  font-size: 16px;
+  gap: 6px;
 }
 
 @media (max-width: 768px) {
@@ -40,7 +41,7 @@
     display: none;
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
+    gap: 10px;
   }
 
   .nav.open {
@@ -49,6 +50,7 @@
 
   .navLinks,
   .navUser {
+    font-size: 16px;
     flex-direction: column;
     align-items: flex-start;
   }
