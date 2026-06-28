@@ -66,19 +66,12 @@ export default function MenuPage() {
           
           <div className={styles.actionCell}>
             
-          {canUpdate && (
             <button className={`{styles.actionBtn} ${styles.danger}`}
-              onClick={() => {
-                setDeletingId(menu.id);
-                deleteMenu.mutate(menu.id, {
-                  onSettled: () => setDeletingId(null),
-                });
-              }}
               disabled={deletingId === menu.id}
             >
-              Delete
+              Update
             </button>
-          )}
+   
             
           {canDelete && (
             <button className={`{styles.actionBtn} ${styles.danger}`}
