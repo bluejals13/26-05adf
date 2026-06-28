@@ -1,35 +1,41 @@
 .page {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
   padding: 24px;
-  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
   background: #0d1117;
   color: #c9d1d9;
-  min-height: 100vh;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-/* HEADER */
+/* TITLE */
 .header {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
   color: #e6edf3;
 }
 
-/* CREATE FORM */
+/* FORM */
 .formRow {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
   align-items: center;
+  padding: 12px;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 10px;
 }
 
 .input {
   height: 36px;
   padding: 0 10px;
-  background: #161b22;
+  background: #0d1117;
   color: #c9d1d9;
   border: 1px solid #30363d;
-  border-radius: 6px;
+  border-radius: 8px;
   outline: none;
 }
 
@@ -38,60 +44,70 @@
   box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
 }
 
+/* BUTTON (primary match user admin vibe) */
 .button {
   height: 36px;
   padding: 0 14px;
-  background: #238636;
-  color: white;
-  border: 1px solid #2ea043;
-  border-radius: 6px;
+  background: rgba(88, 166, 255, 0.12);
+  color: #58a6ff;
+  border: 1px solid rgba(88, 166, 255, 0.3);
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: all 0.15s ease;
 }
 
 .button:hover {
-  background: #2ea043;
+  background: #58a6ff;
+  color: #0d1117;
 }
 
-.button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+/* TABLE */
+.tableHeader,
+.tableRow {
+  display: grid;
+  grid-template-columns: 80px 1fr 120px 120px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+  column-gap: 12px;
 }
 
-/* TABLE HEADER */
+/* HEADER */
 .tableHeader {
-  display: flex;
   background: #161b22;
-  padding: 10px;
-  font-weight: 600;
-  border-radius: 8px;
   border: 1px solid #30363d;
+  font-weight: 600;
   color: #e6edf3;
 }
 
 /* ROW */
 .tableRow {
-  display: flex;
-  padding: 10px;
-  border-bottom: 1px solid #21262d;
-  transition: background 0.15s ease;
+  background: #161b22;
+  border: 1px solid #30363d;
+  transition: all 0.15s ease;
 }
 
 .tableRow:hover {
-  background: #161b22;
+  background: #1f2937;
+  border-color: #3b434b;
+  transform: translateY(-1px);
 }
 
+/* CELL */
 .cell {
-  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* ACTION BUTTON (GitHub danger style) */
+/* DELETE BUTTON (match danger style from user admin) */
 .actionBtn {
-  background: transparent;
-  color: #f85149;
-  border: 1px solid #f85149;
   padding: 6px 10px;
-  border-radius: 6px;
+  border-radius: 8px;
+  font-size: 13px;
+  border: 1px solid rgba(248, 81, 73, 0.3);
+  background: rgba(248, 81, 73, 0.12);
+  color: #f85149;
   cursor: pointer;
   transition: all 0.15s ease;
 }
