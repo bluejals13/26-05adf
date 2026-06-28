@@ -88,8 +88,9 @@ export default function UserAdminPage() {
             <div>{u.username}</div>
             <div>{u.status}</div>
 
-			  <div className={styles.actions}>
+			<div className={styles.actions}>
             {(canUpdate || canDelete) && (
+			  <>
                 {canUpdate && (
                   <select
                     value={u.status}
@@ -117,6 +118,8 @@ export default function UserAdminPage() {
                     삭제대기
                   </button>
                 )}
+			  </>>
+			  )}
               </div>
             )}
           </div>
