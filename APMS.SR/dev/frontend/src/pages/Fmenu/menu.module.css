@@ -102,7 +102,7 @@
 
 .actionCell {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 6px;
 }
 
