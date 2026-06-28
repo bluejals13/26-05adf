@@ -74,9 +74,6 @@ export default function Header() {
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
           
-        </div>
-        
-        <div className="navLinks">
         {isLoggedIn && (
           <>
             <Link to="/monitor">Monitor</Link>
