@@ -134,29 +134,43 @@
     align-items: stretch;
   }
 
-  .input {
-    width: 100%;
-  }
-
+  .input,
   .button {
     width: 100%;
   }
 
-  /* TABLE HEADER 숨김 */
-  .tableHeader {
-    display: none;
-  }
-
-  /* ROW → 2줄 구조 */
+  /* TABLE */
+  .tableHeader,
   .tableRow {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-
-    gap: 6px;
-    padding: 12px;
+    grid-template-columns: 40px 1fr 60px 80px;
+    column-gap: 8px;
+    padding: 10px 8px;
+    font-size: 13px;
   }
 
+  .tableHeader {
+    font-size: 12px;
+  }
+  
+  /* row hover 제거 (모바일 UX) */
+  .tableRow:hover {
+    transform: none;
+  }
+
+  /* delete button compact */
+  .actionBtn {
+    padding: 4px 6px;
+    font-size: 11px;
+    border-radius: 6px;
+  }
+
+  /* long text 처리 */
+  .cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+   
   /* 1번째 줄: meta + action */
   .rowTop {
     display: flex;
