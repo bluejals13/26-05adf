@@ -50,15 +50,9 @@ export default function Header() {
           )}
         
         
-        
-        <button className="menuButton"
-          onClick={() => setMenuOpen(!menuOpen)} > [LIST] </button>
-        
-        
-        
       {/* 메인 메뉴 */}
       <nav className={`nav ${menuOpen ? "open" : ""}`}>
-
+      {menuOpen ? ( div
           
         {isLoggedIn && (
           <>
@@ -76,6 +70,9 @@ export default function Header() {
           
         
       </nav>
+        
+      <button className="menuButton"
+        onClick={() => setMenuOpen(!menuOpen)} > [LIST] </button>
         
     </div>
     </header>
