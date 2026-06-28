@@ -80,11 +80,11 @@ export default function Header() {
         <Link to="/about">About</Link>
         <Link to="/" className="logo">Main</Link>
           
-
-        </div>
         
       </nav>
-      
+        
+      </div>
+        
     </header>
   );
 }
