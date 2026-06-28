@@ -159,6 +159,8 @@
   border: 1px solid transparent;
   transition: all 0.15s ease;
   cursor: pointer;
+  white-space: nowrap;
+  word-break: keep-all;
 }
 
 .deleteBtn:hover {
