@@ -66,7 +66,7 @@ export default function MenuPage() {
           
           <div className={styles.actionCell}>
             
-            <button className={`{styles.actionBtn} ${styles.danger}`}
+            <button className={`${styles.actionBtn} ${styles.danger}`}
               disabled={deletingId === menu.id}
             >
               Update
