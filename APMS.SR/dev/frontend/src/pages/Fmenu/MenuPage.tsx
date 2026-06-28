@@ -67,13 +67,23 @@ export default function MenuPage() {
           <div className={styles.actionCell}>
             
           {canUpdate && (
-            <button className={styles.actionBtn}>
-              Update
-            </button>
+            <select
+              className={styles.select}
+              value={menu.status}
+              onChange={(e) =>
+                changeStatus.mutate({
+                  id: menu.id,
+                  status: e.target.value as MenuStatus,
+                })
+              }
+            >
+              <option value="UPDATE">UPDATE</option>
+              <option value="DELETE">DELETE</option>
+            </select>
           )}
             
           {canDelete && (
-            <button className={styles.actionBtn}
+            <button className={`{styles.actionBtn} ${styles.danger}`}
               onClick={() => {
                 setDeletingId(menu.id);
                 deleteMenu.mutate(menu.id, {
