@@ -65,7 +65,7 @@
 .tableHeader,
 .tableRow {
   display: grid;
-  grid-template-columns: 40px 1fr 40px 200px;
+  grid-template-columns: 40px 1fr 80px 200px;
   align-items: center;
   padding: 10px 12px;
   border-radius: 10px;
@@ -148,7 +148,7 @@
   /* TABLE */
   .tableHeader,
   .tableRow {
-    grid-template-columns: 40px 1fr 40px auto;
+    grid-template-columns: 40px 60px 60px 1fr;
     column-gap: 6px;
     padding: 6px 6px;
     font-size: 7px;
