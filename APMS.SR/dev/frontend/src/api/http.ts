@@ -59,7 +59,7 @@ export async function request<T>(
 
     //if (isAuthEndpoint) { throw new Error("Unauthorized"); 
     if (!newToken?.accessToken) {
-      useAuthStore.getState().logout();
+      //useAuthStore.getState().logout();
       //queryClient.clear(); // 중요
       throw new Error("Unauthorized");
     }
