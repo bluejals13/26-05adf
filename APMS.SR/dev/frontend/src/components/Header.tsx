@@ -52,7 +52,7 @@ export default function Header() {
         
         
         <button className="menuButton"
-          onClick={() => setMenuOpen(!menuOpen)} > ☰ </button>
+          onClick={() => setMenuOpen(!menuOpen)} > [LIST] </button>
         
         
         
