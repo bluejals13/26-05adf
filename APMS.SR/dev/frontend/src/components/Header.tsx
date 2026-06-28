@@ -1,5 +1,5 @@
 // components/Header.tsx			헤더
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/hooks/useAuth";
 import { useMe } from "../queries/useMe";
