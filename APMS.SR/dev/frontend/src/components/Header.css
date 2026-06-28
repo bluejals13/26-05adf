@@ -9,7 +9,7 @@
 .topBar {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   width: 100%;
 }
 
@@ -26,8 +26,7 @@
 /* 기본: 데스크톱에서는 메뉴 보임 */
 .nav {
   display: flex;
-  flex-direction: row;
-  align-items: flex-end;
+  align-items: center;
   gap: 8px;
 
   width: 100%;
@@ -37,8 +36,7 @@
 .navLinks,
 .navUser {
   display: flex;
-  align-items: flex-start;
-  flex-direction: row;
+  align-items: center;
   font-size: 20px;
   gap: 16px;
 }
