@@ -6,10 +6,11 @@
   font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
+/* HEADER */
 .title {
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
   color: #e6edf3;
 }
 
@@ -31,21 +32,32 @@
   color: #ffa198;
 }
 
+/* loading */
+.refresh {
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  color: #8b949e;
+  font-size: 13px;
+}
+
 /* TABLE WRAPPER */
 .table {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 /* HEADER + ROW */
 .header,
 .row {
   display: grid;
-  grid-template-columns: 80px 1fr 120px 1fr 160px;
+  grid-template-columns: 80px 1fr 140px 220px;
   align-items: center;
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
 /* HEADER */
@@ -66,16 +78,20 @@
 .row:hover {
   background: #1f2937;
   border-color: #3b434b;
+  transform: translateY(-1px);
 }
 
 /* STATUS */
 .status {
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
   padding: 4px 8px;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
-  display: inline-block;
   border: 1px solid transparent;
+  width: fit-content;
 }
 
 /* permissions */
@@ -89,12 +105,13 @@
 .actions {
   display: flex;
   gap: 8px;
+  justify-content: flex-end;
   align-items: center;
 }
 
 .actions select {
-  padding: 6px 8px;
-  border-radius: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
   border: 1px solid #30363d;
   background: #0d1117;
   color: #c9d1d9;
@@ -106,41 +123,46 @@
   box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
 }
 
-.sectionTitle {
-  margin-top: 32px;
-  margin-bottom: 12px;
-  color: #f85149;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.pendingRow {
-  border-color: #f85149;
-}
-
 .danger {
   background: #f85149;
   color: white;
 }
 
 .active {
+  background: rgba(63, 185, 80, 0.12);
   color: #3fb950;
+  border-color: rgba(63, 185, 80, 0.3);
 }
 
 .suspended {
+  background: rgba(240, 136, 62, 0.12);
   color: #f0883e;
+  border-color: rgba(240, 136, 62, 0.3);
 }
 
 .delete_pending {
+  background: rgba(248, 81, 73, 0.12);
   color: #f85149;
+  border-color: rgba(248, 81, 73, 0.3);
 }
 
 .deleted {
   color: #8b949e;
 }
 
+/* BUTTONS */
+.button {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+
 /* DELETE BUTTON (GitHub danger style) */
-.deleteBtn {
+.button {
   padding: 6px 10px;
   background: transparent;
   border: 1px solid #f85149;
@@ -153,4 +175,47 @@
 .deleteBtn:hover {
   background: #f85149;
   color: #0d1117;
+}
+
+.primaryBtn {
+  background: rgba(88, 166, 255, 0.12);
+  color: #58a6ff;
+  border-color: rgba(88, 166, 255, 0.3);
+}
+
+.primaryBtn:hover {
+  background: #58a6ff;
+  color: #0d1117;
+}
+
+.dangerBtn {
+  background: rgba(248, 81, 73, 0.12);
+  color: #f85149;
+  border-color: rgba(248, 81, 73, 0.3);
+}
+
+.dangerBtn:hover {
+  background: #f85149;
+  color: #0d1117;
+}
+
+/* SECTION */
+.sectionTitle {
+  margin-top: 36px;
+  margin-bottom: 14px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f85149;
+}
+
+/* pending list */
+.pendingRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #161b22;
+  border: 1px solid #f85149;
+  margin-bottom: 10px;
 }
