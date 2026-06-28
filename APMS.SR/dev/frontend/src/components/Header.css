@@ -1,7 +1,7 @@
 .header {
   display: flex;
   flex-direction: column;
-  padding: 2px 4px;
+  padding: 4px 6px;
   border-bottom: 1px solid #ddd;
 }
 
@@ -9,9 +9,8 @@
 .menuButton {
   display: none;
   margin-left: auto; /* ⭐ 혹시 밀림 방지 */
-  background: none;
   border: none;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
 }
 
@@ -19,8 +18,8 @@
 .navUser {
   display: flex;
   align-items: flex-start;
-  font-size: 24px;
-  font-weight: 400;
+  font-size: 22px;
+  font-weight: 600;
   gap: 12px;
 }
 
@@ -49,8 +48,8 @@
   /* dir 영역 */
   .navUser {
     display: flex;
-    font-size: 16px;
-    font-weight: 200;
+    font-size: 14px;
+    font-weight: 600;
     gap: 6px;
   }
   
