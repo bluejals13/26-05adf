@@ -118,7 +118,7 @@ export default function UserAdminPage() {
                     삭제대기
                   </button>
                 )}
-			  </>>
+			  </>
 			  )}
               </div>
             )}
