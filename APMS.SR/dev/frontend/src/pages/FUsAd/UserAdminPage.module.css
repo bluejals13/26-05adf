@@ -54,7 +54,7 @@
 .header,
 .row {
   display: grid;
-  grid-template-columns: 80px 2fr 120px 180px;
+  grid-template-columns: 80px 2fr 140px 80px 120px;
   align-items: center;
   padding: 12px;
   border-radius: 10px;
@@ -107,7 +107,6 @@
   gap: 8px;
   justify-content: flex-end;
   flex-wrap: nowrap;
-  align-items: center;
 }
 
 .actions select {
