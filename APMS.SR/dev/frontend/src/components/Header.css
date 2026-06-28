@@ -19,7 +19,7 @@
 .navUser {
   display: flex;
   align-items: flex-start;
-  font-size: 22px;
+  font-size: 26px;
   gap: 12px;
 }
 
