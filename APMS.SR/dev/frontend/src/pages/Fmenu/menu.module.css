@@ -103,7 +103,7 @@
 .actionCell {
   display: flex;
   justify-content: flex-end;
-  align-items: center;
+  gap: 6px;
 }
 
 /* DELETE BUTTON (match danger style from user admin) */
