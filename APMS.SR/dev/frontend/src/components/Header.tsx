@@ -31,9 +31,9 @@ export default function Header() {
 
   return (
     <header className="header">
-
-      {/* 왼쪽 */}
+      
       <div className="navUser">
+        
       
           {isLoggedIn ? (
             <>
@@ -48,14 +48,13 @@ export default function Header() {
             </nav>
           </>
           )}
-        </div>
-      
-      {/* 오른쪽 */}             
-      <nav className="topBar">
-          
+        
+        
+        
         <button className="menuButton"
           onClick={() => setMenuOpen(!menuOpen)} > ☰ </button>
-      </nav>
+        
+        
         
       {/* 메인 메뉴 */}
       <nav className={`nav ${menuOpen ? "open" : ""}`}>
@@ -78,6 +77,7 @@ export default function Header() {
         
       </nav>
         
+    </div>
     </header>
   );
 }
