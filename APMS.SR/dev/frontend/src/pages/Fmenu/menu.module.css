@@ -151,7 +151,7 @@
     grid-template-columns: 40px 60px 40px 1fr;
     column-gap: 2px;
     padding: 2px 2px;
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .tableHeader {
@@ -166,7 +166,7 @@
   /* delete button compact */
   .actionBtn {
     padding: 2px 2px;
-    font-size: 8px;
+    font-size: 10px;
     border-radius: 6px;
   }
 
@@ -182,7 +182,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
   }
   
   /* ID + price */
@@ -190,7 +190,7 @@
     display: flex;
     gap: 6px;
     align-items: center;
-    font-size: 8px;
+    font-size: 10px;
     color: #c9d1d9;
   }
 
@@ -203,7 +203,7 @@
 
   /* 2번째 줄: name */
   .rowBottom {
-    font-size: 8px;
+    font-size: 1px;
     color: #e6edf3;
     padding-left: 2px;
     word-break: break-word;
