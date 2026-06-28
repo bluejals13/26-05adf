@@ -33,31 +33,33 @@ export default function Header() {
     <header className="header">
       
       <div className="navUser">
-          
+
+        {/* 왼쪽 */}
+        <div className="left">
+      
           {isLoggedIn ? (
             <>
               <span> {user?.username} </span>            
-              
               <button onClick={handleLogout}> Logout </button>  
-
           </>
         ) : (
           <>
-            <nav className="nav">
+            <nav className="authNav">
               <Link to="/signup">Signup</Link>
               <Link to="/login">Login</Link>
             </nav>
           </>
           )}
-
+        </div>
       
-                
-      <div className="topBar">
+      {/* 오른쪽 */}             
+      <div className="right">
           
         <button className="menuButton"
           onClick={() => setMenuOpen(!menuOpen)} > ☰ </button>
       </div>
-      
+        
+      {/* 메인 메뉴 */}
       <nav className={`nav ${menuOpen ? "open" : ""}`}>
 
           
