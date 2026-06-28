@@ -7,7 +7,7 @@
 
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 /* TITLE */
@@ -67,7 +67,7 @@
   display: grid;
   grid-template-columns: 40px 1fr 80px 200px;
   align-items: center;
-  padding: 6px 8px;
+  padding: 2px 4px;
   border-radius: 10px;
   column-gap: 12px;
 }
@@ -148,8 +148,8 @@
   /* TABLE */
   .tableHeader,
   .tableRow {
-    grid-template-columns: 40px 60px 60px 1fr;
-    column-gap: 6px;
+    grid-template-columns: 40px 60px 40px 1fr;
+    column-gap: 2px;
     padding: 2px 2px;
     font-size: 8px;
   }
@@ -182,7 +182,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
   
   /* ID + price */
