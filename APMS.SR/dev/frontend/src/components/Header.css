@@ -1,4 +1,26 @@
 
+/* 로그아웃 버튼 */
+.logoutBtn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+
+  background: #dc2626;
+  color: white;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.logoutBtn:hover {
+  background: #b91c1c;
+  transform: translateY(-2px);
+}
+
+.logoutBtn:active {
+  transform: scale(0.98);
+}
+
 /* 햄버거 기본 숨김 */
 .menuButton {
   display: none;
