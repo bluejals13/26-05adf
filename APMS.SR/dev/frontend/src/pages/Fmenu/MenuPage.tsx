@@ -20,7 +20,9 @@ export default function MenuPage() {
   const canCreate = hasPermission("MENU_CREATE");
   const canUpdate = hasPermission("");            // MENU_UPDATE
   const canDelete = hasPermission("MENU_DELETE");
-
+  
+  const
+  
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
 
@@ -67,19 +69,17 @@ export default function MenuPage() {
           <div className={styles.actionCell}>
             
           {canUpdate && (
-            <select
-              className={styles.select}
-              value={menu.status}
-              onChange={(e) =>
-                changeStatus.mutate({
-                  id: menu.id,
-                  status: e.target.value as MenuStatus,
-                })
-              }
+            <button className={`{styles.actionBtn} ${styles.danger}`}
+              onClick={() => {
+                setDeletingId(menu.id);
+                deleteMenu.mutate(menu.id, {
+                  onSettled: () => setDeletingId(null),
+                });
+              }}
+              disabled={deletingId === menu.id}
             >
-              <option value="UPDATE">UPDATE</option>
-              <option value="DELETE">DELETE</option>
-            </select>
+              Delete
+            </button>
           )}
             
           {canDelete && (
