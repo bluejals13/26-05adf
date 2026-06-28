@@ -204,18 +204,105 @@ footer {
   color: #94a3b8;
 }
 
-/* 반응형 */
 
+/* =========================
+   Mobile (768px 이하)
+========================= */
 @media (max-width: 768px) {
+
+  body {
+    padding: 12px;
+  }
+
+  /* 헤더 */
+  header {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
   header h1 {
-    font-size: 30px;
+    font-size: 26px;
+    line-height: 1.2;
+  }
+
+  nav ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  nav a {
+    display: block;
+    padding: 8px 0;
+  }
+
+  /* 히어로 */
+  .hero {
+    padding: 40px 12px;
   }
 
   .hero h2 {
-    font-size: 28px;
+    font-size: 22px;
   }
 
+  .hero p {
+    font-size: 14px;
+  }
+
+  /* 버튼 */
+  .btn {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  /* 박스 */
+  .box {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .box.active {
+    transform: scale(1.2);
+  }
+
+  /* 탭 */
   .tabs {
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .tab-btn {
+    width: 100%;
+  }
+
+  .btn:active,
+  .tab-btn:active {
+    transform: scale(0.98);
+  }
+
+  .btn, .tab-btn {
+    min-height: 44px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* 콘텐츠 */
+  .tab-content {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .tab-content h2 {
+    font-size: 18px;
+  }
+
+  .tab-content p {
+    font-size: 14px;
+  }
+
+  /* 푸터 */
+  footer {
+    margin-top: 40px;
+    padding: 20px;
+    font-size: 13px;
   }
 }
