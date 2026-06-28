@@ -1,7 +1,7 @@
 .header {
   display: flex;
   flex-direction: column;
-  padding: 4px;
+  padding: 8px, 8px;
   border-bottom: 1px solid #ddd;
 }
 
@@ -19,7 +19,8 @@
 .navUser {
   display: flex;
   align-items: flex-start;
-  font-size: 26px;
+  font-size: 24px;
+  font-weight: 400;
   gap: 12px;
 }
 
@@ -42,14 +43,15 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 4px;
+    gap: 6px;
   }
 
   /* dir 영역 */
   .navUser {
     display: flex;
-    font-size: 8px;
-    gap: 8px;
+    font-size: 16px;
+    font-weight: 200;
+    gap: 6px;
   }
   
   /* 메뉴 */
