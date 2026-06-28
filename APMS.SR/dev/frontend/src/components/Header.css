@@ -10,7 +10,7 @@
   display: none;
   margin-left: auto; /* ⭐ 혹시 밀림 방지 */
   border: none;
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
 }
 
@@ -18,8 +18,8 @@
 .navUser {
   display: flex;
   align-items: flex-start;
-  font-size: 22px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 500;
   gap: 12px;
 }
 
@@ -48,8 +48,8 @@
   /* dir 영역 */
   .navUser {
     display: flex;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 500;
     gap: 6px;
   }
   
