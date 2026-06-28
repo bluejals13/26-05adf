@@ -4,7 +4,7 @@
   display: inline-block;
   font-size: 24px;
   
-  padding: 4px 6px;
+  padding: 2px 4px;
   border-radius: 999px;
 
   background: rgba(30, 102, 255, 0.15);
@@ -16,14 +16,12 @@
 
 /* 로그아웃 버튼 */
 .logoutBtn {
-  padding: 6px 8px;
+  padding: 2px 4px;
   border: none;
   border-radius: 10px;
 
-  background: rgba(248, 81, 73, 0.12);
+  background: #58a6ff;
   color: white;
-  
-  border-color: #58a6ff;
   
   cursor: pointer;
   transition: 0.2s;
