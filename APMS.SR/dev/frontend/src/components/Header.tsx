@@ -82,7 +82,8 @@ export default function Header() {
             <Link to="/signup">Signup</Link>
             <Link to="/login">Login</Link>
           </>
-        )}
+          )}
+        </div>
       </nav>
     </header>
   );
