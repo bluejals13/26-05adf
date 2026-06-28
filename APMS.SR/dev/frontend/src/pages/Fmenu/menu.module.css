@@ -65,7 +65,7 @@
 .tableHeader,
 .tableRow {
   display: grid;
-  grid-template-columns: 40px 1fr 60px 160px;
+  grid-template-columns: 40px 1fr 40px 180px;
   align-items: center;
   padding: 10px 12px;
   border-radius: 10px;
@@ -148,14 +148,14 @@
   /* TABLE */
   .tableHeader,
   .tableRow {
-    grid-template-columns: 40px 1fr 60px auto;
+    grid-template-columns: 40px 1fr 40px auto;
     column-gap: 6px;
     padding: 6px 6px;
-    font-size: 9px;
+    font-size: 7px;
   }
 
   .tableHeader {
-    font-size: 9px;
+    font-size: 7px;
   }
   
   /* row hover 제거 (모바일 UX) */
@@ -166,7 +166,7 @@
   /* delete button compact */
   .actionBtn {
     padding: 4px 4px;
-    font-size: 9px;
+    font-size: 5px;
     border-radius: 6px;
   }
 
@@ -190,7 +190,7 @@
     display: flex;
     gap: 6px;
     align-items: center;
-    font-size: 9px;
+    font-size: 5px;
     color: #c9d1d9;
   }
 
@@ -204,12 +204,12 @@
   /* delete button */
   .actionBtn {
     padding: 6px 6px;
-    font-size: 9px;
+    font-size: 5px;
   }
 
   /* 2번째 줄: name */
   .rowBottom {
-    font-size: 9px;
+    font-size: 5px;
     color: #e6edf3;
     padding-left: 2px;
     word-break: break-word;
