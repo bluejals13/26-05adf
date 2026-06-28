@@ -17,7 +17,7 @@ export const useAuthStore = create(
       token: null,
       setToken: (token) => set({ token }),           // refresh 전용
       login: (token) => set({ token }),  // 로그인 전용
-      logout: () => set({ token: null }),  // 로그아웃 전용
+      logout: () => { set({ token: null }); }  // 로그아웃 전용
     }),
     {
       name: STORAGE_KEYS.auth,
