@@ -105,6 +105,8 @@ export default function UserAdminPage() {
                     <option value="SUSPENDED">SUSPENDED</option>
                   </select>
                 )}
+			  </>
+			  )}
 			</div>
 			<div className={styles.actions}>
                 {canDelete && (
@@ -118,8 +120,6 @@ export default function UserAdminPage() {
                   >
                     삭제대기
                   </button>
-                )}
-			  </>
 			  )}
               </div>
           </div>
