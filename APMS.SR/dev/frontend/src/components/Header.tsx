@@ -59,12 +59,8 @@ export default function Header() {
                 
       <div className="topBar">
           
-        <button
-          className="menuButton"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          ☰
-        </button>
+        <button className="menuButton"
+          onClick={() => setMenuOpen(!menuOpen)} > ☰ </button>
       </div>
       
       <nav className={`nav ${menuOpen ? "open" : ""}`}>
