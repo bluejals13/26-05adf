@@ -12,7 +12,7 @@
 
 /* TITLE */
 .header {
-  font-size: 22px;
+  font-size: 16px;
   font-weight: 600;
   color: #e6edf3;
 }
@@ -65,7 +65,7 @@
 .tableHeader,
 .tableRow {
   display: grid;
-  grid-template-columns: 60px 1fr 100px 180px;
+  grid-template-columns: 40px 1fr 60px auto;
   align-items: center;
   padding: 10px 12px;
   border-radius: 10px;
@@ -110,7 +110,7 @@
 .actionBtn {
   padding: 6px 10px;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 9px;
   border: 1px solid rgba(248, 81, 73, 0.3);
   background: rgba(248, 81, 73, 0.12);
   color: #f85149;
@@ -151,11 +151,11 @@
     grid-template-columns: 40px 1fr 60px auto;
     column-gap: 6px;
     padding: 6px 6px;
-    font-size: 13px;
+    font-size: 9px;
   }
 
   .tableHeader {
-    font-size: 12px;
+    font-size: 9px;
   }
   
   /* row hover 제거 (모바일 UX) */
@@ -166,7 +166,7 @@
   /* delete button compact */
   .actionBtn {
     padding: 4px 4px;
-    font-size: 11px;
+    font-size: 9px;
     border-radius: 6px;
   }
 
@@ -190,7 +190,7 @@
     display: flex;
     gap: 6px;
     align-items: center;
-    font-size: 13px;
+    font-size: 9px;
     color: #c9d1d9;
   }
 
@@ -204,12 +204,12 @@
   /* delete button */
   .actionBtn {
     padding: 6px 6px;
-    font-size: 12px;
+    font-size: 9px;
   }
 
   /* 2번째 줄: name */
   .rowBottom {
-    font-size: 14px;
+    font-size: 9px;
     color: #e6edf3;
     padding-left: 2px;
     word-break: break-word;
