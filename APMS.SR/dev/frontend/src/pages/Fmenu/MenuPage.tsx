@@ -74,7 +74,7 @@ export default function MenuPage() {
    
             
           {canDelete && (
-            <button className={`{styles.actionBtn} ${styles.danger}`}
+            <button className={`${styles.actionBtn} ${styles.danger}`}>
               onClick={() => {
                 setDeletingId(menu.id);
                 deleteMenu.mutate(menu.id, {
