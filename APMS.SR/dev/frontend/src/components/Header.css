@@ -38,11 +38,15 @@
 
   .nav.open {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
 
   /* dir 영역 */
   .navUser {
     display: flex;
+    font-size: 8px;
     gap: 8px;
   }
   
@@ -51,8 +55,6 @@
     display: none;
     align-items: flex-start;
     flex-direction: column;
-    gap: 6px;
-    font-size: 12px;
   }
   
 }
