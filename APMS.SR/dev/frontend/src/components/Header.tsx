@@ -42,7 +42,7 @@ export default function Header() {
           </>
         ) : (
           <>
-            <nav className="nav">
+            <nav className="navUser">
               <Link to="/signup">Signup</Link>
               <Link to="/login">Login</Link>
             </nav>
@@ -51,11 +51,11 @@ export default function Header() {
         </div>
       
       {/* 오른쪽 */}             
-      <div className="topBar">
+      <nav className="topBar">
           
         <button className="menuButton"
           onClick={() => setMenuOpen(!menuOpen)} > ☰ </button>
-      </div>
+      </nav>
         
       {/* 메인 메뉴 */}
       <nav className={`nav ${menuOpen ? "open" : ""}`}>
