@@ -91,7 +91,7 @@
   font-size: 12px;
   font-weight: 600;
   border: 1px solid transparent;
-  width: fit-content;
+  width: nowrap;
 }
 
 /* permissions */
@@ -150,7 +150,7 @@
   color: #8b949e;
 }
 
-/* BUTTONS   cursor: pointer; */
+/* BUTTONS */
 .button {
   padding: 6px 10px;
   border-radius: 8px;
@@ -158,6 +158,7 @@
   font-weight: 500;
   border: 1px solid transparent;
   transition: all 0.15s ease;
+  cursor: pointer;
 }
 
 .deleteBtn:hover {
