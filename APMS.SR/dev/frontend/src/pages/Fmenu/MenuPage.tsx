@@ -63,7 +63,7 @@ export default function MenuPage() {
           <div className={styles.cell} data-label="Name"> {menu.name}</div>
           <div className={styles.cell} data-label="Price">{menu.price}</div>
           
-          <div>
+          <div className={styles.actionCell}>
             
           {canDelete && (
             <button className={styles.actionBtn}
