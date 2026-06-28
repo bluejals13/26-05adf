@@ -108,9 +108,9 @@
 
 /* DELETE BUTTON (match danger style from user admin) */
 .actionBtn {
-  padding: 6px 10px;
+  padding: 6px 8px;
   border-radius: 8px;
-  font-size: 9px;
+  font-size: 12px;
   border: 1px solid rgba(248, 81, 73, 0.3);
   background: rgba(248, 81, 73, 0.12);
   color: #f85149;
@@ -150,12 +150,12 @@
   .tableRow {
     grid-template-columns: 40px 60px 60px 1fr;
     column-gap: 6px;
-    padding: 6px 6px;
+    padding: 2px 2px;
     font-size: 4px;
   }
 
   .tableHeader {
-    font-size: 7px;
+    font-size: 6px;
   }
   
   /* row hover 제거 (모바일 UX) */
@@ -165,8 +165,8 @@
 
   /* delete button compact */
   .actionBtn {
-    padding: 2px 4px;
-    font-size: 6px;
+    padding: 2px 2px;
+    font-size: 4px;
     border-radius: 6px;
   }
 
@@ -195,16 +195,10 @@
   }
 
   .rowMeta span {
-    padding: 2px 4px;
+    padding: 2px 2px;
     border-radius: 6px;
     background: #161b22;
     border: 1px solid #30363d;
-  }
-
-  /* delete button */
-  .actionBtn {
-    padding: 6px 6px;
-    font-size: 6px;
   }
 
   /* 2번째 줄: name */
