@@ -31,11 +31,9 @@ export default function Header() {
 
   return (
     <header className="header">
-      
-      <div className="navUser">
 
-        {/* 왼쪽 */}
-        <div className="left">
+      {/* 왼쪽 */}
+      <div className="left">
       
           {isLoggedIn ? (
             <>
