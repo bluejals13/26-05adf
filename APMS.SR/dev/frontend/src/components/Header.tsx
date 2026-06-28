@@ -36,6 +36,8 @@ export default function Header() {
           
           {isLoggedIn ? (
             <>
+              <button onClick={handleLogout}> Logout </button>              
+              
               <span> {user?.username} </span>
             
             <div style={{ fontSize: 12, marginLeft: 20, color: "gray" }}>
@@ -45,7 +47,6 @@ export default function Header() {
               <div>error: {String(isError)}</div>
             </div>
 
-            <button onClick={handleLogout}> Logout </button>
           </>
         ) : (
           <>
@@ -55,15 +56,6 @@ export default function Header() {
           )}
       </div>
       
-      <div className="topBar">
-        
-        <button
-          className="menuButton"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          ☰
-        </button>
-      </div>
         
       <nav className={`nav ${menuOpen ? "open" : ""}`}>
         <div className="navLinks">
@@ -83,6 +75,17 @@ export default function Header() {
           </>
         )}
           
+        </div>
+        
+        
+        <div className="topBar">
+          
+          <button
+            className="menuButton"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            ☰
+          </button>
         </div>
         
       </nav>
