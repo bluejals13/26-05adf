@@ -26,7 +26,7 @@
 /* 기본: 데스크톱에서는 메뉴 보임 */
 .nav {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: flex-end;
   gap: 8px;
 
@@ -38,7 +38,7 @@
 .navUser {
   display: flex;
   align-items: flex-start;
-  flex-direction: row;
+  flex-direction: column;
   font-size: 20px;
   gap: 16px;
 }
