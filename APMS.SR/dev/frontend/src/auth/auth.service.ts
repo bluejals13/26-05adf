@@ -28,7 +28,7 @@ export const authService = {    // 로그인 이벤트
 
   // 로그아웃
   async logout() {
-  try { await http.post( "/api/auth/logout", {} );
+  try { await http.post( "/api/auth/logout", {}, { responseType: "text" });
     } finally {
     // 1. state 먼저 잠금
     useAuthStore.getState().logout();
