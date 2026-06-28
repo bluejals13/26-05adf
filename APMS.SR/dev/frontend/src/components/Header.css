@@ -27,7 +27,7 @@
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 
   width: 100%;
 }
@@ -39,7 +39,7 @@
   align-items: flex-start;
   flex-direction: row;
   font-size: 24px;
-  gap: 10px;
+  gap: 16px;
 }
 
 @media (max-width: 768px) {
