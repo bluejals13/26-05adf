@@ -30,19 +30,43 @@ export default function Header() {
   };
 
   return (
-    <header style={{ padding: 12, borderBottom: "1px solid #ddd" }}>
+    <header className="header">
       <div className="topBar">
         
-        <Link to="/">Main</Link>
-
-        {!isLoggedIn && <Link to="/signup">Signup</Link>}
-
-        {isLoggedIn ? (
+        <Link to="/" className="logo">Main</Link>
+        
+        <button
+          className="menuButton"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
+        </button>
+      </div>
+        
+      <nav className={`nav ${menuOpen ? "open" : ""}`}>
+        <div className="navLinks">
+          <Link to="/home">Home</Link>
+          <Link to="/about">About</Link>
+          <Link to="/contact">Contact</Link>
+          
+        </div>
+        
+        <div className="navLinks">
+        {isLoggedIn && (
           <>
             <Link to="/monitor">Monitor</Link>
             <Link to="/dashboard">Dashboard</Link>
-
-            <span> {user?.username} </span>
+                                           
+          </>
+        )}
+          
+        </div>
+        
+        <div className="navUser">
+          
+          {isLoggedIn ? (
+            <>
+              <span> {user?.username} </span>
             
             <div style={{ fontSize: 12, marginLeft: 20, color: "gray" }}>
               <div>token: {token ? "YES" : "NO"}</div>
@@ -51,26 +75,14 @@ export default function Header() {
               <div>error: {String(isError)}</div>
             </div>
 
-            <button onClick={handleLogout}>
-              로그아웃
-            </button>
+            <button onClick={handleLogout}> Logout </button>
           </>
         ) : (
-          <Link to="/login">Login</Link>
+          <>
+            <Link to="/signup">Signup</Link>
+            <Link to="/login">Login</Link>
+          </>
         )}
-    
-        <button
-          className="menuButton"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          ☰
-        </button>
-      </div>
-      <nav className={`nav ${menuOpen ? "open" : ""}`}>
-        <Link to="/home">Home</Link>
-        <Link to="/about">About</Link>
-        <Link to="/contact">Contact</Link>
-        
       </nav>
     </header>
   );
