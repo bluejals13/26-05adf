@@ -67,7 +67,7 @@ Browser
 
 Monitoring: Prometheus → Grafana
 
----
+
 
 ## 4. Key Features
 
@@ -79,7 +79,7 @@ Monitoring: Prometheus → Grafana
 - Prometheus + Grafana 모니터링
 - Cloudflare CDN + HTTPS 지원
 
----
+
 
 ## 5. Project Highlights
 
@@ -89,7 +89,7 @@ Monitoring: Prometheus → Grafana
 - Observability (Metrics + Dashboard)
 - Kubernetes 확장 가능한 구조 설계
 
----
+
 
 ## 6. Repository Structure
 
@@ -110,7 +110,7 @@ project/
 
 ````
 
----
+
 
 ## 7. Documentation
 
@@ -132,7 +132,7 @@ Monitoring
 Troubleshooting
 - troubleshooting/
 
----
+
 
 ## 8. Quick Start
 
@@ -152,7 +152,7 @@ Backend
 http://localhost:8080
 ````
 
----
+
 
 ## 9. Future Improvements
 
@@ -166,7 +166,7 @@ http://localhost:8080
 - Alerting 시스템 구축
 ```
 
----
+
 
 README에는 Screenshots 또는 Architecture Diagram 이미지가 하나 있으면 훨씬 완성도가 높아집니다.
 
