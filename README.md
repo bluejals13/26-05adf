@@ -3,7 +3,7 @@
 
 Production-inspired Full-Stack DevOps Platform
 
----
+
 
 ## 1. Overview
 
@@ -17,7 +17,7 @@ Redis를 활용해 JWT Refresh Token을 처리한다.
 또한 GitHub Actions를 통해 자동 배포를 구성하고,  
 Prometheus / Grafana로 시스템 상태를 시각화한다.
 
----
+
 
 ## 2. Tech Stack
 
@@ -32,7 +32,7 @@ Prometheus / Grafana로 시스템 상태를 시각화한다.
 | Container | Docker, Docker Compose |
 | Monitoring | Prometheus, Grafana |
 
----
+
 
 ## 3. System Architecture
 
