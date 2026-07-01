@@ -1,6 +1,4 @@
 
----
-
 # SRE Skeleton Project
 
 Production-inspired Full-Stack DevOps Platform
