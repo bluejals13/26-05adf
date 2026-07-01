@@ -1,7 +1,7 @@
 
 
 
-# 아키텍쳐
+# architecture.md
 
 ## 1. Overview
 
