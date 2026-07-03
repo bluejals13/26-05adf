@@ -96,10 +96,8 @@ public class RoleAdminService {
                 AuditAction.ROLE_UPDATE,
                 "ROLE",
                 roleId,
-                toJson(Map.of(
-                    "before", before,
-                    "after", after
-                ))
+                toJson(before),
+                toJson(after)
         );
     }
 
