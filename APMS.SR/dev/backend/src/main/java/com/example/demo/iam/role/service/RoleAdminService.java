@@ -43,7 +43,7 @@ public class RoleAdminService {
     }
 
     public void createRole(Long adminId, RoleRequest request) {
-        Role role = Role.create(request.getName());
+        Role role = Role.create(request.getName(), request.getDescription());
         roleRepository.save(role);
         
         auditService.log(
@@ -60,11 +60,10 @@ public class RoleAdminService {
         Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new IllegalArgumentException("Role not found"));
         
-        String before = role.getName();
+        String beforeName = role.getName();
         String beforeDesc = role.getDescription();
         
-        role.updateName(request.getName());
-        role.setDescription(request.getDescription()); // 추가
+        role.update(request.getName(), request.getDescription()); // 핵심 변경
         
         auditService.log(
                 adminId,
