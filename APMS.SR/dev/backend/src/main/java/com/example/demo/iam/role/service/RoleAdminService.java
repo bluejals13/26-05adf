@@ -40,16 +40,7 @@ public class RoleAdminService {
     public List<RoleResponse> getRoles() {            // 순수 롤 조회 용
         return roleRepository.findAllWithPermissions()
                 .stream()
-                .map(role -> RoleResponse.builder()
-                        .id(role.getId())
-                        .name(role.getName())
-                        .permissions(
-                                role.getPermissions().stream()
-                                        .map(PermissionResponse::from)
-                                        .collect(Collectors.toSet())
-                        )
-                        .build()
-                )
+                .map(RoleResponse::from)
                 .toList();
     }
 
