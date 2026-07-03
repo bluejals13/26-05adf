@@ -1,6 +1,6 @@
 package com.example.demo.audit.service;
 
-import com.example.demo.audit.dto.AuditEvent;
+//import com.example.demo.audit.dto.AuditEvent;
 import com.example.demo.audit.domain.Audit;
 import com.example.demo.audit.domain.AuditAction;
 import com.example.demo.audit.repository.AuditRepository;
@@ -15,15 +15,21 @@ public class AuditService {
 
     private final AuditRepository auditRepository;
 
-     public void log(AuditEvent event) {
-
+     public void log(
+            Long userId,
+            AuditAction action,
+            String targetType,
+            Long targetId,
+            String beforeValue,
+            String afterValue
+    ) {
         Audit audit = Audit.create(
-            event.getUserId(),
-            event.getAction(),
-            event.getTargetType(),
-            event.getTargetId(),
-            event.getBeforeValue(),
-            event.getAfterValue()
+                userId,
+                action,
+                targetType,
+                targetId,
+                beforeValue,
+                afterValue
         );
     
         auditRepository.save(audit);
