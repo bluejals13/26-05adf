@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.stream.Collectors;
 import java.util.List;
@@ -27,6 +28,14 @@ public class RoleAdminService {
     private final RoleRepository roleRepository;
     private final AuditService auditService;
     private final ObjectMapper mapper;
+    
+    private String toJson(Object obj) {
+        try {
+            return mapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("JSON serialization failed", e);
+        }
+    }
     
     public List<RoleResponse> getRoles() {            // 순수 롤 조회 용
         return roleRepository.findAllWithPermissions()
@@ -59,7 +68,7 @@ public class RoleAdminService {
                 "ROLE",
                 role.getId(),
                 null,
-                mapper.writeValueAsString(after)
+                toJson(after)
         );
     }
 
@@ -87,8 +96,10 @@ public class RoleAdminService {
                 AuditAction.ROLE_UPDATE,
                 "ROLE",
                 roleId,
-                mapper.writeValueAsString(before),
-                mapper.writeValueAsString(after)
+                toJson(Map.of(
+                    "before", before,
+                    "after", after
+                ))
         );
     }
 
@@ -109,8 +120,8 @@ public class RoleAdminService {
                 AuditAction.ROLE_DELETE,
                 "ROLE",
                 roleId,
-                mapper.writeValueAsString(before),
-                mapper.writeValueAsString(Map.of("deleted", true))
+                toJson(before),
+                toJson(Map.of("deleted", true))
         );
     }
 }
