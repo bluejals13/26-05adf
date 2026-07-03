@@ -37,7 +37,7 @@ export default function Header() {
       
           {isLoggedIn ? (
             <>
-              <span> {user?.username} </span>            
+              {user?.username}           
               <button className="logoutBtn" onClick={handleLogout}> Logout </button>  
           </>
         ) : (
