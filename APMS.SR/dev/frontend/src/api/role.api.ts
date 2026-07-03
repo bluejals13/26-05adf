@@ -12,12 +12,12 @@ export const fetchRoles = async (): Promise<Role[]> => {
 
 // 생성
 export const createRole = async (data: any): Promise<Role> => {
-  return await http.post<Role[]>(base, data);
+  return await http.post<Role>(base, data);
 };
 
 // 수정
 export const updateRole = async (id: number, data: CreateRoleRequest): Promise<Role> => {
-  return await http.patch<Role[]>(`${base}/${id}`, data);
+  return await http.patch<Role>(`${base}/${id}`, data);
 };
 
 // 삭제
