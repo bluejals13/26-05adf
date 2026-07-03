@@ -10,6 +10,8 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 
+import RolePage from "./pages/RolePage";
+
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -48,7 +50,8 @@ export default function App() {
             <Route path="/monitor" element={<Monitor />} />
             <Route path="/menu" element={<MenuPage />} />
             <Route path="/permission" element={<PermissionPage />} />
-            <Route path="/user" element={<UserAdminPage />} />
+            <Route path="/Admin" element={<UserAdminPage />} />
+			<Route path="/Role" element={<RolePage />} />
 	  </Route> </Route>
 
         {/* Layout 있는 영역 */}
