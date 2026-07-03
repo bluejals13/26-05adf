@@ -7,9 +7,3 @@ export const useRoles = () =>
     queryFn: fetchRoles,
     initialData: [],
   });
-
-export type Role = {
-  id: number;
-  name: string;
-  description: string;
-};
