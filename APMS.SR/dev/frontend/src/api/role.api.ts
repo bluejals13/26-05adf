@@ -9,7 +9,7 @@ const base = "/api/admin/roles";
 export const fetchRoles = async (): Promise<Role[]> => {
   const res = await http.get(base);
   console.log("roles api result:", res);
-  return res;
+  return res.data;
 }
 
 // 생성
