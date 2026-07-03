@@ -6,7 +6,7 @@ import {
   updateRole,
   deleteRole,
   assignPermissions as assignPermissionsApi,
-} from "./role.api";
+} from "../api/role.api";
 
 
 export const useRoleManagement = () => {
