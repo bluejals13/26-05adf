@@ -9,4 +9,6 @@ export const useRoles = () =>
     queryKey: ["roles"],
     queryFn: fetchRoles,
     initialData: [],
+    staleTime: 0,
+    refetchOnMount: "always",
   });
