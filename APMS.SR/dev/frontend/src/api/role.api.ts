@@ -1,7 +1,7 @@
 // api/role.api.ts
 
 import { http } from "../api/http";
-import type { Role } from "../queries/role";
+import type { Role, CreateRoleRequest } from "../queries/role";
 
 const base = "/api/admin/roles";
 
