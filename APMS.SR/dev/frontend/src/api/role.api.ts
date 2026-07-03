@@ -1,7 +1,7 @@
 // api/role.api.ts
 
 import { http } from "../api/http";
-import type { Role } from "../auth/auth.types";
+import type { Role } from "../queries/role";
 
 const base = "/api/admin/roles";
 
