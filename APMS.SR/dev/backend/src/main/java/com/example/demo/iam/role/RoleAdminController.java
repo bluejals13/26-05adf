@@ -6,6 +6,8 @@ import com.example.demo.iam.role.dto.RolePermissionRequest;
 import com.example.demo.iam.role.service.RoleAdminService;
 import com.example.demo.iam.role.service.RolePermissionService;
 
+import com.example.demo.auth.security.CustomUserPrincipal;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
