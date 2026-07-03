@@ -124,7 +124,7 @@ export default function RolePage() {
 
           <div className={styles.cell}>{role.name}</div>
 
-          <div className={styles.cell}>{role.description}</div>
+          <div className={styles.cell}>{role.description?.trim() || "-"}</div>
 
           <div className={styles.actionCell}>
             <button
