@@ -1,5 +1,7 @@
 package com.example.demo.audit.domain;
 
+import com.example.demo.audit.domain.AuditAction;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import java.time.LocalDateTime;
@@ -21,6 +23,8 @@ public class Audit {
     private String targetType; // 대상 타입
 
     private Long targetId;    // 대상 ID
+    
+    private AuditAction action;
 
     private String beforeValue;    // 전 결과
 
