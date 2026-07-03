@@ -59,16 +59,20 @@ public class RoleAdminService {
     public void updateRole(Long adminId, Long roleId, RoleRequest request) {
         Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new IllegalArgumentException("Role not found"));
+        
         String before = role.getName();
+        String beforeDesc = role.getDescription();
+        
         role.updateName(request.getName());
+        role.setDescription(request.getDescription()); // 추가
         
         auditService.log(
                 adminId,
                 AuditAction.ROLE_UPDATE,
                 "ROLE",
                 roleId,
-                before,
-                role.getName()
+                beforeName + " / " + beforeDesc,
+                role.getName() + " / " + role.getDescription()
         );
     }
 
