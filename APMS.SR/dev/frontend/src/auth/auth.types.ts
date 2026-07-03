@@ -27,16 +27,3 @@ export type MenuRequest = {
   name: string;
   price: number;
 };
-
-//------- queries/useRoles.ts ------- 에서 사용
-
-export type Role = {
-  id: number;
-  name: string;
-  description: string;
-};
-
-export type CreateRoleRequest = {
-  name: string;
-  description: string;
-};
