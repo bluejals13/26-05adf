@@ -7,32 +7,27 @@ const base = "/api/admin/roles";
 
 // 목록 조회
 export const fetchRoles = async (): Promise<Role[]> => {
-    const data = await http.get(base);
-    return data;
+    return await http.get<Role[]>(base);
 }
 
 // 생성
 export const createRole = async (data: any): Promise<Role> => {
-  const data = await http.post(base, data);
-  return data;
+  return await http.post<Role[]>(base, data);
 };
 
 // 수정
 export const updateRole = async (id: number, data: CreateRoleRequest): Promise<Role> => {
-  const data = await http.patch(`${base}/${id}`, data);
-  return data;
+  return await http.patch<Role[]>(`${base}/${id}`, data);
 };
 
 // 삭제
 export const deleteRole = async (id: number): Promise<void> => {
-  const data = await http.delete(`${base}/${id}`);
-  return data;
+  return await http.delete(`${base}/${id}`);
 };
 
 // 권한 할당
 export const assignPermissions = async (roleId: number, permissionIds: number[]): Promise<void> => {
-  const data = await http.post(`${base}/${roleId}/permissions`, {
+  return await http.post(`${base}/${roleId}/permissions`, {
     permissionIds,
   });
-  return data;
 };
