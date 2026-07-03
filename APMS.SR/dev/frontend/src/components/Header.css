@@ -58,12 +58,6 @@
   gap: 12px;
 }
 
-.navUser.open {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-}
-
 /* 메뉴 */
 .nav {
   display: flex;
