@@ -15,19 +15,16 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Role {
     
-    private String description;
-    
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
     private String name;
-
+    
+    @Column(length = 255)
+    private String description;    
+    
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "role_permissions",
@@ -42,8 +39,9 @@ public class Role {
         return role;
     }
 
-    public void updateName(String name) {
+    public void update(String name, String description) {
         this.name = name;
+        this.description = description;
     }
 
     public void setPermissions(Set<Permission> permissions) {
