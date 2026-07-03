@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class RoleRequest {
     private String name;
+    private String description;  // 추가
 }
