@@ -1,7 +1,8 @@
 // pages/RolePage.tsx
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { useRoles } from "./queries/useRoles";
-import { useRoleManagement } from "./mutations/useRoleManage";
+import { useRoles } from "../queries/useRoles";
+import { useRoleManagement } from "../mutations/useRoleManage";
 
 export default function RolePage() {
   const { data: roles } = useRoles();
