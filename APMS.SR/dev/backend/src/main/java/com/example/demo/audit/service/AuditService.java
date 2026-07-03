@@ -14,23 +14,17 @@ public class AuditService {
 
     private final AuditRepository auditRepository;
 
-     public void log(
-                Long userId,
-                AuditAction action,
-                String targetType,
-                Long targetId,
-                String beforeValue,
-                String afterValue
-        ) {
-            Audit audit = Audit.create(
-                    userId,
-                    action,
-                    targetType,
-                    targetId,
-                    beforeValue,
-                    afterValue
-            );
+     public void log(AuditEvent event) {
+
+        Audit audit = Audit.create(
+            event.getUserId(),
+            event.getAction(),
+            event.getTargetType(),
+            event.getTargetId(),
+            event.getBeforeValue(),
+            event.getAfterValue()
+        );
     
-            auditRepository.save(audit);
+        auditRepository.save(audit);
     }
 }
