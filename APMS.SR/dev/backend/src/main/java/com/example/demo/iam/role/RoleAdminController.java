@@ -28,7 +28,7 @@ public class RoleAdminController {
         Authentication auth =
                 SecurityContextHolder.getContext().getAuthentication();
         
-        CustomUserDetails user = (CustomUserPrincipal) auth.getPrincipal();
+        CustomUserPrincipal user = (CustomUserPrincipal) auth.getPrincipal();
         
         return principal.getUserId(); // (전제: name = userId)
     }
