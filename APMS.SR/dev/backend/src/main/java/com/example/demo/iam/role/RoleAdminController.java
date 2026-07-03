@@ -22,13 +22,13 @@ public class RoleAdminController {
     private final RoleAdminService roleAdminService;
     private final RolePermissionService rolePermissionService;
     
-    private Long getAdminId() {
+    private Long getAdminId() {        // 400 에러 뜨던 거 로그인 Principal 과 충돌 수정
         Authentication auth =
                 SecurityContextHolder.getContext().getAuthentication();
         
-        //CustomUserDetails user = (CustomUserDetails) auth.getPrincipal();
+        CustomUserDetails user = (CustomUserPrincipal) auth.getPrincipal();
         
-        return Long.valueOf(auth.getName()); // (전제: name = userId)
+        return principal.getUserId(); // (전제: name = userId)
     }
     
     @PreAuthorize("hasAuthority('ROLE_READ')")
