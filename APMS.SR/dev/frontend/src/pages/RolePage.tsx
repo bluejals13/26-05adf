@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRoles } from "../queries/useRoles";
 import { useRoleManagement } from "../mutations/useRoleManage";
-import styles from "./Fmenu/menu.module.css";
+import styles from "./RolePage.module.css";
 
 export default function RolePage() {
   const { data: roles = [] } = useRoles();
