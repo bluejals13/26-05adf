@@ -5,8 +5,8 @@ import { http } from "../api/http";
 const base = "/api/admin/roles";
 
 // 목록 조회
-export const fetchRoles = async (): Promise<Role[]> => {
-    const list = await http.get<Role[]>(base);
+export const fetchRoles = async () => {
+    const list = await http.get(base);
     return list;
 }
 
