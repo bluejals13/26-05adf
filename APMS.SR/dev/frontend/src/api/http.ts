@@ -85,10 +85,10 @@ export async function request<T>(
 }
 
 export const http = {
-  get: <T>(url: string) =>
+  get: <T>(url: string): Promise<T> =>
     request<T>(url, { method: "GET" }),
 
-  post: <T>(url: string, body?: unknown, options?: RequestInit) => {
+  post: <T>(url: string, body?: unknown, options?: RequestInit): Promise<T> => {
     console.log("POST METHOD", url)
     return request<T>(url, {
       method: "POST",
@@ -99,20 +99,20 @@ export const http = {
       body: body ? JSON.stringify(body) : undefined, ...options,
     });},
   
-  patch: <T>(url: string, body?: unknown) => {
+  patch: <T>(url: string, body?: unknown): Promise<T> => {
   console.log("PATCH METHOD", url)
   return request<T>(url, {
     method: "PATCH",
     body: body ? JSON.stringify(body) : undefined,
   });},
   
-  put: <T>(url: string, body?: unknown) =>
+  put: <T>(url: string, body?: unknown): Promise<T> =>
     request<T>(url, {
       method: "PUT",
       body: body ? JSON.stringify(body) : undefined,
     }),
 
-  delete: <T>(url: string) =>
+  delete: <T>(url: string): Promise<T> =>
     request<T>(url, { method: "DELETE" }),
 };
 
