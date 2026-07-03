@@ -11,7 +11,7 @@ export const fetchRoles = async (): Promise<Role[]> => {
 }
 
 // 생성
-export const createRole = async (data: any): Promise<Role> => {
+export const createRole = async (data: CreateRoleRequest): Promise<Role> => {
   return await http.post<Role>(base, data);
 };
 
