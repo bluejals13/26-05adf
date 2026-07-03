@@ -26,9 +26,9 @@ public class RoleAdminController {
     
     private Long getAdminId() {        // 400 에러 뜨던 거 로그인 Principal 과 충돌 수정
         Authentication auth =
-                SecurityContextHolder.getContext().getAuthentication();
+            SecurityContextHolder.getContext().getAuthentication();
         
-        CustomUserPrincipal user = (CustomUserPrincipal) auth.getPrincipal();
+         CustomUserPrincipal principal = (CustomUserPrincipal) auth.getPrincipal();
         
         return principal.getUserId(); // (전제: name = userId)
     }
