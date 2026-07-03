@@ -33,9 +33,10 @@ public class Role {
     )
     private Set<Permission> permissions = new HashSet<>();
 
-    public static Role create(String name) {
+    public static Role create(String name, String description) {
         Role role = new Role();
         role.name = name;
+        role.description = description;
         return role;
     }
 
