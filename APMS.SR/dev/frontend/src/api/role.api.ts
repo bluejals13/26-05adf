@@ -7,7 +7,7 @@ const base = "/api/admin/roles";
 
 // 목록 조회
 export const fetchRoles = async (): Promise<Role[]> => {
-    return (await http.get<Role[]>(base)).data;
+    return await http.get<Role[]>(base);
 }
 
 // 생성
