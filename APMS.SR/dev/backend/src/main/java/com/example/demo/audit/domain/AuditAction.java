@@ -7,6 +7,7 @@ public enum AuditAction {
     
     USER_ROLE_UPDATE,
     
+    ROLE_CREATE,
     ROLE_UPDATE,
     ROLE_DELETE,
     ROLE_PERMISSION_MANAGE
