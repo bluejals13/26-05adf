@@ -2,8 +2,8 @@
 
 import { UserAPI } from "../api/user.api.js";
 
-export default function () {
-    const res = UserAPI.getUsers();
+export default function (data) {
+    const res = UserAPI.getUsers(data);
 
     if (res.status !== 200) {
         console.error("getUsers failed:", res.status);
@@ -12,7 +12,7 @@ export default function () {
 
     const users = res.json();
 
-    if (!users || users.length === 0) return;
+    if (!users.length) return;
 
-    UserAPI.changeStatus(users[0].id, "ACTIVE");
+    UserAPI.changeStatus(token, users[0].id, "ACTIVE");
 }
