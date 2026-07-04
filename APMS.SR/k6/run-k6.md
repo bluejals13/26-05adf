@@ -1,3 +1,9 @@
+
+
+# run-full-test.md
+
+```md
+
 #!/bin/bash
 
 
@@ -32,4 +38,5 @@ k6 run \
   "$ENTRY"
 
 
+```
 
