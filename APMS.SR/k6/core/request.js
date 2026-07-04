@@ -2,10 +2,13 @@
 
 import http from "k6/http";
 import { config } from "../config/env.js";
+import { getToken } from "./auth.js";
 
 const BASE_URL = config.baseUrl;
 
-function buildHeaders(extraHeaders = {}, token) {
+function buildHeaders(extraHeaders = {}) {
+    const token = getToken();
+
     return {
         "Content-Type": "application/json",
         ...extraHeaders,
@@ -16,10 +19,8 @@ function buildHeaders(extraHeaders = {}, token) {
 export default function request(method, path, body = null, options = {}) {
     const payload = body == null ? null : JSON.stringify(body);
 
-    const res = http.request(method, `${BASE_URL}${path}`, payload, {
+    return http.request(method, `${BASE_URL}${path}`, payload, {
         ...options,
         headers: buildHeaders(options.headers),
     });
-
-    return res;
 }
