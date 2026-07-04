@@ -1,4 +1,4 @@
-// api/auth.api.js
+// k6/api/auth.api.js
 
 import http from "k6/http";
 import { config } from "../config/env.js";
