@@ -10,16 +10,13 @@ export function login(username, password) {
         password,
     });
 
-    token = res.json().token;
-    return token;
-}
+    if (res.status !== 200) {
+        console.error("Login failed:", res.status, res.body);
+        return null;
+    }
 
-export function getToken() {
-    return token;
-}
+    const data = res.json();
 
-export function refreshToken() {
-    const res = request("POST", "/api/auth/refresh");
-    token = res.json().token;
+    token = data.token;
     return token;
 }
