@@ -6,18 +6,13 @@ export default function () {
     const res = UserAPI.getUsers();
 
     if (res.status !== 200) {
-        console.error("getUsers failed:", res.status, res.body);
+        console.error("getUsers failed:", res.status);
         return;
     }
 
     const users = res.json();
 
-    if (!users?.length) {
-        console.error("No users returned");
-        return;
-    }
+    if (!users || users.length === 0) return;
 
-    const user = users[0];
-
-    UserAPI.changeStatus(user.id, "ACTIVE");
+    UserAPI.changeStatus(users[0].id, "ACTIVE");
 }
