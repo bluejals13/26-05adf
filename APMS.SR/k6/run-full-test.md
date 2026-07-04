@@ -1,3 +1,7 @@
+
+# run-full-test.md
+
+```md
 #!/bin/bash
 
 ./start-monitoring.sh
@@ -9,3 +13,5 @@ echo "Starting k6 test..."
 ./run-k6.sh
 
 echo "Test finished"
+
+```
