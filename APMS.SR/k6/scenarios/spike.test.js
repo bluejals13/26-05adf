@@ -8,6 +8,7 @@ export const options = {
         { duration: "10s", target: 200 },
         { duration: "30s", target: 10 },
     ],
+    thresholds,
 };
 
 export default function () {
