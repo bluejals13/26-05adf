@@ -1,8 +1,8 @@
 // pages/RolePage.tsx
 
 import { useState } from "react";
-import { useRoles } from "../queries/useRoles";
-import { useRoleManagement } from "../mutations/useRoleManage";
+import { useRoles } from "../../queries/useRoles";
+import { useRoleManagement } from "../../mutations/useRoleManage";
 import styles from "./RolePage.module.css";
 
 export default function RolePage() {
