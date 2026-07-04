@@ -2,22 +2,17 @@
 
 import http from "k6/http";
 import { config } from "../config/env.js";
-import { getToken } from "./auth.js";
 
-const BASE_URL = config.baseUrl;
-
-export default function request(method, path, body = null, options = {}) {
-    const token = getToken();
+export default function request(method, path, body, options = {}, token) {
+    const headers = {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(options.headers || {}),
+    };
 
     const payload = body ? JSON.stringify(body) : null;
 
-    const headers = {
-        "Content-Type": "application/json",
-        ...(options.headers || {}),
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    };
-
-    return http.request(method, `${BASE_URL}${path}`, payload, {
+    return http.request(method, `${config.baseUrl}${path}`, payload, {
         ...options,
         headers,
     });
