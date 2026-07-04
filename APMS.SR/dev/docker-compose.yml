@@ -77,7 +77,7 @@ services:
     image: grafana/agent:latest
     container_name: grafana-agent
     volumes:
-      - ./agent.yaml:/etc/agent/agent.yaml
+      - ./monitoring/agent.yaml:/etc/agent/agent.yaml
     command: ["-config.file=/etc/agent/agent.yaml"]
     ports:
       - "12345:12345"
