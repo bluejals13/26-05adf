@@ -1,6 +1,6 @@
 
 
-# run-full-test.md
+# run-k6-prom.md
 
 ```md
 
