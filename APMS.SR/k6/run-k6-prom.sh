@@ -8,7 +8,7 @@ export BASE_URL="http://localhost:8080"
 
 VUS=${VUS:-50}
 DURATION=${DURATION:-2m}
-TEST=${TEST:-k6/active.js}
+TEST=${TEST:-setup.js}
 
 # Prometheus remote write endpoint
 PROM_URL=${PROM_URL:-http://localhost:9090/api/v1/write}
