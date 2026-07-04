@@ -3,14 +3,12 @@
 import request from "../core/request.js";
 
 export const UserAPI = {
-    getUsers: () =>
-        request("GET", "/api/admin/users", null, {
-            tags: { api: "getUsers" },
-        }),
+    getUsers: (token) =>
+        request("GET", "/api/admin/users", null, { tags: { api: "getUsers" } }, token ),
 
-    changeStatus: (id, status) =>
-        request("PATCH", `/api/admin/users/${id}/status`, { status }),
+    changeStatus: (token, id, status) =>
+        request("PATCH", `/api/admin/users/${id}/status`, { status }, {}, token),
 
-    deleteUser: (id) =>
-        request("DELETE", `/api/admin/users/${id}`),
+    deleteUser: (token, id) =>
+        request("DELETE", `/api/admin/users/${id}`, null, {}, token),
 };
