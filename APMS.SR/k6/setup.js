@@ -1,4 +1,4 @@
-// setup.js
+// k6/setup.js
 
 import { login } from "./core/auth.js";
 import active from "./core/active.js";
