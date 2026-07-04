@@ -10,7 +10,7 @@ export BASE_URL="http://localhost:8080"
 # k6 실행 옵션
 VUS=${VUS:-50}
 DURATION=${DURATION:-2m}
-TEST=${TEST:-k6/active.js}
+TEST=${TEST:-setup.js}
 
 echo "================================="
 echo "k6 Load Test Start"
