@@ -14,11 +14,18 @@ export function login(username, password) {
             headers: { "Content-Type": "application/json" },
         }
     );
-
-    if (res.status === 200) {
-        const data = res.json();
-        setToken(data.token);
+    
+    if (res.status !== 200) {
+        console.error("Login failed:", res.status, res.body);
+        return res;
     }
+
+    const data = res.json();
+
+    // 👉 프론트 기준: accessToken 사용
+    const token = data.accessToken;
+
+    setToken(token);
 
     return res;
 }
