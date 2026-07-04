@@ -1,4 +1,4 @@
-// k6/auth.js		인증
+// k6/core/auth.js		인증
 
 import { request } from "./core/request.js";
 
