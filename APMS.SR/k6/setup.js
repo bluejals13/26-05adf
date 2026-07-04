@@ -5,5 +5,9 @@ import active from "./core/active.js";
 //import request from "./core/request.js";
 
 export function setup() {
-    login();
+    login("test", "1378"); // 또는 실제 계정
+}
+
+export default function () {
+    active();
 }
