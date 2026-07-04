@@ -1,4 +1,4 @@
-// k6/request.js		통신규격
+// k6/core/request.js		통신규격
 
 import http from "k6/http";
 import { config } from "../config/env.js";
