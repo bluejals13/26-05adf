@@ -23,7 +23,7 @@ ENTRY=${ENTRY:-run.js}
 
 
 # Prometheus remote write endpoint
-PROM_URL=${PROM_URL:-http://localhost:9090/api/v1/write}
+PROM_URL=${PROM_URL:-http://victoriametrics:8428/api/v1/write}
 
 
 echo "================================="
