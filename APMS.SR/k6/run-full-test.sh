@@ -11,6 +11,6 @@ k6 run \
   --duration 2m \
   --env BASE_URL=http://localhost:8080 \
   --out experimental-prometheus-rw \
-  k6/active.js
+  core/active.js
 
 echo "Test finished"
