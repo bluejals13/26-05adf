@@ -34,7 +34,6 @@ k6 run \
   --vus "$VUS" \
   --duration "$DURATION" \
   --env BASE_URL="$BASE_URL" \
-  --out experimental-prometheus-rw \
   "$ENTRY"
 
 
