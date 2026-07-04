@@ -4,19 +4,14 @@ import request from "./request.js";
 
 let token = null;
 
-export function login(username, password) {
-    const res = request("POST", "/api/auth/login", {
-        username,
-        password,
-    });
+export function setToken(t) {
+    token = t;
+}
 
-    if (res.status !== 200) {
-        console.error("Login failed:", res.status, res.body);
-        return null;
-    }
-
-    const data = res.json();
-
-    token = data.token;
+export function getToken() {
     return token;
+}
+
+export function clearToken() {
+    token = null;
 }
