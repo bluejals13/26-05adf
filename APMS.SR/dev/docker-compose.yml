@@ -61,6 +61,14 @@ services:
     networks:
       - app-net
 
+  victoria-metrics:
+    image: victoriametrics/victoria-metrics
+    container_name: vm
+    ports:
+      - "8428:8428"
+    command:
+      - "-storageDataPath=/storage"
+      - "-httpListenAddr=:8428"
 
   grafana:
     image: grafana/grafana
