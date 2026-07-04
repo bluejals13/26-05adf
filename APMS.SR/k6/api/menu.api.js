@@ -1,4 +1,6 @@
-import { request } from "../core/request.js";
+// k6/api/menu.api.js
+
+import request from "../core/request.js";
 
 export const MenuAPI = {
     getMenus: () => request("GET", "/api/admin/menus"),
