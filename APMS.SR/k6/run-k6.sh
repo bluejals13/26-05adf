@@ -25,4 +25,5 @@ k6 run \
   --duration $DURATION \
   --env BASE_URL=$BASE_URL \
   $TEST
-  
+
+
