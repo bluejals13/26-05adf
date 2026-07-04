@@ -11,12 +11,14 @@ export function login(username, password) {
         `${BASE_URL}/api/auth/login`,
         JSON.stringify({ username, password }),
         {
-            headers: { "Content-Type": "application/json" }
+            headers: { "Content-Type": "application/json" },
         }
     );
 
-    const data = res.json();
-    setToken(data.token);
+    if (res.status === 200) {
+        const data = res.json();
+        setToken(data.token);
+    }
 
     return res;
 }
