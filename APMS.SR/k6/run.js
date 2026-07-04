@@ -8,3 +8,7 @@ export { setup };
 export default function (data) {
     flow(data);
 }
+
+export const options = {
+  systemTags: ["method", "url", "status"],
+};
