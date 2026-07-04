@@ -1,6 +1,3 @@
-좋아. 지금까지 만든 걸 기준으로 **“실무에서 바로 공유 가능한 k6 README (압축 + 구조 + 실행 + SLA + Grafana 연동 포함)”** 형태로 정리해줄게.
-
----
 
 # 📌 k6 Performance Test Framework (SLA + Monitoring + Load Test)
 
@@ -15,7 +12,7 @@
 * 인증 포함 실제 사용자 흐름 시뮬레이션
 * Prometheus + Grafana 기반 시각화
 
----
+
 
 # 2. 전체 구조
 
@@ -42,7 +39,7 @@ k6/
 └── run-prom.sh         # Prometheus 연동 실행
 ```
 
----
+
 
 # 3. 아키텍처 구조
 
@@ -58,7 +55,7 @@ k6/
 HTTP API Server
 ```
 
----
+
 
 # 4. 역할 정의
 
@@ -70,7 +67,7 @@ HTTP API Server
 | core/auth    | 로그인 + 토큰 관리                    |
 | config       | 환경 + SLA 기준                    |
 
----
+
 
 # 5. 핵심 코드 흐름
 
@@ -82,7 +79,7 @@ HTTP API Server
 
 👉 인증 전담
 
----
+
 
 ## 5.2 Request (core/request.js)
 
@@ -92,7 +89,7 @@ HTTP API Server
 
 👉 모든 API 통신 중앙 관리
 
----
+
 
 ## 5.3 API Layer
 
@@ -103,7 +100,7 @@ MenuAPI.createMenu()
 
 👉 React service layer 구조와 동일
 
----
+
 
 ## 5.4 Scenario
 
@@ -115,7 +112,7 @@ MenuAPI.createMenu({...});
 
 👉 실제 사용자 행동 시뮬레이션
 
----
+
 
 # 6. SLA 기준 (thresholds)
 
@@ -126,7 +123,7 @@ export const thresholds = {
 };
 ```
 
----
+
 
 # 7. 실행 방식
 
@@ -136,7 +133,7 @@ export const thresholds = {
 k6 run k6/scenarios/active.js
 ```
 
----
+
 
 ## 7.2 SLA 테스트 실행 (shell)
 
@@ -150,7 +147,7 @@ k6 run k6/scenarios/active.js
 VUS=50 DURATION=2m ./run.sh
 ```
 
----
+
 
 ## 7.3 Prometheus 연동 실행
 
@@ -158,7 +155,7 @@ VUS=50 DURATION=2m ./run.sh
 ./run-prom.sh
 ```
 
----
+
 
 # 8. run.sh (실행 스크립트)
 
@@ -174,7 +171,7 @@ k6 run \
   k6/scenarios/active.js
 ```
 
----
+
 
 # 9. Grafana + Prometheus 연동
 
@@ -184,7 +181,7 @@ k6 run \
 --out experimental-prometheus-rw
 ```
 
----
+
 
 ## 9.2 Grafana 주요 패널
 
@@ -195,7 +192,7 @@ k6 run \
 | p95 Latency | `histogram_quantile(0.95, rate(http_req_duration_bucket[1m]))`        |
 | Avg Latency | `rate(http_req_duration_sum[1m]) / rate(http_req_duration_count[1m])` |
 
----
+
 
 # 10. 테스트 유형
 
@@ -207,7 +204,7 @@ k6 run \
 | Spike Test  | 급격한 트래픽 증가     |
 | Soak Test   | 장시간 안정성        |
 
----
+
 
 # 11. 현재 구조 평가
 
@@ -219,7 +216,7 @@ k6 run \
 * Prometheus 연동 가능 구조
 * 실무 수준 아키텍처
 
----
+
 
 ## ⚠️ 개선 여지
 
@@ -228,26 +225,13 @@ k6 run \
 * spike/stress 패턴 없음
 * Grafana dashboard 일부 metric 보강 필요
 
----
+
 
 # 12. 전체 요약
 
 👉 현재 구조는:
 
-> “개발 완료 후 SLA 검증 + 기본 부하 테스트 가능한 실무 중급 k6 프레임워크”
+> “개발 완료 후 SLA 검증 + 기본 부하 테스트 가능한 k6 프레임워크”
 
----
 
-# 13. 한 줄 결론
 
-👉 **실무에서 “성능 검증용으로 바로 사용 가능한 상태”이며, 운영급 확장은 추가 시나리오/트래픽 모델링만 남아 있음**
-
----
-
-원하면 다음 단계로:
-
-* 🔥 “운영급 k6 구조 (token pool + spike + stress + soak)”
-* 🔥 “Grafana 완성 대시보드 JSON”
-* 🔥 “CI/CD에서 성능 기준 실패 시 배포 차단”
-
-여기까지 이어서 완성해줄게.
