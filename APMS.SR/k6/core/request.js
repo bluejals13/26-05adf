@@ -3,7 +3,7 @@
 import http from "k6/http";
 import { config } from "../config/env.js";
 
-export default function request(method, path, body, options = {}, token) {
+export default function request(method, path, token, body, options = {}) {
     const payload = body ? JSON.stringify(body) : null;
     
     const headers = {
