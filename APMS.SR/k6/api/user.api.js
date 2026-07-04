@@ -4,11 +4,11 @@ import request from "../core/request.js";
 
 export const UserAPI = {
     getUsers: (token) =>
-        request("GET", "/api/admin/users", null, { tags: { api: "getUsers" } }, token ),
+        request("GET", "/api/admin/users", token, null, { tags: { api: "getUsers" } } ),
 
     changeStatus: (token, id, status) =>
-        request("PATCH", `/api/admin/users/${id}/status`, { status }, {}, token),
+        request("PATCH", `/api/admin/users/${id}/status`, token, { status }, {} ),
 
     deleteUser: (token, id) =>
-        request("DELETE", `/api/admin/users/${id}`, null, {}, token),
+        request("DELETE", `/api/admin/users/${id}`, token, null, {} ),
 };
