@@ -1,0 +1,14 @@
+server:
+  log_level: info
+
+metrics:
+  wal_directory: /tmp/agent/wal
+  global:
+    scrape_interval: 5s
+
+  configs:
+    - name: default
+      remote_write:
+        - url: http://prometheus:9090/api/v1/write
+
+integrations: {}
