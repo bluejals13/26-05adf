@@ -19,24 +19,19 @@ function buildHeaders(extraHeaders = {}, token) {
     return headers;
 }
 
-export function request(method, path, body, options = {}) {
+export default function request(method, path, body = null, options = {}) {
     let retry = 0;
 
     let token = getToken();
 
-    let payload = null;
-
-    if (body !== undefined && body !== null) {
-        payload = JSON.stringify(body);
-    }
+    const payload =
+        body === null || body === undefined
+            ? null
+            : JSON.stringify(body);
 
     let headers = buildHeaders(options.headers, token);
 
-    let res = http.request(
-        method,
-        `${BASE_URL}${path}`,
-        payload,
-        {
+    let res = http.request(method, `${BASE_URL}${path}`, payload, {
             ...options,
             headers,
         }
@@ -52,11 +47,7 @@ export function request(method, path, body, options = {}) {
 
         headers = buildHeaders(options.headers, token);
 
-        res = http.request(
-            method,
-            `${BASE_URL}${path}`,
-            payload,
-            {
+        res = http.request(method, `${BASE_URL}${path}`, payload, {
                 ...options,
                 headers,
             }
@@ -72,3 +63,4 @@ export function request(method, path, body, options = {}) {
 
     return res;
 }
+
