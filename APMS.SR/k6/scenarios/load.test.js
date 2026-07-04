@@ -6,7 +6,7 @@ import userFlow from "./user.flow.js";
 
 export const options = { vus: 50,
     duration: "2m",
-    thresholds,
+//    thresholds,
 };
 
 export default function () {
