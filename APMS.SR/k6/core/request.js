@@ -20,11 +20,12 @@ function buildHeaders(extraHeaders = {}, token) {
 }
 
 export function request(method, path, body, options = {}) {
+    let retry = 0;
+
     let token = getToken();
 
     let payload = null;
 
-    // GET 요청이면 body 보내지 않도록
     if (body !== undefined && body !== null) {
         payload = JSON.stringify(body);
     }
@@ -42,9 +43,11 @@ export function request(method, path, body, options = {}) {
     );
 
     // =========================
-    // 401 재시도 (최소 안전 버전)
+    // 401 retry (1회 제한)
     // =========================
-    if (res.status === 401 && token) {
+    if (res.status === 401 && retry < 1) {
+        retry++;
+
         token = refreshToken();
 
         headers = buildHeaders(options.headers, token);
@@ -58,6 +61,13 @@ export function request(method, path, body, options = {}) {
                 headers,
             }
         );
+    }
+
+    // =========================
+    // 5xx 처리 (기본 형태)
+    // =========================
+    if (res.status >= 500) {
+        console.error(`Server error: ${res.status} ${method} ${path}`);
     }
 
     return res;
