@@ -73,6 +73,17 @@ services:
     networks:
       - app-net
 
+   agent:
+    image: grafana/agent:latest
+    container_name: grafana-agent
+    volumes:
+      - ./agent.yaml:/etc/agent/agent.yaml
+    command: ["-config.file=/etc/agent/agent.yaml"]
+    ports:
+      - "12345:12345"
+    depends_on:
+      - prometheus
+
   node-exporter:
     image: prom/node-exporter
     container_name: node-exporter
