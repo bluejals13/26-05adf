@@ -1,6 +1,6 @@
 // k6/run.js
 
-import flow from "./core/active.js;
+import flow from "./core/active.js";
 import { setup } from "./setup.js";
 
 export { setup };
