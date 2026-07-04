@@ -1,4 +1,6 @@
-import { request } from "../core/request.js";
+// k6/api/user.api.js
+
+import request from "../core/request.js";
 
 export const UserAPI = {
     getUsers: () => request("GET", "/api/admin/users", null, {
