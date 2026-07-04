@@ -1,6 +1,7 @@
 // k6/core/active.js		행위 혹은 작업
 
 import { UserAPI } from "../api/user.api.js";
+import request from "./request.js";
 
 export default function active() {
     const users = UserAPI.getUsers().json();
