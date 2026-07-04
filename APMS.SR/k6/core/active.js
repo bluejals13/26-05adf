@@ -12,7 +12,7 @@ export default function () {
 
     const users = res.json();
 
-    if (!users || users.length === 0) {
+    if (!users?.length) {
         console.error("No users returned");
         return;
     }
