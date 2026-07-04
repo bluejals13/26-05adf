@@ -1,14 +1,23 @@
 // k6/core/active.js		행위 혹은 작업
 
 import { UserAPI } from "../api/user.api.js";
-import request from "./request.js";
 
-export default function active() {
-    const users = UserAPI.getUsers().json();
+export default function () {
+    const res = UserAPI.getUsers();
 
-    if (users.length === 0) {
+    if (res.status !== 200) {
+        console.error("getUsers failed:", res.status, res.body);
         return;
     }
 
-    UserAPI.changeStatus(users[0].id, "ACTIVE");
+    const users = res.json();
+
+    if (!users || users.length === 0) {
+        console.error("No users returned");
+        return;
+    }
+
+    const user = users[0];
+
+    UserAPI.changeStatus(user.id, "ACTIVE");
 }
