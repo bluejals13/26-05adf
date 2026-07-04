@@ -1,4 +1,4 @@
-// k6/active.js		행위 혹은 작업
+// k6/core/active.js		행위 혹은 작업
 
 import { UserAPI } from "../api/user.api.js";
 
