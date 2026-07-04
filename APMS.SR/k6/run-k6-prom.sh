@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 
@@ -34,4 +35,5 @@ k6 run \
   --env BASE_URL="$BASE_URL" \
   --out experimental-prometheus-rw \
   "$ENTRY"
+
 
