@@ -2,6 +2,6 @@
 
 import { MenuAPI } from "../api/menu.api.js";
 
-export default function () {
+export default function readFlow() {
     MenuAPI.getMenus();
 }
