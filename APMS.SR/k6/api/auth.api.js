@@ -20,3 +20,4 @@ export function login(username, password) {
     const data = res.json();
 
     return data.accessToken;
+}
