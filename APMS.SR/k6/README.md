@@ -3,14 +3,16 @@
 
 ## 1. 개요
 
-이 프로젝트는 k6를 이용하여 **API 성능 검증 + SLA 확인 + 부하 테스트 + 모니터링 연동(Grafana/Prometheus)** 을 수행하는 테스트 프레임워크입니다.
+이 프로젝트는 k6 기반으로 구축된 **API 성능 테스트 및 부하 시뮬레이션 프레임워크**입니다.
 
-목표:
+단순한 부하 테스트 스크립트가 아니라,
+실제 서비스 환경을 기준으로 다음을 검증할 수 있도록 설계되었습니다:
 
-* API 응답 성능 검증 (SLA)
-* 부하 테스트 (Load / Stress)
-* 인증 포함 실제 사용자 흐름 시뮬레이션
-* Prometheus + Grafana 기반 시각화
+- API 단위 성능 검증 (SLA 기반)
+- 사용자 행동 기반 시나리오 테스트
+- 트래픽 패턴별 부하 시뮬레이션 (Load / Stress / Spike / Soak)
+- Prometheus + Grafana 기반 모니터링 연동
+- CI/CD 환경에서 성능 회귀 테스트 가능 구조
 
 
 
@@ -18,24 +20,12 @@
 
 ```text
 k6/
-├── api/                 # API 레이어 (HTTP wrapper)
-│   ├── auth.api.js
-│   ├── user.api.js
-│   └── menu.api.js
-│
-├── core/               # 핵심 공통 로직
-│   ├── auth.js         # login / refresh / token
-│   └── request.js      # HTTP wrapper + retry + refresh
-│
-├── config/             # 설정
-│   ├── env.js
-│   └── thresholds.js
-│
-├── scenarios/          # 사용자 시나리오
-│   ├── active.js
-│   └── admin.flow.js
-│
-├── run.sh              # 실행 스크립트
+├── api/                 # 서비스 단위 API abstraction layer
+├── core/               # 인증/HTTP retry/공통 통신 레이어
+├── config/             # 환경 설정 및 SLA 정의
+├── scenarios/          # 사용자 행동 기반 시나리오
+├── tests/              # 부하 테스트 시나리오 (load/stress/spike/soak)
+├── run.sh              # 단일 실행 스크립트
 └── run-prom.sh         # Prometheus 연동 실행
 ```
 
@@ -44,28 +34,29 @@ k6/
 # 3. 아키텍처 구조
 
 ```text
-[Scenario Layer]
+User Scenario (Business Flow)
         ↓
-[API Layer]
+API Abstraction Layer
         ↓
-[Core Request Layer]
+Core HTTP / Auth Layer
         ↓
-[Auth Layer]
+k6 Engine
         ↓
-HTTP API Server
+Observability (Prometheus / Grafana)
 ```
 
 
 
 # 4. 역할 정의
 
-| Layer        | 역할                             |
-| ------------ | ------------------------------ |
-| scenarios    | 사용자 행동 정의 (비즈니스 흐름)            |
-| api          | API 호출 함수 모음                   |
-| core/request | HTTP wrapper + retry + refresh |
-| core/auth    | 로그인 + 토큰 관리                    |
-| config       | 환경 + SLA 기준                    |
+| Layer        | 역할 |
+|--------------|------|
+| scenarios    | 실제 사용자 행동 흐름 정의 (비즈니스 시뮬레이션) |
+| api          | 서비스 API abstraction (재사용 가능한 함수 레이어) |
+| core/request | HTTP wrapper + retry + auth handling |
+| core/auth    | 인증 및 token lifecycle 관리 |
+| config       | 환경 변수 및 SLA 기준 정의 |
+| tests        | 트래픽 패턴 기반 부하 테스트 정의 |
 
 
 
@@ -196,13 +187,13 @@ k6 run \
 
 # 10. 테스트 유형
 
-| Type        | 설명             |
-| ----------- | -------------- |
-| SLA Test    | 성능 기준 검증 (CI용) |
-| Load Test   | 일반 부하 테스트      |
-| Stress Test | 한계 성능 확인       |
-| Spike Test  | 급격한 트래픽 증가     |
-| Soak Test   | 장시간 안정성        |
+| Type        | 설명 |
+|------------|------|
+| SLA Test    | API 성능 기준 검증 (CI/CD gate) |
+| Load Test   | 정상 트래픽 기준 성능 테스트 |
+| Stress Test | 시스템 한계 부하 테스트 |
+| Spike Test  | 트래픽 급증 상황 대응 테스트 |
+| Soak Test   | 장시간 안정성 테스트 |
 
 
 
