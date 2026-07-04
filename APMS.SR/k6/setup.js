@@ -1,13 +1,10 @@
 // k6/setup.js
 
-import { login } from "./core/auth.js";
+import { login } from "./api/auth.api.js";
 import active from "./core/active.js";
-//import request from "./core/request.js";
 
-export function setup() {
-    login("test", "1378"); // 또는 실제 계정
-}
 
 export default function () {
+    login("test", "1378");
     active();
 }
