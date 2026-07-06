@@ -3,11 +3,11 @@
 import request from "../core/request.js";
 
 export const MenuAPI = {
-    getMenus: () => request("GET", "/api/admin/menus"),
+    getMenus: (token) => request("GET", "/api/admin/menus", null, token),
 
-    createMenu: (data) =>
-        request("POST", "/api/admin/menus", data),
+    createMenu: (token, data) =>
+        request("POST", "/api/admin/menus", data, token),
 
-    deleteMenu: (id) =>
-        request("DELETE", `/api/admin/menus/${id}`),
+    deleteMenu: (token, id) =>
+        request("DELETE", `/api/admin/menus/${id}`, null, token),
 };
