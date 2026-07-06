@@ -98,7 +98,9 @@ public class UserAdminService {
         
         UserStatus before = user.getStatus();        
         
-        validateTransition(user.getStatus(), status);
+        if (before == status) { return; }
+            
+        validateTransition(before, status);
         
         user.changeStatus(status);
         
