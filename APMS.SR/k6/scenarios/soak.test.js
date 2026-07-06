@@ -2,7 +2,7 @@
 
 import userFlow from "./user.flow.js";
 import readFlow from "./read.flow.js";
-import adminFlow from "./admin.flow.js";
+import adminFlow from "./admin-flow.js";
 
 //import { thresholds } from "../config/thresholds.js";
 
