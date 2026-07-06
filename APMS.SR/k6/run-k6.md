@@ -21,16 +21,16 @@ DURATION=${2:-2m}
 
 STAGE=${3:-normal}
 
-USER_RATIO=${4:-0.70}
-READ_RATIO=${5:-0.27}
-ADMIN_RATIO=${6:-0.03}
+# USER_RATIO=${4:-0.70}
+# READ_RATIO=${5:-0.27}
+# ADMIN_RATIO=${6:-0.03}
 
 # SCENA=${3:-1}
 # scenario=${4:-read}
 
 
 echo "================================="
-echo "run-k6 $VUS $DURATION $USER_RATIO $READ_RATIO"
+echo "run-k6 $VUS $DURATION $STAGE"
 echo "================================="
 
 
@@ -40,10 +40,6 @@ echo "VUS       : $VUS"
 echo "DURATION  : $DURATION"
 echo "BASE_URL  : $BASE_URL"
 echo "STAGE     : $STAGE"
-echo "---------------------------------"
-echo "USER_RATIO  : $USER_RATIO"
-echo "READ_RATIO  : $READ_RATIO"
-echo "ADMIN_RATIO : $ADMIN_RATIO"
 echo "================================="
 
 
@@ -52,9 +48,6 @@ k6 run \
   --duration "$DURATION" \
   --env STAGE="$STAGE" \
 
-  --env USER_RATIO="$USER_RATIO" \
-  --env READ_RATIO="$READ_RATIO" \
-  --env ADMIN_RATIO="$ADMIN_RATIO" \
   run.js
 
 
