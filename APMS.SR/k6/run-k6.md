@@ -17,10 +17,10 @@ export BASE_URL="${BASE_URL:-http://localhost:8080}"
 
 
 # k6 실행 옵션
-VUS=${VUS:-50}
-DURATION=${DURATION:-2m}
+VUS=${1:-50}
+DURATION=${2:-2m}
 
-SCENARIO=${SCENARIO:-load}
+SCENARIO=${3:-load}
 
 echo "================================="
 echo "k6 Load Test Start"
