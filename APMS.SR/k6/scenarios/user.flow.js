@@ -2,7 +2,7 @@
 
 import { UserAPI } from "../api/user.api.js";
 
-export default function () {
+export default function (data) {
     const token = data?.token;
     
     const res = UserAPI.getUsers(token);
