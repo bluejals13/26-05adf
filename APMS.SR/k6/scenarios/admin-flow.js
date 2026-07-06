@@ -21,7 +21,7 @@ export default function ({ token }) {
     sleep(1);
 
     // 3. 메뉴 생성
-    MenuAPI.createMenu({
+    MenuAPI.createMenu(token, {
         name: "Coffee",
         price: 5000,
     });
