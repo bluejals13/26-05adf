@@ -3,7 +3,7 @@
 import http from "k6/http";
 import { config } from "../config/env.js";
 
-export default function request(method, path, token, body = null, options = {}) {
+export default function request(method, path, body = null, token, options = {}) {
     
     if (!config.baseUrl) { throw new Error("BASE_URL is not defined"); }
     
