@@ -20,6 +20,7 @@ export default function request(method, path, token, body = null, options = {}) 
         headers,
         ...(options.timeout ? { timeout: options.timeout } : {}),
     };
+    console.log("AUTH HEADER:", token);
     
     return http.request(method, `${config.baseUrl}${path}`, payload, mergedOptions );
 }
