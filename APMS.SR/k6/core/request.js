@@ -17,7 +17,7 @@ export default function request(method, path, body = null, token, options = {}) 
     
     const timeout = options.timeout ?? "30s";
     
-    console.log("AUTH HEADER:", token);
+    //console.log("AUTH HEADER:", token);
     
     return http.request(method, `${config.baseUrl}${path}`, payload, { tags: options.tags || {}, headers, timeout,} );
 }
