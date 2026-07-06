@@ -10,6 +10,8 @@ sleep 5
 
 echo "Starting k6 test..."
 
+# "run-k6 $VUS $DURATION $STAGE"
+
 ./run-k6.sh
 
 echo "Test finished"
