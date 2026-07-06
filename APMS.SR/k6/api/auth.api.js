@@ -12,7 +12,7 @@ export function login(username, password) {
         { headers: { "Content-Type": "application/json" } }
     );
 
-    console.log(res.json());
+    //console.log(res.json());
     
     return res;
 }
