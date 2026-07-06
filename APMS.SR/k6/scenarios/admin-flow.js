@@ -41,22 +41,16 @@ export default function (data) {
     const menu = Domenu();
     
     const res3 = MenuAPI.createMenu(token, menu);
-    if (![200, 201].includes(res3.status)) { console.error("createMenu failed:", res3.status, res3.body);
-        return; }
-    let created;
-    try { created = JSON.parse(res3.body);
-    } catch (e) { console.error("Invalid JSON:", res3.body);
-        return; }
-
+    if (![200, 201].includes(createRes.status)) return;
+    
+    const created = JSON.parse(createRes.body);
     const menuId = created?.id;
+    
     if (!menuId) { console.error("No menuId returned");
         return; }
     
     // 4. 메뉴 삭제 (랜덤 삭제 확률)
-    if (Math.random() < 0.7 && menuId) { const delRes = MenuAPI.deleteMenu(token, menuId);
-
-        if (delRes.status !== 200 && delRes.status !== 204) { console.error("deleteMenu failed:", delRes.status, delRes.body); }
-    }
+    const deleteRes = MenuAPI.deleteMenu(token, menuId); // 즉시 삭제 (트랜잭션 검증용)
     
     if (res3.status !== 200) { console.error(`createMenu failed: ${res3.status}`); }
 }
