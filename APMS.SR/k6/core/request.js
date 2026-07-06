@@ -8,8 +8,8 @@ export default function request(method, path, token, body = null, options = {}) 
     
     const headers = {
         "Content-Type": "application/json",
-        ...(options.headers ?? {}),
         ...(token && { Authorization: `Bearer ${token}`, }),
+        ...(options.headers ?? {}),
     };
 
     return http.request(method, `${config.baseUrl}${path}`, payload, {
