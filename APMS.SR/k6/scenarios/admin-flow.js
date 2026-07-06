@@ -8,12 +8,16 @@ export default function (data) {
     // 1. 사용자 조회
     let users = [];
     const token = data?.token;
+    if (!token) { console.error("missing token");     return; }
+    
     const res = UserAPI.getUsers(token);
     if (res.status !== 200) { console.error(`getUsers failed: ${res.status}`); return; }
+    
     try { users = res.json();
     } catch (e) { console.error("Invalid JSON response");
     return; 
     }
+    
     if (!users || users.length === 0) { return; }
     
     const userId = users[0].id;
