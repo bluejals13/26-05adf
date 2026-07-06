@@ -23,9 +23,9 @@ export default function (data) {
     const readRatio = Number(__ENV.READ_RATIO || 0.27);
     const adminRatio = Number(__ENV.ADMIN_RATIO || 0.03);
     
-    if (r < userRatio) scenario_1(data);
-    else if (r < userRatio + readRatio) read(data);
-    else admin(data);
+    if (r < userRatio) flows[scenario_1](data);
+    else if (r < userRatio + readRatio) flows[scenario_2](data);
+    else flows[scenario_3](data);
     
     //flows[scenario](data);
 }
