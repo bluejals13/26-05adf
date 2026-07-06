@@ -1,4 +1,4 @@
-// scenarios/stress.flow.js
+// scenarios/stress.test.js
 
 import adminFlow from "./admin.flow.js";
 import userFlow from "./user.flow.js";
