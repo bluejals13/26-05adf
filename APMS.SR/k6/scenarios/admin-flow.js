@@ -4,7 +4,7 @@ import { sleep } from "k6";
 import { UserAPI } from "../api/user.api.js";
 import { MenuAPI } from "../api/menu.api.js";
 
-export default function () {
+export default function ({ token }) {
     // 1. 사용자 조회
     const res = UserAPI.getUsers(token);
     if (res.status !== 200) { console.error(`getUsers failed: ${res.status}`); return; }
@@ -16,7 +16,7 @@ export default function () {
     sleep(1);
 
     // 2. 상태 변경
-    UserAPI.changeStatus(userId, "ACTIVE");
+    UserAPI.changeStatus(token, userId, "ACTIVE");
 
     sleep(1);
 
