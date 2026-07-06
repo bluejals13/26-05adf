@@ -7,5 +7,5 @@ export function setup() {
     
     if (res.status !== 200) { throw new Error("login failed"); }
     
-    return { token: res.json("token") };
+    return { token: res.json("accessToken") };
 }
