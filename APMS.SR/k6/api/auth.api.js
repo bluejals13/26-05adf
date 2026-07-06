@@ -7,8 +7,12 @@ import { config } from "../config/env.js";
 const BASE_URL = config.baseUrl;
 
 export function login(username, password) {
-    return http.post(`${BASE_URL}/api/auth/login`,
+    res = http.post(`${BASE_URL}/api/auth/login`,
         JSON.stringify({ username, password }),
         { headers: { "Content-Type": "application/json" } }
     );
+
+    console.log(res.json());
+    
+    return res;
 }
