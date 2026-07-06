@@ -31,9 +31,9 @@ export default function (data) {
         
     const r = Math.random();
         
-    if (r < userRatio) user(token);
-    else if (r < userRatio + readRatio) read(token);
-    else admin(token);
+    if (r < userRatio) user(data);
+    else if (r < userRatio + readRatio) read(data);
+    else admin(data);
         
     // flows[scenario](data); 
 }
