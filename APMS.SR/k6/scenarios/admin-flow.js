@@ -41,7 +41,14 @@ export default function (data) {
     const menu = Domenu();
     
     const res3 = MenuAPI.createMenu(token, menu);
-    const created = res3.json();
+    if (res3.status !== 200 && res3.status !== 201) { console.error("createMenu failed:", res3.status, res3.body);
+        return; }
+    let created;
+    try { created = res3.json();
+    } catch (e) { console.error("Invalid JSON:", res3.body);
+        return;
+    }
+
     const menuId = created?.id;
     
     // 4. 메뉴 삭제 (랜덤 삭제 확률)
