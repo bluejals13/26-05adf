@@ -12,7 +12,7 @@ echo "Starting k6 test..."
 
 # "run-k6 $VUS $DURATION $STAGE"
 
-./run-k6.sh
+./run-k6.sh 70 1m stress
 
 echo "Test finished"
 
