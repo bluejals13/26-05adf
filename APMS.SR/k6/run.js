@@ -17,11 +17,30 @@ export { setup };
 
 export default function (data) {
         
-    const userRatio = Number(__ENV.USER_RATIO || 0.70);
-    const readRatio = Number(__ENV.READ_RATIO || 0.27);
+    const stage = __ENV.STAGE || "normal";
+
+    let userRatio, readRatio, adminRatio;
     
+    if (stage === "warmup") {
+        userRatio = 0.9;
+        readRatio = 0.1;
+        adminRatio = 0;
+    }
+
+    else if (stage === "normal") {
+        userRatio = 0.7;
+        readRatio = 0.27;
+        adminRatio = 0.03;
+    }
+
+    else if (stage === "stress") {
+        userRatio = 0.5;
+        readRatio = 0.4;
+        adminRatio = 0.1;
+    }
+        
     const r = Math.random();
-    
+        
     if (r < userRatio) user(data);
     else if (r < userRatio + readRatio) read(data);
     else admin(data);
