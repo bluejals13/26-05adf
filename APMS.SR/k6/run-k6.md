@@ -47,7 +47,6 @@ k6 run \
   --vus "$VUS" \
   --duration "$DURATION" \
   --env STAGE="$STAGE" \
-
   run.js
 
 
