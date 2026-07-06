@@ -16,6 +16,8 @@ export { setup };
 //const flows = { admin, user, read, load };
 
 export default function (data) {
+
+    const token = data.token;
         
     const stage = __ENV.STAGE || "normal";
 
@@ -31,9 +33,9 @@ export default function (data) {
         
     const r = Math.random();
         
-    if (r < userRatio) user(data);
-    else if (r < userRatio + readRatio) read(data);
-    else admin(data);
+    if (r < userRatio) user(token);
+    else if (r < userRatio + readRatio) read(token);
+    else admin(token);
         
     // flows[scenario](data); 
 }
