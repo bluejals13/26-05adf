@@ -17,9 +17,8 @@ export default function request(method, path, token, body = null, options = {}) 
     
     const mergedOptions = {
         tags: options.tags ?? {},
-        timeout: options.timeout,
-        redirects: options.redirects,
         headers,
+        ...(options.timeout ? { timeout: options.timeout } : {}),
     };
     
     return http.request(method, `${config.baseUrl}${path}`, payload, mergedOptions );
