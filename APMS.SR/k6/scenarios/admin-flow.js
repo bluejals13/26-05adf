@@ -44,7 +44,7 @@ export default function (data) {
     if (![200, 201].includes(res3.status)) { console.error("createMenu failed:", res3.status, res3.body);
         return; }
     let created;
-    try { created = res3.json();
+    try { created = JSON.parse(res3.body);
     } catch (e) { console.error("Invalid JSON:", res3.body);
         return; }
 
