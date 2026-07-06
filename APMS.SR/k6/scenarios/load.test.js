@@ -12,7 +12,9 @@ export const options = { vus: 50,
 };
 
 export default function () {
-    userFlow();
-    readFlow();
-    adminFlow();  
+    const token = login();
+    
+    userFlow({ token });
+    readFlow({ token });
+    adminFlow({ token });  
 }
