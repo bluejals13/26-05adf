@@ -3,6 +3,8 @@
 import { UserAPI } from "../api/user.api.js";
 
 export default function () {
+    const token = data?.token;
+    
     const res = UserAPI.getUsers(token);
-    if (res.status !== 200) console.log(res.status); return;
+    if (!res) console.log(res.status); return;
 }
