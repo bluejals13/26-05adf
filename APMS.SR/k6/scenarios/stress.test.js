@@ -1,6 +1,6 @@
 // scenarios/stress.test.js
 
-import adminFlow from "./admin.flow.js";
+import adminFlow from "./admin-flow.js";
 import userFlow from "./user.flow.js";
 
 export const options = {
