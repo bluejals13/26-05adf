@@ -35,7 +35,7 @@ k6 run \
   --vus "$VUS" \
   --duration "$DURATION" \
   --env SCENARIO="$SCENARIO" \
-  run.j
+  run.js
 
 
 ```
