@@ -6,9 +6,13 @@ import { MenuAPI } from "../api/menu.api.js";
 
 export default function ({ token }) {
     // 1. 사용자 조회
+    let users = [];
     const res = UserAPI.getUsers(token);
     if (res.status !== 200) { console.error(`getUsers failed: ${res.status}`); return; }
-    const users = res.json();
+    try { users = res.json();
+    } catch (e) { console.error("Invalid JSON response");
+    return; 
+    }
     if (!users || users.length === 0) { return; }
     
     const userId = users[0].id;
