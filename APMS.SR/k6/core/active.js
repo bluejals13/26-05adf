@@ -14,7 +14,7 @@ export default function ({ token }) {
     if (!users?.length) { return; }
     
     const statuses = ["ACTIVE", "SUSPENDED"];
-    const randomUser = users[Math.floor(Math.random() * statuses.length)];
+    const randomUser = users[Math.floor(Math.random() * users.length)];
     
     const nextStatus = randomUser.status === "ACTIVE"    ? "SUSPENDED" : "ACTIVE";
     
