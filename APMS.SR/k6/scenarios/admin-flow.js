@@ -43,7 +43,7 @@ export default function (data) {
     const res3 = MenuAPI.createMenu(token, menu);
     if (![200, 201].includes(createRes.status)) return;
     
-    const created = JSON.parse(createRes.body);
+    const created = JSON.parse(res3.body);
     const menuId = created?.id;
     
     if (!menuId) { console.error("No menuId returned");
