@@ -12,6 +12,11 @@ export default function ({ token }) {
     const users = res.json();
 
     if (!users?.length) { return; }
-
-    UserAPI.changeStatus(token, users[0].id, "ACTIVE");
+    
+    const statuses = ["ACTIVE", "SUSPENDED"];
+    const randomUser = users[Math.floor(Math.random() * statuses.length)];
+    
+    const nextStatus = user.status === "ACTIVE"    ? "SUSPENDED" : "ACTIVE";
+    
+    UserAPI.changeStatus(token, randomUser.id, "ACTIVE");
 }
