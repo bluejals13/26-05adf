@@ -19,18 +19,18 @@ export BASE_URL="${BASE_URL:-http://localhost:8080}"
 VUS=${1:-50}
 DURATION=${2:-2m}
 
-SCENA_1=${3:-load}
+SCENA=${3:-1}
+
 USER_RATIO=${4:-0.70}
 
-SCENA_2=${5:-read}
-READ_RATIO=${6:-0.27}
+READ_RATIO=${5:-0.27}
 
-SCENA_3=${7:-admin}
-ADMIN_RATIO=${8:-0.03}
+
+scenario=${6:-read}
 
 
 echo "================================="
-echo "run-k6 $VUS $DURATION $SCENA_1 $USER_RATIO $SCENA_2 $READ_RATIO $SCENA_3 $ADMIN_RATIO"
+echo "run-k6 $VUS $DURATION $SCENA $USER_RATIO $READ_RATIO $scenario"
 echo "================================="
 
 
@@ -46,14 +46,12 @@ echo "================================="
 k6 run \
   --vus "$VUS" \
   --duration "$DURATION" \
-  --env SCENA_1="$SCENA_1" \
-  --env USER_RATIO="$USER_RATIO" \
+  --env SCENA="$SCENA" \
 
-  --env SCENA_2="$SCENA_2" \
+  --env USER_RATIO="$USER_RATIO" \
   --env READ_RATIO="$READ_RATIO" \
 
-  --env SCENA_3="$SCENA_3" \
-  --env ADMIN_RATIO="$ADMIN_RATIO" \
+  --env scenario="$scenario" \
   run.js
 
 
