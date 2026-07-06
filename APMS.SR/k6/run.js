@@ -26,6 +26,8 @@ export default function (data) {
     };
 
     const ratio = ratioMap[stage] || ratioMap.normal;        
+    const userRatio = ratio.user;
+    const readRatio = ratio.read;
         
     const r = Math.random();
         
@@ -33,7 +35,6 @@ export default function (data) {
     else if (r < userRatio + readRatio) read(data);
     else admin(data);
         
-    }
     // flows[scenario](data); 
 }
 
