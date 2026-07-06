@@ -41,20 +41,21 @@ export default function (data) {
     const menu = Domenu();
     
     const res3 = MenuAPI.createMenu(token, menu);
-    if (res3.status !== 200 && res3.status !== 201) { console.error("createMenu failed:", res3.status, res3.body);
+    if (![200, 201].includes(res3.status)) { console.error("createMenu failed:", res3.status, res3.body);
         return; }
     let created;
     try { created = res3.json();
     } catch (e) { console.error("Invalid JSON:", res3.body);
-        return;
-    }
+        return; }
 
     const menuId = created?.id;
+    if (!menuId) { console.error("No menuId returned");
+        return; }
     
     // 4. 메뉴 삭제 (랜덤 삭제 확률)
     if (Math.random() < 0.7 && menuId) { const delRes = MenuAPI.deleteMenu(token, menuId);
 
-        if (delRes.status !== 200) { console.error("deleteMenu failed:", delRes.status); }
+        if (delRes.status !== 200 && delRes.status !== 204) { console.error("deleteMenu failed:", delRes.status, delRes.body); }
     }
     
     if (res3.status !== 200) { console.error(`createMenu failed: ${res3.status}`); }
