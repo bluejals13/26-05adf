@@ -13,6 +13,8 @@ export { setup };
 // 환경변수로 시나리오 선택
 const SCENA = __ENV.SCENA || "1"
 
+const scenario = __ENV.scenario || "user"
+
 const flows = { admin, user, read, load };
 
 export default function (data) {
