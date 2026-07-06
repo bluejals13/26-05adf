@@ -7,7 +7,7 @@ export default function request(method, path, token, body = null, options = {}) 
     
     if (!config.baseUrl) { throw new Error("BASE_URL is not defined"); }
     
-    const payload = body && typeof body === "object" ? JSON.stringify(body) : body;
+    const payload = body ? JSON.stringify(body) : null;
     
     const headers = {
         "Content-Type": "application/json",
@@ -15,12 +15,9 @@ export default function request(method, path, token, body = null, options = {}) 
         ...(options.headers ?? {}),
     };
     
-    const mergedOptions = {
-        tags: options.tags ?? {},
-        headers,
-        ...(options.timeout ? { timeout: options.timeout } : {}),
-    };
+    const timeout = options.timeout ?? "30s";
+    
     console.log("AUTH HEADER:", token);
     
-    return http.request(method, `${config.baseUrl}${path}`, payload, mergedOptions );
+    return http.request(method, `${config.baseUrl}${path}`, payload, { tags: options.tags || {}, headers, timeout,} );
 }
