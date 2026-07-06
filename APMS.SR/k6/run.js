@@ -16,8 +16,6 @@ export { setup };
 //const flows = { admin, user, read, load };
 
 export default function (data) {
-
-    const token = data.token;
         
     const stage = __ENV.STAGE || "normal";
 
