@@ -16,7 +16,7 @@ export default function ({ token }) {
     const statuses = ["ACTIVE", "SUSPENDED"];
     const randomUser = users[Math.floor(Math.random() * statuses.length)];
     
-    const nextStatus = user.status === "ACTIVE"    ? "SUSPENDED" : "ACTIVE";
+    const nextStatus = randomUser.status === "ACTIVE"    ? "SUSPENDED" : "ACTIVE";
     
     UserAPI.changeStatus(token, randomUser.id, "ACTIVE");
 }
