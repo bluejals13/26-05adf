@@ -5,9 +5,9 @@ import { UserAPI } from "../api/user.api.js";
 import { MenuAPI } from "../api/menu.api.js";
 
 function Domenu() {
-    const Names = [ "Americano", "Latte", "Cappuccino", "Mocha", "Espresso", "Macchiato", "Cold Brew"];
-    const list = Names[Math.floor(Math.random() * Names.length)];
-    const Price = Math.floor(Math.random() * 5000) + 3000;
+    const Lists = [ "Americano", "Latte", "Cappuccino", "Mocha", "Espresso", "Macchiato", "Cold Brew"];
+    const name = Lists[Math.floor(Math.random() * Lists.length)];
+    const price = Math.floor(Math.random() * 5000) + 3000;
     return { name, price };
 }
 
