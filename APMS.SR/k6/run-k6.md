@@ -19,14 +19,11 @@ export BASE_URL="${BASE_URL:-http://localhost:8080}"
 VUS=${1:-50}
 DURATION=${2:-2m}
 
-SCENA=${3:-1}
+USER_RATIO=${3:-0.70}
+READ_RATIO=${4:-0.27}
 
-USER_RATIO=${4:-0.70}
-
-READ_RATIO=${5:-0.27}
-
-
-scenario=${6:-read}
+# SCENA=${5:-1}
+# scenario=${6:-read}
 
 
 echo "================================="
@@ -39,19 +36,18 @@ echo "k6 Load Test Start"
 echo "VUS       : $VUS"
 echo "DURATION  : $DURATION"
 echo "BASE_URL  : $BASE_URL"
-echo "SCENARIO  : $SCENARIO"
+echo "USER_RATIO  : $USER_RATIO"
+echo "READ_RATIO  : $READ_RATIO"
 echo "================================="
 
 
 k6 run \
   --vus "$VUS" \
   --duration "$DURATION" \
-  --env SCENA="$SCENA" \
 
   --env USER_RATIO="$USER_RATIO" \
   --env READ_RATIO="$READ_RATIO" \
 
-  --env scenario="$scenario" \
   run.js
 
 
