@@ -7,7 +7,7 @@ import adminFlow from "./admin.flow.js";
 //import { thresholds } from "../config/thresholds.js";
 
 export const options = { vus: 80,
-    duration: 20m~40m
+    duration: "30m"
 //    thresholds,
 };
 
