@@ -7,17 +7,8 @@ import { config } from "../config/env.js";
 const BASE_URL = config.baseUrl;
 
 export function login(username, password) {
-    const res = http.post(`${BASE_URL}/api/auth/login`,
+    return http.post(`${BASE_URL}/api/auth/login`,
         JSON.stringify({ username, password }),
         { headers: { "Content-Type": "application/json" } }
     );
-    
-    if (res.status !== 200) {
-        console.error("Login failed:", res.status, res.body);
-        return res;
-    }
-
-    const data = res.json();
-
-    return data.accessToken;
 }
