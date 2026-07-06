@@ -43,14 +43,15 @@ export default function (data) {
     const res3 = MenuAPI.createMenu(token, menu);
     if (![200, 201].includes(res3.status)) return;
     
-    const created = JSON.parse(res3.body);
-    const menuId = created?.id;
+    const listRes = MenuAPI.getMenus(token);
+    const menus = listRes.json();
     
-    if (!menuId) { console.error("No menuId returned");
+    const created = menus.find( m => m.name === menu.name && m.price === menu.price );
+    if (!created) { console.error("Not find createMenu");
         return; }
     
     // 4. 메뉴 삭제 (랜덤 삭제 확률)
-    const deleteRes = MenuAPI.deleteMenu(token, menuId); // 즉시 삭제 (트랜잭션 검증용)
+    const deleteRes = MenuAPI.deleteMenu(token, created.id); // 즉시 삭제 (트랜잭션 검증용)
     
     if (res3.status !== 200) { console.error(`createMenu failed: ${res3.status}`); }
 }
