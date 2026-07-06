@@ -4,9 +4,10 @@ import { sleep } from "k6";
 import { UserAPI } from "../api/user.api.js";
 import { MenuAPI } from "../api/menu.api.js";
 
-export default function ({ token }) {
+export default function (data) {
     // 1. 사용자 조회
     let users = [];
+    const token = data?.token;
     const res = UserAPI.getUsers(token);
     if (res.status !== 200) { console.error(`getUsers failed: ${res.status}`); return; }
     try { users = res.json();
@@ -20,13 +21,15 @@ export default function ({ token }) {
     sleep(1);
 
     // 2. 상태 변경
-    UserAPI.changeStatus(token, userId, "ACTIVE");
-
+    const res2 = UserAPI.changeStatus(token, userId, "ACTIVE");
+    if (res2.status !== 200) { console.error(`changeStatus failed: ${res2.status}`); }
+    
     sleep(1);
 
     // 3. 메뉴 생성
-    MenuAPI.createMenu(token, {
+    const res3 = MenuAPI.createMenu(token, {
         name: "Coffee",
         price: 5000,
     });
+    if (res3.status !== 200) { console.error(`createMenu failed: ${res3.status}`); }
 }
