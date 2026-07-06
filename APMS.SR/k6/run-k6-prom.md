@@ -17,10 +17,10 @@ export BASE_URL="${BASE_URL:-http://localhost:8080}"
 
 
 # k6 실행 옵션
-VUS=${VUS:-50}
-DURATION=${DURATION:-2m}
-ENTRY=${ENTRY:-run.js}
+VUS=${1:-50}
+DURATION=${2:-2m}
 
+SCENARIO=${3:-load}
 
 # Prometheus remote write endpoint
 PROM_URL=${PROM_URL:-http://victoriametrics:8428/api/v1/write}
@@ -31,14 +31,15 @@ echo "k6 Load Test Start"
 echo "VUS       : $VUS"
 echo "DURATION  : $DURATION"
 echo "BASE_URL  : $BASE_URL"
+echo "SCENARIO  : $SCENARIO"
 echo "================================="
 
 
 k6 run \
   --vus "$VUS" \
   --duration "$DURATION" \
-  --env BASE_URL="$BASE_URL" \
-  "$ENTRY"
+  --env SCENARIO="$SCENARIO" \
+  run.js
 
 ```
 
