@@ -7,7 +7,7 @@ import { MenuAPI } from "../api/menu.api.js";
 export default function (data) {
     // 1. 사용자 조회
     let users = [];
-    const token = data?.token;
+    const token = data.token;
     if (!token) { console.error("missing token");     return; }
     
     const res = UserAPI.getUsers(token);
