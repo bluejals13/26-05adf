@@ -19,25 +19,13 @@ export default function (data) {
         
     const stage = __ENV.STAGE || "normal";
 
-    let userRatio, readRatio, adminRatio;
-    
-    if (stage === "warmup") {
-        userRatio = 0.9;
-        readRatio = 0.1;
-        adminRatio = 0;
-    }
+    const ratioMap = {
+        warmup: { user: 0.9, read: 0.1, admin: 0 },
+        normal: { user: 0.7, read: 0.27, admin: 0.03 },
+        stress: { user: 0.5, read: 0.4, admin: 0.1 },
+    };
 
-    else if (stage === "normal") {
-        userRatio = 0.7;
-        readRatio = 0.27;
-        adminRatio = 0.03;
-    }
-
-    else if (stage === "stress") {
-        userRatio = 0.5;
-        readRatio = 0.4;
-        adminRatio = 0.1;
-    }
+    const ratio = ratioMap[stage] || ratioMap.normal;        
         
     const r = Math.random();
         
