@@ -5,16 +5,16 @@ import request from "../core/request.js";
 export const UserAPI = {
     getUsers: (token) =>
         request("GET", "/api/admin/users", 
-                token, null, 
+                null, token, 
                 { tags: { api: "getUsers" } } ),
 
     changeStatus: (token, id, status) =>
         request("PATCH", `/api/admin/users/${id}/status`, 
-                token, { status }, 
+                { status }, token, 
                 { tags: { api: "changeStatus" } } ),
 
     deleteUser: (token, id) =>
         request("DELETE", `/api/admin/users/${id}`, 
-                token, null, 
+                null, token, 
                 { tags: { api: "deleteUser" } } ),
 };
