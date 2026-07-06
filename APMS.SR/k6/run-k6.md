@@ -21,13 +21,14 @@ DURATION=${2:-2m}
 
 USER_RATIO=${3:-0.70}
 READ_RATIO=${4:-0.27}
+ADMIN_RATIO=${5:-0.03}
 
-# SCENA=${5:-1}
-# scenario=${6:-read}
+# SCENA=${3:-1}
+# scenario=${4:-read}
 
 
 echo "================================="
-echo "run-k6 $VUS $DURATION $SCENA $USER_RATIO $READ_RATIO $scenario"
+echo "run-k6 $VUS $DURATION $USER_RATIO $READ_RATIO"
 echo "================================="
 
 
@@ -36,8 +37,10 @@ echo "k6 Load Test Start"
 echo "VUS       : $VUS"
 echo "DURATION  : $DURATION"
 echo "BASE_URL  : $BASE_URL"
+echo "---------------------------------"
 echo "USER_RATIO  : $USER_RATIO"
 echo "READ_RATIO  : $READ_RATIO"
+echo "ADMIN_RATIO : $ADMIN_RATIO"
 echo "================================="
 
 
@@ -47,7 +50,7 @@ k6 run \
 
   --env USER_RATIO="$USER_RATIO" \
   --env READ_RATIO="$READ_RATIO" \
-
+  --env ADMIN_RATIO="$ADMIN_RATIO" \
   run.js
 
 
