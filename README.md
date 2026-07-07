@@ -114,7 +114,9 @@ Monitoring: Prometheus → Grafana
 | [architecture.md](docs/architecture.md) | 시스템 아키텍처 |
 | [deployment.md](docs/deployment.md) | 배포 절차 |
 | [DESIGN_DECISIONS.md](docs/DESIGN_DECISIONS.md) | 설계 의사결정 |
+
 | [Design Decisions Index](docs/design-decisions/README.md) | Design Decisions |
+
 | [Architecture](docs/architecture/architecture.md) | Architecture |
 | [Deployment Guide](docs/deployment/deployment.md) | Deployment |
 | [Monitoring](docs/monitoring/monitoring.md) | Monitoring |
