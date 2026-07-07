@@ -116,6 +116,12 @@ Monitoring: Prometheus → Grafana
 | [DESIGN_DECISIONS.md](docs/DESIGN_DECISIONS.md) | 설계 의사결정 |
 
 
+|-----------|-------------|
+| [Design Decisions Index](docs/design-decisions/README.md) | Design Decisions |
+| [Architecture](docs/architecture/architecture.md) | Architecture |
+| [Deployment Guide](docs/deployment/deployment.md) | Deployment |
+| [Monitoring](docs/monitoring/monitoring.md) | Monitoring |
+| [Troubleshooting](docs/troubleshooting/README.md) | Troubleshooting |
 
 
 ## 7. Repository Structure
