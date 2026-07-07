@@ -167,8 +167,8 @@ MySQL
 
 # 6. Deployment Flow
 
-Deployment is handled via Docker Compose and GitHub Actions.
-Detailed flow is described in deployment.md.
+배포는 Docker Compose와 GitHub Actions를 통해 처리됩니다.
+더 자세한 내용은 deployment.md 파일 에서 이어서 계속
 
 
 
