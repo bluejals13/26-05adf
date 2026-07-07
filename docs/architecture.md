@@ -169,7 +169,7 @@ MySQL
 
 배포는 Docker Compose와 GitHub Actions를 통해 처리됩니다.
 더 자세한 내용은 deployment.md 파일 에서 이어서 계속
-- | [deployment.md]([https://github.com/bluejals13/26-05adf/blob/main/APMS.SR/dev/backend/src/main/java/com/example/demo/iam/menu/%EB%A9%94%EB%89%B4.md]) | 설계 배포 절차 및 설명 |
+- | [deployment.md]([docs/deployment.md]) | 설계 배포 절차 및 설명 |
 
 
 # 7. Design Decisions
