@@ -121,7 +121,7 @@ Monitoring: Prometheus → Grafana
 ## 7. Repository Structure
 
 
-```
+
 ## Repository Structure
 
 ```text
@@ -136,9 +136,9 @@ Monitoring: Prometheus → Grafana
 └── README.md
 ```
 
-````
 
----
+
+
 
 ## 8. Quick Start
 
