@@ -1,40 +1,63 @@
 
-# SRE Skeleton Project
 
-Production-inspired Full-Stack DevOps Platform
+# Production-Inspired Full-Stack DevOps Platform
 
 
 
 ## 1. Overview
 
-본 프로젝트는 React + Spring Boot 기반의 풀스택 웹 서비스를  
-Docker 기반으로 컨테이너화하고, CI/CD 및 모니터링까지 포함한  
-DevOps/SRE 구조를 구현한 포트폴리오 프로젝트이다.
+본 프로젝트는 React와 Spring Boot 기반의 웹 서비스를 개발하고,
+Spring Security 기반 JWT 인증과 RBAC(Role-Based Access Control)를 구현한
+풀스택 프로젝트입니다.
 
-Nginx를 Reverse Proxy로 사용하여 트래픽을 통합 관리하며,  
-Redis를 활용해 JWT Refresh Token을 처리한다.
-
-또한 GitHub Actions를 통해 자동 배포를 구성하고,  
-Prometheus / Grafana로 시스템 상태를 시각화한다.
+서비스는 Docker Compose 환경으로 통합 구성하였으며,
+Nginx Reverse Proxy, Redis 기반 Refresh Token 관리,
+GitHub Actions CI/CD, Prometheus·Grafana 모니터링을 적용하여
+운영 환경까지 고려한 구조를 구현했습니다.
 
 
 
 ## 2. Tech Stack
 
 | Layer | Technology |
-|------|-----------|
+|--------|------------|
+| Backend | Spring Boot, Spring Security, Spring Data JPA |
+| Authentication | JWT, RBAC |
 | Frontend | React, Vite |
-| Backend | Spring Boot, Spring Security |
 | Database | MySQL |
 | Cache | Redis |
-| Proxy | Nginx |
-| CI/CD | GitHub Actions |
+| Reverse Proxy | Nginx |
 | Container | Docker, Docker Compose |
+| CI/CD | GitHub Actions |
 | Monitoring | Prometheus, Grafana |
 
 
 
-## 3. System Architecture
+
+## 3. Key Features
+
+### Backend
+
+- REST API 개발
+- Spring Boot 기반 계층형 구조
+- Spring Security 인증 및 인가
+- JWT Access / Refresh Token 인증
+- RBAC(Role & Permission) 권한 관리
+- Global Exception Handler 적용
+- JPA 기반 데이터 접근 계층 구현
+
+### Infrastructure
+
+- Docker Compose 기반 통합 실행
+- Nginx Reverse Proxy
+- Redis Refresh Token 관리
+- GitHub Actions CI/CD
+- Prometheus + Grafana Monitoring
+
+
+
+
+## 4. System Architecture
 
 ```md
 
@@ -69,86 +92,68 @@ Monitoring: Prometheus → Grafana
 
 
 
-## 4. Key Features
-
-- JWT 기반 인증 / Refresh Token (Redis)
-- Spring Security RBAC 권한 관리
-- Nginx Reverse Proxy 구조
-- Docker Compose 기반 통합 실행 환경
-- GitHub Actions CI/CD 자동 배포
-- Prometheus + Grafana 모니터링
-- Cloudflare CDN + HTTPS 지원
-
-
 
 ## 5. Project Highlights
 
-- Stateless 인증 구조 (JWT + Redis)
-- Single Session + Token Blacklist 설계
-- Production-like Docker Architecture
-- Observability (Metrics + Dashboard)
-- Kubernetes 확장 가능한 구조 설계
+- Spring Boot 기반 REST API
+- Spring Security + JWT 인증
+- RBAC 권한 관리
+- Redis Refresh Token 관리
+- Docker Compose 운영 환경
+- Nginx Reverse Proxy
+- GitHub Actions CI/CD
+- Prometheus + Grafana Monitoring
 
 
 
-## 6. Repository Structure
+
+## 6. Documentation
+
+| Document | Description |
+|-----------|-------------|
+| [architecture.md](docs/architecture.md) | 시스템 아키텍처 |
+| [deployment.md](docs/deployment.md) | 배포 절차 |
+| [DESIGN_DECISIONS.md](docs/DESIGN_DECISIONS.md) | 설계 의사결정 |
+
+
+
+
+## 7. Repository Structure
 
 
 ```
-project/
-├── frontend/
-├── backend/
-├── docker/
-├── docs/
-│   ├── architecture.md
-│   ├── deployment.md
-│   ├── security/
-│   ├── docker/
-│   ├── monitoring/
-│   └── troubleshooting/
+## Repository Structure
+
+```text
+26-05adf/
+├── docs/                  	# Architecture, Deployment, Security
+├── APMS.SR/
+│   ├── backend/           # Spring Boot API
+│   ├── frontend/          	# React Application
+│   ├── .github/           	# GitHub Actions Workflow
+│   ├── k6/                	# Performance Test Scripts
+│   └── docker-compose.yml
 └── README.md
+```
+
 ````
 
-
-
-## 7. Documentation
-
-Architecture
-- architecture.md
-
-Deployment
-- deployment.md
-
-Security
-- security/
-
-Docker
-- docker/
-
-Monitoring
-- monitoring/
-
-Troubleshooting
-- troubleshooting/
-
-
+---
 
 ## 8. Quick Start
 
 ```bash
 # Clone
-git clone ...
+git clone https://github.com/bluejals13/26-05adf.git
+
+# Move
+cd APMS.SR/dev
 
 # Start
 docker compose up -d
 
-# Access
-
-Frontend
-http://localhost
-
-Backend
-http://localhost:8080
+# Stop
+docker compose down
 ````
 
 
@@ -158,20 +163,14 @@ http://localhost:8080
 ```md
 ## Future Improvements
 
-- Kubernetes 기반 확장
-- GitOps 적용
-- Loki 기반 로그 수집
+- Kubernetes(EKS) 기반 운영 확장
+- Loki 기반 중앙 로그 수집
+- GitOps(ArgoCD) 적용
 - Blue-Green Deployment
-- Alerting 시스템 구축
+- Alertmanager 기반 알림 자동화
 ```
 
 
-
-README에는 Screenshots 또는 Architecture Diagram 이미지가 하나 있으면 훨씬 완성도가 높아집니다.
-
-Overview > Architecture Diagram > Tech Stack >
-
-Key Features > Repository Structure > Documentation >
 
 Quick Start > Future Improvements
 
