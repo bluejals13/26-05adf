@@ -1,7 +1,7 @@
 
 
 
-# 수정본
+# architecture.md
 
 ## 1. Overview
 
