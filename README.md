@@ -121,9 +121,6 @@ Monitoring: Prometheus → Grafana
 ## 7. Repository Structure
 
 
-
-## Repository Structure
-
 ```text
 26-05adf/
 ├── docs/                  	# Architecture, Deployment, Security
