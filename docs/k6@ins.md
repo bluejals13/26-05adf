@@ -1,3 +1,7 @@
+
+# k6@ins.sh
+
+```md
 #!/bin/bash
 
 if command -v k6 >/dev/null 2>&1; then
@@ -37,4 +41,6 @@ else
 fi
 
 echo "================================="
+
+```
 
