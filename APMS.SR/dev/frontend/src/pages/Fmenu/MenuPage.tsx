@@ -8,7 +8,7 @@ import type { Menu } from "../../auth/auth.types";
 import FullPageSpinner from "../../components/loading/FullPageSpinner";
 import styles from "./menu.module.css";
 
-import Button from "../../components/common/Button";
+import Button from "../../style/common/Button";
 
 export default function MenuPage() {
   const { user, isLoading: authLoading } = useAuth();
