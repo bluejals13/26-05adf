@@ -66,6 +66,36 @@
   width: 100%;
 }
 
+.nav a {
+    position:relative;
+    color:white;
+    text-decoration:none;
+
+    transition:color .25s;
+}
+
+.nav a::after{
+    content:"";
+
+    position:absolute;
+    left:0;
+    bottom:-4px;
+
+    width:0;
+    height:2px;
+
+    background:var(--primary);
+
+    transition:width .25s ease;
+}
+
+.nav a:hover{
+    color:#60a5fa;
+}
+
+.nav a:hover::after{
+    width:100%;
+}
 
 @media (max-width: 768px) {
   .menuButton {
