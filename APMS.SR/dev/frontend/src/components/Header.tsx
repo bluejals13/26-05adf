@@ -42,7 +42,7 @@ export default function Header() {
           </>
         ) : (
           <>
-            <nav className="navUser">
+            <nav className="nav">
               <Link to="/signup">Signup</Link>
               <Link to="/login">Login</Link>
             </nav>
