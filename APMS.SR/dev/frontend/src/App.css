@@ -1,291 +1,60 @@
 :root {
   --text: #e2e8f0;
   --bg: #020617;
+
   --primary: #1e66ff;
+  --primary-hover: #2563eb;
+
+  --surface: rgba(15, 23, 42, 0.7);
+  --border: rgba(255,255,255,0.08);
+
+  --radius: 12px;
+  --transition: .25s ease;
 }
 
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: 'Inter', Arial, sans-serif;
+  font-family: "Inter", Arial, sans-serif;
   background: linear-gradient(135deg, #0f172a, #020617);
   color: var(--text);
-  padding: 16px;
+  line-height: 1.6;
 }
 
 #root {
   max-width: 1000px;
   margin: 0 auto;
+  padding: 16px;
 }
 
-/* 헤더 */
-
-.header {
-  background: rgba(30, 102, 255, 0.15);
-  border: 1px solid rgba(255,255,255,0.08);
-  backdrop-filter: blur(10px);
-
-  padding: 6px 8px;
-  border-radius: 16px;
-  text-align: center;
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-.header h1 {
-  margin-bottom: 12px;
-  font-size: 42px;
+button,
+input,
+textarea,
+select {
+  font: inherit;
 }
 
-
-/* 히어로 */
-
-.hero {
-  text-align: center;
-  padding: 60px 20px;
+img {
+  display: block;
+  max-width: 100%;
 }
 
-.hero h2 {
-  font-size: 36px;
-  margin-bottom: 12px;
-}
-
-.hero p {
-  color: #94a3b8;
-  margin-bottom: 20px;
-}
-
-/* 버튼 */
-
-.btn {
-  padding: 12px 18px;
-  border: none;
-  border-radius: 10px;
-
-  background: var(--primary);
-  color: white;
-
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  opacity: 0.9;
-}
-
-/* 애니메이션 박스 */
-
-.box-container {
-  display: flex;
-  justify-content: center;
-  margin: 30px 0;
-}
-
-.box {
-  width: 120px;
-  height: 120px;
-
-  background: var(--primary);
-
-  border-radius: 16px;
-  cursor: pointer;
-
-  transition:
-    transform 0.3s ease,
-    background 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.box:hover {
-  transform: translateY(-10px) scale(1.05);
-}
-
-.box.active {
-  transform: scale(1.5);
-  background: #0b3d91;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-}
-
-/* 탭 */
-
-.tabs {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-
-  margin: 30px 0;
-}
-
-.tab-btn {
-  border: none;
-  padding: 10px 16px;
-
-  border-radius: 10px;
-
-  background: #1e293b;
-  color: white;
-
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.tab-btn:hover {
-  background: #334155;
-}
-
-.tab-btn.active {
-  background: var(--primary);
-}
-
-/* 콘텐츠 */
-
-.tab-content {
-  background: rgba(15, 23, 42, 0.7);
-
-  border: 1px solid rgba(255,255,255,0.05);
-
-  backdrop-filter: blur(10px);
-
-  padding: 24px;
-  border-radius: 16px;
-
-  max-width: 700px;
-  margin: 0 auto;
-
-  animation: fadeIn 0.3s ease;
-}
-
-.tab-content h2 {
-  margin-bottom: 12px;
-}
-
-.tab-content p {
-  color: #cbd5e1;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 푸터 */
-
-footer {
-  text-align: center;
-  margin-top: 60px;
-  padding: 30px;
-  color: #94a3b8;
-}
-
-
-/* =========================
-   Mobile (768px 이하)
-========================= */
-@media (max-width: 768px) {
-
-  body {
-    padding: 12px;
-  }
-
-  /* 헤더 */
-  header {
-    padding: 16px;
-    border-radius: 12px;
-  }
-
-  header h1 {
-    font-size: 26px;
-    line-height: 1.2;
-  }
-
-  nav ul {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  nav a {
-    display: block;
-    padding: 8px 0;
-  }
-
-  /* 히어로 */
-  .hero {
-    padding: 40px 12px;
-  }
-
-  .hero h2 {
-    font-size: 22px;
-  }
-
-  .hero p {
-    font-size: 14px;
-  }
-
-  /* 버튼 */
-  .btn {
-    width: 100%;
-    font-size: 14px;
-  }
-
-  /* 박스 */
-  .box {
-    width: 90px;
-    height: 90px;
-  }
-  
-  .box.active {
-    transform: scale(1.2);
-  }
-
-  /* 탭 */
-  .tabs {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-  }
-
-  .tab-btn {
-    width: 100%;
-  }
-
-  .btn:active,
-  .tab-btn:active {
-    transform: scale(0.98);
-  }
-
-  .btn, .tab-btn {
-    min-height: 44px;
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  /* 콘텐츠 */
-  .tab-content {
-    padding: 16px;
-    border-radius: 12px;
-  }
-
-  .tab-content h2 {
-    font-size: 18px;
-  }
-
-  .tab-content p {
-    font-size: 14px;
-  }
-
-  /* 푸터 */
-  footer {
-    margin-top: 40px;
-    padding: 20px;
-    font-size: 13px;
-  }
+ul,
+ol {
+  list-style: none;
 }
