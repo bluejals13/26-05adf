@@ -30,7 +30,7 @@
     transition:.25s;
 }
 
-.logoutBtn:hover {
+.auth:hover {
   background:#f85149;
 }
 
