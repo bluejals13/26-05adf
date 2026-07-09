@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Layout from "./layout/Layout";
-import EmptyLayout from "./layout/EmptyLayout";
+import AuthLayout from "./layout/AuthLayout";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -37,7 +37,7 @@ export default function App() {
       <Routes>
 
         {/* Layout 없는 영역 */}
-        <Route element={<EmptyLayout />}>
+        <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Route>
