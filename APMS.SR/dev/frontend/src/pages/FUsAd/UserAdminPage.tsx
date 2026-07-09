@@ -78,7 +78,7 @@ export default function UserAdminPage() {
           <div>ID</div>
           <div>Username</div>
           <div>Status</div>
-          <div style={{ textAlign: "right" }}>Action</div>
+          <div className={styles.alignRight}>Action</div>
 		  <div>삭제</div>
         </div>
 
@@ -135,7 +135,7 @@ export default function UserAdminPage() {
             <div key={u.id} className={styles.pendingRow}>
               <div>{u.username}</div>
 
-	    <div style={{ display: "flex", gap: 8 }}>
+	    <div className={styles.actions}>
               <button
                 onClick={() =>
                   changeStatus.mutate({
