@@ -6,7 +6,7 @@ import { useMe } from "../queries/useMe";
 
 import "./Header.css";
 import "../style/common/underline.css";
-
+import Button from "../style/common/Button";
 
 
 export default function Header() {
@@ -41,7 +41,7 @@ export default function Header() {
               <span className="username">{user?.username}</span>
     
               <button
-                className="logoutBtn"
+                variant="danger"
                 onClick={handleLogout}
               >
                 Logout
@@ -57,7 +57,7 @@ export default function Header() {
         </div>
         
         
-      {/* 메인 메뉴 */}
+      {/* 메인 메뉴       #@ menuButton 은 header.css 에서 설정 */}
       <nav className={`mainNav ${menuOpen ? "open" : ""}`}>
           
         {isLoggedIn && (
@@ -77,7 +77,7 @@ export default function Header() {
         
       </nav>
         
-      <button className="menuButton"
+      <button className="menuButton" 
         onClick={() => setMenuOpen(!menuOpen)} > [LIST] </button>
         
     </div>
