@@ -14,7 +14,7 @@
     content: "";
 
     position: absolute;
-    left: 0;
+    right: 0;
     bottom: -4px;
 
     width: 100%;
@@ -23,7 +23,7 @@
     background: var(--primary);
 
     transform: scaleX(0);
-    transform-origin: right;
+    transform-origin: left;
 
     transition: transform .25s ease;
 }
@@ -34,5 +34,5 @@
 
 .underline:hover::after {
     transform: scaleX(1);
-    transform-origin: left;
+    transform-origin: right;
 }
