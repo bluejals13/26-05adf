@@ -68,15 +68,15 @@ export default function MenuPage() {
           
           <div className={styles.actionCell}>
             
-            <button variant="primary"
+            <Button variant="primary"
               disabled={deletingId === menu.id}
             >
               Update
-            </button>
+            </Button>
    
             
           {canDelete && (
-            <button variant="danger"
+            <Button variant="danger"
               onClick={() => {
                 setDeletingId(menu.id);
                 deleteMenu.mutate(menu.id, {
@@ -86,7 +86,7 @@ export default function MenuPage() {
               disabled={deletingId === menu.id}
             >
               Delete
-            </button>
+            </Button>
             )}
           </div>
          </div>
