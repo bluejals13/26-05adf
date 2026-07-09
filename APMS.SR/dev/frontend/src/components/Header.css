@@ -94,12 +94,23 @@
     gap:24px;
 }
 
+/* 각 메뉴 */
+.mainNav a {
+  position: relative;
+  display: inline-block;
+
+  color: white;
+  text-decoration: none;
+
+  transition: color .25s ease;
+}
+
 .mainNav a::after{  /* 언더라인 */
     content:"";
 
     position:absolute;
 
-    left:0;
+    right: 0;
     bottom:-4px;
 
     width:100%;
@@ -108,7 +119,7 @@
     background:var(--primary);
 
     transform:scaleX(0);
-    transform-origin:left;
+    transform-origin:right;
 
     transition:transform .25s;
 }
@@ -119,6 +130,7 @@
 
 .mainNav a:hover::after{
     transform:scaleX(1);
+    transform-origin:left;
 }
 
 @media (max-width: 768px) {
