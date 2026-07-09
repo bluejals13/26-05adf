@@ -44,8 +44,8 @@ export default function MenuPage() {
             onChange={(e) => setPrice(Number(e.target.value))}
           />
 
-          <button
-            onClick={() => createMenu.mutate({ name, price })}
+          <button 
+            className={`${styles.actionBtn} ${styles.danger}`}
             disabled={createMenu.isPending}
           >
             {createMenu.isPending ? "Creating..." : "Create"}
@@ -76,7 +76,7 @@ export default function MenuPage() {
    
             
           {canDelete && (
-            <button
+            <button className={`${styles.actionBtn} ${styles.danger}`}
               onClick={() => {
                 setDeletingId(menu.id);
                 deleteMenu.mutate(menu.id, {
