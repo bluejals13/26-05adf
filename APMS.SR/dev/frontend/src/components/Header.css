@@ -1,13 +1,14 @@
 
 /* 유저 아이디 스타일 */
 .username {
-  display: inline-block;
+  display: flex;
+  align-items:center;
   font-size: 24px;
   
-  padding: 2px 4px;
+  padding:4px 10px;
 
-  background: rgba(30, 102, 255, 0.15);
-  border: none;
+  background:1px solid rgba(255,255,255,.1);
+  border: #16213e;
 
   color: white;
   font-weight: 600;
@@ -28,8 +29,7 @@
 }
 
 .logoutBtn:hover {
-  background: rgba(248, 81, 73, 0.3);
-  transform: translateY(-2px);
+  background:#f85149;
 }
 
 .logoutBtn:active {
@@ -62,7 +62,7 @@
 .nav {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: 20px;
   width: 100%;
 }
 
