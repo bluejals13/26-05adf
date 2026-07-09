@@ -129,7 +129,7 @@ export default function UserAdminPage() {
       {/* DELETE PENDING */}
       {pendingUsers.length > 0 && (
         <>
-          <h2 className={styles.sectionTitle}>삭제 대기</h2>
+          <h2 className={styles.sectionTitle}>삭제 대기 장소</h2>
 
           {pendingUsers.map((u) => (
             <div key={u.id} className={styles.pendingRow}>
@@ -144,7 +144,7 @@ export default function UserAdminPage() {
                   })
                 }
               >
-                복구
+                [복구:active]
               </button>
 
               <button
