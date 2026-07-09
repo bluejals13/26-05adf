@@ -49,8 +49,8 @@ export default function Header() {
             </>
           ) : (
             <>
-              <Link class="underline" to="/signup">Signup</Link>
-              <Link class="underline" to="/login">Login</Link>
+              <Link className="underline" to="/signup">Signup</Link>
+              <Link className="underline" to="/login">Login</Link>
             </>
           )}
     
@@ -62,17 +62,17 @@ export default function Header() {
           
         {isLoggedIn && (
           <>
-            <Link class="underline" to="/monitor">Monitor</Link>
-            <Link class="underline" to="/dashboard">Dashboard</Link>
+            <Link className="underline" to="/monitor">Monitor</Link>
+            <Link className="underline" to="/dashboard">Dashboard</Link>
                                              
           </>
         )}
           
           
-        <Link class="underline" to="/home">Home</Link>
-        <Link class="underline" to="/contact">Contact</Link>
-        <Link class="underline" to="/about">About</Link>
-        <Link class="underline" to="/" className="logo">Main</Link>
+        <Link className="underline" to="/home">Home</Link>
+        <Link className="underline" to="/contact">Contact</Link>
+        <Link className="underline" to="/about">About</Link>
+        <Link className="underline" to="/" className="logo">Main</Link>
           
         
       </nav>
