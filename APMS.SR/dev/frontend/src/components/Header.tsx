@@ -34,7 +34,7 @@ export default function Header() {
       
       <div className="headerInner">
     
-        <nav className="auth">  {/* 로그인 정보 */}
+        <div className="auth">  {/* 로그인 정보 */}
     
           {isLoggedIn ? (
             <>
