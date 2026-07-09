@@ -1,3 +1,7 @@
+/* =====================
+   PAGE
+===================== */
+
 .container {
   padding: 24px;
   min-height: 100vh;
@@ -6,7 +10,6 @@
   font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
-/* HEADER */
 .title {
   font-size: 24px;
   font-weight: 600;
@@ -14,7 +17,11 @@
   color: #e6edf3;
 }
 
-/* 상태 UI */
+
+/* =====================
+   STATE
+===================== */
+
 .loading,
 .denied,
 .error {
@@ -32,230 +39,270 @@
   color: #ffa198;
 }
 
-/* loading */
 .refresh {
   margin-bottom: 16px;
   padding: 10px 14px;
+
   background: #161b22;
   border: 1px solid #30363d;
   border-radius: 8px;
+
   color: #8b949e;
   font-size: 13px;
 }
 
-/* TABLE WRAPPER */
+
+/* =====================
+   TABLE
+===================== */
+
 .table {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-/* HEADER + ROW */
 .header,
 .row {
   display: grid;
-  grid-template-columns: 80px minmax(0, 2fr) 80px 160px 80px;
+
+  grid-template-columns:
+    80px
+    minmax(0, 2fr)
+    100px
+    160px
+    100px;
+
   align-items: center;
+
   padding: 8px;
-  border-radius: 10px;
   column-gap: 16px;
-  
-  white-space: nowrap; /* ✔ 이게 맞는 줄바꿈 방지 */
+  border-radius: 10px;
+
+  white-space: nowrap;
 }
 
-/* grid 안정화 필수 */
-.row > div,
-.header > div {
+
+.header > div,
+.row > div {
   min-width: 0;
+
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 
-@media (max-width: 768px) {
-  .header {
-    display: none;
-  }
+/* table header */
 
-  .row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-areas:
-      "id name status"
-      "actions actions delete";
-    gap: 6px;
-    padding: 12px;
-  }
-
-    .row > div:nth-child(1) {
-    grid-area: id;
-  }
-
-  .row > div:nth-child(2) {
-    grid-area: name;
-  }
-
-  .row > div:nth-child(3) {
-    grid-area: status;
-  }
-
-  .row > div:nth-child(4) {
-    grid-area: actions;
-  }
-
-  .row > div:nth-child(5) {
-    grid-area: delete;
-  }
-}
-
-/* HEADER */
 .header {
   background: #161b22;
+  border: 1px solid #30363d;
+
   font-weight: 600;
   color: #e6edf3;
-  border: 1px solid #30363d;
 }
 
-/* ROW */
+
+/* table row */
+
 .row {
   background: #161b22;
+
   border: 1px solid #30363d;
-  transition: background 0.15s ease, border-color 0.15s ease;
+
+  transition:
+    background .15s ease,
+    border-color .15s ease,
+    transform .15s ease;
 }
+
 
 .row:hover {
   background: #1f2937;
   border-color: #3b434b;
+
   transform: translateY(-1px);
 }
 
-/* STATUS */
-.status {
-  display: inline-block;
-  align-items: center;
-  justify-content: center;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  border: 1px solid transparent;
-}
 
-/* permissions */
-.permissions {
-  font-size: 12px;
-  color: #8b949e;
-  word-break: break-word;
-}
+/* =====================
+   ACTION
+===================== */
 
-/* actions */
 .actions {
   display: flex;
+  justify-content: flex-end;
   gap: 8px;
   flex-wrap: nowrap;
-  justify-content: flex-end;
 }
+
 
 .actions select {
-  padding: 6px 10px;
-  border-radius: 8px;
-  min-width: 0;
-  width: 100%;
-  border: 1px solid #30363d;
-  background: #0d1117;
-  color: #c9d1d9;
-  outline: none;
+  width:100%;
+
+  padding:6px 10px;
+  border-radius:8px;
+  border:1px solid #30363d;
+
+  background:#0d1117;
+  color:#c9d1d9;
+  outline:none;
 }
+
 
 .actions select:focus {
-  border-color: #58a6ff;
-  box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
+
+  border-color:#58a6ff;
+
+  box-shadow:
+    0 0 0 2px rgba(88,166,255,.2);
 }
 
-.danger {
-  background: #f85149;
-  color: white;
-}
 
-.active {
-  background: rgba(63, 185, 80, 0.12);
-  color: #3fb950;
-  border-color: rgba(63, 185, 80, 0.3);
-}
+/* =====================
+   BUTTON
+===================== */
 
-.suspended {
-  background: rgba(240, 136, 62, 0.12);
-  color: #f0883e;
-  border-color: rgba(240, 136, 62, 0.3);
-}
-
-.delete_pending {
-  background: rgba(248, 81, 73, 0.12);
-  color: #f85149;
-  border-color: rgba(248, 81, 73, 0.3);
-}
-
-.deleted {
-  color: #8b949e;
-}
-
-/* BUTTONS */
 .button {
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  border: 1px solid transparent;
-  transition: all 0.15s ease;
-  cursor: pointer;
-  white-space: nowrap;
-  word-break: keep-all;
+  padding:6px 10px;
+  border-radius:8px;
+
+  font-size:14px;
+  font-weight:500;
+
+  border:1px solid transparent;
+  cursor:pointer;
+
+  white-space:nowrap;
+  transition:.15s ease;
 }
 
-.deleteBtn:hover {
-  background: #f85149;
-  color: #0d1117;
-}
 
 .primaryBtn {
-  background: rgba(88, 166, 255, 0.12);
-  color: #58a6ff;
-  border-color: rgba(88, 166, 255, 0.3);
+
+  background:
+    rgba(88,166,255,.12);
+
+  color:#58a6ff;
+
+  border-color:
+    rgba(88,166,255,.3);
 }
+
 
 .primaryBtn:hover {
-  background: #58a6ff;
-  color: #0d1117;
+
+  background:#58a6ff;
+
+  color:#0d1117;
 }
+
+
 
 .dangerBtn {
-  background: rgba(248, 81, 73, 0.12);
-  color: #f85149;
-  border-color: rgba(248, 81, 73, 0.3);
+
+  background:
+    rgba(248,81,73,.12);
+
+  color:#f85149;
+
+  border-color:
+    rgba(248,81,73,.3);
 }
+
 
 .dangerBtn:hover {
-  background: #f85149;
-  color: #0d1117;
+
+  background:#f85149;
+
+  color:#0d1117;
 }
 
-/* SECTION */
+
+/* =====================
+   DELETE PENDING
+===================== */
+
+
 .sectionTitle {
-  margin-top: 36px;
-  margin-bottom: 14px;
-  font-size: 18px;
-  font-weight: 700;
-  color: #f85149;
+
+  margin-top:36px;
+  margin-bottom:14px;
+  font-size:18px;
+
+  font-weight:700;
+  color:#f85149;
 }
 
-/* pending list */
+
 .pendingRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 14px;
-  border-radius: 10px;
-  background: #161b22;
-  border: 1px solid #f85149;
-  margin-bottom: 10px;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+
+  padding:12px 14px;
+  margin-bottom:10px;
+  border-radius:10px;
+
+  background:#161b22;
+  border:1px solid #f85149;
+}
+
+
+/* =====================
+   MOBILE
+===================== */
+
+
+@media(max-width:768px){
+
+
+.header {
+  display:none;
+}
+
+
+.row {
+
+  grid-template-columns:
+    1fr 1fr 1fr;
+
+  grid-template-areas:
+    "id name status"
+    "actions actions delete";
+
+  gap:6px;
+  padding:12px;
+
+}
+
+
+
+.row > div:nth-child(1){
+  grid-area:id;
+}
+
+
+.row > div:nth-child(2){
+  grid-area:name;
+}
+
+
+.row > div:nth-child(3){
+  grid-area:status;
+}
+
+
+.row > div:nth-child(4){
+  grid-area:actions;
+}
+
+
+.row > div:nth-child(5){
+  grid-area:delete;
+}
+
+
 }
