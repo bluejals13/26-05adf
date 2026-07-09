@@ -40,12 +40,12 @@ export default function Header() {
             <>
               <span className="username">{user?.username}</span>
     
-              <button
+              <Button
                 variant="danger"
                 onClick={handleLogout}
               >
                 Logout
-              </button>
+              </Button>
             </>
           ) : (
             <>
