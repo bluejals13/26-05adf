@@ -133,17 +133,18 @@ export default function UserAdminPage() {
 
           {pendingUsers.map((u) => (
             <div key={u.id} className={styles.pendingRow}>
-              <div>{u.username}</div>
+            	<div>{u.id}</div>
+            	<div>{u.username}</div>
 
-	    <div className={styles.actions}>
-              <button className={`${styles.button} ${styles.primaryBtn}`}
-                onClick={() =>
-                  changeStatus.mutate({
-                    id: u.id,
-                    status: "ACTIVE",
-                  })
-                }
-              >
+	    		<div className={styles.actions}>
+              		<button className={`${styles.button} ${styles.primaryBtn}`}
+                		onClick={() =>
+                  		changeStatus.mutate({
+                    		id: u.id,
+		                    status: "ACTIVE",
+                  		})
+                	}
+              	>
                 [복구:active]
               </button>
 
