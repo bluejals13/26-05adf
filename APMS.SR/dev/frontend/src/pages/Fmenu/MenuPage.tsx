@@ -8,6 +8,8 @@ import type { Menu } from "../../auth/auth.types";
 import FullPageSpinner from "../../components/loading/FullPageSpinner";
 import styles from "./menu.module.css";
 
+import Button from "../../components/common/Button";
+
 export default function MenuPage() {
   const { user, isLoading: authLoading } = useAuth();
   const { hasPermission } = usePermissions(user);
@@ -66,7 +68,7 @@ export default function MenuPage() {
           
           <div className={styles.actionCell}>
             
-            <button className={`${styles.actionBtn} ${styles.danger}`}
+            <Button variant="primary"
               disabled={deletingId === menu.id}
             >
               Update
@@ -74,7 +76,7 @@ export default function MenuPage() {
    
             
           {canDelete && (
-            <button className={`${styles.actionBtn} ${styles.danger}`}
+            <button variant="danger"
               onClick={() => {
                 setDeletingId(menu.id);
                 deleteMenu.mutate(menu.id, {
