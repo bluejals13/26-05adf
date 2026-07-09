@@ -68,7 +68,7 @@ export default function MenuPage() {
           
           <div className={styles.actionCell}>
             
-            <Button variant="primary"
+            <button variant="primary"
               disabled={deletingId === menu.id}
             >
               Update
