@@ -78,14 +78,16 @@
     content:"";
 
     position:absolute;
-    right: 0;
+    left: 0;
     bottom:-4px;
 
     width:0;
     height:2px;
 
     background:var(--primary);
-
+    transform: scaleX(0);
+    transform-origin: right;   /* 오른쪽에서 시작 */
+  
     transition:width .25s ease;
 }
 
