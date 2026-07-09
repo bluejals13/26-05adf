@@ -78,8 +78,8 @@ export default function UserAdminPage() {
           <div>ID</div>
           <div>Username</div>
           <div>Status</div>
-          <div className={styles.alignRight}>Action</div>
-		  <div>삭제</div>
+          <div className={styles.center}>Action</div>
+		  <div className={styles.center}>삭제</div>
         </div>
 
         {activeUsers.map((u) => (
