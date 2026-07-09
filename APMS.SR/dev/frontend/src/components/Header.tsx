@@ -71,7 +71,7 @@ export default function Header() {
           
         <Link class="underline" to="/home">Home</Link>
         <Link class="underline" to="/contact">Contact</Link>
-        <Link class="underline" to="/about">About</a>
+        <Link class="underline" to="/about">About</Link>
         <Link class="underline" to="/" className="logo">Main</Link>
           
         
