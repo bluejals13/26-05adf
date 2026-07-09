@@ -136,7 +136,7 @@ export default function UserAdminPage() {
               <div>{u.username}</div>
 
 	    <div className={styles.actions}>
-              <button
+              <button className={`${styles.button} ${styles.primaryBtn}`}
                 onClick={() =>
                   changeStatus.mutate({
                     id: u.id,
