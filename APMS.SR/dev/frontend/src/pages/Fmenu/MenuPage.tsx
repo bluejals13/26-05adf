@@ -69,7 +69,8 @@ export default function MenuPage() {
           
           <div className={styles.actionCell}>
             
-            <button onClick={() => createMenu.mutate({ name, price })}
+            <button className={`${styles.button} ${styles.danger}`}
+              onClick={() => createMenu.mutate({ name, price })}
               disabled={deletingId === menu.id}
             >
               Update
