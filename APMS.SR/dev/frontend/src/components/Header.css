@@ -30,9 +30,20 @@
     transition:.25s;
 }
 
+.auth a {
+  position: relative;
+  display: inline-block;
+
+  color: white;
+  text-decoration: none;
+
+  transition: color .25s ease;
+}
+
 .auth:hover {
   background:#f85149;
 }
+
 
 /* 유저 아이디 스타일 */
 .username {
