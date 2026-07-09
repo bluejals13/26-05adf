@@ -1,12 +1,17 @@
 import { Outlet, Link } from 'react-router-dom'
+import AuthHeader from "../components/AuthHeader";
 
 export default function AuthLayout() {
   return (
     <div className="auth-layout">
       
-      <main className="auth-content">
-        <Outlet />
-      </main>
+      <AuthHeader />
+
+     <main>
+       <Outlet />
+     </main>
+
+   </div>
 
     </div>
   );
