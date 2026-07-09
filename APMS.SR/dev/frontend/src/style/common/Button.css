@@ -1,0 +1,64 @@
+.btn {
+  padding: 8px 14px;
+
+  border:none;
+  border-radius:10px;
+
+  cursor:pointer;
+
+  font-size:14px;
+
+  transition:
+    background .25s ease,
+    color .25s ease,
+    transform .15s ease;
+}
+
+
+.btn:active {
+  transform:scale(.98);
+}
+
+
+.btn:disabled {
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+
+/* 기본 */
+.btn-primary {
+
+  background:var(--primary);
+
+  color:white;
+
+}
+
+
+.btn-primary:hover {
+
+  background:#2563eb;
+
+}
+
+
+/* 위험 */
+.btn-danger {
+
+  background:rgba(248,81,73,.12);
+
+  border:1px solid rgba(248,81,73,.3);
+
+  color:#f85149;
+
+}
+
+
+.btn-danger:hover {
+
+  background:#f85149;
+
+  color:#0d1117;
+
+}
