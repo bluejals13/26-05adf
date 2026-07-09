@@ -130,11 +130,6 @@
     display: block;
     margin-left: auto;
   }
-
-  .nav ul { 
-    flex-direction: column; 
-    gap: 10px; 
-  } 
   
   .nav a { 
     display: block; 
