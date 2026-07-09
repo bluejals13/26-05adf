@@ -30,21 +30,6 @@
     transition:.25s;
 }
 
-.auth a {
-  position: relative;
-  display: inline-block;
-
-  color: white;
-  text-decoration: none;
-
-  transition: color .25s ease;
-}
-
-.auth:hover {
-  background:#f85149;
-}
-
-
 /* 유저 아이디 스타일 */
 .username {
   display: flex;
@@ -109,45 +94,6 @@
     display:flex;
     align-items:center;
     gap:24px;
-}
-
-/* 각 메뉴 */
-.mainNav a {
-  position: relative;
-  display: inline-block;
-
-  color: white;
-  text-decoration: none;
-
-  transition: color .25s ease;
-}
-
-.mainNav a::after{  /* 언더라인 */
-    content:"";
-
-    position:absolute;
-
-    left: 0;
-    bottom:-4px;
-
-    width:100%;
-    height:2px;
-
-    background:var(--primary);
-
-    transform:scaleX(0);
-    transform-origin:left;
-
-    transition:transform .25s;
-}
-
-.mainNav a:hover{
-    color:#60a5fa;
-}
-
-.mainNav a:hover::after{
-    transform:scaleX(1);
-    transform-origin:right;
 }
 
 @media (max-width: 768px) {
