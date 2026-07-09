@@ -1,19 +1,29 @@
 import "./Button.css";
 
-function Button({
+interface ButtonProps {
+  children: React.ReactNode;
+  variant?: "primary" | "danger";
+  className?: string;
+  disabled?: boolean;
+  onClick?: () => void;
+}
+
+
+export default function Button({
   children,
   variant = "primary",
   className = "",
-  ...props
-}) {
+  disabled,
+  onClick
+}: ButtonProps) {
+
   return (
     <button
       className={`btn btn-${variant} ${className}`}
-      {...props}
+      disabled={disabled}
+      onClick={onClick}
     >
       {children}
     </button>
   );
 }
-
-export default Button;
