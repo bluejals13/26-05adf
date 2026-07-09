@@ -37,15 +37,16 @@ export default function MenuPage() {
 
       {canCreate && (
         <div className={styles.formRow}>
-          <input value={name} onChange={(e) => setName(e.target.value)} />
+          <input className={styles.input} value={name} onChange={(e) => setName(e.target.value)} />
           <input
+            className={styles.input}
             type="number"
             value={price}
             onChange={(e) => setPrice(Number(e.target.value))}
           />
 
           <button 
-            className={`${styles.actionBtn} ${styles.danger}`}
+            className={`${styles.button} ${styles.danger}`}
             disabled={createMenu.isPending}
           >
             {createMenu.isPending ? "Creating..." : "Create"}
