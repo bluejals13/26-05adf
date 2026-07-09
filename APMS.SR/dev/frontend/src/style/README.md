@@ -1,6 +1,7 @@
-아래처럼 README에 **CSS 책임 범위와 연결 규칙**을 표로 정리해두면 팀원이 봐도 바로 이해할 수 있습니다.
 
-````md
+* 아래처럼 README에 **CSS 책임 범위와 연결 규칙**을 표로 정리해두면 팀원이 봐도 바로 이해할 수 있습니다.
+
+
 # Frontend Style Architecture
 
 ## CSS / Style 관리 기준
@@ -13,7 +14,7 @@
 | Feature Style | `src/features/{feature}/` | 기능 단위 | Auth, Menu, Role 등 | 특정 도메인에서만 사용 |
 | Page Style | `src/pages/{page}/` | 페이지 배치 | 화면 구조, grid, section | 단일 페이지 전용 |
 
----
+
 
 # Style 연결 규칙
 
@@ -30,7 +31,7 @@
 | Role 관리 | `features/role` | `Role.css` | 권한 관리 |
 | Menu 관리 | `features/menu` | `Menu.css` | 메뉴 관리 |
 
----
+
 
 # CSS 이동 기준
 
@@ -45,7 +46,7 @@
 | grid column | Page CSS | 데이터별 차이 |
 | modal | `common/Modal` | 공통 UI |
 
----
+
 
 # Component 사용 원칙
 
@@ -65,7 +66,7 @@
 components/common/Button
 ```
 
----
+
 
 ## Page CSS
 
@@ -88,7 +89,7 @@ components/common/Button
 
 버튼 디자인은 Button Component 담당.
 
----
+
 
 # Admin 계열 페이지 기준
 
@@ -100,7 +101,7 @@ components/common/Button
 | 상태 표시  | Status Component      |
 | 삭제 버튼  | Button danger variant |
 
----
+
 
 # CSS 작성 우선순위
 
@@ -109,7 +110,7 @@ components/common/Button
 3. Feature Style 작성
 4. Page Style 작성
 
----
+
 
 # 금지 사항
 
@@ -143,7 +144,7 @@ App.css
 
 금지
 
----
+
 
 # 최종 구조
 
@@ -175,7 +176,7 @@ pages
  └ Login
 ```
 
----
+
 
 ## 핵심 원칙
 
