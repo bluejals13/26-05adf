@@ -8,7 +8,7 @@ import type { Menu } from "../../auth/auth.types";
 import FullPageSpinner from "../../components/loading/FullPageSpinner";
 import styles from "./menu.module.css";
 
-import Button from "../../style/common/Button";
+// import Button from "../../style/common/Button";    이거 나중에 할 것.
 
 export default function MenuPage() {
   const { user, isLoading: authLoading } = useAuth();
@@ -68,15 +68,15 @@ export default function MenuPage() {
           
           <div className={styles.actionCell}>
             
-            <Button variant="primary"
+            <button onClick={() => createMenu.mutate({ name, price })}
               disabled={deletingId === menu.id}
             >
               Update
-            </Button>
+            </button>
    
             
           {canDelete && (
-            <Button variant="danger"
+            <button
               onClick={() => {
                 setDeletingId(menu.id);
                 deleteMenu.mutate(menu.id, {
@@ -86,7 +86,7 @@ export default function MenuPage() {
               disabled={deletingId === menu.id}
             >
               Delete
-            </Button>
+            </button>
             )}
           </div>
          </div>
