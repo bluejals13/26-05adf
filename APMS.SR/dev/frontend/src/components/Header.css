@@ -26,6 +26,12 @@
     display:flex;
     align-items:center;
     gap:12px;
+    cursor: pointer;
+    transition:.25s;
+}
+
+.logoutBtn:hover {
+  background:#f85149;
 }
 
 /* 유저 아이디 스타일 */
@@ -110,7 +116,7 @@
 
     position:absolute;
 
-    right: 0;
+    left: 0;
     bottom:-4px;
 
     width:100%;
@@ -119,7 +125,7 @@
     background:var(--primary);
 
     transform:scaleX(0);
-    transform-origin:right;
+    transform-origin:left;
 
     transition:transform .25s;
 }
@@ -130,7 +136,7 @@
 
 .mainNav a:hover::after{
     transform:scaleX(1);
-    transform-origin:left;
+    transform-origin:right;
 }
 
 @media (max-width: 768px) {
