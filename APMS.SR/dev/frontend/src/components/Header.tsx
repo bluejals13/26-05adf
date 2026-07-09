@@ -32,26 +32,33 @@ export default function Header() {
   return (
     <header className="header">
       
-      <div className="navUser">
-        
-      
+      <div className="headerInner">
+    
+        <div className="auth">
+    
           {isLoggedIn ? (
             <>
-              <span className="username">{user?.username}</span>     
-              <button className="logoutBtn" onClick={handleLogout}> Logout </button>  
-          </>
-        ) : (
-          <>
-            <nav className="nav">
+              <span className="username">{user?.username}</span>
+    
+              <button
+                className="logoutBtn"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
               <Link to="/signup">Signup</Link>
               <Link to="/login">Login</Link>
-            </nav>
-          </>
+            </>
           )}
+    
+        </div>
         
         
       {/* 메인 메뉴 */}
-      <nav className={`nav ${menuOpen ? "open" : ""}`}>
+      <nav className={`mainNav ${menuOpen ? "open" : ""}`}>
           
         {isLoggedIn && (
           <>
