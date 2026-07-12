@@ -30,12 +30,11 @@ public class MenuAdminController {
     }
 
     @PreAuthorize("hasAuthority('MENU_UPDATE')")
-    @PatchMapping("/{id}")
-    public void updateMenu(
-            @PathVariable Long id,
-            @RequestBody MenuRequest request
+    @GetMapping("/{id}")
+    public MenuResponse getMenu(
+            @PathVariable Long id
     ) {
-        menuAdminService.updateMenu(id, request);
+        return menuAdminService.getMenu(id);
     }
 
     @PreAuthorize("hasAuthority('MENU_DELETE')")
