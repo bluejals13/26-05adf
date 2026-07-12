@@ -7,7 +7,7 @@ export default function AuthHeader(){
 
  return (
    <header className="header">
-     <div className="headerInner">
+     <div className="headerone">
        <div className="auth">
         <Link className="underline" to="/login"> Login </Link>
         <Link className="underline" to="/signup"> Sign up </Link>
