@@ -17,5 +17,10 @@ export function useMenuMutations() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["menus"] }),
   });
 
-  return { createMenu, deleteMenu };
+  const updateMenu = useMutation({
+    mutationFn: ({id,data} : {id: number; data: MenuRequest; }) => menuApi.updateMenu(id, data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["menus"] }),
+  });
+
+  return { createMenu, deleteMenu, updateMenu };
 }
