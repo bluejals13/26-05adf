@@ -123,16 +123,11 @@
 
 .auth{
     display: flex;
-    align-items: center;
-    gap: 16px;
-    width: 100%;
-    
     flex:1;
 }
     
 .main {
   margin-left: auto;
-  padding: 1px;
 }
     
 }
