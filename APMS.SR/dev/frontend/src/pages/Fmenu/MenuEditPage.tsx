@@ -23,7 +23,8 @@ export default function MenuEditPage() {
 
   const { data: menu, isLoading } = useMenu(menuId);
   const { updateMenu } = useMenuMutations();
-
+  console.log("menuId:", menuId);
+  console.log("menu:", menu);
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   
@@ -56,7 +57,7 @@ export default function MenuEditPage() {
         <button className={styles.button}
           onClick={() => { updateMenu.mutate(
               { id: menuId, data: { name, price } },
-              { onSuccess: () => { navigate("/admin/menu");
+              { onSuccess: () => { navigate("/menu");
               } } ); } }
           
           disabled={updateMenu.isPending}
@@ -66,7 +67,7 @@ export default function MenuEditPage() {
         </button>
 
         <button className={styles.button}
-          onClick={() => navigate("/admin/menu")}
+          onClick={() => navigate("/menu")}
         >
           취소
         </button>
