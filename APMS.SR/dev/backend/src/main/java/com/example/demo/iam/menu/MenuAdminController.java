@@ -31,10 +31,11 @@ public class MenuAdminController {
 
     @PreAuthorize("hasAuthority('MENU_UPDATE')")
     @GetMapping("/{id}")
-    public MenuResponse getMenu(
+    public void updateMenu(
         @PathVariable Long id
+        @RequestBody MenuRequest request
     ) {
-        return menuAdminService.getMenu(id);
+        menuAdminService.updateMenu(id, request);
     }
 
     @PreAuthorize("hasAuthority('MENU_DELETE')")
