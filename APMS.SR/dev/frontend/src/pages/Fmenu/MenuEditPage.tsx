@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { useAuth } from "../../auth/hooks/useAuth";
+import { usePermissions } from "../../auth/hooks/usePermissions";
+
 import { useMenu } from "../../queries/useMenu";
 import { useMenuMutations } from "../../mutations/useMenuMutations";
 
@@ -8,6 +11,11 @@ import FullPageSpinner from "../../components/loading/FullPageSpinner";
 import styles from "./menu.module.css";
 
 export default function MenuEditPage() {
+  const { user } = useAuth();
+  const { hasPermission } = usePermissions(user);
+
+  const canUpdate = hasPermission("MENU_UPDATE");
+  
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -18,7 +26,10 @@ export default function MenuEditPage() {
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
-
+  
+  if (authLoading) return <FullPageSpinner />;
+  if (!canRead) return <div>🚫 권한 없음</div>;
+  
   useEffect(() => {
     if (menu) {
       setName(menu.name);
