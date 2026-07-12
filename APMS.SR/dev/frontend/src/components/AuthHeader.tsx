@@ -12,7 +12,7 @@ export default function AuthHeader(){
         <Link className="underline" to="/login"> Login </Link>
         <Link className="underline" to="/signup"> Sign up </Link>
 
-        <Link className="underline" style={{ marginLeft: "auto" }} to="/" > Main </Link>
+        <Link className="underline" to="/" > Main </Link>
        </div>
      </div>
    </header>
