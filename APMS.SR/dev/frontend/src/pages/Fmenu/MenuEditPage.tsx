@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { usePermissions } from "../../auth/hooks/usePermissions";
 
-import { useMenus } from "../../queries/useMenus";
+import { useMenu } from "../../queries/useMenu";
 import { useMenuMutations } from "../../mutations/useMenuMutations";
 
 import FullPageSpinner from "../../components/loading/FullPageSpinner";
