@@ -10,6 +10,6 @@ export function useMenu(id: number) {
   return useQuery({
     queryKey: ["menu", id],
     queryFn: () => menuApi.getMenu(id),
-    enabled: !!token && !!id,
+    enabled: !!token && Number.isInteger(id),
   });
 }
