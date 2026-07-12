@@ -50,7 +50,7 @@ export default function App() {
             <Route path="/monitor" element={<Monitor />} />
             <Route path="/menu" element={<MenuPage />} />
 			{/* 메뉴의 id가 필요하기 때문에 보통 URL parameter 방식 */}
-			<Route path="/menu/:id/edit" element={<MenuEditPage />} />
+			<Route path="/admin/menu/:id/edit" element={<MenuEditPage />} />
 			  
             <Route path="/permission" element={<PermissionPage />} />
             <Route path="/Admin" element={<UserAdminPage />} />
