@@ -14,19 +14,17 @@ export default function MenuPage() {
   const { user, isLoading: authLoading } = useAuth();
   const { hasPermission } = usePermissions(user);
 
-  const { createMenu, deleteMenu } = useMenuMutations();
+  const { createMenu, updateMenu, deleteMenu } = useMenuMutations();
 
   const { data: menus = [] } = useMenus(); // ✅ 핵심 수정
 
   const canRead = hasPermission("MENU_READ");
   const canCreate = hasPermission("MENU_CREATE");
-  //const canUpdate = hasPermission("");            // MENU_UPDATE
+  const canUpdate = hasPermission("MENU_UPDATE");
   const canDelete = hasPermission("MENU_DELETE");
     
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
-
-  const [deletingId, setDeletingId] = useState<number | null>(null); // (선택 개선)
 
   if (authLoading) return <FullPageSpinner />;
   if (!canRead) return <div>🚫 권한 없음</div>;
@@ -47,9 +45,10 @@ export default function MenuPage() {
 
           <button 
             className={`${styles.button} ${styles.danger}`}
+            onClick={() => createMenu.mutate({ name, price })}
             disabled={createMenu.isPending}
           >
-            {createMenu.isPending ? "Creating..." : "Create"}
+            {createMenu.isPending ? "작성중..." : "작성"}
           </button>
         </div>
       )}
@@ -69,25 +68,24 @@ export default function MenuPage() {
           
           <div className={styles.actionCell}>
             
+            
+            {canUpdate && (
             <button className={`${styles.button} ${styles.danger}`}
-              onClick={() => createMenu.mutate({ name, price })}
-              disabled={deletingId === menu.id}
+              onClick={() => navigate(`/admin/menus/${menu.id}/edit`)}
             >
-              Update
+              수정
             </button>
-   
+             )
             
           {canDelete && (
             <button className={`${styles.actionBtn} ${styles.danger}`}
               onClick={() => {
-                setDeletingId(menu.id);
                 deleteMenu.mutate(menu.id, {
                   onSettled: () => setDeletingId(null),
                 });
               }}
-              disabled={deletingId === menu.id}
-            >
-              Delete
+            >  
+              삭제
             </button>
             )}
           </div>
