@@ -56,7 +56,7 @@ export default function Header() {
     
         </div>
         
-        <button className="menuButton main" 
+        <button className="menuButton cain" 
           onClick={() => setMenuOpen(!menuOpen)} > [LIST] </button>
         
       {/* 메인 메뉴       #@ menuButton 은 header.css 에서 설정 */}
