@@ -96,6 +96,10 @@
     gap:24px;
 }
 
+.main {
+  margin-left: auto;
+}
+
 @media (max-width: 768px) {
 
 .headerInner{
@@ -124,10 +128,6 @@
 .auth{
     display: flex;
     flex:1;
-}
-    
-.main {
-  margin-left: auto;
 }
     
 }
