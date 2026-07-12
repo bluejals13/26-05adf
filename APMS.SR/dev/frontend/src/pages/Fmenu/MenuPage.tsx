@@ -75,7 +75,7 @@ export default function MenuPage() {
             >
               수정
             </button>
-             )
+             )}
             
           {canDelete && (
             <button className={`${styles.actionBtn} ${styles.danger}`}
