@@ -13,7 +13,7 @@ export const menuApi = {
     http.post("/api/admin/menus", data),
   
   updateMenu: (id: number, data: MenuRequest) =>
-    http.patch("/api/admin/menus/${id}", data),
+    http.patch(`/api/admin/menus/${id}`, data),
 
   deleteMenu: (id: number) =>
     http.delete(`/api/admin/menus/${id}`),
