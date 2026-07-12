@@ -96,7 +96,7 @@
     gap:24px;
 }
 
-.main {
+.cain {
   margin-left: auto;
 }
 
@@ -129,5 +129,10 @@
     display: flex;
     flex:1;
 }
+    
+.cain {
+  margin-left: auto;
+}
+
     
 }
