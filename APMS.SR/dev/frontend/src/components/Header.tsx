@@ -44,7 +44,7 @@ export default function Header() {
                 variant="danger"
                 onClick={handleLogout}
               >
-                Logout
+                로그아웃
               </Button>
             </>
           ) : (
@@ -77,10 +77,10 @@ export default function Header() {
         
       </nav>
         
-      <button className="menuButton" 
-        onClick={() => setMenuOpen(!menuOpen)} > [LIST] </button>
         
     </div>
+      <button className="menuButton" 
+        onClick={() => setMenuOpen(!menuOpen)} > [LIST] </button>
     </header>
   );
 }
