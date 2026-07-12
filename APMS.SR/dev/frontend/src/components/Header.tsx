@@ -56,6 +56,8 @@ export default function Header() {
     
         </div>
         
+        <button className="menuButton ml-auto" 
+          onClick={() => setMenuOpen(!menuOpen)} > [LIST] </button>
         
       {/* 메인 메뉴       #@ menuButton 은 header.css 에서 설정 */}
       <nav className={`mainNav ${menuOpen ? "open" : ""}`}>
@@ -77,8 +79,6 @@ export default function Header() {
         
         </nav>
         
-        <button className="menuButton ml-auto" 
-          onClick={() => setMenuOpen(!menuOpen)} > [LIST] </button>
       </div>
     </header>
   );
