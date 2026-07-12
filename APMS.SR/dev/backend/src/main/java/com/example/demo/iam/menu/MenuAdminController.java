@@ -37,7 +37,7 @@ public class MenuAdminController {
     }
 
     @PreAuthorize("hasAuthority('MENU_UPDATE')")
-    @GetMapping("/{id}")
+    @PatchMapping("/{id}")
     public void updateMenu(
         @PathVariable Long id,
         @RequestBody MenuRequest request
