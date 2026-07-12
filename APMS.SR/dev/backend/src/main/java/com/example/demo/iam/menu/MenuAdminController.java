@@ -22,6 +22,13 @@ public class MenuAdminController {
     public List<MenuResponse> getMenus() {
         return menuAdminService.getMenus();
     }
+    @PreAuthorize("hasAuthority('MENU_READ')")
+    @GetMapping("/{id}")
+    public MenuResponse getMenu(
+            @PathVariable Long id
+    ) {
+        return menuAdminService.getMenu(id);
+    }
 
     @PreAuthorize("hasAuthority('MENU_CREATE')")
     @PostMapping
