@@ -51,12 +51,13 @@ public class MenuAdminService {
         menuRepository.save(menu);
     }
 
-    public void updateMenu(Long id, MenuRequest request) {
+    public void updateMenu(Long id) {
         Menu menu = menuRepository.findById(id)
                 .orElseThrow(() ->
                         new IllegalArgumentException("메뉴를 찾을 수 없습니다."));
 
         menu.update(
+                menu.getId(),
                 request.name(),
                 request.price()
         );
