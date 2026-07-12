@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { useMenus } from "../../queries/useMenus";
 import { useMenuMutations } from "../../mutations/useMenuMutations";
 import { useAuth } from "../../auth/hooks/useAuth";
@@ -14,7 +16,7 @@ export default function MenuPage() {
   const { user, isLoading: authLoading } = useAuth();
   const { hasPermission } = usePermissions(user);
 
-  const { createMenu, updateMenu, deleteMenu } = useMenuMutations();
+  const { createMenu, deleteMenu } = useMenuMutations();  // 현 .tsx 에서 수정메뉴 요청 안함
 
   const { data: menus = [] } = useMenus(); // ✅ 핵심 수정
 
@@ -22,7 +24,9 @@ export default function MenuPage() {
   const canCreate = hasPermission("MENU_CREATE");
   const canUpdate = hasPermission("MENU_UPDATE");
   const canDelete = hasPermission("MENU_DELETE");
-    
+  
+  const navigate = useNavigate();
+  
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
 
@@ -57,7 +61,7 @@ export default function MenuPage() {
         <div>ID</div>
         <div>Name</div>
         <div>Price</div>
-        {canDelete && <div>Action</div>}
+        {(canUpdate || canDelete) && <div>Action</div>}
       </div>
 
       {menus.map((menu: Menu) => (
@@ -80,9 +84,7 @@ export default function MenuPage() {
           {canDelete && (
             <button className={`${styles.actionBtn} ${styles.danger}`}
               onClick={() => {
-                deleteMenu.mutate(menu.id, {
-                  onSettled: () => setDeletingId(null),
-                });
+                deleteMenu.mutate(menu.id);
               }}
             >  
               삭제
