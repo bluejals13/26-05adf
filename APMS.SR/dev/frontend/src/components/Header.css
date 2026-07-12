@@ -122,6 +122,7 @@
 }
 
 .auth{
+    display: flex;
     flex:1;
 }
 
