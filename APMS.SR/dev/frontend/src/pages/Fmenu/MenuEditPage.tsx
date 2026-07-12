@@ -27,8 +27,6 @@ export default function MenuEditPage() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   
-  if (authLoading) return <FullPageSpinner />;
-  if (!canUpdate) return <div>🚫 권한 없음</div>;
   
   useEffect(() => {
     if (menu) {
@@ -36,8 +34,11 @@ export default function MenuEditPage() {
       setPrice(menu.price);
     }
   }, [menu]);
+  
 
-  if (isLoading) return <FullPageSpinner />;
+  if (authLoading) return <FullPageSpinner />;
+  if (!canUpdate) return <div>🚫 권한 없음</div>;
+  
 
   return (
     <div className={styles.page}>
