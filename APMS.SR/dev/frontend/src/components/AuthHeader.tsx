@@ -12,7 +12,7 @@ export default function AuthHeader(){
         <Link className="underline" to="/login"> Login </Link>
         <Link className="underline" to="/signup"> Sign up </Link>
 
-        <Link className="underline main" to="/" > Main </Link>
+        <Link className="underline cain" to="/" > Main </Link>
        </div>
      </div>
    </header>
