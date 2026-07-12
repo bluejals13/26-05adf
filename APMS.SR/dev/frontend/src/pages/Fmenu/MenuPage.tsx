@@ -75,7 +75,7 @@ export default function MenuPage() {
             
             {canUpdate && (
             <button className={`${styles.button} ${styles.danger}`}
-              onClick={() => navigate(`/admin/menus/${menu.id}/edit`)}
+              onClick={() => navigate(`/admin/menu/${menu.id}/edit`)}
             >
               수정
             </button>
