@@ -60,7 +60,7 @@ export default function MenuEditPage() {
               { onSuccess: () => { navigate("/menu");
               } } ); } }
           
-          disabled={updateMenu.isPending}
+          disabled={!menu || updateMenu.isPending}
           >
           
           {updateMenu.isPending ? "수정중..." : "저장"}
