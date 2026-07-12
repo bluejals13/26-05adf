@@ -32,7 +32,8 @@ public class MenuAdminController {
     @PreAuthorize("hasAuthority('MENU_UPDATE')")
     @GetMapping("/{id}")
     public MenuResponse getMenu(
-            @PathVariable Long id
+        @PathVariable Long id,
+        @RequestBody MenuRequest request
     ) {
         return menuAdminService.getMenu(id);
     }
