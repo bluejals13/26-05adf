@@ -15,6 +15,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Monitor from "./pages/Monitor";
 
+import MenuEditPage from "./pages/Fmenu/MenuEditPage";
 import MenuPage from "./pages/Fmenu/MenuPage";
 import PermissionPage from "./pages/Fpermi/PermissionPage";
 import UserAdminPage from "./pages/FUsAd/UserAdminPage";
@@ -48,6 +49,7 @@ export default function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/monitor" element={<Monitor />} />
             <Route path="/menu" element={<MenuPage />} />
+			<Route path="/menu/:id/edit" element={<MenuEditPage />} />
             <Route path="/permission" element={<PermissionPage />} />
             <Route path="/Admin" element={<UserAdminPage />} />
 			<Route path="/Role" element={<RolePage />} />
