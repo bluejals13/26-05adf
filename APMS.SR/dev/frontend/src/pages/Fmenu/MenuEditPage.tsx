@@ -36,7 +36,7 @@ export default function MenuEditPage() {
   }, [menu]);
   
 
-  if (authLoading) return <FullPageSpinner />;
+  if (authLoading || isLoading) return <FullPageSpinner />;
   if (!canUpdate) return <div>🚫 권한 없음</div>;
   
 
