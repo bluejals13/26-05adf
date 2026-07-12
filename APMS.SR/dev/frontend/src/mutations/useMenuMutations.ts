@@ -2,6 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { menuApi } from "../api/menu.api";
+
 import type { MenuRequest } from "../auth/auth.types";
 
 export function useMenuMutations() {
@@ -19,7 +20,10 @@ export function useMenuMutations() {
 
   const updateMenu = useMutation({
     mutationFn: ({id,data} : {id: number; data: MenuRequest; }) => menuApi.updateMenu(id, data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["menus"] }),
+    onSuccess: (_, variables) => {
+      qc.invalidateQueries({ queryKey: ["menus"] });
+      qc.invalidateQueries({ queryKey: ["menu", variables.id] });
+      }
   });
 
   return { createMenu, deleteMenu, updateMenu };
