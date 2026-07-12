@@ -18,6 +18,7 @@ public class MenuAdminService {
 
     private final MenuRepository menuRepository;
     
+    @Transactional(readOnly = true)
     public MenuResponse getMenu(Long id) {
         Menu menu = menuRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("메뉴를 찾을 수 없습니다."));
