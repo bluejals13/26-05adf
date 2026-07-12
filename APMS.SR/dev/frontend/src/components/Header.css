@@ -97,10 +97,17 @@
 }
 
 .headerone{
-    display:flex;
+    flex-wrap:wrap;
     padding:14px 20px;
 
     gap:24px;
+}
+
+.buth{
+    display: flex;
+    gap:12px;
+    cursor: pointer;
+    transition:.25s;
 }
 
 .cain {
