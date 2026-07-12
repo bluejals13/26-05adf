@@ -58,7 +58,7 @@ export default function Header() {
         
         
       {/* 메인 메뉴       #@ menuButton 은 header.css 에서 설정 */}
-      <nav className={`mainNav flex items-center gap-4 ${menuOpen ? "open" : ""}`}>
+      <nav className={`mainNav ${menuOpen ? "open" : ""}`}>
           
         {isLoggedIn && (
           <>
@@ -74,11 +74,11 @@ export default function Header() {
         <Link className="underline" to="/about">About</Link>
         <Link className="underline" to="/">Main</Link>
           
-        <button className="menuButton ml-auto" 
-          onClick={() => setMenuOpen(!menuOpen)} > [LIST] </button>
+        
         </nav>
         
-        
+        <button className="menuButton ml-auto" 
+          onClick={() => setMenuOpen(!menuOpen)} > [LIST] </button>
       </div>
     </header>
   );
