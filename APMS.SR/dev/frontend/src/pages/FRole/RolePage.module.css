@@ -46,8 +46,8 @@
 
 /* BUTTON (primary match user admin vibe) */
 .button {
-  height: 36px;
-  padding: 0 10px;
+  padding: 1px 4px;
+  font-size: 24px;
   background: rgba(88, 166, 255, 0.12);
   color: #58a6ff;
   border: 1px solid rgba(88, 166, 255, 0.3);
@@ -108,7 +108,7 @@
 
 /* DELETE BUTTON (match danger style from user admin) */
 .actionBtn {
-  padding: 6px 8px;
+  padding: 1px 4px;
   border-radius: 8px;
   font-size: 16px;
   border: 1px solid rgba(248, 81, 73, 0.3);
@@ -163,9 +163,14 @@
     transform: none;
   }
 
+  .button {
+  padding: 1px 2px;
+  font-size: 12px;
+  }
+  
   /* delete button compact */
   .actionBtn {
-    padding: 2px 2px;
+    padding: 1px 2px;
     font-size: 10px;
     border-radius: 6px;
   }
