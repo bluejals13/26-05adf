@@ -83,7 +83,7 @@ export default function RolePage() {
             className={styles.button}
             onClick={createRole}
           >
-            Create
+            생성
           </button>
         ) : (
           <>
@@ -91,7 +91,7 @@ export default function RolePage() {
               className={styles.button}
               onClick={updateRole}
             >
-              Save
+              저장
             </button>
 
             <button
@@ -104,7 +104,7 @@ export default function RolePage() {
                 });
               }}
             >
-              Cancel
+              취소
             </button>
           </>
         )}
@@ -139,14 +139,14 @@ export default function RolePage() {
                 });
               }}
             >
-              Edit
+              수정
             </button>
 
             <button
               className={styles.actionBtn}
               onClick={() => removeRole.mutate(role.id)}
             >
-              Delete
+              삭제
             </button>
           </div>
         </div>
