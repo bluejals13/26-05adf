@@ -65,7 +65,7 @@
 .tableHeader,
 .tableRow {
   display: grid;
-  grid-template-columns: 40px 1fr 80px 200px;
+  grid-template-columns: 95px 385px 65px 150px
   align-items: center;
   padding: 2px 4px;
   border-radius: 10px;
