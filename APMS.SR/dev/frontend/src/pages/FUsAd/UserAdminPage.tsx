@@ -135,7 +135,7 @@ export default function UserAdminPage() {
             <div key={u.id} className={styles.pendingRow}>
             	<div>{u.id}</div>
             	<div>{u.username}</div>
-
+				<div>차단사유</div>
 	    		<div className={styles.actions}>
               		<button className={`${styles.button} ${styles.primaryBtn}`}
                 		onClick={() =>
