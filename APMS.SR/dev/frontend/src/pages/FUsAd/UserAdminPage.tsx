@@ -127,7 +127,7 @@ export default function UserAdminPage() {
       </div>
 
       {/* DELETE PENDING */}
-      { canDelete && ( pendingUsers.length > 0 && (
+      { ( canDelete &&  pendingUsers.length > 0 ) && (
         <>
           <h2 className={styles.sectionTitle}>[차단된 계정들]</h2>
 
@@ -142,10 +142,7 @@ export default function UserAdminPage() {
 				  {canDelete && (
               		<button className={`${styles.button} ${styles.primaryBtn}`}
                 		onClick={() =>
-                  		changeStatus.mutate({
-                    		id: u.id,
-		                    status: "ACTIVE",
-                  		})
+                  		changeStatus.mutate({ id: u.id, status: "ACTIVE" })
                 	  }
               	    >
                       [복구:활성]
@@ -165,7 +162,7 @@ export default function UserAdminPage() {
         </div>
           )}
         </>
-      ) ) }
+      ) }
     </div>
   );
 }
