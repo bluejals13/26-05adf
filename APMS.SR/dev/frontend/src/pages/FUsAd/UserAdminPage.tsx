@@ -76,9 +76,9 @@ export default function UserAdminPage() {
       <div className={styles.table}>
         <div className={styles.header}>
           <div>ID</div>
-          <div>Username</div>
-          <div>Status</div>
-          <div className={styles.center}>Action</div>
+          <div>사용자</div>
+          <div>상태</div>
+          <div className={styles.center}>관리</div>
 		  <div className={styles.center}>삭제</div>
         </div>
 
@@ -118,7 +118,7 @@ export default function UserAdminPage() {
                       })
                     }
                   >
-                    삭제대기
+                    차단
                   </button>
 			  )}
               </div>
@@ -129,7 +129,7 @@ export default function UserAdminPage() {
       {/* DELETE PENDING */}
       {pendingUsers.length > 0 && (
         <>
-          <h2 className={styles.sectionTitle}>삭제 대기열</h2>
+          <h2 className={styles.sectionTitle}>[차단 계정]</h2>
 
           {pendingUsers.map((u) => (
             <div key={u.id} className={styles.pendingRow}>
@@ -145,14 +145,14 @@ export default function UserAdminPage() {
                   		})
                 	}
               	>
-                [복구:active]
+                [복구>활성]
               </button>
 
               <button
                 className={`${styles.button} ${styles.dangerBtn}`}
                 onClick={() => deleteUser.mutate(u.id)}
               >
-                영구삭제
+                제거
               </button>
             </div>
         </div>
