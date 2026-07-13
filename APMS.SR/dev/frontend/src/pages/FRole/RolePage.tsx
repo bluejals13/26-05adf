@@ -112,9 +112,9 @@ export default function RolePage() {
 
       <div className={styles.tableHeader}>
         <div>ID</div>
-        <div>Name</div>
-        <div>Description</div>
-        <div>Actions</div>
+        <div>권한</div>
+        <div>설명</div>
+        <div>관리</div>
       </div>
 
       {roles.map((role) => (
