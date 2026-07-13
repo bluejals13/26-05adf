@@ -241,7 +241,7 @@
   padding:12px 14px;
   margin-bottom:10px;
   border-radius:10px;
-  grid-template-columns: 80px 160px;
+  grid-template-columns: 30px 40px 50px 50px 80px 80px;
    
   background:#161b22;
   border:1px solid #f85149;
@@ -282,6 +282,21 @@
 
 }
 
+.pendingRow {
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:4px;
+
+  padding:4px 4px;
+  margin-bottom:10px;
+  border-radius:10px;
+  grid-template-columns: 30px 40px 50px 50px 80px 80px;
+   
+  background:#161b22;
+  border:1px solid #f85149;
+}
 
 
 .row > div:nth-child(1){
