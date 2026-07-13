@@ -148,7 +148,7 @@ export default function UserAdminPage() {
                   		})
                 	  }
               	    >
-                      [복구>활성]
+                      [복구:활성]
                     </button>
 			      )}
 					
