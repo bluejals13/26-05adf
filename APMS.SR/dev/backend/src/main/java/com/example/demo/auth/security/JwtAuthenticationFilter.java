@@ -30,7 +30,9 @@ import io.jsonwebtoken.Claims;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;    // 기본 로거 호출용
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -93,7 +95,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
-            
+            //log.error("userId=" + userId);
             System.out.println("userId=" + userId);
                 
             // 7. 권한 조회
@@ -111,6 +113,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             
                 
             SecurityContextHolder.getContext().setAuthentication(auth);
+            //log.error("AUTH = " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
             System.out.println("AUTH = " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
                 
             filterChain.doFilter(request, response);
