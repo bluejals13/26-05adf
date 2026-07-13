@@ -139,6 +139,7 @@ export default function UserAdminPage() {
 				<div>차단기간</div>
 				<div>기간만료 이후</div>
 	    		<div className={styles.actions}>
+					
 				  {canDelete && (
               		<button className={`${styles.button} ${styles.primaryBtn}`}
                 		onClick={() =>
@@ -160,7 +161,7 @@ export default function UserAdminPage() {
 				  )}
             </div>
         </div>
-          )}
+          ))}
         </>
       ) }
     </div>
