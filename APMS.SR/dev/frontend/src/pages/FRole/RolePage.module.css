@@ -103,7 +103,7 @@
 .actionCell {
   display: flex;
   justify-content: flex-start;
-  gap: 8px;
+  gap: 4px;
 }
 
 /* DELETE BUTTON (match danger style from user admin) */
@@ -142,7 +142,7 @@
 
   .input,
   .button {
-    width: 100%;
+    min-width: 10vh;
   }
 
   /* TABLE */
