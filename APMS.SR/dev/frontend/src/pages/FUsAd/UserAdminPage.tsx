@@ -79,7 +79,7 @@ export default function UserAdminPage() {
           <div>사용자</div>
           <div>상태</div>
           <div className={styles.center}>관리</div>
-		  <div className={styles.center}>삭제</div>
+		  <div className={styles.center}>차단</div>
         </div>
 
         {activeUsers.map((u) => (
@@ -127,38 +127,45 @@ export default function UserAdminPage() {
       </div>
 
       {/* DELETE PENDING */}
-      {pendingUsers.length > 0 && (
+      { canDelete && ( pendingUsers.length > 0 && (
         <>
-          <h2 className={styles.sectionTitle}>[차단 계정]</h2>
+          <h2 className={styles.sectionTitle}>[차단된 계정들]</h2>
 
           {pendingUsers.map((u) => (
             <div key={u.id} className={styles.pendingRow}>
             	<div>{u.id}</div>
             	<div>{u.username}</div>
 				<div>차단사유</div>
+				<div>차단기간</div>
+				<div>기간만료 이후</div>
 	    		<div className={styles.actions}>
+				  {canDelete && (
               		<button className={`${styles.button} ${styles.primaryBtn}`}
                 		onClick={() =>
                   		changeStatus.mutate({
                     		id: u.id,
 		                    status: "ACTIVE",
                   		})
-                	}
-              	>
-                [복구>활성]
-              </button>
-
-              <button
-                className={`${styles.button} ${styles.dangerBtn}`}
-                onClick={() => deleteUser.mutate(u.id)}
-              >
-                제거
-              </button>
+                	  }
+              	    >
+                      [복구>활성]
+                    </button>
+			      )}
+					
+					
+			      {canDelete && (
+              		<button
+                		className={`${styles.button} ${styles.dangerBtn}`}
+                		onClick={() => deleteUser.mutate(u.id)}
+              		>
+                	  제거
+              		</button>
+				  )}
             </div>
         </div>
-          ))}
+          )}
         </>
-      )}
+      ) ) }
     </div>
   );
 }
