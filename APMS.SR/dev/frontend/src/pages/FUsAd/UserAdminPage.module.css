@@ -3,7 +3,7 @@
 ===================== */
 
 .container {
-  padding: 24px;
+  padding: 12px;
   min-height: 100vh;
   background: #0d1117;
   color: #c9d1d9;
@@ -13,7 +13,7 @@
 .title {
   font-size: 24px;
   font-weight: 600;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   color: #e6edf3;
 }
 
@@ -66,13 +66,7 @@
 .row {
   display: grid;
 
-  grid-template-columns:
-    80px
-    minmax(0, 2fr)
-    100px
-    160px
-    100px;
-
+  grid-template-columns: 80px minmax(0, 2fr) 100px 160px 100px;
   align-items: center;
 
   padding: 8px;
@@ -261,23 +255,30 @@
 
 @media(max-width:768px){
 
+.container {
+  padding: 8px;
+}
+
 
 .header {
-  display:none;
+   grid-template-columns: 30px 40px 50px 80px 80px;
+   
+   font-size: 16px;
+   gap: 6px;
+   padding: 4px;
+   
+   display: grid;
 }
 
 
 .row {
 
-  grid-template-columns:
-    1fr 1fr 1fr;
-
-  grid-template-areas:
-    "id name status"
-    "actions actions delete";
-
+  grid-template-columns: 30px 40px 50px 80px 80px;
+  grid-template-areas: "id name status actions delete";
+  
+  font-size: 16px;
   gap:6px;
-  padding:12px;
+  padding:4px;
 
 }
 
