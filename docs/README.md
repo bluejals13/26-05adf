@@ -55,12 +55,12 @@ docs/
 
 | Directory | Purpose |
 |------------|----------|
-| [architecture/](/architecture/README.md) | 현재 시스템 구조와 요청 흐름 |
-| [reference/](/reference/README.md) | 현재 정책 및 운영 기준 |
-| [adr/](/adr/README.md) | 설계 의사결정(ADR) |
-| [troubleshooting/](/troubleshooting/README.md) | 장애 및 해결 과정 |
-| [roadmap/](/roadmap/README.md) | 향후 개선 계획 |
-| [conventions/](/conventions/README.md) | 문서 작성 규칙 |
+| [architecture/](docs/architecture/README.md) | 현재 시스템 구조와 요청 흐름 |
+| [reference/](docs/reference/README.md) | 현재 정책 및 운영 기준 |
+| [adr/](docs/adr/README.md) | 설계 의사결정(ADR) |
+| [troubleshooting/](docs/troubleshooting/README.md) | 장애 및 해결 과정 |
+| [roadmap/](docs/roadmap/README.md) | 향후 개선 계획 |
+| [conventions/](docs/conventions/README.md) | 문서 작성 규칙 |
 
 ---
 
