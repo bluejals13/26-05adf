@@ -2,25 +2,27 @@
 
 import { Navigate, Outlet } from "react-router-dom";
 import FullPageSpinner from "./loading/FullPageSpinner";
-import { useMe } from "../queries/useMe";
+import { useAuth } from "../auth/hooks/useAuth";
 import { usePermissions } from "../auth/hooks/usePermissions";
+
 
 interface ProtectedRouteProps {
   permission?: string;
 }
 
-export default function AdminRoute({
+export default function ProtectedRoute({
   permission,
 }: ProtectedRouteProps) {
-  const { data: me, isLoading } = useMe();
+  const { user, isLoading } = useAuth();
+  const { hasPermission } = usePermissions(user);
 
   if (isLoading) return <FullPageSpinner />;
 
-  if (!me) {
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  if (permission && !me.permissions?.includes(permission)) {
+  if (permission && !hasPermission(permission)) {
     return <Navigate to="/403" replace />;
   }
 
