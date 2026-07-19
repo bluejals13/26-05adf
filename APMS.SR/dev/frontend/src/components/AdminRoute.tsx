@@ -10,7 +10,7 @@ interface ProtectedRouteProps {
   permission?: string;
 }
 
-export default function ProtectedRoute({
+export default function AdminRoute({
   permission,
 }: ProtectedRouteProps) {
   const { user, isLoading } = useAuth();
