@@ -55,12 +55,12 @@ docs/
 
 | Directory | Purpose |
 |------------|----------|
-| [README.md](docs/architecture/README.md) | 현재 시스템 구조와 요청 흐름 |
-| [README.md](docs/reference/README.md) | 현재 정책 및 운영 기준 |
-| [README.md](docs/adr/README.md) | 설계 의사결정(ADR) |
-| [README.md](docs/troubleshooting/README.md) | 장애 및 해결 과정 |
-| [README.md](docs/roadmap/README.md) | 향후 개선 계획 |
-| [README.md](docs/conventions/README.md) | 문서 작성 규칙 |
+| [docs/](https://github.com/bluejals13/26-05adf/blob/main/docs/README.md) | 현재 시스템 구조와 요청 흐름 |
+| [reference/](https://github.com/bluejals13/26-05adf/blob/main/docs/reference/README.md) | 현재 정책 및 운영 기준 |
+| [adr/](https://github.com/bluejals13/26-05adf/blob/main/docs/adr/README.md) | 설계 의사결정(ADR) |
+| [troubleshooting/](https://github.com/bluejals13/26-05adf/blob/main/docs/troubleshooting/README.md) | 장애 및 해결 과정 |
+| [roadmap/](https://github.com/bluejals13/26-05adf/blob/main/docs/roadmap/README.md) | 향후 개선 계획 |
+| [conventions/](https://github.com/bluejals13/26-05adf/blob/main/docs/conventions/README.md) | 문서 작성 규칙 |
 
 ---
 
