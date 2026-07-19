@@ -4,6 +4,7 @@ import Layout from "./layout/Layout";
 import AuthLayout from "./layout/AuthLayout";
 
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
 
 import Main from "./pages/FMa/Main";
 import Home from "./pages/Home";
@@ -50,11 +51,18 @@ export default function App() {
             <Route path="/monitor" element={<Monitor />} />
             <Route path="/menu" element={<MenuPage />} />
 			{/* 메뉴의 id가 필요하기 때문에 보통 URL parameter 방식 */}
-			<Route path="/admin/menu/:id/edit" element={<MenuEditPage />} />
-			  
-            <Route path="/permission" element={<PermissionPage />} />
-            <Route path="/Admin" element={<UserAdminPage />} />
-			<Route path="/Role" element={<RolePage />} />
+			<Route element={<AdminRoute permission="MENU_READ" />}>
+				<Route path="/admin/menu/:id/edit" element={<MenuEditPage />} />
+			</Route>  
+			<Route element={<AdminRoute permission="PERMISSION_READ" />}>
+            	<Route path="/permission" element={<PermissionPage />} />
+            </Route>  
+			<Route element={<AdminRoute permission="USER_READ" />}>
+				<Route path="/Admin" element={<UserAdminPage />} />
+			</Route>
+			<Route element={<AdminRoute permission="ROLE_READ" />}>
+				<Route path="/Role" element={<RolePage />} />
+			</Route>
 	  </Route> </Route>
 
         {/* Layout 있는 영역 */}
