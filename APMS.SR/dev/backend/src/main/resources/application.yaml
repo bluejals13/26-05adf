@@ -15,9 +15,11 @@ jwt:
 
 jpa:
   hibernate:
-    ddl-auto: update
-  show-sql: true
-
+    ddl-auto: validate
+    
+  flyway:
+    enabled: true
+    
 management:
   endpoints:
     web:
