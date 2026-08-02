@@ -23,7 +23,7 @@ APMS.SR은 **Spring Security 기반 JWT Stateless 인증 구조**를 적용하�
 
 # 2. 전체 인증 구조 (Architecture Overview) 머메이드
 
-```md
+```mermaid
 gitGraph
     %% 기본 설정 (옵션)
     config:
