@@ -1,11 +1,4 @@
 
-
-```mermaid
-graph LR
-    A --> B
-```
-
-
 # APMS (Application Permission Management System)
 
 ## 프로젝트 소개
