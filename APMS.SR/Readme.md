@@ -1,3 +1,11 @@
+
+
+```mermaid
+flowchart LR
+    A[Client] --> B[Server]
+```
+
+
 # APMS (Application Permission Management System)
 
 ## 프로젝트 소개
