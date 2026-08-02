@@ -25,57 +25,37 @@ APMS.SR은 **Spring Security 기반 JWT Stateless 인증 구조**를 적용하�
 
 ```mermaid
 flowchart TD
-
     Client[Client]
 
     subgraph Authentication
-
         LoginFilter[UsernamePasswordAuthenticationFilter]
-
         AuthManager[AuthenticationManager]
-
         Provider[AuthenticationProvider]
-
         UserDetails[UserDetailsService]
-
-        UserDB[(User DB)]
-
+        UserDB[("User DB")]
         PasswordEncoder[BCrypt PasswordEncoder]
 
         Client --> LoginFilter
-
         LoginFilter --> AuthManager
-
         AuthManager --> Provider
-
         Provider --> UserDetails
-
         UserDetails --> UserDB
-
         Provider --> PasswordEncoder
-
     end
 
     subgraph Token
-
         TokenService[JWT Provider]
-
         Access[Access Token]
-
         Refresh[Refresh Token]
-
-        Redis[(Redis)]
+        Redis[("Redis")]
 
         Provider --> TokenService
-
         TokenService --> Access
-
         TokenService --> Refresh
-
         Refresh --> Redis
-
     end
 ```
+
 
 
 
@@ -238,34 +218,25 @@ Client 응답
 
 ```mermaid
 sequenceDiagram
-
 participant Client
 participant API
 participant JWT
 participant Redis
 
 Client->>API: Refresh Token 요청
-
 API->>JWT: JWT 검증
-
 JWT-->>API: userId + jti
-
 API->>Redis: 저장된 jti 조회
-
 Redis-->>API: stored jti
 
 alt Token 일치
-
 API->>Redis: 새로운 jti 저장
-
-API-->>Client: 새 Access Token\n새 Refresh Token
-
+API-->>Client: 새 Access Token, 새 Refresh Token
 else Token 불일치
-
 API-->>Client: 401 Unauthorized
-
 end
 ```
+
 
 
 
