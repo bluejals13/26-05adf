@@ -2,11 +2,6 @@
 
 # Production-Inspired Full-Stack DevOps Platform
 
-```mermaid
-flowchart LR
-    A --> B
-```
-
 
 ## 1. Overview
 
