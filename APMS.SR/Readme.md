@@ -1,8 +1,8 @@
 
 
 ```mermaid
-flowchart LR
-    A[Client] --> B[Server]
+graph LR
+    A --> B
 ```
 
 
