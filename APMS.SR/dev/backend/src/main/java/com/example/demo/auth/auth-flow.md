@@ -217,26 +217,27 @@ Client 응답
 
 # 8. Refresh 재발급 흐름 머메이드
 
-```md
+```mermaid
 sequenceDiagram
-participant Client
-participant API
-participant JWT
-participant Redis
+    participant Client
+    participant API
+    participant JWT
+    participant Redis
 
-Client->>API: Refresh Token 요청
-API->>JWT: JWT 검증
-JWT-->>API: userId + jti
-API->>Redis: 저장된 jti 조회
-Redis-->>API: stored jti
+    Client->>API: Refresh Token 요청
+    API->>JWT: JWT 검증
+    JWT-->>API: userId + jti
+    API->>Redis: 저장된 jti 조회
+    Redis-->>API: stored jti
 
-alt Token 일치
-API->>Redis: 새로운 jti 저장
-API-->>Client: 새 Access Token, 새 Refresh Token
-else Token 불일치
-API-->>Client: 401 Unauthorized
-end
+    alt Token 일치
+        API->>Redis: 새로운 jti 저장
+        API-->>Client: 새 Access Token, 새 Refresh Token
+    else Token 불일치
+        API-->>Client: 401 Unauthorized
+    end
 ```
+
 
 
 
