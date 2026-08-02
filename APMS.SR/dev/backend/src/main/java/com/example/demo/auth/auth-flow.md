@@ -21,9 +21,9 @@ APMS.SR은 **Spring Security 기반 JWT Stateless 인증 구조**를 적용하�
 
 
 
-# 2. 전체 인증 구조 (Architecture Overview)
+# 2. 전체 인증 구조 (Architecture Overview) 머메이드
 
-```mermaid
+```md
 flowchart TD
     Client[Client]
 
@@ -214,9 +214,9 @@ Client 응답
 
 
 
-# 8. Refresh 재발급 흐름
+# 8. Refresh 재발급 흐름 머메이드
 
-```mermaid
+```md
 sequenceDiagram
 participant Client
 participant API
