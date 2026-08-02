@@ -20,7 +20,7 @@ APMS.SR은 **Spring Security 기반 JWT Stateless 인증 구조**를 적용하�
 | 비밀번호 보호             | BCrypt PasswordEncoder |
 
 
-![Refresh Flow](https://mermaid.ink)
+
 
 # 2. 전체 인증 구조 (Architecture Overview) 머메이드
 
@@ -58,7 +58,10 @@ flowchart TD
 ```
 
 
-
+```mermaid
+flowchart LR
+    A[Client] --> B[Server]
+```
 
 
 # 3. 로그인 인증 흐름
@@ -185,27 +188,19 @@ Redis를 사용하는 이유
 # 7. Refresh Token Rotation
 
 ```text
-Refresh Token A
+Refresh Token A 사용
+        ↓
+새 Token B 발급
+        ↓
+Redis A 삭제
+        ↓
+B 저장
 
-↓
-
-검증 성공
-
-↓
-
-기존 Refresh Token 폐기
-
-↓
-
-새 Refresh Token B 생성
-
-↓
-
-Redis 갱신
-
-↓
-
-Client 응답
+만약 A 재사용 요청 발생
+        ↓
+Refresh Token 탈취 판단
+        ↓
+해당 user Refresh Token 전체 폐기
 ```
 
 ## Rotation 목적
