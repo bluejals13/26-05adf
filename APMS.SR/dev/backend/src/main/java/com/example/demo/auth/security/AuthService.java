@@ -94,8 +94,8 @@ public class AuthService {
         
         //String newredisSession = jwtProvider.createRefreshToken(userId);
         //String newJti = jwtProvider.parseClaims(newredisSession).getId();
-        
-        //if (!"refresh".equals(claims.get("type"))) { throw new BadCredentialsException("INVALID_REFRESH_TOKEN"); }
+        String tokenType = claims.get("type", String.class);
+        if (!"refresh".equals(tokenType)) { throw new BadCredentialsException("INVALID_REFRESH_TOKEN"); }
         
         
         //Long userId = Long.parseLong(claims.getSubject());
