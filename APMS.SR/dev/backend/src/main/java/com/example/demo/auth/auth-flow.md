@@ -24,36 +24,41 @@ APMS.SR은 **Spring Security 기반 JWT Stateless 인증 구조**를 적용하�
 # 2. 전체 인증 구조 (Architecture Overview) 머메이드
 
 ```md
-flowchart TD
-    Client[Client]
-
-    subgraph Authentication
-        LoginFilter[UsernamePasswordAuthenticationFilter]
-        AuthManager[AuthenticationManager]
-        Provider[AuthenticationProvider]
-        UserDetails[UserDetailsService]
-        UserDB[("User DB")]
-        PasswordEncoder[BCrypt PasswordEncoder]
-
-        Client --> LoginFilter
-        LoginFilter --> AuthManager
-        AuthManager --> Provider
-        Provider --> UserDetails
-        UserDetails --> UserDB
-        Provider --> PasswordEncoder
+gitGraph
+    %% 기본 설정 (옵션)
+    config:
+        {"mainBranchName": "Authentication"}
     end
+    
+    %% Authentication 브랜치 흐름
+    commit id: "Client_Request"
+    commit id: "UsernamePasswordAuthenticationFilter"
+    commit id: "AuthenticationManager"
+    commit id: "AuthenticationProvider"
+    
+    %% 별도 컴포넌트 검증 흐름을 브랜치로 표현
+    branch UserDetailsService
+    checkout UserDetailsService
+    commit id: "User_DB_Query"
+    
+    checkout Authentication
+    merge UserDetailsService id: "User_Found"
+    
+    branch BCrypt_PasswordEncoder
+    checkout BCrypt_PasswordEncoder
+    commit id: "Password_Match_Check"
+    
+    checkout Authentication
+    merge BCrypt_PasswordEncoder id: "Auth_Success"
+    
+    %% Token 생성 흐름으로 전환
+    branch Token_Generation
+    checkout Token_Generation
+    commit id: "JWT_Provider_Call"
+    commit id: "Access_Token_Created"
+    commit id: "Refresh_Token_Created"
+    commit id: "Redis_Storage_Saved"
 
-    subgraph Token
-        TokenService[JWT Provider]
-        Access[Access Token]
-        Refresh[Refresh Token]
-        Redis[("Redis")]
-
-        Provider --> TokenService
-        TokenService --> Access
-        TokenService --> Refresh
-        Refresh --> Redis
-    end
 ```
 
 
