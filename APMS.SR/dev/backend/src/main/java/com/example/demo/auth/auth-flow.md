@@ -20,6 +20,7 @@ APMS.SR은 **Spring Security 기반 JWT Stateless 인증 구조**를 적용하�
 | 비밀번호 보호             | BCrypt PasswordEncoder |
 
 
+![Refresh Flow](https://mermaid.ink)
 
 # 2. 전체 인증 구조 (Architecture Overview) 머메이드
 
