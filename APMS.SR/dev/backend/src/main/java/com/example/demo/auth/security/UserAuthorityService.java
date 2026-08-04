@@ -18,10 +18,10 @@ public class UserAuthorityService {
 
     public List<GrantedAuthority> getAuthorities(Long userId) {
 
-        User user = userRepository.findWithRolesAndPermissionsById(userId)
+        User user = userRepository.findWithRolesAndPermissionsById(userId)    //여기서 UserStatus.ACTIVE 검증 시 즉시 모든 요청 차단
                 .orElseThrow();
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
+        Set<GrantedAuthority> authorities = new ArrayList<>();
 
         user.getRoles().forEach(r ->
                 authorities.add(new SimpleGrantedAuthority("ROLE_" + r.getName()))
