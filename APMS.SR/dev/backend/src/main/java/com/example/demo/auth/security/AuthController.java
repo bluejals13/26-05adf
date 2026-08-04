@@ -4,56 +4,51 @@ import com.example.demo.iam.user.dto.LoginRequest;
 import com.example.demo.iam.user.dto.LoginResult;
 import com.example.demo.iam.user.dto.TokenResponse;
 
-import com.example.demo.auth.security.AuthService;
-import com.example.demo.auth.security.CustomUserPrincipal;
-
-import com.example.demo.auth.jwt.JwtProvider;
-
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
     
     private final AuthService authService;
-    private final JwtProvider jwtProvider;
     
     
+
+
     @PostMapping("/login")
     public ResponseEntity<LoginResult> login(
             @RequestBody LoginRequest req,
             HttpServletResponse response
     ) {
-
+        
         LoginResult result = authService.login(req);
 
-        Cookie cookie = new Cookie("refreshToken", result.refreshToken());
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(60 * 60 * 24 * 7);
-        
-        
-        System.out.println("LOGIN ==================== ");        
-        
-        response.addCookie(cookie);
-        System.out.println("accessToken = " + result.accessToken());
-        System.out.println("refreshToken = " + result.refreshToken());
-        
+        response.addCookie(
+                createRefreshCookie(result.refreshToken())
+        );
+
         return ResponseEntity.ok(
-                new LoginResult(result.accessToken(), "Bearer", result.refreshToken())
+                new LoginResult(
+                        result.accessToken(),
+                        result.grantType(),
+                        null
+                )
         );
     }
+    
+    
+    
+    
 
     @PostMapping("/refresh")
     public ResponseEntity<TokenResponse> refresh(
@@ -61,25 +56,24 @@ public class AuthController {
             HttpServletResponse response
     ) {
 
-        String accessToken = extractAccessToken(request);
-        String refreshToken = extractRefreshToken(request);
-        
-        TokenResponse token = authService.refresh(refreshToken);
+        TokenResponse token =
+                authService.refresh(
+                        extractRefreshToken(request)
+                );
 
-        Cookie cookie = new Cookie("refreshToken", token.refreshToken());
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(60 * 60 * 24 * 7);
+        response.addCookie(
+                createRefreshCookie(token.refreshToken())
+        );
         
-        System.out.println("REFRESH ==================== ");        
-        
-        response.addCookie(cookie);
-        System.out.println("accessToken = " + token.accessToken());
-        System.out.println("refreshToken = " + token.refreshToken());
+        //나중에 slf4j 로그 추가 할 곳
 
         return ResponseEntity.ok(token);
     }
+    
+    
+    
+    
+    
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
@@ -87,45 +81,56 @@ public class AuthController {
             HttpServletResponse response
 ) {
 
-    String accessToken = extractAccessToken(request);
-    String refreshToken = extractRefreshToken(request);  
-    
-    authService.logout(accessToken);
-        
-    // refresh token cookie 삭제
-    Cookie cookie = new Cookie("refreshToken", refreshToken);
-    cookie.setHttpOnly(true);
-    cookie.setSecure(true);
-    cookie.setPath("/");
-    cookie.setMaxAge(0);
-        
-    //if (refreshToken != null) { try { userId = Long.parseLong(jwtProvider.parseClaims(refreshToken).getSubject());
-        //} catch (Exception ignored) {}
-    //}
-        
-    System.out.println("LOGOUT ==================== ");
-    
-    System.out.println("accessToken = " + accessToken);
-    
-    response.addCookie(cookie);
+        authService.logout(
+                extractAccessToken(request)
+        );
 
-    return ResponseEntity.noContent().build();
+        Cookie cookie = new Cookie("refreshToken", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+
+        response.addCookie(cookie);
+
+        return ResponseEntity.noContent().build();
 }
+    
+    
+    
+    
+    private Cookie createRefreshCookie(String token) {
 
+        Cookie cookie = new Cookie( "refreshToken", token );
+
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(60 * 60 * 24 * 7);
+
+        return cookie;
+    }
+    
+    
+    
     private String extractRefreshToken(HttpServletRequest request) {
-        if (request.getCookies() == null) return null;
 
-        for (Cookie c : request.getCookies()) {
-            if ("refreshToken".equals(c.getName())) {
-                return c.getValue();
-            }
+        if (request.getCookies() == null) { return null; }
+
+        for (Cookie cookie : request.getCookies()) {
+            if ("refreshToken".equals(cookie.getName())) { return cookie.getValue(); }
         }
+
         return null;
     }
+    
+    
+    
 
     private String extractAccessToken(HttpServletRequest request) {
+
         String header = request.getHeader("Authorization");
-        return (header != null && header.startsWith("Bearer "))
+        return header != null && header.startsWith("Bearer ")
                 ? header.substring(7)
                 : null;
     }
