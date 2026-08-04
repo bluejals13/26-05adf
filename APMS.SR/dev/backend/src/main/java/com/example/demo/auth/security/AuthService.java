@@ -1,143 +1,251 @@
-package com.example.demo.auth.security;
-
 import com.example.demo.auth.jwt.JwtProvider;
-import com.example.demo.auth.security.TokenBlacklistService;
-
 import com.example.demo.iam.user.domain.User;
+import com.example.demo.iam.user.domain.UserStatus;
 import com.example.demo.iam.user.dto.LoginRequest;
 import com.example.demo.iam.user.dto.LoginResult;
 import com.example.demo.iam.user.dto.TokenResponse;
-import com.example.demo.iam.user.domain.UserStatus;
-
 import com.example.demo.iam.user.repository.UserRepository;
 
-import com.example.demo.common.exception.DuplicateUserException;
-
 import io.jsonwebtoken.Claims;
-
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
 
+    private static final Duration REFRESH_TOKEN_TTL =
+            Duration.ofDays(7);
+
     private final JwtProvider jwtProvider;
-    private final RedisTemplate<String, String> redisTemplate;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private final RefreshTokenRepository refreshTokenRepository;
     private final TokenBlacklistService blacklistService;
 
-    private static final String ACCESS_KEY = "auth:access:";
-    private static final String REFRESH_KEY = "auth:refresh:";
 
-    @Transactional
-    public LoginResult login(LoginRequest req) {    // 로그인
-        
-        User user = userRepository.findByUsername(req.username())
-                .orElseThrow(() -> new BadCredentialsException("INVALID_CREDENTIALS"));
+    @Transactional(readOnly = true)
+    public LoginResult login(LoginRequest request) {
 
-        if (!passwordEncoder.matches(req.password(), user.getPassword())) {    // 비번 매치 예외처리
-            throw new BadCredentialsException("INVALID_CREDENTIALS");
-        }
-        if (user.getStatus() != UserStatus.ACTIVE) {        //
-            throw new BadCredentialsException("User not active");
-        }
-        
-        // 1. sessionId 생성 (refresh 역할)
-        //String sessionId = UUID.randomUUID().toString();
-        
-        String accessToken = jwtProvider.createAccessToken(user.getId(), user.getUsername());
-        String refreshToken = jwtProvider.createRefreshToken(user.getId());
-        
-        //String currentJti = redisTemplate.opsForValue().get(REFRESH_KEY + user.getId());    // redis 에서 리프레시 , 유저 확인
-        
-        String jti = jwtProvider.parseClaims(refreshToken).getId();
-        
-        // 2. Redis 저장 (단일 source of truth)
-        redisTemplate.opsForValue().set(
-                REFRESH_KEY + user.getId(),
-                jti,    // 랜덤 uuid 적용
-                Duration.ofDays(7)
+        User user = findActiveUser(
+                request.username(),
+                request.password()
         );
-        
-        
-        return new LoginResult(accessToken, "Bearer", refreshToken);
+
+        String accessToken = createAccessToken(user);
+        String refreshToken = createRefreshToken(user);
+
+        saveRefreshToken(user.getId(), refreshToken);
+
+        return new LoginResult(
+                accessToken,
+                "Bearer",
+                refreshToken
+        );
     }
 
-    public TokenResponse refresh(String refreshToken) {    // redis 로테 리프레시
-        
-        Claims claims = jwtProvider.parseClaims(refreshToken);
-        
-        Long userId = Long.parseLong(claims.getSubject());
-        String jti = claims.getId();
-        
-        //if (blacklistService.isBlacklisted(refreshToken)) { throw new BadCredentialsException("블랙리스트 토큰"); }        
+    
+
+    public TokenResponse refresh(String refreshToken) {
+
+        Claims claims = parseTokenClaims(
+                refreshToken,
+                "refresh"
+        );
+
+        Long userId = Long.parseLong(
+                claims.getSubject()
+        );
+
+        String oldJti = claims.getId();
+
+        if (oldJti == null || oldJti.isBlank()) {    //Jti null,
+            throw new BadCredentialsException(
+                    "INVALID_REFRESH_TOKEN"
+            );
+        }
+
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new BadCredentialsException("INVALID_CREDENTIALS"));
-        
-        if ((user.getStatus() != UserStatus.ACTIVE) && (user.getStatus() != UserStatus.SUSPENDED)) {
-            throw new BadCredentialsException("거부된 세션"); }
-        
-        String storedJti  = redisTemplate.opsForValue().get(REFRESH_KEY + userId);    // redis 리프레시 토큰
-        
-        if (storedJti  == null || !storedJti.equals(jti)) {
-            throw new BadCredentialsException("거부된 세션"); }                
-        
-        //String newredisSession = jwtProvider.createRefreshToken(userId);
-        //String newJti = jwtProvider.parseClaims(newredisSession).getId();
-        String tokenType = claims.get("type", String.class);
-        if (!"refresh".equals(tokenType)) { throw new BadCredentialsException("INVALID_REFRESH_TOKEN"); }
-        
-        
-        //Long userId = Long.parseLong(claims.getSubject());
-        
-        //User user = userRepository.findById(userId).orElseThrow();
-        
-        // rotation (atomic이 더 좋음)
-        
-        String newRefreshToken = jwtProvider.createRefreshToken(userId);
-        String newJti = jwtProvider.parseClaims(newRefreshToken).getId();
-        
-        redisTemplate.opsForValue().set(
-                REFRESH_KEY + userId,
-                newJti,    // 랜덤 uuid 적용
-                Duration.ofDays(7)
+                .orElseThrow(() ->
+                        new BadCredentialsException(
+                                "INVALID_CREDENTIALS"
+                        )
+                );
+
+        validateUserStatus(user);
+
+        String newRefreshToken =
+                createRefreshToken(user);
+
+        String newJti =
+                extractJti(newRefreshToken);
+
+        boolean rotated =
+                refreshTokenRepository.rotate(
+                        userId,
+                        oldJti,
+                        newJti,
+                        REFRESH_TOKEN_TTL
+                );
+
+        if (!rotated) {    
+            throw new BadCredentialsException(        //!rotated,
+                    "INVALID_OR_REUSED_REFRESH_TOKEN"
+            );
+        }
+
+        return new TokenResponse(
+                createAccessToken(user),
+                newRefreshToken
         );
-        
-        String userName = userRepository.findById(userId)
-            .orElseThrow()
-            .getUsername();
-        
-        String newAccessToken = jwtProvider.createAccessToken(userId, userName);
-        
-        return new TokenResponse(newAccessToken, newRefreshToken);
+    }
+    
+
+
+    public void logout(String accessToken) {
+
+        if (accessToken == null || accessToken.isBlank()) {
+            return;
+        }
+
+        Claims claims = parseTokenClaims(
+                accessToken,
+                "access"
+        );
+
+        Long userId =
+                Long.parseLong(claims.getSubject());
+
+        String jti = claims.getId();
+
+        long remainingMillis =
+                claims.getExpiration().getTime()
+                        - System.currentTimeMillis();
+
+        if (jti != null && remainingMillis > 0) {        //jti null,
+            blacklistService.blacklist(
+                    jti,
+                    remainingMillis
+            );
+        }
+
+        refreshTokenRepository.delete(userId);
+    }
+    
+
+
+    private Claims parseTokenClaims(    // Claims
+            String token,
+            String expectedType
+    ) {
+
+        Claims claims =
+                jwtProvider.parseClaims(token);
+
+        String type =
+                claims.get("type", String.class);
+
+        if (!expectedType.equals(type)) {    // 동등 타입으로 확인
+
+            throw new BadCredentialsException(
+                    "INVALID_TOKEN"
+            );
+        }
+
+        return claims;
     }
 
-    public void logout(String accessToken) {    // 로그아웃
-        if (accessToken != null) {
-            Claims claims = jwtProvider.parseClaims(accessToken);
-            Long userId = Long.parseLong(claims.getSubject());
-            String jti = claims.getId();
-            long expirationMillis = claims.getExpiration().getTime() - System.currentTimeMillis();
-            blacklistService.blacklist(jti, expirationMillis);
-            redisTemplate.delete(REFRESH_KEY + userId);
+
+    private void validateUserStatus(User user) {
+
+        if (user.getStatus() != UserStatus.ACTIVE) {    // 권한 ACTIVE 검증
+
+            throw new BadCredentialsException(
+                    "ACCOUNT_DISABLED"
+            );
         }
-        
-        //if (refreshToken != null) {
-            //Claims claims = jwtProvider.parseClaims(refreshToken);
-            //Long userId = Long.parseLong(claims.getSubject());
-        
-            //redisTemplate.delete(REFRESH_KEY + userId);
-        // Redis 세션 삭제 = 즉시 로그아웃
-        
+    }
+
+
+    private String extractJti(String token) {        // 유효한 리프레시 가능 Jti 검증,
+
+        Claims claims =
+                jwtProvider.parseClaims(token);
+
+        String jti = claims.getId();
+
+        if (jti == null || jti.isBlank()) {
+
+            throw new BadCredentialsException(
+                    "INVALID_REFRESH_TOKEN"
+            );
+        }
+
+        return jti;
+    }
+
+
+    private void saveRefreshToken(    // 리프레시토큰 저장 / Jti 따로 저장
+            Long userId,
+            String refreshToken
+    ) {
+
+        refreshTokenRepository.save(
+                userId,
+                extractJti(refreshToken),
+                REFRESH_TOKEN_TTL
+        );
+    }
+
+
+    private String createAccessToken(User user) {    // 접근 토큰 생성
+
+        return jwtProvider.createAccessToken(
+                user.getId(),
+                user.getUsername()
+        );
+    }
+
+
+    private String createRefreshToken(User user) {    // 리프레시 토큰 생성
+
+        return jwtProvider.createRefreshToken(
+                user.getId()
+        );
+    }
+
+
+    private User findActiveUser(        // 해당 계정 JPA 요청
+            String username,
+            String password
+    ) {
+
+        User user =
+                userRepository.findByUsername(username)
+                        .orElseThrow(() ->
+                                new BadCredentialsException(
+                                        "INVALID_CREDENTIALS"
+                                )
+                        );
+
+        if (!passwordEncoder.matches(       // 비번 오류
+                password,
+                user.getPassword()
+        )) {
+            throw new BadCredentialsException(
+                    "INVALID_CREDENTIALS"
+            );
+        }
+
+        validateUserStatus(user);
+
+        return user;
     }
 }
