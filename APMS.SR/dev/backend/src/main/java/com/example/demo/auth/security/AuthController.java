@@ -105,6 +105,12 @@ public class AuthController {
     
     
     private Cookie createRefreshCookie(String token) {
+        
+        if (token == null || token.isBlank()) {        // 리프레시 토큰 Null,
+            throw new IllegalArgumentException(
+                "Refresh token is empty"
+            );
+        }
 
         Cookie cookie = new Cookie( "refreshToken", token );
 
