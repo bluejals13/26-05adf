@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -87,7 +88,7 @@ public class AuthController {
 
         Cookie cookie = new Cookie("refreshToken", null);
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
+        cookie.setSecure(true);        // 개발:false , 운영:true
         cookie.setPath("/");
         cookie.setMaxAge(0);
 
@@ -104,7 +105,7 @@ public class AuthController {
         Cookie cookie = new Cookie( "refreshToken", token );
 
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
+        cookie.setSecure(true);        // 개발:false , 운영:true
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60 * 24 * 7);
 
@@ -115,13 +116,13 @@ public class AuthController {
     
     private String extractRefreshToken(HttpServletRequest request) {
 
-        if (request.getCookies() == null) { return null; }
+        if (request.getCookies() == null) { throw new BadCredentialsException("REFRESH_TOKEN_NOT_FOUND"); }
 
         for (Cookie cookie : request.getCookies()) {
             if ("refreshToken".equals(cookie.getName())) { return cookie.getValue(); }
         }
 
-        return null;
+        throw new BadCredentialsException("REFRESH_TOKEN_NOT_FOUND");
     }
     
     
