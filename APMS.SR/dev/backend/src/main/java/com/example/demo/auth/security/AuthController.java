@@ -68,7 +68,11 @@ public class AuthController {
         
         //나중에 slf4j 로그 추가 할 곳
 
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(
+            new TokenResponse(        // dto 로 은닉 할 것,
+                token.accessToken(),
+                null
+        ));
     }
     
     
