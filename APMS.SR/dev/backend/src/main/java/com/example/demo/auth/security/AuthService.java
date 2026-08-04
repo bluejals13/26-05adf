@@ -79,7 +79,7 @@ public class AuthService {
                         )
                 );
 
-        validateUserStatus(user);
+        checkAccountActive(user);
 
         String newRefreshToken =
                 createRefreshToken(user);
@@ -163,13 +163,11 @@ public class AuthService {
     }
 
 
-    private void validateUserStatus(User user) {
+    private void checkAccountActive(User user) {
 
-        if (user.getStatus() != UserStatus.ACTIVE) {    // 권한 ACTIVE 검증
+        if (user.getStatus() != UserStatus.ACTIVE) {    // 권한 ACTIVE 검증 DisabledException
 
-            throw new BadCredentialsException(
-                    "ACCOUNT_DISABLED"
-            );
+            throw new DisabledException("ACCOUNT_DISABLED");
         }
     }
 
@@ -244,7 +242,7 @@ public class AuthService {
             );
         }
 
-        validateUserStatus(user);
+        checkAccountActive(user);
 
         return user;
     }
