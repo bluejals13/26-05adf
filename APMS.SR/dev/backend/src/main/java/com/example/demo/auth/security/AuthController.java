@@ -32,7 +32,7 @@ public class AuthController {
             HttpServletResponse response
     ) {
         
-        LoginResponse result = authService.login(req);
+        LoginResult result = authService.login(req);
 
         response.addCookie(
                 createRefreshCookie(result.refreshToken())
@@ -56,7 +56,7 @@ public class AuthController {
             HttpServletResponse response
     ) {
 
-        LoginResponse token =
+        LoginResult token =
                 authService.refresh(
                         extractRefreshToken(request)
                 );
@@ -69,7 +69,8 @@ public class AuthController {
 
         return ResponseEntity.ok(
             new LoginResponse(        // dto 로 은닉 할 것,
-                token.accessToken()
+                token.accessToken(),
+                token.grantType()
         ));
     }
     
