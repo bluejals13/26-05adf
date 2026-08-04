@@ -27,22 +27,21 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResult> login(
+    public ResponseEntity<LoginResponse> login(
             @RequestBody LoginRequest req,
             HttpServletResponse response
     ) {
         
-        LoginResult result = authService.login(req);
+        LoginResponse result = authService.login(req);
 
         response.addCookie(
                 createRefreshCookie(result.refreshToken())
         );
 
         return ResponseEntity.ok(
-                new LoginResult(
+                new LoginResponse(
                         result.accessToken(),
-                        result.grantType(),
-                        null
+                        result.grantType()
                 )
         );
     }
@@ -52,12 +51,12 @@ public class AuthController {
     
 
     @PostMapping("/refresh")
-    public ResponseEntity<TokenResponse> refresh(
+    public ResponseEntity<LoginResponse> refresh(
             HttpServletRequest request,
             HttpServletResponse response
     ) {
 
-        TokenResponse token =
+        LoginResponse token =
                 authService.refresh(
                         extractRefreshToken(request)
                 );
@@ -69,9 +68,8 @@ public class AuthController {
         //나중에 slf4j 로그 추가 할 곳
 
         return ResponseEntity.ok(
-            new TokenResponse(        // dto 로 은닉 할 것,
-                token.accessToken(),
-                null
+            new LoginResponse(        // dto 로 은닉 할 것,
+                token.accessToken()
         ));
     }
     
@@ -139,10 +137,13 @@ public class AuthController {
     
 
     private String extractAccessToken(HttpServletRequest request) {
-
+    
         String header = request.getHeader("Authorization");
-        return header != null && header.startsWith("Bearer ")
-                ? header.substring(7)
-                : null;
+    
+        if(header == null || !header.startsWith("Bearer ")) {
+            throw new BadCredentialsException("ACCESS_TOKEN_NOT_FOUND");
+        }
+        return header.substring(7);
     }
+    
 }
