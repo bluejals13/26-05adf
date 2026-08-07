@@ -3,7 +3,6 @@ package com.example.demo.auth.security;
 import com.example.demo.iam.user.dto.LoginResponse;
 import com.example.demo.iam.user.dto.LoginRequest;
 import com.example.demo.iam.user.dto.LoginResult;
-import com.example.demo.iam.user.dto.TokenResponse;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -57,7 +56,7 @@ public class AuthController {
             HttpServletResponse response
     ) {
 
-        TokenResponse token =
+        LoginResult token =
                 authService.refresh(
                         extractRefreshToken(request)
                 );
