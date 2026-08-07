@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = AuthController.class,
            excludeFilters = {
                       @ComponentScan.Filter(
-                                 type = FilterType.ASSIGABLE_TYPE,
+                                 type = FilterType.ASSIGNABLE_TYPE,
                                  classes = SecurityConfig.class
                       )
            }
