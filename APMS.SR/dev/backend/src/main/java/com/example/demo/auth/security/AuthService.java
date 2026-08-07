@@ -7,7 +7,7 @@ import com.example.demo.iam.user.domain.UserStatus;
 import com.example.demo.iam.user.dto.LoginRequest;
 import com.example.demo.iam.user.dto.LoginResult;
 import com.example.demo.iam.user.dto.LoginResponse;
-import com.example.demo.iam.user.dto.TokenResponse;
+
 import com.example.demo.iam.user.repository.UserRepository;
 
 import io.jsonwebtoken.Claims;
@@ -59,7 +59,7 @@ public class AuthService {
 
     
 
-    public TokenResponse refresh(String refreshToken) {
+    public LoginResult refresh(String refreshToken) {
 
         Claims claims = parseTokenClaims(
                 refreshToken,
@@ -107,8 +107,9 @@ public class AuthService {
             );
         }
 
-        return new TokenResponse(
+        return new LoginResult(
                 createAccessToken(user),
+                "Bearer",
                 newRefreshToken
         );
     }
