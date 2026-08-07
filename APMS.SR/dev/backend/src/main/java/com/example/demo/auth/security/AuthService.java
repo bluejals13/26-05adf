@@ -118,9 +118,7 @@ public class AuthService {
 
     public void logout(String accessToken) {
 
-        if (accessToken == null || accessToken.isBlank()) {
-            return;
-        }
+        //if (accessToken == null || accessToken.isBlank()) { return; }
 
         Claims claims = parseTokenClaims(
                 accessToken,
