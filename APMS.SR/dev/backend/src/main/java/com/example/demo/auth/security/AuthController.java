@@ -1,5 +1,6 @@
 package com.example.demo.auth.security;
 
+import com.example.demo.iam.user.dto.LoginResponse;
 import com.example.demo.iam.user.dto.LoginRequest;
 import com.example.demo.iam.user.dto.LoginResult;
 import com.example.demo.iam.user.dto.TokenResponse;
