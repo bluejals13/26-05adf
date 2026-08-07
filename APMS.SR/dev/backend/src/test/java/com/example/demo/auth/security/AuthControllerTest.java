@@ -61,9 +61,6 @@ class AuthControllerTest {
 
     @MockBean
     private JwtAuthenticationFilter jwtAuthenticationFilter;
-    
-    @MockBean
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @MockBean
     private RedisTemplate<String, String> redisTemplate;
