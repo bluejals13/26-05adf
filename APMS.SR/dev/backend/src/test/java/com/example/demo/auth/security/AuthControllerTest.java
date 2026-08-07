@@ -20,6 +20,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+
 import org.springframework.data.redis.core.RedisTemplate;
 
 import org.springframework.http.MediaType;
@@ -42,8 +45,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(controllers = AuthController.class,
-           excludeAutoConfiguration = {
-               SecurityAutoConfiguration.class})
+           excludeFilters = {
+                      @ComponentScan.Filter(
+                                 type = FilterType.ASSIGABLE_TYPE,
+                                 classes = SecurityConfig.class
+                      )
+           }
+)
 //@AutoConfigureMockMvc(addFilters = false)
 class AuthControllerTest {
 
