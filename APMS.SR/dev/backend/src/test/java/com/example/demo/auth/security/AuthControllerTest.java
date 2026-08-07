@@ -50,8 +50,22 @@ class AuthControllerTest {
     @MockBean
     private AuthService authService;
 
+    @MockBean
+    private JwtProvider jwtProvider;
 
+    @MockBean
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    
+    @MockBean
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    @MockBean
+    private RedisTemplate<String, String> redisTemplate;
+    
+    @MockBean
+    private UserRepository userRepository;
+
+    
     @Test
     @DisplayName(
             "로그인 성공 시 Access Token 반환 및 Refresh Token Cookie 저장"
