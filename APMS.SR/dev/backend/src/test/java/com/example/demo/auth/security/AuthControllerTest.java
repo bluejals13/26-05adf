@@ -48,20 +48,20 @@ class AuthControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-
     @Autowired
     private ObjectMapper objectMapper;
-
 
     @MockBean
     private AuthService authService;
 
     @MockBean
-    private JwtProvider jwtProvider;
-
-    @MockBean
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    
+    
+    @MockBean
+    private JwtProvider jwtProvider;
+    
     @MockBean
     private RedisTemplate<String, String> redisTemplate;
     
