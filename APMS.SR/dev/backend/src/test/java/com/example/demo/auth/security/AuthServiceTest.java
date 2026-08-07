@@ -277,7 +277,7 @@ class AuthServiceTest {
         );
 
         verifyNoInteractions(
-                redisTemplate
+                refreshTokenRepository
         );
     }
 
