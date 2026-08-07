@@ -59,7 +59,7 @@ public class AuthService {
 
     
 
-    public TokenResponse refresh(String refreshToken) {
+    public LoginResult refresh(String refreshToken) {
 
         Claims claims = parseTokenClaims(
                 refreshToken,
