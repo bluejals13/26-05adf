@@ -107,7 +107,7 @@ public class AuthService {
             );
         }
 
-        return new TokenResponse(
+        return new LoginResult(
                 createAccessToken(user),
                 newRefreshToken
         );
