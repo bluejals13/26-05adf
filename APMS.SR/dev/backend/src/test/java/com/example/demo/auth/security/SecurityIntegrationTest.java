@@ -57,6 +57,7 @@ class SecurityIntegrationTest {
     @Test
     @WithMockUser(
             username = "testuser"
+            roles = {"USER"}
     )
     @DisplayName(
             "인증된 사용자는 보호 API에 접근할 수 있다"
@@ -78,6 +79,7 @@ class SecurityIntegrationTest {
     @Test
     @WithMockUser(
             username = "testuser"
+            roles = {"ADMIN"}
     )
     @DisplayName(
             "현재 SecurityConfig에서는 인증된 사용자가 관리자 경로를 통과한다"
