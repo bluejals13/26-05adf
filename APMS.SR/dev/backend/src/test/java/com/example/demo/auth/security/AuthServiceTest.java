@@ -59,7 +59,7 @@ class AuthServiceTest {
 
 
     @Mock
-    private RedisTemplate<String, String> redisTemplate;
+    private RefreshTokenRepository refreshTokenRepository;
 
 
     @Mock
@@ -74,8 +74,6 @@ class AuthServiceTest {
     private TokenBlacklistService blacklistService;
 
 
-    @Mock
-    private ValueOperations<String, String> valueOperations;
 
 
     @Test
@@ -150,10 +148,7 @@ class AuthServiceTest {
                 "refresh-jti"
         );
 
-        given(
-                redisTemplate.opsForValue()
-        ).willReturn(
-                valueOperations
+        
         );
 
 
@@ -183,18 +178,12 @@ class AuthServiceTest {
 
 
         verify(
-                valueOperations
-        ).set(
-                eq(
-                        "auth:refresh:1"
-                ),
-                eq(
-                        "refresh-jti"
-                ),
-                eq(
-                        Duration.ofDays(7)
-                )
-        );
+                refreshTokenRepository
+        ).save(
+                1L,
+                "refresh-jti",
+                Duration.ofDays(7)
+                );
     }
 
 
