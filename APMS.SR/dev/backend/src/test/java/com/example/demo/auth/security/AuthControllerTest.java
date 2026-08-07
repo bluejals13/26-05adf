@@ -1,11 +1,11 @@
 package com.example.demo.auth.security;
 
-import com.example.demo.auth.jwt.JwtProvider;
+//import com.example.demo.auth.jwt.JwtProvider;
 
 import com.example.demo.iam.user.dto.LoginRequest;
 import com.example.demo.iam.user.dto.LoginResult;
 
-import com.example.demo.iam.user.repository.UserRepository;
+//import com.example.demo.iam.user.repository.UserRepository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -65,19 +65,19 @@ class AuthControllerTest {
     @MockBean
     private AuthService authService;
 
-    @MockBean
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    //@MockBean
+    //private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     
     
-    @MockBean
-    private JwtProvider jwtProvider;
+    //@MockBean
+    //private JwtProvider jwtProvider;
     
-    @MockBean
-    private RedisTemplate<String, String> redisTemplate;
+    //@MockBean
+    //private RedisTemplate<String, String> redisTemplate;
     
-    @MockBean
-    private UserRepository userRepository;
+    //@MockBean
+    //private UserRepository userRepository;
 
     
     @Test
