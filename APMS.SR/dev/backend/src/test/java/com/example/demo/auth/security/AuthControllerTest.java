@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@WebMvcTest(AuthController.class,
+@WebMvcTest(controllers = AuthController.class,
            excludeAutoConfiguration = {
                SecurityAutoConfiguration.class})
 //@AutoConfigureMockMvc(addFilters = false)
