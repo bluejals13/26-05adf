@@ -37,7 +37,7 @@ public class AuthService {
     private final TokenBlacklistService blacklistService;
 
 
-    @Transactional(readOnly = true)
+    @Transactional
     public LoginResult login(LoginRequest request) {
 
         User user = findActiveUser(
