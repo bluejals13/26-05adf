@@ -1,7 +1,11 @@
 package com.example.demo.auth.security;
 
+import com.example.demo.auth.jwt.JwtProvider;
+
 import com.example.demo.iam.user.dto.LoginRequest;
 import com.example.demo.iam.user.dto.LoginResult;
+
+import com.example.demo.iam.user.repository.UserRepository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -14,11 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-    
+
+import org.springframework.data.redis.core.RedisTemplate;
+
 import org.springframework.http.MediaType;
 
 import org.springframework.test.web.servlet.MockMvc;
-
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
