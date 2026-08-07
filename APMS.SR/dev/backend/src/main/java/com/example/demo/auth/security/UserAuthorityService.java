@@ -1,15 +1,18 @@
 package com.example.demo.auth.security;
 
 import com.example.demo.iam.user.domain.User;
+import com.example.demo.iam.user.domain.UserStatus;
 import com.example.demo.iam.user.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Set;
 
 @Service
@@ -20,21 +23,32 @@ public class UserAuthorityService {
 
     public List<GrantedAuthority> getAuthorities(Long userId) {
 
-        User user = userRepository.findWithRolesAndPermissionsById(userId)    //여기서 UserStatus.ACTIVE 검증 시 즉시 모든 요청 차단
-                .orElseThrow();
+        User user = userRepository.findWithRolesAndPermissionsById(userId)
+                .orElseThrow(() -> new BadCredentialsException("INVALID_CREDENTIALS"));
 
-        Set<GrantedAuthority> authorities = new ArrayList<>();
+        // 사용자 상태 검증
+        if (user.getStatus() != UserStatus.ACTIVE) {
+            throw new BadCredentialsException("USER_NOT_ACTIVE");
+        }
 
-        user.getRoles().forEach(r ->
-                authorities.add(new SimpleGrantedAuthority("ROLE_" + r.getName()))
-        );
+        Set<GrantedAuthority> authorities = new HashSet<>();
 
-        user.getRoles().forEach(r ->
-                r.getPermissions().forEach(p ->
-                        authorities.add(new SimpleGrantedAuthority(p.getName()))
+        // ROLE 추가
+        user.getRoles().forEach(role ->
+                authorities.add(
+                        new SimpleGrantedAuthority("ROLE_" + role.getName())
                 )
         );
 
-        return authorities;
+        // Permission 추가
+        user.getRoles().forEach(role ->
+                role.getPermissions().forEach(permission ->
+                        authorities.add(
+                                new SimpleGrantedAuthority(permission.getName())
+                        )
+                )
+        );
+
+        return List.copyOf(authorities);
     }
 }
