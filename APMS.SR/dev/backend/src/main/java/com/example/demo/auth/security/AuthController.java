@@ -57,7 +57,7 @@ public class AuthController {
             HttpServletResponse response
     ) {
 
-        LoginResult token =
+        TokenResponse token =
                 authService.refresh(
                         extractRefreshToken(request)
                 );
