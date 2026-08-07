@@ -56,7 +56,7 @@ class SecurityIntegrationTest {
 
     @Test
     @WithMockUser(
-            username = "testuser"
+            username = "testuser",
             roles = {"USER"}
     )
     @DisplayName(
@@ -78,7 +78,7 @@ class SecurityIntegrationTest {
 
     @Test
     @WithMockUser(
-            username = "testuser"
+            username = "testuser",
             roles = {"ADMIN"}
     )
     @DisplayName(
