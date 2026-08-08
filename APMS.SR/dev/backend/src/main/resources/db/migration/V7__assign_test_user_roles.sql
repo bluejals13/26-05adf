@@ -1,0 +1,1 @@
+V7__assign_test_user_roles.sql query
