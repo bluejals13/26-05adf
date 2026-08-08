@@ -1,3 +1,6 @@
+DELETE FROM user_roles;
+DELETE FROM users;
+
 INSERT INTO users (
     id,
     username,
