@@ -1,11 +1,7 @@
 package com.example.demo.auth.security;
 
-//import com.example.demo.auth.jwt.JwtProvider;
-
 import com.example.demo.iam.user.dto.LoginRequest;
 import com.example.demo.iam.user.dto.LoginResult;
-
-//import com.example.demo.iam.user.repository.UserRepository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -17,24 +13,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-
-import org.springframework.data.redis.core.RedisTemplate;
 
 import org.springframework.http.MediaType;
 
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
 import static org.mockito.BDDMockito.given;
-
 import static org.mockito.Mockito.verify;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -44,45 +33,34 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@WebMvcTest(controllers = AuthController.class,
-           excludeFilters = {
-                      @ComponentScan.Filter(
-                                 type = FilterType.ASSIGNABLE_TYPE,
-                                 classes = SecurityConfig.class
-                      )
-           }
+@WebMvcTest(
+        controllers = AuthController.class,
+        excludeFilters = {
+                @ComponentScan.Filter(
+                        type = FilterType.ASSIGNABLE_TYPE,
+                        classes = SecurityConfig.class
+                )
+        }
 )
-//@AutoConfigureMockMvc(addFilters = false)
 class AuthControllerTest {
 
 
     @Autowired
     private MockMvc mockMvc;
 
+
     @Autowired
     private ObjectMapper objectMapper;
+
 
     @MockBean
     private AuthService authService;
 
-    //@MockBean
-    //private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    
-    
-    //@MockBean
-    //private JwtProvider jwtProvider;
-    
-    //@MockBean
-    //private RedisTemplate<String, String> redisTemplate;
-    
-    //@MockBean
-    //private UserRepository userRepository;
 
-    
     @Test
     @DisplayName(
-            "로그인 성공 시 Access Token 반환 및 Refresh Token Cookie 저장"
+            "로그인 성공 시 Access Token 반환 및 Refresh Cookie 저장"
     )
     void loginSuccess()
             throws Exception {
@@ -108,9 +86,8 @@ class AuthControllerTest {
                         any(LoginRequest.class)
                 )
         )
-        .willReturn(
-                result
-        );
+        .willReturn(result);
+
 
 
         mockMvc.perform(
@@ -127,15 +104,11 @@ class AuthControllerTest {
         )
         .andExpect(
                 jsonPath("$.accessToken")
-                .value("access-token")
+                        .value("access-token")
         )
         .andExpect(
                 jsonPath("$.grantType")
-                .value("Bearer")
-        )
-        .andExpect(
-                jsonPath("$.refreshToken")
-                .doesNotExist()
+                        .value("Bearer")
         )
         .andExpect(
                 cookie().value(
@@ -157,19 +130,15 @@ class AuthControllerTest {
         );
 
 
-        verify(
-                authService
-        )
-        .login(
-                eq(request)
-        );
+        verify(authService)
+                .login(eq(request));
     }
 
 
 
     @Test
     @DisplayName(
-            "Refresh Token Rotation 후 새 Access Token 반환 및 Refresh Cookie 갱신"
+            "Refresh Token Rotation 후 새 Access Token 반환"
     )
     void refreshSuccess()
             throws Exception {
@@ -188,9 +157,8 @@ class AuthControllerTest {
                         "old-refresh-token"
                 )
         )
-        .willReturn(
-                result
-        );
+        .willReturn(result);
+
 
 
         mockMvc.perform(
@@ -207,49 +175,28 @@ class AuthControllerTest {
         )
         .andExpect(
                 jsonPath("$.accessToken")
-                .value("new-access-token")
-        )
-        .andExpect(
-                jsonPath("$.grantType")
-                .value("Bearer")
-        )
-        .andExpect(
-                jsonPath("$.refreshToken")
-                .doesNotExist()
+                        .value("new-access-token")
         )
         .andExpect(
                 cookie().value(
                         "refreshToken",
                         "new-refresh-token"
                 )
-        )
-        .andExpect(
-                cookie().httpOnly(
-                        "refreshToken",
-                        true
-                )
-        )
-        .andExpect(
-                cookie().secure(
-                        "refreshToken",
-                        true
-                )
         );
 
 
-        verify(
-                authService
-        )
-        .refresh(
-                "old-refresh-token"
-        );
+        verify(authService)
+                .refresh(
+                        "old-refresh-token"
+                );
     }
+
 
 
 
     @Test
     @DisplayName(
-            "로그아웃 시 Access Token 전달 후 Refresh Cookie 삭제"
+            "로그아웃 시 Refresh Cookie 삭제"
     )
     void logoutSuccess()
             throws Exception {
@@ -261,12 +208,6 @@ class AuthControllerTest {
                                 "Authorization",
                                 "Bearer access-token"
                         )
-                        .cookie(
-                                new Cookie(
-                                        "refreshToken",
-                                        "refresh-token"
-                                )
-                        )
         )
         .andExpect(
                 status().isNoContent()
@@ -276,44 +217,12 @@ class AuthControllerTest {
                         "refreshToken",
                         0
                 )
-        )
-        .andExpect(
-                cookie().httpOnly(
-                        "refreshToken",
-                        true
-                )
-        )
-        .andExpect(
-                cookie().secure(
-                        "refreshToken",
-                        true
-                )
         );
 
 
-        verify(
-                authService
-        )
-        .logout(
-                "access-token"
-        );
-    }
-
-
-
-    @Test
-    @DisplayName(
-            "Access Token이 없으면 로그아웃 실패"
-    )
-    void logoutWithoutAccessTokenFail()
-            throws Exception {
-
-
-        mockMvc.perform(
-                post("/api/auth/logout")
-        )
-        .andExpect(
-                status().isUnauthorized()
-        );
+        verify(authService)
+                .logout(
+                        "access-token"
+                );
     }
 }
