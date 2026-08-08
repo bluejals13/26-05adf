@@ -11,7 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,7 +31,15 @@ class SecurityIntegrationTest {
     @Autowired
     private JwtProvider jwtProvider;
 
-
+    @MockBean
+    private TokenBlacklistService tokenBlacklistService;
+    
+    @BeforeEach
+    void setUp() {
+        given(tokenBlacklistService.isBlacklisted(anyString()))
+                .willReturn(false);
+    }
+    
     @Test
     @DisplayName("인증되지 않은 사용자는 보호 API 접근 불가")
     void unauthenticatedUserCannotAccessProtectedApi()
