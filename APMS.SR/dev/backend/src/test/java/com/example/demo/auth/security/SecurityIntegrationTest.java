@@ -38,7 +38,8 @@ class SecurityIntegrationTest {
                 get("/api/users/me")
         )
         .andDo(print())
-        .andExpect(status().isOk());
+        .andExpect(status().isUnauthorized()
+        );
     }
 
 
