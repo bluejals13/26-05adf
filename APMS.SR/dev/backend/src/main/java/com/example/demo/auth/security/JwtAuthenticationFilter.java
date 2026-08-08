@@ -127,7 +127,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             System.out.println("AUTH = " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
              
             filterChain.doFilter(request, response);
-        } catch (Exception e) {                //너무 넓으니 나중에 세분화 예정
+        } catch (JwtException | IllegalArgumentException e) {                //너무 넓으니 나중에 세분화 예정
             // JWT 파싱/만료/변조 대비
             log.error("JWT authentication failed", e);
             //SecurityContextHolder.clearContext();
