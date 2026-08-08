@@ -56,7 +56,8 @@ class AuthControllerTest {
     @MockBean
     private AuthService authService;
 
-
+    @MockBean
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Test
     @DisplayName(
