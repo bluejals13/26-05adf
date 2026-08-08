@@ -53,53 +53,62 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String path = request.getServletPath(); 
         
+        //*---
+        System.out.println("========== JWT FILTER ==========");
+        System.out.println("PATH = " + path);
+        System.out.println("METHOD = " + request.getMethod());
+        //---*/
+        
         // 1. auth 제외
-        if (path.startsWith("/api/auth/")) {
+        if (path.startsWith("/api/auth/")) {    System.out.println("AUTH PATH -> SKIP");
             filterChain.doFilter(request, response);
             return;
         }
         
         // 2. OPTIONS 패스
-        if (request.getMethod().equals("OPTIONS")) {
+        if (request.getMethod().equals("OPTIONS")) {    System.out.println("OPTIONS -> SKIP");
             filterChain.doFilter(request, response);
             return;
         }
         
         // 3. Authorization 헤더 체크
         String header = request.getHeader("Authorization");
-        if (header == null || !header.startsWith("Bearer ")) {
+            System.out.println("AUTH HEADER = " + header);
+        if (header == null || !header.startsWith("Bearer ")) {    System.out.println("NO JWT -> CONTINUE");
             filterChain.doFilter(request, response);
             return;
         }
         String token = header.substring(7);     
         
-        if (token == null || token.isBlank()) {    // 3.5 토큰 null 시 회원가입 의 경우 
+        // 3.5 토큰 null 시 회원가입 의 경우
+        if (token == null || token.isBlank()) {     System.out.println("EMPTY JWT -> CONTINUE");
             filterChain.doFilter(request, response);
             return;
         }
         
-        try {       
+        try {       System.out.println("JWT VALIDATION START");
             // 4. JWT 검증 (먼저)
-            if (!jwtProvider.validateToken(token)) {
+            if (!jwtProvider.validateToken(token)) {    System.out.println("JWT INVALID");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
-                
+                System.out.println("JWT VALID");
             // 5. claims 파싱
             Claims claims = jwtProvider.parseClaims(token);
+                System.out.println("CLAIMS = " + claims);
             String jti = claims.getId();
             Long userId = Long.parseLong(claims.getSubject());
-                    
+                System.out.println("USER ID = " + userId);
+                System.out.println("JTI = " + jti);
             // 6. blacklist 체크
-            if (jti != null && tokenBlacklistService.isBlacklisted(jti)) {
+            if (jti != null && tokenBlacklistService.isBlacklisted(jti)) {    System.out.println("JWT BLACKLISTED");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
                 
             // 7. 권한 조회
             List<GrantedAuthority> authorities = userAuthorityService.getAuthorities(userId);
-            System.out.println("USER ID = " + userId);
-            System.out.println("AUTHORITIES = " + authorities);
+                System.out.println("AUTHORITIES = " + authorities);
             
             // 8. SecurityContext 세팅
             CustomUserPrincipal principal = new CustomUserPrincipal(userId);
@@ -114,8 +123,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 
             SecurityContextHolder.getContext().setAuthentication(auth);
             //log.error("AUTH = " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+            System.out.println("AUTH = " + SecurityContextHolder.getContext().getAuthentication());
             System.out.println("AUTH = " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-                
+             
             filterChain.doFilter(request, response);
         } catch (Exception e) {                //너무 넓으니 나중에 세분화 예정
             // JWT 파싱/만료/변조 대비
