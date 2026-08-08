@@ -109,7 +109,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // 9. 다음 필터로 진행
             filterChain.doFilter(request, response);
 
-        } catch (RedisUnavailableException e) {
+        } catch (RedisUnavailableException e) {     // Redis 장애 → 503
 
             /*
              * Redis 장애 시 blacklist 상태를 확인할 수 없으므로
@@ -122,12 +122,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.clearContext();
 
-            response.setStatus(
-                    HttpServletResponse.SC_SERVICE_UNAVAILABLE
-            );
+            response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             return;
 
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (JwtException | IllegalArgumentException e) {     // JWT 인증 실패 → 401
 
             // JWT 변조 / 만료 / 잘못된 형식 / subject 파싱 실패 등
             log.warn("Invalid JWT", e);
