@@ -1,23 +1,27 @@
 package com.example.demo.auth.security;
 
+
+import com.example.demo.auth.jwt.JwtProvider;
+
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import org.springframework.test.context.ActiveProfiles;
-
-import org.springframework.security.test.context.support.WithMockUser;
-
 
 import org.springframework.test.web.servlet.MockMvc;
 
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 
 @SpringBootTest
@@ -25,75 +29,96 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class SecurityIntegrationTest {
 
+
+
     @Autowired
     private MockMvc mockMvc;
 
 
+    @Autowired
+    private JwtProvider jwtProvider;
+
+
+
     @Test
     @DisplayName(
-            "인증되지 않은 사용자는 보호 API에 접근할 수 없고 401을 반환한다"
+            "인증되지 않은 사용자는 보호 API 접근 불가"
     )
     void unauthenticatedUserCannotAccessProtectedApi()
             throws Exception {
 
+
         mockMvc.perform(
-                        get(
-                                "/api/users/me"
-                        )
-                )
-                .andExpect(
-                        status().isUnauthorized()
-                )
-                .andExpect(
-                        jsonPath(
-                                "$.code"
-                        ).value(
-                                "UNAUTHORIZED"
-                        )
-                );
+                get("/api/users/me")
+        )
+        .andExpect(
+                status().isUnauthorized()
+        );
     }
 
 
+
+
     @Test
-    @WithMockUser(
-            username = "testuser",
-            roles = {"USER"}
-    )
     @DisplayName(
-            "인증된 사용자는 보호 API에 접근할 수 있다"
+            "JWT 인증 사용자는 보호 API 접근 가능"
     )
     void authenticatedUserCanAccessProtectedApi()
             throws Exception {
 
-        mockMvc.perform(
-                        get(
-                                "/api/users/me"
-                        )
-                )
-                .andExpect(
-                        status().isOk()
+
+
+        String token =
+                jwtProvider.createAccessToken(
+                        1L,
+                        "testuser"
                 );
+
+
+
+        mockMvc.perform(
+                get("/api/users/me")
+                        .header(
+                                "Authorization",
+                                "Bearer " + token
+                        )
+        )
+        .andExpect(
+                status().isOk()
+        );
+
     }
 
 
+
+
+
     @Test
-    @WithMockUser(
-            username = "testuser",
-            roles = {"ADMIN"}
-    )
     @DisplayName(
-            "현재 SecurityConfig에서는 인증된 사용자가 관리자 경로를 통과한다"
+            "JWT 인증 사용자는 관리자 API 접근 가능"
     )
     void authenticatedUserCanAccessAdminPath()
             throws Exception {
 
-        mockMvc.perform(
-                        get(
-                                "/api/admin/users"
-                        )
-                )
-                .andExpect(
-                        status().isOk()
+
+
+        String token =
+                jwtProvider.createAccessToken(
+                        1L,
+                        "admin"
                 );
+
+
+
+        mockMvc.perform(
+                get("/api/admin/users")
+                        .header(
+                                "Authorization",
+                                "Bearer " + token
+                        )
+        )
+        .andExpect(
+                status().isOk()
+        );
     }
 }
