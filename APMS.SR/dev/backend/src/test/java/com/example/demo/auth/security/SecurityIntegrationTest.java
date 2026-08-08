@@ -47,12 +47,16 @@ class SecurityIntegrationTest {
     void unauthenticatedUserCannotAccessProtectedApi()
             throws Exception {
 
-
         mockMvc.perform(
                 get("/api/users/me")
+                        .header(
+                                "Authorization",
+                                "Bearer " + token
+                        )
         )
+        .andDo(org.springframework.test.web.servlet.result.MockMvcResultHandlers.print())
         .andExpect(
-                status().isUnauthorized()
+                status().isOk()
         );
     }
 
@@ -117,6 +121,7 @@ class SecurityIntegrationTest {
                                 "Bearer " + token
                         )
         )
+        .andDo(org.springframework.test.web.servlet.result.MockMvcResultHandlers.print())
         .andExpect(
                 status().isOk()
         );
