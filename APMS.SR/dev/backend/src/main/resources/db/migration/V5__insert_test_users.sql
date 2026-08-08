@@ -8,15 +8,15 @@ INSERT INTO users (
 VALUES
 (
     1,
-    'testuser',
-    '$2a$10$...',
+    'fpfns',
+    '$2a$10$mLxWbOKAz6/EAO14u.SQB.vtZTwQBt3kQb0qeGMdwm2nnvoX8Pwji',
     'ACTIVE',
     'testuser@test.com'
 ),
 (
     2,
-    'admin',
-    '$2a$10$...',
+    'test',
+    '$2a$10$eFZu4rKvdovHaBfx0w91Pe8bxWl.GNOQA5i2NP2rgHq1.ydzGY2je',
     'ACTIVE',
     'admin@test.com'
 );
