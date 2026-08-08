@@ -2,6 +2,9 @@ package com.example.demo.auth.security;
 
 import com.example.demo.auth.jwt.JwtProvider;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+
 //import com.example.demo.auth.security.UserAuthorityService;
 
 //import com.example.demo.iam.user.service.UserService;
@@ -14,7 +17,6 @@ import jakarta.servlet.FilterChain;                // 서브렛 http 요청 가�
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;             // 생성자 주입 자동 생성
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;    // jwt 사용자 정보 추출 후 생성
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;        // 권한 처리
@@ -30,6 +32,7 @@ import io.jsonwebtoken.Claims;
 import java.io.IOException;
 //import java.util.ArrayList;
 import java.util.List;
+import lombok.RequiredArgsConstructor;             // 생성자 주입 자동 생성
 import lombok.extern.slf4j.Slf4j;    // 기본 로거 호출용
 
 @Slf4j
