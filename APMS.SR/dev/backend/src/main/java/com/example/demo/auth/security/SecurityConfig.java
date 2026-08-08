@@ -71,7 +71,7 @@ public class SecurityConfig {         // 기본 접근 보안설정
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/users/signup").permitAll()
-                .requestMatchers("/api/admin/**").authenticated()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/actuator/health", "/actuator/info").permitAll()
                 .requestMatchers("/actuator/prometheus").permitAll() //헬스체크 보안 허용
                 .anyRequest().authenticated()
