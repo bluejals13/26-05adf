@@ -95,11 +95,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
-            //log.error("userId=" + userId);
-            System.out.println("userId=" + userId);
                 
             // 7. 권한 조회
             List<GrantedAuthority> authorities = userAuthorityService.getAuthorities(userId);
+            System.out.println("USER ID = " + userId);
+            System.out.println("AUTHORITIES = " + authorities);
             
             // 8. SecurityContext 세팅
             CustomUserPrincipal principal = new CustomUserPrincipal(userId);
@@ -119,8 +119,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (Exception e) {                //너무 넓으니 나중에 세분화 예정
             // JWT 파싱/만료/변조 대비
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            log.error("JWT authentication failed", e);
             //SecurityContextHolder.clearContext();
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
 }
