@@ -2,6 +2,7 @@ package com.example.demo.auth.security;
 
 import com.example.demo.auth.jwt.JwtProvider;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
