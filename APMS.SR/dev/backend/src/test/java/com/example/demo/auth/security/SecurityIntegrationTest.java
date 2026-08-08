@@ -1,27 +1,20 @@
 package com.example.demo.auth.security;
 
-
 import com.example.demo.auth.jwt.JwtProvider;
-
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.test.context.ActiveProfiles;
-
 import org.springframework.test.web.servlet.MockMvc;
 
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 
 @SpringBootTest
@@ -29,48 +22,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class SecurityIntegrationTest {
 
-
-
     @Autowired
     private MockMvc mockMvc;
-
 
     @Autowired
     private JwtProvider jwtProvider;
 
 
-
     @Test
-    @DisplayName(
-            "인증되지 않은 사용자는 보호 API 접근 불가"
-    )
+    @DisplayName("인증되지 않은 사용자는 보호 API 접근 불가")
     void unauthenticatedUserCannotAccessProtectedApi()
             throws Exception {
 
         mockMvc.perform(
                 get("/api/users/me")
-                        .header(
-                                "Authorization",
-                                "Bearer " + token
-                        )
         )
-        .andDo(org.springframework.test.web.servlet.result.MockMvcResultHandlers.print())
+        .andDo(print())
         .andExpect(
-                status().isOk()
+                status().isUnauthorized()
         );
     }
 
 
-
-
     @Test
-    @DisplayName(
-            "JWT 인증 사용자는 보호 API 접근 가능"
-    )
+    @DisplayName("JWT 인증 사용자는 보호 API 접근 가능")
     void authenticatedUserCanAccessProtectedApi()
             throws Exception {
-
-
 
         String token =
                 jwtProvider.createAccessToken(
@@ -78,8 +55,6 @@ class SecurityIntegrationTest {
                         "testuser"
                 );
 
-
-
         mockMvc.perform(
                 get("/api/users/me")
                         .header(
@@ -87,32 +62,23 @@ class SecurityIntegrationTest {
                                 "Bearer " + token
                         )
         )
+        .andDo(print())
         .andExpect(
                 status().isOk()
         );
-
     }
 
 
-
-
-
     @Test
-    @DisplayName(
-            "JWT 인증 사용자는 관리자 API 접근 가능"
-    )
+    @DisplayName("JWT 인증 사용자는 관리자 API 접근 가능")
     void authenticatedUserCanAccessAdminPath()
             throws Exception {
-
-
 
         String token =
                 jwtProvider.createAccessToken(
                         1L,
                         "admin"
                 );
-
-
 
         mockMvc.perform(
                 get("/api/admin/users")
@@ -121,7 +87,7 @@ class SecurityIntegrationTest {
                                 "Bearer " + token
                         )
         )
-        .andDo(org.springframework.test.web.servlet.result.MockMvcResultHandlers.print())
+        .andDo(print())
         .andExpect(
                 status().isOk()
         );
