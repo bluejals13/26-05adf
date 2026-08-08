@@ -3,6 +3,8 @@ package com.example.demo.auth.security;
 import com.example.demo.iam.user.dto.LoginRequest;
 import com.example.demo.iam.user.dto.LoginResult;
 
+import com.example.demo.monitoring.LogStore;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.Cookie;
@@ -58,6 +60,11 @@ class AuthControllerTest {
 
     @MockBean
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+
+    @MockBean
+    private LogStore logStore;
+        
 
     @Test
     @DisplayName(
