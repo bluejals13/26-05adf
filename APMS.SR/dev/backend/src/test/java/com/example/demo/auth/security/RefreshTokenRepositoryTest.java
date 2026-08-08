@@ -26,7 +26,7 @@ import static org.mockito.BDDMockito.given;
 
 import static org.mockito.Mockito.verify;
 
-
+@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 class RefreshTokenRepositoryTest {
 
