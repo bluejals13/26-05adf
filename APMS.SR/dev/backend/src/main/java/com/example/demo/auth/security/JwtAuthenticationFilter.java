@@ -5,35 +5,22 @@ import com.example.demo.auth.jwt.JwtProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 
-//import com.example.demo.auth.security.UserAuthorityService;
-
-//import com.example.demo.iam.user.service.UserService;
-//import com.example.demo.iam.user.repository.UserRepository;
-//import com.example.demo.iam.user.domain.User;
-//import com.example.demo.iam.user.domain.UserStatus;
-import com.example.demo.auth.security.TokenBlacklistService;
-
-import jakarta.servlet.FilterChain;                // 서브렛 http 요청 가로체기 및 jwt 검사
+import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;    // jwt 사용자 정보 추출 후 생성
-//import org.springframework.security.core.authority.SimpleGrantedAuthority;        // 권한 처리
-import org.springframework.security.core.context.SecurityContextHolder;                    // 보안 문자열 보관
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;    // 요청 당 1회 실행 필터
-//import org.springframework.data.redis.core.RedisTemplate;    // redis 템플릿 으로 캐시 운용
-
-//import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import io.jsonwebtoken.Claims;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
-//import java.util.ArrayList;
 import java.util.List;
-import lombok.RequiredArgsConstructor;             // 생성자 주입 자동 생성
-import lombok.extern.slf4j.Slf4j;    // 기본 로거 호출용
 
 @Slf4j
 @Component
@@ -41,12 +28,9 @@ import lombok.extern.slf4j.Slf4j;    // 기본 로거 호출용
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
-    //private final RedisTemplate<String, String> redisTemplate;
-    //private final UserRepository userRepository;
     private final TokenBlacklistService tokenBlacklistService;
     private final UserAuthorityService userAuthorityService;
-    
-    
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -54,96 +38,105 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        String path = request.getServletPath(); 
-        
-        //*---
-        System.out.println("========== JWT FILTER ==========");
-        System.out.println("PATH = " + path);
-        System.out.println("METHOD = " + request.getMethod());
-        //---*/
-        
-        // 1. auth 제외
-        if (path.startsWith("/api/auth/")) {    System.out.println("AUTH PATH -> SKIP");
+        String path = request.getServletPath();
+
+        // 1. 인증 관련 API는 JWT 필터 제외
+        if (path.startsWith("/api/auth/")) {
             filterChain.doFilter(request, response);
             return;
         }
-        
-        // 2. OPTIONS 패스
-        if (request.getMethod().equals("OPTIONS")) {    System.out.println("OPTIONS -> SKIP");
+
+        // 2. CORS preflight 요청 제외
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             filterChain.doFilter(request, response);
             return;
         }
-        
-        // 3. Authorization 헤더 체크
+
+        // 3. Authorization 헤더 확인
         String header = request.getHeader("Authorization");
-            System.out.println("AUTH HEADER = " + header);
-        if (header == null || !header.startsWith("Bearer ")) {    System.out.println("NO JWT -> CONTINUE");
+
+        if (header == null || !header.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
-        String token = header.substring(7);     
-        
-        // 3.5 토큰 null 시 회원가입 의 경우
-        if (token == null || token.isBlank()) {     System.out.println("EMPTY JWT -> CONTINUE");
+
+        String token = header.substring(7);
+
+        if (token.isBlank()) {
             filterChain.doFilter(request, response);
             return;
         }
-        
-        try {       System.out.println("JWT VALIDATION START");
-            // 4. JWT 검증 (먼저)
-            if (!jwtProvider.validateToken(token)) {    System.out.println("JWT INVALID");
+
+        try {
+            // 4. JWT 검증
+            if (!jwtProvider.validateToken(token)) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
-                System.out.println("JWT VALID");
-            // 5. claims 파싱
+
+            // 5. JWT Claims 추출
             Claims claims = jwtProvider.parseClaims(token);
-                System.out.println("CLAIMS = " + claims);
+
             String jti = claims.getId();
             Long userId = Long.parseLong(claims.getSubject());
-                System.out.println("USER ID = " + userId);
-                System.out.println("JTI = " + jti);
-            // 6. blacklist 체크
-            if (jti != null && tokenBlacklistService.isBlacklisted(jti)) {    System.out.println("JWT BLACKLISTED");
+
+            // 6. Access Token blacklist 확인
+            if (jti != null && tokenBlacklistService.isBlacklisted(jti)) {
+                log.debug("Blacklisted JWT detected. jti={}", jti);
+
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
-                
-            // 7. 권한 조회
-            List<GrantedAuthority> authorities = userAuthorityService.getAuthorities(userId);
-                System.out.println("AUTHORITIES = " + authorities);
-            
-            // 8. SecurityContext 세팅
-            CustomUserPrincipal principal = new CustomUserPrincipal(userId);
-            
-            UsernamePasswordAuthenticationToken auth =
+
+            // 7. 사용자 권한 조회
+            List<GrantedAuthority> authorities =
+                    userAuthorityService.getAuthorities(userId);
+
+            // 8. SecurityContext 인증 정보 생성
+            CustomUserPrincipal principal =
+                    new CustomUserPrincipal(userId);
+
+            UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
                             principal,
                             null,
                             authorities
                     );
-            
-                
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            //log.error("AUTH = " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-            System.out.println("AUTH = " + SecurityContextHolder.getContext().getAuthentication());
-            System.out.println("AUTH = " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-             
+
+            SecurityContextHolder.getContext()
+                    .setAuthentication(authentication);
+
+            // 9. 다음 필터로 진행
             filterChain.doFilter(request, response);
+
         } catch (RedisUnavailableException e) {
-        
-            log.error("Redis is unavailable. Authentication cannot be verified.", e);
-        
-            response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            return;
-        
-        } catch (JwtException | IllegalArgumentException e) {
-        
-            log.warn("Invalid JWT", e);
-        
+
+            /*
+             * Redis 장애 시 blacklist 상태를 확인할 수 없으므로
+             * 보안상 인증을 진행하지 않는다.
+             */
+            log.error(
+                    "Redis is unavailable. Authentication cannot be verified.",
+                    e
+            );
+
             SecurityContextHolder.clearContext();
-        
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+            response.setStatus(
+                    HttpServletResponse.SC_SERVICE_UNAVAILABLE
+            );
+            return;
+
+        } catch (JwtException | IllegalArgumentException e) {
+
+            // JWT 변조 / 만료 / 잘못된 형식 / subject 파싱 실패 등
+            log.warn("Invalid JWT", e);
+
+            SecurityContextHolder.clearContext();
+
+            response.setStatus(
+                    HttpServletResponse.SC_UNAUTHORIZED
+            );
             return;
         }
     }
