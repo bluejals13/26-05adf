@@ -46,22 +46,18 @@ class SecurityIntegrationTest {
 
     @Test
     @DisplayName("JWT 인증 사용자는 보호 API 접근 가능")
-    void authenticatedUserCanAccessProtectedApi()
-            throws Exception {
-    
-        String token =
-                jwtProvider.createAccessToken(
-                        1L,
-                        "testuser"
-                );
-    
-        mockMvc.perform(
-                get("/api/users/me")
-                        .header(
-                                "Authorization",
-                                "Bearer " + token
-                        )
-        )
+    void authenticatedUserCanAccessProtectedApi() throws Exception {
+
+    String token =
+            jwtProvider.createAccessToken(
+                    1L,
+                    "testuser"
+            );
+
+    mockMvc.perform(
+            get("/api/users/me")
+                    .header("Authorization", "Bearer " + token)
+    )
         .andDo(result -> {
             System.out.println("========== /api/users/me ==========");
             System.out.println("STATUS = " + result.getResponse().getStatus());
@@ -76,22 +72,18 @@ class SecurityIntegrationTest {
 
     @Test
     @DisplayName("JWT 인증 사용자는 관리자 API 접근 가능")
-    void authenticatedUserCanAccessAdminPath()
-            throws Exception {
-    
-        String token =
-                jwtProvider.createAccessToken(
-                        1L,
-                        "admin"
-                );
-    
-        mockMvc.perform(
-                get("/api/admin/users")
-                        .header(
-                                "Authorization",
-                                "Bearer " + token
-                        )
-        )
+    void authenticatedUserCanAccessAdminPath() throws Exception {
+
+    String token =
+            jwtProvider.createAccessToken(
+                    2L,
+                    "admin"
+            );
+
+    mockMvc.perform(
+            get("/api/admin/users")
+                    .header("Authorization", "Bearer " + token)
+    )
         .andDo(result -> {
             System.out.println("========== /api/admin/users ==========");
             System.out.println("STATUS = " + result.getResponse().getStatus());
