@@ -2,12 +2,12 @@ package com.example.demo.auth.security;
 
 import com.example.demo.auth.jwt.JwtProvider;
 
-import com.example.demo.auth.security.UserAuthorityService;
+//import com.example.demo.auth.security.UserAuthorityService;
 
-import com.example.demo.iam.user.service.UserService;
-import com.example.demo.iam.user.repository.UserRepository;
-import com.example.demo.iam.user.domain.User;
-import com.example.demo.iam.user.domain.UserStatus;
+//import com.example.demo.iam.user.service.UserService;
+//import com.example.demo.iam.user.repository.UserRepository;
+//import com.example.demo.iam.user.domain.User;
+//import com.example.demo.iam.user.domain.UserStatus;
 import com.example.demo.auth.security.TokenBlacklistService;
 
 import jakarta.servlet.FilterChain;                // 서브렛 http 요청 가로체기 및 jwt 검사
@@ -17,18 +17,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;             // 생성자 주입 자동 생성
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;    // jwt 사용자 정보 추출 후 생성
-import org.springframework.security.core.authority.SimpleGrantedAuthority;        // 권한 처리
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;        // 권한 처리
 import org.springframework.security.core.context.SecurityContextHolder;                    // 보안 문자열 보관
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;    // 요청 당 1회 실행 필터
-import org.springframework.data.redis.core.RedisTemplate;    // redis 템플릿 으로 캐시 운용
+//import org.springframework.data.redis.core.RedisTemplate;    // redis 템플릿 으로 캐시 운용
 
-import java.util.stream.Collectors;
+//import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import io.jsonwebtoken.Claims;
 import java.io.IOException;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;    // 기본 로거 호출용
 
@@ -38,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;    // 기본 로거 호출용
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
-    private final RedisTemplate<String, String> redisTemplate;
+    //private final RedisTemplate<String, String> redisTemplate;
     private final UserRepository userRepository;
     private final TokenBlacklistService tokenBlacklistService;
     private final UserAuthorityService userAuthorityService;
@@ -127,11 +127,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             System.out.println("AUTH = " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
              
             filterChain.doFilter(request, response);
-        } catch (JwtException | IllegalArgumentException e) {                //너무 넓으니 나중에 세분화 예정
-            // JWT 파싱/만료/변조 대비
+        } catch (RedisUnavailableException e) {
+        
+            log.error("Redis is unavailable. Authentication cannot be verified.", e);
+        
+            response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            return;
+        
+        } catch (JwtException | IllegalArgumentException e) {
+        
             log.warn("Invalid JWT", e);
-            //SecurityContextHolder.clearContext();
+        
+            SecurityContextHolder.clearContext();
+        
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
         }
     }
 }
