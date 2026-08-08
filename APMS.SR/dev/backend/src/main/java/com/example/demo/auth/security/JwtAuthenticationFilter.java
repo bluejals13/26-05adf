@@ -129,7 +129,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (JwtException | IllegalArgumentException e) {                //너무 넓으니 나중에 세분화 예정
             // JWT 파싱/만료/변조 대비
-            log.error("JWT authentication failed", e);
+            log.warn("Invalid JWT", e);
             //SecurityContextHolder.clearContext();
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
