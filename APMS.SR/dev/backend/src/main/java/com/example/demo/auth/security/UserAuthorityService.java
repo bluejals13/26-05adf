@@ -20,11 +20,19 @@ import java.util.Set;
 public class UserAuthorityService {
 
     private final UserRepository userRepository;
-
+        System.out.println("===== getAuthorities START =====");
+        System.out.println("userId = " + userId);
     public List<GrantedAuthority> getAuthorities(Long userId) {
 
         User user = userRepository.findWithRolesAndPermissionsById(userId)
-                .orElseThrow(() -> new BadCredentialsException("INVALID_CREDENTIALS"));
+                .orElseThrow(() -> {
+                    System.out.println("USER NOT FOUND");
+                return new BadCredentialsException("INVALID_CREDENTIALS");
+            });
+
+            System.out.println("USER FOUND = " + user.getUsername());
+            System.out.println("STATUS = " + user.getStatus());
+            System.out.println("ROLES = " + user.getRoles().size());
 
         // 사용자 상태 검증
         if (user.getStatus() != UserStatus.ACTIVE) {
@@ -34,20 +42,27 @@ public class UserAuthorityService {
         Set<GrantedAuthority> authorities = new HashSet<>();
 
         // ROLE 추가
-        user.getRoles().forEach(role ->
-                authorities.add(
-                        new SimpleGrantedAuthority("ROLE_" + role.getName())
-                )
-        );
+        user.getRoles().forEach(role -> {
+                System.out.println("ROLE = " + role.getName());
 
-        // Permission 추가
-        user.getRoles().forEach(role ->
-                role.getPermissions().forEach(permission ->
-                        authorities.add(
-                                new SimpleGrantedAuthority(permission.getName())
-                        )
-                )
-        );
+            authorities.add(
+                new SimpleGrantedAuthority("ROLE_" + role.getName())
+            );
+
+            role.getPermissions().forEach(permission -> {
+                    System.out.println(
+                    "PERMISSION = " + permission.getName()
+            );
+
+            authorities.add(
+                new SimpleGrantedAuthority(permission.getName())
+            );
+        });
+    });
+
+        System.out.println("AUTHORITIES = " + authorities);
+        System.out.println("===== getAuthorities END =====");
+
 
         return List.copyOf(authorities);
     }
