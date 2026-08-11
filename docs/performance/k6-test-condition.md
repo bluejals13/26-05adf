@@ -25,8 +25,8 @@
 
 | Scenario | Ratio |
 |---|---:|
-| User | 50% |
-| Read | 40% |
+| User | 20% |
+| Read | 70% |
 | Admin | 10% |
 
 ## 4. Load Profile
