@@ -1,10 +1,9 @@
 package com.example.demo.iam.permission;
 
+import com.example.demo.iam.permission.dto.PermissionDetailResponse;
 import com.example.demo.iam.permission.dto.PermissionResponse;
 import com.example.demo.iam.permission.service.PermissionAdminService;
-//--
-import com.example.demo.iam.permission.dto.PermissionDetailResponse;
-//--
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +22,10 @@ public class PermissionAdminController {
     public List<PermissionResponse> getPermissions() {
         return permissionAdminService.getPermissions();
     }
-    //--
-    @GetMapping("/{id}")
+
     @PreAuthorize("hasAuthority('PERMISSION_READ')")
+    @GetMapping("/{id}")
     public PermissionDetailResponse getPermission(@PathVariable Long id) {
         return permissionAdminService.getPermissionDetail(id);
     }
-    //--
 }
