@@ -88,9 +88,10 @@
   font-weight: 600;
 }
 
-.button:hover {
+.button:not(:disabled):hover {
   background: #58a6ff;
   color: #0d1117;
+  border-color: #58a6ff;
 }
 
 .secondaryButton {
@@ -105,8 +106,9 @@
   font-weight: 600;
 }
 
-.secondaryButton:hover {
+.secondaryButton:not(:disabled):hover {
   background: #30363d;
+  color: #e6edf3;
   border-color: #484f58;
 }
 
@@ -193,6 +195,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+
 
   background: rgba(63, 185, 80, 0.1);
   color: #56d364;
@@ -622,14 +625,19 @@
 
   .actionCell {
     grid-column: 1 / -1;
-
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding-top: 6px;
-
+  
     border-top: 1px solid #21262d;
   }
 
   .actionCell > button {
-    flex: 1;
+    flex: 0 1 auto;
+    min-width: 72px;
+    min-height: 34px;
   }
 
   .permissionOverlay {
