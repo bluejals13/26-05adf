@@ -30,12 +30,8 @@ public class RolePermissionService {
 
     public void assignPermissions(Long adminId, Long roleId, List<Long> permissionIds) {
 
-        Set<Long> uniqueIds = new HashSet<>(
-               permissionIds == null
-                        ? List.of()
-                        : permissionIds
-        );
-
+        Set<Long> uniqueIds = new HashSet<>(permissionIds);
+        
         Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new IllegalArgumentException("Role not found"));
         
