@@ -109,7 +109,7 @@ export default function RolePage() {
     setSelectedRoleId(role.id);
 
     setSelectedPermissionIds(
-      role.permissions?.map((permission) => permission.id) ?? []
+      role.permissions?.map((permission) => permission.id)
     );
 
     setPermissionSearch("");
@@ -234,7 +234,7 @@ export default function RolePage() {
       </div>
 
       {roles.map((role) => {
-        const permissionCount = role.permissions?.length ?? 0;
+        const permissionCount = role.permissions.length;
 
         return (
           <div
