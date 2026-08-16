@@ -52,7 +52,7 @@ export default function RolePage() {
     useQuery({
       queryKey: ["permissions"],
       queryFn: () =>
-        http.get<Permission[]>("/api/admin/permissions"),
+        http.get<AdminPermission[]>("/api/admin/permissions"),
     });
 
   const selectedRole = useMemo(
