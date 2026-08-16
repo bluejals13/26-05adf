@@ -59,7 +59,7 @@ public class RoleAdminController {
         roleAdminService.deleteRole(getAdminId(), id);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_PERMISSION_MANAGE')")
+    @PreAuthorize("hasAuthority('ROLE_ASSIGN')")
     @PostMapping("/{roleId}/permissions")
     public void assignPermissions(@PathVariable Long roleId,
                                    @Valid @RequestBody RolePermissionRequest request) {
