@@ -61,7 +61,7 @@ public class RoleAdminController {
     @PreAuthorize("hasAuthority('ROLE_PERMISSION_MANAGE')")
     @PostMapping("/{roleId}/permissions")
     public void assignPermissions(@PathVariable Long roleId,
-                                   @RequestBody RolePermissionRequest request) {
+                                   @Valid @RequestBody RolePermissionRequest request) {
         rolePermissionService.assignPermissions(getAdminId(), roleId, request.permissionIds());
     }
 }
