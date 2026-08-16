@@ -9,14 +9,23 @@ import { http } from "../../api/http";
 
 import styles from "./RolePage.module.css";
 
-type Permission = {
+type AdminPermission = {
   id: number;
   name: string;
   description: string | null;
 };
 
+type AdminRole = {
+  id: number;
+  name: string;
+  description: string;
+  permissions: AdminPermission[];
+};
+
+
 export default function RolePage() {
-  const { data: roles = [] } = useRoles();
+  const { data: roleData = [] } = useRoles();
+  const roles = roleData as AdminRole[];
 
   const {
     saveRole,
