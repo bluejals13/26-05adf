@@ -32,7 +32,6 @@ export default function App() {
 	  bootstrapAuth().finally(() => setReady(true));
 	}, []);
 	
-	if (!ready) return null;
 	
   return (
     <BrowserRouter>
