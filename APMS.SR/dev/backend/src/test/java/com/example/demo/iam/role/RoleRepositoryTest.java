@@ -29,7 +29,7 @@ class RoleRepositoryTest {
     void Role과_Permission_관계를_저장하고_조회한다() {
 
         Permission permission =
-                Permission.create(
+                new Permission(
                         "TEST_READ",
                         "테스트 조회"
                 );
@@ -65,7 +65,7 @@ class RoleRepositoryTest {
     void Permission을_사용하는_Role을_조회한다() {
 
         Permission permission =
-                Permission.create(
+                new Permission(
                         "ROLE_TEST_READ",
                         "Role 테스트 조회"
                 );
