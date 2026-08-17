@@ -6,10 +6,33 @@ type TokenResponse = {
   accessToken: string;
 };
 
-let refreshPromise: Promise<TokenResponse | null> | null = null;  //401 retry에서도 보호 필요
+export class HttpError extends Error {
+  constructor(
+    public readonly status: number,
+    message: string,
+  ) {
+    super(message);
+    this.name = "HttpError";
+  }
+}
+
+export class RefreshTokenError extends HttpError {
+  constructor(
+    status: number,
+    message = "Refresh token request failed",
+  ) {
+    super(status, message);
+    this.name = "RefreshTokenError";
+  }
+}
+
+// 동시에 여러 요청에서 refresh가 발생하는 것을 방지
+let refreshPromise: Promise<TokenResponse | null> | null = null;
 
 export async function refreshToken(): Promise<TokenResponse | null> {
-  if (refreshPromise) return refreshPromise;
+  if (refreshPromise) {
+    return refreshPromise;
+  }
 
   refreshPromise = (async () => {
     try {
@@ -18,14 +41,13 @@ export async function refreshToken(): Promise<TokenResponse | null> {
         credentials: "include",
       });
 
-      if (!res.ok) return null;
+      if (!res.ok) {
+        throw new RefreshTokenError(res.status);
+      }
 
       const data: TokenResponse = await res.json();
-      console.log("🔥 refresh called");
-      
+
       return data?.accessToken ? data : null;
-    } catch {
-      return null;
     } finally {
       refreshPromise = null;
     }
@@ -37,8 +59,8 @@ export async function refreshToken(): Promise<TokenResponse | null> {
 export async function request<T>(
   url: string,
   options: RequestInit = {},
-  retry = true
-): Promise<T> {  console.log("REQUEST CALLED");
+  retry = true,
+): Promise<T> {
   const token = useAuthStore.getState().token;
 
   const res = await fetch(url, {
@@ -46,39 +68,47 @@ export async function request<T>(
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      ...(token ? { 
-      Authorization: `Bearer ${token}` 
-      } : {}),
+      ...(token
+        ? {
+            Authorization: `Bearer ${token}`,
+          }
+        : {}),
       ...(options.headers || {}),
-    }
+    },
   });
 
-  // 🔥 401 handling
-  if (res.status === 401 && retry ) {
+  // 401 → Refresh Token으로 한 번만 재인증
+  if (res.status === 401 && retry) {
     const newToken = await refreshToken();
 
-    //if (isAuthEndpoint) { throw new Error("Unauthorized"); 
     if (!newToken?.accessToken) {
-      //useAuthStore.getState().logout();
-      //queryClient.clear(); // 중요
-      throw new Error("Unauthorized");
+      throw new RefreshTokenError(401, "Unauthorized");
     }
-    console.log("🔁 retry request", url);
-    // 🔥 중요: refresh 후 token 재주입
+
+    // 새 Access Token 저장
     useAuthStore.getState().login(newToken.accessToken);
 
-    return request<T>(url, {
-      ...options, 
-      headers: {
-        ...options.headers,
-        Authorization: `Bearer ${newToken.accessToken}`,
+    // 새 Token으로 동일 요청 1회 재시도
+    return request<T>(
+      url,
+      {
+        ...options,
+        headers: {
+          ...options.headers,
+          Authorization: `Bearer ${newToken.accessToken}`,
+        },
       },
-    }, false);
+      false,
+    );
   }
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(text || "Request failed");
+
+    throw new HttpError(
+      res.status,
+      text || "Request failed",
+    );
   }
 
   return res.json();
@@ -86,33 +116,45 @@ export async function request<T>(
 
 export const http = {
   get: <T>(url: string): Promise<T> =>
-    request<T>(url, { method: "GET" }),
+    request<T>(url, {
+      method: "GET",
+    }),
 
-  post: <T>(url: string, body?: unknown, options?: RequestInit): Promise<T> => {
-    console.log("POST METHOD", url)
-    return request<T>(url, {
+  post: <T>(
+    url: string,
+    body?: unknown,
+    options?: RequestInit,
+  ): Promise<T> =>
+    request<T>(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         ...(options?.headers || {}),
       },
-      body: body ? JSON.stringify(body) : undefined, ...options,
-    });},
-  
-  patch: <T>(url: string, body?: unknown): Promise<T> => {
-  console.log("PATCH METHOD", url)
-  return request<T>(url, {
-    method: "PATCH",
-    body: body ? JSON.stringify(body) : undefined,
-  });},
-  
-  put: <T>(url: string, body?: unknown): Promise<T> =>
+      body: body ? JSON.stringify(body) : undefined,
+      ...options,
+    }),
+
+  patch: <T>(
+    url: string,
+    body?: unknown,
+  ): Promise<T> =>
+    request<T>(url, {
+      method: "PATCH",
+      body: body ? JSON.stringify(body) : undefined,
+    }),
+
+  put: <T>(
+    url: string,
+    body?: unknown,
+  ): Promise<T> =>
     request<T>(url, {
       method: "PUT",
       body: body ? JSON.stringify(body) : undefined,
     }),
 
   delete: <T>(url: string): Promise<T> =>
-    request<T>(url, { method: "DELETE" }),
+    request<T>(url, {
+      method: "DELETE",
+    }),
 };
-
