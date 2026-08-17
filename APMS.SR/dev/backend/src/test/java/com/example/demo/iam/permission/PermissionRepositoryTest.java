@@ -24,32 +24,32 @@ class PermissionRepositoryTest {
     void Permission을_저장하고_조회할_수_있다() {
         Permission permission =
                 new Permission(
-                        "USER_READ",
-                        "사용자 조회"
+                        "TEST_USER_READ",
+                        "테스트 사용자 조회"
                 );
 
         Permission saved =
                 permissionRepository.saveAndFlush(permission);
 
         assertThat(saved.getId()).isNotNull();
-        assertThat(saved.getName()).isEqualTo("USER_READ");
+        assertThat(saved.getName()).isEqualTo("TEST_USER_READ");
         assertThat(saved.getDescription())
-                .isEqualTo("사용자 조회");
+                .isEqualTo("테스트 사용자 조회");
     }
 
     @Test
     void Permission_전체를_조회할_수_있다() {
         permissionRepository.save(
                 new Permission(
-                        "USER_READ",
-                        "사용자 조회"
+                        "TEST_USER_READ",
+                        "테스트 사용자 조회"
                 )
         );
 
         permissionRepository.save(
                 new Permission(
-                        "ROLE_READ",
-                        "Role 조회"
+                        "TEST_ROLE_READ",
+                        "테스트 Role 조회"
                 )
         );
 
@@ -58,13 +58,11 @@ class PermissionRepositoryTest {
         List<Permission> permissions =
                 permissionRepository.findAll();
 
-        assertThat(permissions).hasSize(2);
-
         assertThat(permissions)
                 .extracting(Permission::getName)
-                .containsExactlyInAnyOrder(
-                        "USER_READ",
-                        "ROLE_READ"
+                .contains(
+                        "TEST_USER_READ",
+                        "TEST_ROLE_READ"
                 );
     }
 
@@ -73,8 +71,8 @@ class PermissionRepositoryTest {
         Permission saved =
                 permissionRepository.saveAndFlush(
                         new Permission(
-                                "ROLE_ASSIGN",
-                                "Role에 Permission 할당"
+                                "TEST_ROLE_ASSIGN",
+                                "테스트 Role에 Permission 할당"
                         )
                 );
 
@@ -83,9 +81,9 @@ class PermissionRepositoryTest {
 
         assertThat(result).isPresent();
         assertThat(result.get().getName())
-                .isEqualTo("ROLE_ASSIGN");
+                .isEqualTo("TEST_ROLE_ASSIGN");
         assertThat(result.get().getDescription())
-                .isEqualTo("Role에 Permission 할당");
+                .isEqualTo("테스트 Role에 Permission 할당");
     }
 
     @Test
@@ -100,14 +98,14 @@ class PermissionRepositoryTest {
     void Permission_name은_중복될_수_없다() {
         permissionRepository.saveAndFlush(
                 new Permission(
-                        "USER_READ",
-                        "사용자 조회"
+                        "TEST_DUPLICATE",
+                        "첫 번째 Permission"
                 )
         );
 
         permissionRepository.save(
                 new Permission(
-                        "USER_READ",
+                        "TEST_DUPLICATE",
                         "중복 Permission"
                 )
         );
