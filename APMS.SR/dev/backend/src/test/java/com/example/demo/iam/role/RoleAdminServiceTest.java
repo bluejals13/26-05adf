@@ -31,7 +31,7 @@ class RoleAdminServiceTest {
     void Role을_생성한다() {
         RoleRequest request = new RoleRequest();
         request.setName("TEST_ROLE");
-        request.setDescription("Test role");
+        request.setDescription("테스트 권한");
 
         Role role = Role.create(
                 request.getName(),
@@ -59,10 +59,9 @@ class RoleAdminServiceTest {
         when(roleRepository.findById(1L))
                 .thenReturn(Optional.of(role));
 
-        RoleRequest request = new RoleRequest(
-                "ADMIN_MANAGER",
-                "수정된 설명"
-        );
+        RoleRequest request = new RoleRequest();
+        request.setName("ADMIN_MANAGER");
+        request.setDescription("수정된 설명");
 
         roleAdminService.updateRole(1L, 1L, request);
 
@@ -77,10 +76,9 @@ class RoleAdminServiceTest {
         when(roleRepository.findById(999L))
                 .thenReturn(Optional.empty());
 
-        RoleRequest request = new RoleRequest(
-                "MANAGER",
-                "설명"
-        );
+        RoleRequest request = new RoleRequest();
+        request.setName("MANAGER");
+        request.setDescription("설명");
 
         assertThrows(
                 RuntimeException.class,
