@@ -7,7 +7,6 @@ import { STORAGE_KEYS } from "../constants/keys";
 type AuthState = {
   token: string | null;
 
-  // 인증/Redis 인프라 장애 상태
   authServiceUnavailable: boolean;
 
   setToken: (token: string | null) => void;
@@ -49,10 +48,6 @@ export const useAuthStore = create(
     }),
     {
       name: STORAGE_KEYS.auth,
-
-      partialize: (state) => ({
-        token: state.token,
-      }),
     }
   )
 );
