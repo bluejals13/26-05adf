@@ -112,7 +112,7 @@ class PermissionRepositoryTest {
                         "중복 Permission"
                         )
                 )
-        ).isInstanceOf(Exception.class);
+        ).isInstanceOf(DataIntegrityViolationException.class);
     }
 
     @Test
