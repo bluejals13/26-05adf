@@ -1,66 +1,91 @@
 // pages/UserRolePage.tsx
-import { useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 
+import { useMemo, useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { userApi } from "../../api/user.api";
+import { fetchRoles } from "../../api/role.api";
+import type { User } from "../../auth/auth.types";
+import type { Role } from "../../queries/role";
 import { http } from "../../api/http";
-import { useRoles } from "../../queries/useRoles";
+
 import styles from "./UserRolePage.module.css";
 
-type User = {
-  id: number;
-  username: string;
+type UserWithRoles = User & {
+  roles?: string[];
 };
 
-type Role = {
-  id: number;
-  name: string;
-  description?: string | null;
+type AssignRolesRequest = {
+  roleNames: string[];
 };
 
-type UserDetail = User & {
-  roles?: Role[];
+const assignUserRoles = async (
+  userId: number,
+  roleNames: string[]
+): Promise<void> => {
+  await http.post(`/api/admin/users/${userId}/roles`, {
+    roleNames,
+  } satisfies AssignRolesRequest);
 };
 
 export default function UserRolePage() {
-  const { data: roleData = [], isLoading: roleLoading } = useRoles();
+  const queryClient = useQueryClient();
 
-  const roles = useMemo<Role[]>(() => {
-    return Array.isArray(roleData) ? roleData : [];
-  }, [roleData]);
-
-  const [selectedUserId, setSelectedUserId] =
-    useState<number | null>(null);
-
-  const [selectedRoleIds, setSelectedRoleIds] =
-    useState<Set<number>>(new Set());
-
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [selectedRoleNames, setSelectedRoleNames] = useState<string[]>([]);
   const [search, setSearch] = useState("");
 
   const {
     data: users = [],
-    isLoading: userLoading,
-  } = useQuery({
-    queryKey: ["admin-users"],
-    queryFn: () =>
-      http.get<User[]>("/api/admin/users"),
+    isLoading: usersLoading,
+  } = useQuery<UserWithRoles[]>({
+    queryKey: ["users"],
+    queryFn: userApi.getUsers,
   });
 
   const {
-    data: selectedUser,
-    isLoading: detailLoading,
-  } = useQuery({
-    queryKey: ["admin-user", selectedUserId],
-    queryFn: () =>
-      http.get<UserDetail>(
-        `/api/admin/users/${selectedUserId}`
-      ),
-    enabled: selectedUserId !== null,
+    data: roles = [],
+    isLoading: rolesLoading,
+  } = useQuery<Role[]>({
+    queryKey: ["roles"],
+    queryFn: fetchRoles,
+    staleTime: 0,
+    refetchOnMount: "always",
   });
+
+  const saveRoles = useMutation({
+    mutationFn: () => {
+      if (selectedUserId == null) {
+        throw new Error("사용자가 선택되지 않았습니다.");
+      }
+
+      return assignUserRoles(
+        selectedUserId,
+        selectedRoleNames
+      );
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["users"],
+      });
+
+      closePanel();
+    },
+  });
+
+  const selectedUser = useMemo(
+    () =>
+      users.find((user) => user.id === selectedUserId) ?? null,
+    [users, selectedUserId]
+  );
 
   const filteredRoles = useMemo(() => {
     const keyword = search.trim().toLowerCase();
 
-    if (!keyword) return roles;
+    if (!keyword) {
+      return roles;
+    }
 
     return roles.filter(
       (role) =>
@@ -69,49 +94,41 @@ export default function UserRolePage() {
     );
   }, [roles, search]);
 
-  const openRolePanel = (user: User) => {
+  const openPanel = (user: UserWithRoles) => {
     setSelectedUserId(user.id);
-    setSearch("");
 
-    // 서버에서 현재 User가 가지고 있는 Role만 선택
-    setSelectedRoleIds(
-      new Set(
-        selectedUser?.roles?.map((role) => role.id) ?? []
-      )
+    // 기존 Role을 체크 상태로 초기화
+    setSelectedRoleNames(
+      Array.from(new Set(user.roles ?? []))
     );
-  };
 
-  const toggleRole = (roleId: number) => {
-    setSelectedRoleIds((current) => {
-      const next = new Set(current);
-
-      if (next.has(roleId)) {
-        next.delete(roleId);
-      } else {
-        next.add(roleId);
-      }
-
-      return next;
-    });
+    setSearch("");
   };
 
   const closePanel = () => {
+    if (saveRoles.isPending) return;
+
     setSelectedUserId(null);
-    setSelectedRoleIds(new Set());
+    setSelectedRoleNames([]);
     setSearch("");
   };
 
-  const saveRoles = async () => {
-    if (selectedUserId === null) return;
-
-    await http.put(
-      `/api/admin/users/${selectedUserId}/roles`,
-      {
-        roleIds: [...selectedRoleIds],
-      }
+  const toggleRole = (roleName: string) => {
+    setSelectedRoleNames((current) =>
+      current.includes(roleName)
+        ? current.filter((name) => name !== roleName)
+        : [...current, roleName]
     );
+  };
 
-    closePanel();
+  const selectAll = () => {
+    setSelectedRoleNames(
+      Array.from(new Set(roles.map((role) => role.name)))
+    );
+  };
+
+  const clearAll = () => {
+    setSelectedRoleNames([]);
   };
 
   return (
@@ -120,42 +137,96 @@ export default function UserRolePage() {
         <div>
           <h1>User Role Management</h1>
           <p>
-            사용자에게 Role을 할당하거나 해제합니다.
+            사용자에게 Role을 할당하고 관리합니다.
           </p>
+        </div>
+
+        <div className={styles.summary}>
+          <strong>{users.length}</strong>
+          <span>Users</span>
         </div>
       </header>
 
-      {/* USER LIST */}
-      <div className={styles.userGrid}>
-        {userLoading ? (
-          <div className={styles.empty}>
-            사용자를 불러오는 중입니다...
-          </div>
-        ) : users.length === 0 ? (
-          <div className={styles.empty}>
-            사용자가 없습니다.
-          </div>
-        ) : (
-          users.map((user) => (
-            <button
-              key={user.id}
-              className={`${styles.userCard} ${
-                selectedUserId === user.id
-                  ? styles.userCardSelected
-                  : ""
-              }`}
-              onClick={() => openRolePanel(user)}
-            >
-              <strong>{user.username}</strong>
-              <span>ID: {user.id}</span>
-            </button>
-          ))
-        )}
+      {/* 검색 */}
+      <div className={styles.searchBox}>
+        <input
+          className={styles.searchInput}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="사용자 검색..."
+        />
       </div>
 
+      {/* USER LIST */}
+      {usersLoading ? (
+        <div className={styles.empty}>
+          사용자를 불러오는 중입니다...
+        </div>
+      ) : users.length === 0 ? (
+        <div className={styles.empty}>
+          사용자가 없습니다.
+        </div>
+      ) : (
+        <div className={styles.userGrid}>
+          {users.map((user) => {
+            const userRoles = Array.from(
+              new Set(user.roles ?? [])
+            );
+
+            return (
+              <div
+                key={user.id}
+                className={styles.userCard}
+              >
+                <div className={styles.userInfo}>
+                  <div className={styles.userAvatar}>
+                    {user.username.charAt(0).toUpperCase()}
+                  </div>
+
+                  <div className={styles.userText}>
+                    <strong>{user.username}</strong>
+
+                    <div className={styles.roleList}>
+                      {userRoles.length > 0 ? (
+                        userRoles.map((role) => (
+                          <span
+                            key={role}
+                            className={styles.roleBadge}
+                          >
+                            {role}
+                          </span>
+                        ))
+                      ) : (
+                        <span className={styles.noRole}>
+                          Role 없음
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  className={styles.manageButton}
+                  onClick={() => openPanel(user)}
+                >
+                  Role 관리
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
       {/* ROLE PANEL */}
-      {selectedUserId !== null && (
-        <div className={styles.overlay}>
+      {selectedUser && (
+        <div
+          className={styles.overlay}
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) {
+              closePanel();
+            }
+          }}
+        >
           <section className={styles.panel}>
             <header className={styles.panelHeader}>
               <div>
@@ -163,9 +234,7 @@ export default function UserRolePage() {
                   USER ROLE MANAGEMENT
                 </span>
 
-                <h2>
-                  {selectedUser?.username ?? "사용자"}
-                </h2>
+                <h2>{selectedUser.username}</h2>
 
                 <p>
                   사용자에게 적용할 Role을 선택하세요.
@@ -175,6 +244,8 @@ export default function UserRolePage() {
               <button
                 className={styles.closeButton}
                 onClick={closePanel}
+                disabled={saveRoles.isPending}
+                aria-label="닫기"
               >
                 ×
               </button>
@@ -182,25 +253,38 @@ export default function UserRolePage() {
 
             <div className={styles.toolbar}>
               <input
-                className={styles.search}
-                placeholder="Role 검색..."
+                className={styles.roleSearch}
                 value={search}
-                onChange={(e) =>
-                  setSearch(e.target.value)
-                }
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Role 검색..."
               />
 
-              <span className={styles.count}>
-                <strong>
-                  {selectedRoleIds.size}
-                </strong>
-                {" / "}
-                {roles.length}
-              </span>
+              <div className={styles.selectedCount}>
+                <strong>{selectedRoleNames.length}</strong>
+                <span>/ {roles.length}</span>
+              </div>
+            </div>
+
+            <div className={styles.bulkActions}>
+              <button
+                className={styles.textButton}
+                onClick={selectAll}
+                disabled={rolesLoading || roles.length === 0}
+              >
+                전체 선택
+              </button>
+
+              <button
+                className={styles.dangerTextButton}
+                onClick={clearAll}
+                disabled={selectedRoleNames.length === 0}
+              >
+                전체 해제
+              </button>
             </div>
 
             <div className={styles.roleList}>
-              {roleLoading || detailLoading ? (
+              {rolesLoading ? (
                 <div className={styles.empty}>
                   Role을 불러오는 중입니다...
                 </div>
@@ -211,7 +295,7 @@ export default function UserRolePage() {
               ) : (
                 filteredRoles.map((role) => {
                   const checked =
-                    selectedRoleIds.has(role.id);
+                    selectedRoleNames.includes(role.name);
 
                   return (
                     <label
@@ -226,25 +310,25 @@ export default function UserRolePage() {
                         type="checkbox"
                         checked={checked}
                         onChange={() =>
-                          toggleRole(role.id)
+                          toggleRole(role.name)
                         }
                       />
 
-                      <div>
+                      <div className={styles.roleContent}>
                         <div className={styles.roleName}>
                           {role.name}
                         </div>
 
-                        {role.description && (
-                          <div
-                            className={
-                              styles.roleDescription
-                            }
-                          >
-                            {role.description}
-                          </div>
-                        )}
+                        <div className={styles.roleDescription}>
+                          {role.description?.trim() || "-"}
+                        </div>
                       </div>
+
+                      {checked && (
+                        <span className={styles.checkedMark}>
+                          ✓
+                        </span>
+                      )}
                     </label>
                   );
                 })
@@ -252,23 +336,32 @@ export default function UserRolePage() {
             </div>
 
             <div className={styles.notice}>
-              선택된 Role 목록으로 사용자의 Role을
-              전체 교체합니다.
+              <span>i</span>
+              <p>
+                저장하면 현재 선택된 Role 목록으로
+                사용자의 Role이 교체됩니다.
+                아무것도 선택하지 않으면 모든 Role이
+                해제됩니다.
+              </p>
             </div>
 
             <footer className={styles.footer}>
               <button
-                className={styles.cancel}
+                className={styles.cancelButton}
                 onClick={closePanel}
+                disabled={saveRoles.isPending}
               >
                 취소
               </button>
 
               <button
-                className={styles.save}
-                onClick={saveRoles}
+                className={styles.saveButton}
+                onClick={() => saveRoles.mutate()}
+                disabled={saveRoles.isPending}
               >
-                Role 저장
+                {saveRoles.isPending
+                  ? "저장 중..."
+                  : "Role 저장"}
               </button>
             </footer>
           </section>
