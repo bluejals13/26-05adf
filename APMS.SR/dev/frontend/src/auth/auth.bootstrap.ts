@@ -58,10 +58,13 @@ export function bootstrapAuth(): Promise<void> {
         error instanceof RefreshTokenError &&
         error.status === 503
       ) {
+        useAuthStore
+          .getState()
+          .setAuthServiceUnavailable(true);
+
         console.warn(
           "[Auth] Authentication service unavailable."
         );
-
         // 중요:
         // logout 하지 않는다.
         // bootstrap은 정상 종료한다.
@@ -69,6 +72,10 @@ export function bootstrapAuth(): Promise<void> {
       }
 
       // Network Error / Timeout 등
+      useAuthStore
+        .getState()
+        .setAuthServiceUnavailable(true);
+      
       console.warn(
         "[Auth] Authentication service temporarily unavailable.",
         error
