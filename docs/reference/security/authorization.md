@@ -37,18 +37,17 @@ flowchart LR
 
 ## 3. API 접근 제어
 ```mermaid
-flowchart LR
-    A["Authenticated User"]
-        --> B["SecurityContext"]
-
+flowchart TD
+    A["Request"] --> B["Authentication"]
     B --> C["Granted Authorities"]
-
     C --> D["@PreAuthorize"]
 
-    D --> E{"Required Authority"}
+    D --> E{"Authority Check"}
 
-    E -- "Match" --> F["Allow"]
-    E -- "No Match" --> G["403 Forbidden"]
+    E -- "Pass" --> F["Controller"]
+    F --> G["Execute API"]
+
+    E -- "Fail" --> H["403 Forbidden"]
 ```
 
 ## 4. 401 / 403
