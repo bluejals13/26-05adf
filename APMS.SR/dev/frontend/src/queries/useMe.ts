@@ -13,33 +13,10 @@ const ME_POLL_INTERVAL = 5000;
 export function useMe() {
   const token = useAuthStore((s) => s.token);
 
-  const query = useQuery<User>({
+  return useQuery<User>({
     queryKey: [...authKeys.me(), token],
 
-    queryFn: async () => {
-      try {
-        const user = await http.get<User>("/api/users/me");
-
-        if (useAuthStore.getState().authServiceUnavailable) {
-          useAuthStore
-            .getState()
-            .setAuthServiceUnavailable(false);
-        }
-
-        return user;
-      } catch (error) {
-        if (
-          error instanceof HttpError &&
-          error.status === 503
-        ) {
-          useAuthStore
-            .getState()
-            .setAuthServiceUnavailable(true);
-        }
-
-        throw error;
-      }
-    },
+    queryFn: () => http.get<User>("/api/users/me"),
 
     enabled: !!token,
 
@@ -47,24 +24,7 @@ export function useMe() {
 
     staleTime: 0,
 
-    refetchInterval: ME_POLL_INTERVAL,
-
-    refetchOnWindowFocus: true,
-
-    refetchOnReconnect: true,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
-
-  useEffect(() => {
-    const user = query.data;
-
-    if (!user) {
-      return;
-    }
-
-    if (user.status === "SUSPENDED") {
-      useAuthStore.getState().logout();
-    }
-  }, [query.data]);
-
-  return query;
 }
