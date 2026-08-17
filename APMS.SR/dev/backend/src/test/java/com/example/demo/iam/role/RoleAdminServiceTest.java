@@ -27,10 +27,9 @@ class RoleAdminServiceTest {
 
     @Test
     void Role을_생성한다() {
-        RoleRequest request = new RoleRequest(
-                "MANAGER",
-                "관리자 역할"
-        );
+        RoleRequest request = new RoleRequest();
+        request.setName("TEST_ROLE");
+        request.setDescription("Test role");
 
         Role role = Role.create(
                 request.getName(),
