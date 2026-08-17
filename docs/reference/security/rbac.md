@@ -28,8 +28,6 @@ flowchart LR
 | Permission  | Description         |
 | ----------- | ------------------- |
 | USER_READ   | 사용자 조회              |
-| USER_CREATE | 사용자 생성              |
-| USER_UPDATE | 사용자 수정              |
 | USER_DELETE | 사용자 삭제              |
 | ROLE_READ   | Role 조회             |
 | ROLE_CREATE | Role 생성             |
@@ -44,8 +42,6 @@ flowchart LR
 | Permission  | USER | ADMIN |
 | ----------- | :--: | :---: |
 | USER_READ   |   ✅  |   ✅   |
-| USER_CREATE |   ❌  |   ✅   |
-| USER_UPDATE |   ❌  |   ✅   |
 | USER_DELETE |   ❌  |   ✅   |
 | ROLE_READ   |   ❌  |   ✅   |
 | ROLE_CREATE |   ❌  |   ✅   |
@@ -69,8 +65,6 @@ flowchart LR
 관리자에게 부여되는 Permission:
 
 - USER_READ
-- USER_CREATE
-- USER_UPDATE
 - USER_DELETE
 - ROLE_READ
 - ROLE_CREATE
