@@ -21,6 +21,7 @@ import MenuPage from "./pages/Fmenu/MenuPage";
 import PermissionPage from "./pages/Fpermi/PermissionPage";
 import UserAdminPage from "./pages/FUsAd/UserAdminPage";
 import RolePage from "./pages/FRole/RolePage";
+import UserRolePage from "./pages/FRole/UserRolePage";
 
 import { useEffect, useState } from "react";
 import { bootstrapAuth } from "./auth/auth.bootstrap";
@@ -68,6 +69,9 @@ export default function App() {
 			</Route>
 			<Route element={<AdminRoute permission="ROLE_READ" />}>
 				<Route path="/Role" element={<RolePage />} />
+			</Route>
+			<Route element={<AdminRoute permission="ROLE_READ" />}>
+				<Route path="/URole" element={<UserRolePage />} />
 			</Route>
 	  </Route> </Route>
 
