@@ -147,15 +147,28 @@ export async function request<T>(
 
   if (!res.ok) {
     const text = await res.text();
-
-    throw new HttpError(
-      res.status,
-      text || "Request failed",
-    );
-  }
-
-  return res.json();
-}
+    let body: { code?: string; message?: string } = {};
+    
+      try {
+        body = text ? JSON.parse(text) : {};
+      } catch {
+        // ignore
+      }
+    
+      if (
+        res.status === 403 &&
+        body.code === "ACCOUNT_SUSPENDED"
+      ) {
+        throw new AccountSuspendedError(
+          body.message ?? "Account suspended",
+        );
+      }
+    
+      throw new HttpError(
+        res.status,
+        body.message ?? text || "Request failed",
+      );
+    }
 
 export const http = {
   get: <T>(url: string): Promise<T> =>
