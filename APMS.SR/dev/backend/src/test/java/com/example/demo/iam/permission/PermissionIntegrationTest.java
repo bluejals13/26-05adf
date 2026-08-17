@@ -47,8 +47,7 @@ class PermissionIntegrationTest {
 
         List<String> required = List.of(
                 "USER_READ",
-                "USER_CREATE",
-                "USER_UPDATE",
+                "USER_STATUS_UPDATE",
                 "USER_DELETE",
 
                 "ROLE_READ",
