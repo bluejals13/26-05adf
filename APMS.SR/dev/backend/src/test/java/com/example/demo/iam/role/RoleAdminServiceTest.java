@@ -2,13 +2,15 @@ package com.example.demo.iam.role;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
+import com.example.demo.audit.service.AuditService;
 import com.example.demo.iam.role.service.RoleAdminService;
 import com.example.demo.iam.role.domain.Role;
 import com.example.demo.iam.role.dto.RoleRequest;
 import com.example.demo.iam.role.repository.RoleRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +26,12 @@ class RoleAdminServiceTest {
     @Mock
     private RoleRepository roleRepository;
 
+    @Mock
+    private AuditService auditService;
+
+    @Mock
+    private ObjectMapper mapper;
+
     @InjectMocks
     private RoleAdminService roleAdminService;
 
@@ -35,10 +43,12 @@ class RoleAdminServiceTest {
 
         roleAdminService.createRole(1L, request);
 
-        verify(roleRepository).save(argThat(role ->
-            role.getName().equals("TEST_ROLE")
-                    && role.getDescription().equals("Test role")
-    ));
+        verify(roleRepository).save(
+                argThat(role ->
+                        role.getName().equals("TEST_ROLE")
+                                && role.getDescription().equals("테스트 권한")
+                )
+        );
     }
 
     @Test
@@ -57,8 +67,11 @@ class RoleAdminServiceTest {
 
         roleAdminService.updateRole(1L, 1L, request);
 
-        assertThat(role.getName()).isEqualTo("ADMIN_MANAGER");
-        assertThat(role.getDescription()).isEqualTo("수정된 설명");
+        assertThat(role.getName())
+                .isEqualTo("ADMIN_MANAGER");
+
+        assertThat(role.getDescription())
+                .isEqualTo("수정된 설명");
 
         verify(roleRepository).findById(1L);
     }
@@ -73,18 +86,26 @@ class RoleAdminServiceTest {
         request.setDescription("설명");
 
         assertThrows(
-                RuntimeException.class,
+                IllegalArgumentException.class,
                 () -> roleAdminService.updateRole(1L, 999L, request)
         );
+
+        verify(roleRepository).findById(999L);
     }
 
     @Test
     void Role을_삭제한다() {
-        when(roleRepository.existsById(1L))
-                .thenReturn(true);
+        Role role = Role.create(
+                "MANAGER",
+                "관리자 역할"
+        );
+
+        when(roleRepository.findById(1L))
+                .thenReturn(Optional.of(role));
 
         roleAdminService.deleteRole(1L, 1L);
 
-        verify(roleRepository).deleteById(1L);
+        verify(roleRepository).findById(1L);
+        verify(roleRepository).delete(role);
     }
 }
