@@ -82,7 +82,7 @@ class RoleAdminServiceTest {
 
         assertThrows(
                 RuntimeException.class,
-                () -> roleAdminService.updateRole(999L, request)
+                () -> roleAdminService.updateRole(1L, 999L, request)
         );
     }
 
