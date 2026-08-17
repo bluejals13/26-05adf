@@ -75,7 +75,7 @@ class PermissionAdminServiceTest {
                 );
 
         Role role =
-                new Permission(
+                Role.create(
                         "ADMIN",
                         "관리자"
                 );
