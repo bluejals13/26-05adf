@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import org.springframework.dao.DataIntegrityViolationException;
+
 import java.util.List;
 
 @DataJpaTest
@@ -103,15 +105,13 @@ class PermissionRepositoryTest {
                 )
         );
 
-        permissionRepository.save(
+        assertThatThrownBy(
+            () -> permissionRepository.saveAndFlush(
                 new Permission(
                         "TEST_DUPLICATE",
                         "중복 Permission"
+                        )
                 )
-        );
-
-        assertThatThrownBy(
-                () -> permissionRepository.flush()
         ).isInstanceOf(Exception.class);
     }
 
