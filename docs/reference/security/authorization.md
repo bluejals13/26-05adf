@@ -22,17 +22,17 @@ flowchart TD
 ## 2. Role → Permission → Authority
 ```mermaid
 flowchart LR
-    A[Authenticated User]
-        --> B[SecurityContext]
+    A["Authenticated User"]
+        --> B["SecurityContext"]
 
-    B --> C[Granted Authorities]
+    B --> C["Granted Authorities"]
 
-    C --> D{@PreAuthorize}
+    C --> D["@PreAuthorize"]
 
-    D --> E{Required Authority}
+    D --> E{"Required Authority"}
 
-    E -- Match --> F[Allow]
-    E -- No Match --> G[403 Forbidden]
+    E -- "Match" --> F["Allow"]
+    E -- "No Match" --> G["403 Forbidden"]
 ```
 
 ## 3. API 접근 제어
