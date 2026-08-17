@@ -6,6 +6,11 @@ type TokenResponse = {
   accessToken: string;
 };
 
+type ErrorResponse = {
+  code?: string;
+  message?: string;
+};
+
 export class HttpError extends Error {
   constructor(
     public readonly status: number,
@@ -23,6 +28,15 @@ export class RefreshTokenError extends HttpError {
   ) {
     super(status, message);
     this.name = "RefreshTokenError";
+  }
+}
+
+export class AccountSuspendedError extends HttpError {
+  constructor(
+    message = "Account suspended",
+  ) {
+    super(403, message);
+    this.name = "AccountSuspendedError";
   }
 }
 
@@ -61,32 +75,29 @@ export async function refreshToken(): Promise<TokenResponse | null> {
       const data: TokenResponse = await res.json();
 
       return data?.accessToken ? data : null;
-
     } catch (error) {
-
-        // Redis 장애 등으로 Refresh 응답이
-        // 일정 시간 내 도착하지 않는 경우
-        if (
-          error instanceof DOMException &&
-          error.name === "AbortError"
-        ) {
-          throw new RefreshTokenError(
-            503,
-            "Authentication service timeout",
-          );
-        }
-      
-        // 이미 정의한 RefreshTokenError는 그대로 전달
-        if (error instanceof RefreshTokenError) {
-          throw error;
-        }
-      
-        // Network Error 등 예상하지 못한 인증 인프라 오류
+      // Redis 장애 등으로 Refresh 응답이
+      // 일정 시간 내 도착하지 않는 경우
+      if (
+        error instanceof DOMException &&
+        error.name === "AbortError"
+      ) {
         throw new RefreshTokenError(
           503,
-          "Authentication service unavailable",
+          "Authentication service timeout",
         );
+      }
 
+      // 이미 정의한 RefreshTokenError는 그대로 전달
+      if (error instanceof RefreshTokenError) {
+        throw error;
+      }
+
+      // Network Error 등 예상하지 못한 인증 인프라 오류
+      throw new RefreshTokenError(
+        503,
+        "Authentication service unavailable",
+      );
     } finally {
       window.clearTimeout(timeoutId);
       refreshPromise = null;
@@ -108,11 +119,13 @@ export async function request<T>(
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+
       ...(token
         ? {
             Authorization: `Bearer ${token}`,
           }
         : {}),
+
       ...(options.headers || {}),
     },
   });
@@ -129,7 +142,9 @@ export async function request<T>(
     }
 
     // 새 Access Token 저장
-    useAuthStore.getState().login(newToken.accessToken);
+    useAuthStore
+      .getState()
+      .login(newToken.accessToken);
 
     // 새 Token으로 동일 요청 1회 재시도
     return request<T>(
@@ -147,28 +162,36 @@ export async function request<T>(
 
   if (!res.ok) {
     const text = await res.text();
-    let body: { code?: string; message?: string } = {};
-    
-      try {
-        body = text ? JSON.parse(text) : {};
-      } catch {
-        // ignore
-      }
-    
-      if (
-        res.status === 403 &&
-        body.code === "ACCOUNT_SUSPENDED"
-      ) {
-        throw new AccountSuspendedError(
-          body.message ?? "Account suspended",
-        );
-      }
-    
-      throw new HttpError(
-        res.status,
-        body.message ?? text || "Request failed",
+
+    let body: ErrorResponse = {};
+
+    try {
+      body = text ? JSON.parse(text) : {};
+    } catch {
+      // JSON 응답이 아니면 text 사용
+    }
+
+    // 계정 정지
+    if (
+      res.status === 403 &&
+      body.code === "ACCOUNT_SUSPENDED"
+    ) {
+      // 현재 로그인 세션 종료
+      useAuthStore.getState().logout();
+
+      throw new AccountSuspendedError(
+        body.message ?? "Account suspended",
       );
     }
+
+    throw new HttpError(
+      res.status,
+      body.message ?? (text || "Request failed"),
+    );
+  }
+
+  return res.json();
+}
 
 export const http = {
   get: <T>(url: string): Promise<T> =>
