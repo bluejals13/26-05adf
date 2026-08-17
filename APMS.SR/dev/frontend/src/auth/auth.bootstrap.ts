@@ -47,6 +47,7 @@ export function bootstrapAuth(): Promise<void> {
         error instanceof RefreshTokenError &&
         error.status === 401
       ) {
+        useAuthStore.getState().setAuthServiceUnavailable(false);
         useAuthStore.getState().logout();
 
         await queryClient.resetQueries({
