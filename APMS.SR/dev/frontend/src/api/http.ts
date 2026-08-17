@@ -64,19 +64,28 @@ export async function refreshToken(): Promise<TokenResponse | null> {
 
     } catch (error) {
 
-      // Redis 장애 등으로 Refresh 응답이
-      // 일정 시간 내 도착하지 않는 경우
-      if (
-        error instanceof DOMException &&
-        error.name === "AbortError"
-      ) {
+        // Redis 장애 등으로 Refresh 응답이
+        // 일정 시간 내 도착하지 않는 경우
+        if (
+          error instanceof DOMException &&
+          error.name === "AbortError"
+        ) {
+          throw new RefreshTokenError(
+            503,
+            "Authentication service timeout",
+          );
+        }
+      
+        // 이미 정의한 RefreshTokenError는 그대로 전달
+        if (error instanceof RefreshTokenError) {
+          throw error;
+        }
+      
+        // Network Error 등 예상하지 못한 인증 인프라 오류
         throw new RefreshTokenError(
           503,
-          "Authentication service timeout",
+          "Authentication service unavailable",
         );
-      }
-
-      throw error;
 
     } finally {
       window.clearTimeout(timeoutId);
