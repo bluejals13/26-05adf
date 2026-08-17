@@ -9,18 +9,16 @@ import {
   assignPermissions as assignPermissionsApi,
 } from "../api/role.api";
 
-import { authKeys } from "../auth/auth.keys";
+import { userKeys } from "../queries/useUsers";
 
 export const useRoleManagement = () => {
   const queryClient = useQueryClient();
 
-  // Role / Permission 변경 후 관련 화면 갱신
   const invalidateRoleRelatedQueries = async () => {
     await Promise.all([
       queryClient.invalidateQueries({
         queryKey: ["roles"],
       }),
-
       queryClient.invalidateQueries({
         queryKey: userKeys.all,
       }),
@@ -29,9 +27,7 @@ export const useRoleManagement = () => {
 
   const saveRole = useMutation({
     mutationFn: (payload: any) =>
-      payload.id
-        ? updateRole(payload.id, payload)
-        : createRole(payload),
+      payload.id ? updateRole(payload.id, payload) : createRole(payload),
 
     onSuccess: invalidateRoleRelatedQueries,
   });
@@ -55,3 +51,4 @@ export const useRoleManagement = () => {
     removeRole,
   };
 };
+
