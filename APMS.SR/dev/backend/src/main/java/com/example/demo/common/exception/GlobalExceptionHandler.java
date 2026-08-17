@@ -1,11 +1,12 @@
 package com.example.demo.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import com.example.demo.common.exception.UserNotFoundException;
-import com.example.demo.common.exception.DuplicateUserException;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 
 import java.util.Map;
@@ -17,6 +18,7 @@ public class GlobalExceptionHandler {
     // 회원 가입 계정 중복
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> handleBadRequest(IllegalArgumentException e) {
+
         return ResponseEntity
                 .status(400)
                 .body(Map.of("message", e.getMessage()));
@@ -24,15 +26,34 @@ public class GlobalExceptionHandler {
 
     // 게스트의 리프레시 계정 정보 me 오류
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<?> handleBadCredentials(BadCredentialsException e) {
+    public ResponseEntity<?> handleBadCredentials(
+            BadCredentialsException e) {
+
         return ResponseEntity.status(401).body(Map.of(
-            "message", "UNAUTHORIZED",
-            "detail", e.getMessage()
+                "message", "UNAUTHORIZED",
+                "detail", e.getMessage()
         ));
     }
 
+    // 권한 부족
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> handleAccessDenied(
+            AccessDeniedException e) {
+
+        log.warn("ACCESS DENIED: {}", e.getMessage());
+
+        return ResponseEntity
+                .status(403)
+                .body(Map.of(
+                        "message", "FORBIDDEN",
+                        "detail", e.getMessage()
+                ));
+    }
+
     @ExceptionHandler(DuplicateUserException.class)
-    public ResponseEntity<?> handleDuplicateUser(DuplicateUserException e) {
+    public ResponseEntity<?> handleDuplicateUser(
+            DuplicateUserException e) {
+
         return ResponseEntity
                 .status(409)
                 .body(Map.of(
@@ -44,6 +65,7 @@ public class GlobalExceptionHandler {
     // 나머지 모든 예외
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleAll(Exception e) {
+
         log.error("SERVER ERROR", e);
 
         return ResponseEntity
@@ -57,10 +79,9 @@ public class GlobalExceptionHandler {
     // null 값 예외 처리
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<?> handleNPE(NullPointerException e) {
+
         return ResponseEntity
                 .status(400)
                 .body(Map.of("message", "NULL_INPUT"));
     }
-
-
 }
