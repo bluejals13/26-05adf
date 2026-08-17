@@ -24,7 +24,11 @@ export function bootstrapAuth(): Promise<void> {
       if (data?.accessToken) {
         // Refresh 성공
         useAuthStore.getState().setToken(data.accessToken);
-
+        
+        useAuthStore
+          .getState()
+          .setAuthServiceUnavailable(false);
+        
         return;
       }
 
