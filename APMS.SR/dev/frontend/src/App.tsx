@@ -31,7 +31,14 @@ export default function App() {
 	useEffect(() => {
 	  bootstrapAuth().finally(() => setReady(true));
 	}, []);
-	
+
+	if (!ready) {
+	  return (
+	    <div className="app-loading">
+	      시스템을 확인하는 중입니다...
+	    </div>
+	  );
+	}
 	
   return (
     <BrowserRouter>
