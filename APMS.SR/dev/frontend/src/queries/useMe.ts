@@ -20,10 +20,8 @@ export function useMe() {
 
     retry: 0,
 
-    // 세션 확인 요청은 캐시보다 서버 상태 우선
     staleTime: 0,
 
-    // 주기적인 polling 없음
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
