@@ -33,20 +33,12 @@ class RoleAdminServiceTest {
         request.setName("TEST_ROLE");
         request.setDescription("테스트 권한");
 
-        Role role = Role.create(
-                request.getName(),
-                request.getDescription()
-        );
+        roleAdminService.createRole(1L, request);
 
-        when(roleRepository.save(any(Role.class)))
-                .thenReturn(role);
-
-        Role result = roleAdminService.createRole(1L, request);
-
-        assertThat(result.getName()).isEqualTo("MANAGER");
-        assertThat(result.getDescription()).isEqualTo("관리자 역할");
-
-        verify(roleRepository).save(any(Role.class));
+        verify(roleRepository).save(argThat(role ->
+            role.getName().equals("TEST_ROLE")
+                    && role.getDescription().equals("Test role")
+    ));
     }
 
     @Test
