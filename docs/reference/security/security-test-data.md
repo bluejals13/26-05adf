@@ -1,165 +1,129 @@
 # Security Test Data
 
-## 1. Purpose
+## 1. 목적
 
-Security Integration Test에서 사용하는
-사용자, Role, Permission 및 테스트 DB Fixture를 정의한다.
+Security 테스트에서 사용하는 H2 테스트 DB와 SQL Fixture의 구성을 정의한다.
 
-본 문서는 테스트 결과가 어떤 사용자와 권한 조건에서
-재현되었는지 확인하기 위한 목적으로 사용한다.
+주요 목적은 다음과 같다.
 
----
-
-## 2. Test Users
-
-| User       | Role  | Purpose            |
-| ---------- | ----- | ------------------ |
-| `testuser` | USER  | 일반 사용자 인증 및 인가 테스트 |
-| `admin`    | ADMIN | 관리자 API 접근 테스트     |
-
-> 테스트 계정의 실제 비밀번호, JWT, Refresh Token 등 민감한 인증 정보는 문서에 기록하지 않는다.
+* 테스트용 User / Role 구성
+* Role / Permission 관계 검증
+* Authentication / Authorization 테스트 지원
+* 401 / 403 테스트 데이터 제공
 
 ---
 
-## 3. Roles
+## 2. 테스트 데이터 구성
 
-### USER
+테스트 환경은 `test` 프로필의 H2 인메모리 DB를 사용하며, Flyway가 Schema와 기본 IAM 데이터를 구성한다.
 
-일반 사용자에게 필요한 최소 권한을 사용한다.
+```mermaid
+flowchart TD
+    A["H2 Test DB"]
+    --> B["Flyway"]
 
-```text
-USER_READ
-MENU_READ
+    B --> C["Schema"]
+    B --> D["Role / Permission"]
+
+    D --> E["security-test-data.sql"]
+
+    E --> F["testuser → USER"]
+    E --> G["admin → ADMIN"]
+
+    F --> H["Security Test"]
+    G --> H
 ```
 
-### ADMIN
-
-관리자 API 및 관리 기능에 필요한 권한을 사용한다.
-
-```text
-USER_READ
-USER_CREATE
-USER_UPDATE
-USER_STATUS_UPDATE
-USER_DELETE
-
-ROLE_READ
-ROLE_CREATE
-ROLE_UPDATE
-ROLE_DELETE
-ROLE_ASSIGN
-ROLE_REMOVE
-
-MENU_READ
-
-PERMISSION_READ
-```
+| 구분                       | 담당                                |
+| ------------------------ | --------------------------------- |
+| H2                       | 테스트 전용 DB                         |
+| Flyway                   | Schema 및 기본 Role / Permission     |
+| `security-test-data.sql` | 테스트 User 및 User-Role 관계           |
+| Security Test            | Authentication / Authorization 검증 |
 
 ---
 
-## 4. Permission Model
+## 3. Test Users
 
-애플리케이션의 권한 검증 구조는 다음과 같다.
+Security Fixture에서 사용하는 테스트 사용자는 다음과 같다.
 
-```text
-User
-  ↓
-Role
-  ↓
-Permission
-  ↓
-GrantedAuthority
-  ↓
-@PreAuthorize
-  ↓
-API Access
-```
+| User       | Status   | Role    | 목적            |
+| ---------- | -------- | ------- | ------------- |
+| `testuser` | `ACTIVE` | `USER`  | 일반 사용자 권한 테스트 |
+| `admin`    | `ACTIVE` | `ADMIN` | 관리자 권한 테스트    |
 
-Security Test에서는 USER와 ADMIN의 권한 차이를 이용하여
-정상 접근과 접근 거부 시나리오를 검증한다.
+실제 운영 사용자 및 개인정보는 테스트 데이터로 사용하지 않는다.
 
----
-
-## 5. Test Database
-
-### Profile
+Fixture 파일:
 
 ```text
-test
-```
-
-### Database
-
-```text
-H2
-```
-
-### Initialization
-
-```text
-Flyway
-   ↓
-Schema Migration
-   ↓
-Security Test Fixture
-   ↓
-Integration Test
+src/test/resources/sql/security-test-data.sql
 ```
 
 ---
 
-## 6. SQL Fixture
+## 4. Role / Permission
 
-테스트 데이터는 별도의 SQL Fixture로 관리한다.
+기본 Role과 Permission은 Flyway에서 구성한다.
 
-```text
-sql/security-test-data.sql
+### Role
+
+| Role    | 목적     |
+| ------- | ------ |
+| `USER`  | 일반 사용자 |
+| `ADMIN` | 관리자    |
+
+### 주요 Permission
+
+| Permission    | 목적                  |
+| ------------- | ------------------- |
+| `USER_READ`   | 사용자 조회              |
+| `ROLE_READ`   | Role 조회             |
+| `ROLE_ASSIGN` | Role에 Permission 할당 |
+| `MENU_READ`   | 메뉴 조회               |
+
+전체 Permission 및 RBAC 정책은 `rbac.md`를 기준으로 한다.
+
+---
+
+## 5. User → Role → Permission
+
+```mermaid
+flowchart LR
+    A["testuser"] --> B["USER"]
+    B --> C["USER_READ"]
+    B --> D["MENU_READ"]
+
+    E["admin"] --> F["ADMIN"]
+    F --> G["ROLE_READ"]
+    F --> H["ROLE_ASSIGN"]
+    F --> I["MENU_READ"]
 ```
 
-주요 Fixture:
-
-* USER 계정
-* ADMIN 계정
-* Role
-* Permission
-* User-Role 관계
-* Role-Permission 관계
+`security-test-data.sql`은 Role과 Permission 자체를 생성하지 않고, Flyway에서 생성된 Role을 기준으로 User와 연결한다.
 
 ---
 
-## 7. Authorization Test Matrix
+## 6. 테스트별 데이터 사용
 
-| User      | API                | Expected |
-| --------- | ------------------ | -------: |
-| Anonymous | `/api/users/me`    |      401 |
-| USER      | `/api/users/me`    |      200 |
-| ADMIN     | `/api/admin/users` |      200 |
-| USER      | `/api/admin/users` |      403 |
+| 테스트                             | 주요 데이터              | 방식                 |
+| ------------------------------- | ------------------- | ------------------ |
+| `PermissionIntegrationTest`     | Permission          | Flyway             |
+| `RolePermissionIntegrationTest` | Role / Permission   | Flyway             |
+| `RbacSecurityIntegrationTest`   | `testuser`, `admin` | SQL Fixture + JWT  |
+| `SecurityIntegrationTest`       | `testuser`, `admin` | SQL Fixture + JWT  |
+| `MenuSecurityIntegrationTest`   | `MENU_READ` 등       | Mock JWT Authority |
+| `AuthServiceTest`               | Mock User           | Mockito            |
 
----
-
-## 8. Data Isolation
-
-Security Integration Test는 테스트 전용 DB와
-테스트 전용 사용자 데이터를 사용한다.
-
-운영 계정 및 운영 데이터는 테스트에 사용하지 않는다.
-
-테스트 데이터는 Fixture를 통해 재현 가능하도록 관리한다.
+`MenuSecurityIntegrationTest`와 `AuthServiceTest`는 `security-test-data.sql`에 의존하지 않는다.
 
 ---
 
-## 9. Sensitive Data Policy
+## 7. 테스트 데이터 원칙
 
-다음 정보는 본 문서에 실제 값을 기록하지 않는다.
-
-* 사용자 비밀번호
-* Access Token
-* Refresh Token
-* JWT Secret
-* Redis 인증 정보
-* DB 계정 및 비밀번호
-* 운영 환경의 개인정보
-
-필요한 경우 테스트 코드 또는 환경 변수에서
-안전하게 주입한다.
+* 테스트 DB는 H2 인메모리 DB를 사용한다.
+* Schema와 기본 IAM 데이터는 Flyway가 관리한다.
+* 테스트 User는 `security-test-data.sql`에서 관리한다.
+* 기본 Role / Permission을 Fixture에서 중복 생성하지 않는다.
+* 실제 운영 데이터를 사용하지 않는다.
+* 인증 성공은 200, 인증 실패는 401, 권한 부족은 403을 기준으로 검증한다.
