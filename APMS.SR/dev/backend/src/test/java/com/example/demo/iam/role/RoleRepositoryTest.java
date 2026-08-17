@@ -1,4 +1,4 @@
-package com.example.demo.iam.role.repository;
+package com.example.demo.iam.role;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
