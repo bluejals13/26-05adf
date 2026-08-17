@@ -4,19 +4,19 @@
 
 ```mermaid
 flowchart TD
-    A[HTTP Request] --> B{Authenticated?}
+    A["HTTP Request"] --> B{"Authenticated?"}
 
-    B -- No --> C[401 Unauthorized]
+    B -- "No" --> C["401 Unauthorized"]
 
-    B -- Yes --> D[SecurityContext]
-    D --> E[Granted Authorities]
+    B -- "Yes" --> D["SecurityContext"]
+    D --> E["Granted Authorities"]
 
-    E --> F{@PreAuthorize}
+    E --> F["@PreAuthorize"]
 
-    F --> G{Required Authority?}
+    F --> G{"Required Authority?"}
 
-    G -- Yes --> H[Controller]
-    G -- No --> I[403 Forbidden]
+    G -- "Yes" --> H["Controller"]
+    G -- "No" --> I["403 Forbidden"]
 ```
 
 ## 2. Role → Permission → Authority
@@ -37,17 +37,18 @@ flowchart LR
 
 ## 3. API 접근 제어
 ```mermaid
-flowchart TD
-    A[Request] --> B[Authentication]
-    B --> C[Granted Authorities]
-    C --> D[Controller]
+flowchart LR
+    A["Authenticated User"]
+        --> B["SecurityContext"]
 
-    D --> E{@PreAuthorize}
+    B --> C["Granted Authorities"]
 
-    E --> F{Authority Check}
+    C --> D["@PreAuthorize"]
 
-    F -- Pass --> G[Execute API]
-    F -- Fail --> H[403 Forbidden]
+    D --> E{"Required Authority"}
+
+    E -- "Match" --> F["Allow"]
+    E -- "No Match" --> G["403 Forbidden"]
 ```
 
 ## 4. 401 / 403
