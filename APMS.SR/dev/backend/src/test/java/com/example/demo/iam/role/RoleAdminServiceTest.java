@@ -39,7 +39,7 @@ class RoleAdminServiceTest {
         when(roleRepository.save(any(Role.class)))
                 .thenReturn(role);
 
-        Role result = roleAdminService.createRole(request);
+        Role result = roleAdminService.createRole(1L, request);
 
         assertThat(result.getName()).isEqualTo("MANAGER");
         assertThat(result.getDescription()).isEqualTo("관리자 역할");
@@ -62,7 +62,7 @@ class RoleAdminServiceTest {
                 "수정된 설명"
         );
 
-        roleAdminService.updateRole(1L, request);
+        roleAdminService.updateRole(1L, 1L, request);
 
         assertThat(role.getName()).isEqualTo("ADMIN_MANAGER");
         assertThat(role.getDescription()).isEqualTo("수정된 설명");
@@ -91,7 +91,7 @@ class RoleAdminServiceTest {
         when(roleRepository.existsById(1L))
                 .thenReturn(true);
 
-        roleAdminService.deleteRole(1L);
+        roleAdminService.deleteRole(1L, 1L);
 
         verify(roleRepository).deleteById(1L);
     }
