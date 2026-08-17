@@ -37,13 +37,13 @@ class PermissionAdminServiceTest {
     void Permission_목록을_조회한다() {
 
         Permission p1 =
-                Permission.create(
+                new Permission(
                         "USER_READ",
                         "사용자 조회"
                 );
 
         Permission p2 =
-                Permission.create(
+                new Permission(
                         "ROLE_READ",
                         "Role 조회"
                 );
@@ -69,13 +69,13 @@ class PermissionAdminServiceTest {
     void Permission_상세조회시_Role을_조회한다() {
 
         Permission permission =
-                Permission.create(
+                new Permission(
                         "ROLE_ASSIGN",
                         "Role에 Permission 할당"
                 );
 
         Role role =
-                Role.create(
+                new Permission(
                         "ADMIN",
                         "관리자"
                 );
@@ -102,7 +102,7 @@ class PermissionAdminServiceTest {
     void Permission_상세조회에서는_UserRepository를_사용하지_않는다() {
 
         Permission permission =
-                Permission.create(
+                new Permission(
                         "USER_READ",
                         "사용자 조회"
                 );
