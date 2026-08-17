@@ -4,7 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.example.demo.iam.permission.domain.Permission;
 import com.example.demo.iam.permission.repository.PermissionRepository;
+
 import com.example.demo.iam.role.domain.Role;
+import com.example.demo.iam.role.repository.RoleRepository;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
