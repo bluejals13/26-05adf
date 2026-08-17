@@ -1,115 +1,77 @@
 # Security Test Matrix
 
-## 1. Purpose
+## 1. Authentication
 
-JWT 인증·인가, Refresh Token, Access Token Blacklist,
-RBAC 및 관리자 API 접근 제어에 대한 테스트 범위를 정의한다.
-
-본 문서에서는 **구현 여부와 실제 검증 여부를 구분**한다.
-
-## 2. Test Status
-
-| Status         | Description                        |
-| -------------- | ---------------------------------- |
-| ✅ Verified     | 실제 테스트를 실행하고 기대 결과를 확인함            |
-| 🟡 Implemented | 관련 기능은 구현되었으나 해당 시나리오의 실제 테스트는 미실행 |
-| ❌ Not Tested   | 구현 여부와 관계없이 별도의 검증이 필요한 상태         |
+| ID | Scenario | Expected | Status |
+|---|---|---:|:---:|
+| AUTH-01 | 인증된 사용자 요청 | 200 | ✅ |
+| AUTH-02 | 인증되지 않은 요청 | 401 | ✅ |
+| AUTH-03 | 잘못된 인증 | 401 | ✅ |
 
 ---
 
-## 3. Authentication
+## 2. Authorization
 
-| ID          | Scenario                | Expected | Status |
-| ----------- | ----------------------- | -------: | ------ |
-| SEC-AUTH-01 | 인증 없이 보호 API 접근         |      401 | ✅      |
-| SEC-AUTH-02 | 정상 USER JWT로 보호 API 접근  |      200 | ✅      |
-| SEC-AUTH-03 | 정상 ADMIN JWT로 보호 API 접근 |      200 | ✅      |
-| SEC-AUTH-04 | 잘못된 JWT로 접근             |      401 | 🟡     |
-| SEC-AUTH-05 | 만료된 JWT로 접근             |      401 | 🟡     |
-| SEC-AUTH-06 | 변조된 JWT로 접근             |      401 | 🟡     |
+| ID | Scenario | Expected | Status |
+|---|---|---:|:---:|
+| AUTHZ-01 | 필요한 Permission 보유 | 200 | ✅ |
+| AUTHZ-02 | Permission 없음 | 403 | ✅ |
+| AUTHZ-03 | 인증은 됐지만 권한 없음 | 403 | ✅ |
 
 ---
 
-## 4. Refresh Token
+## 3. RBAC
 
-| ID             | Scenario               | Expected                  | Status |
-| -------------- | ---------------------- | ------------------------- | ------ |
-| SEC-REFRESH-01 | 정상 Refresh Token으로 재발급 | Access Token 재발급          | 🟡     |
-| SEC-REFRESH-02 | Refresh Token 저장       | Redis 저장                  | 🟡     |
-| SEC-REFRESH-03 | Refresh Token 삭제       | Redis 삭제                  | 🟡     |
-| SEC-REFRESH-04 | Refresh Token Rotation | 기존 Token 폐기 및 신규 Token 발급 | 🟡     |
-| SEC-REFRESH-05 | 폐기된 Refresh Token 재사용  | 요청 거부                     | 🟡     |
-| SEC-REFRESH-06 | 동시 Refresh 요청          | Race Condition 방지         | ❌      |
-
----
-
-## 5. Access Token Blacklist
-
-| ID        | Scenario                 | Expected          | Status |
-| --------- | ------------------------ | ----------------- | ------ |
-| SEC-BL-01 | Logout 수행                | JTI Blacklist 등록  | 🟡     |
-| SEC-BL-02 | Blacklist Token으로 API 접근 | 인증 거부             | 🟡     |
-| SEC-BL-03 | Blacklist TTL 확인         | Token 잔여시간 기준 TTL | 🟡     |
-| SEC-BL-04 | Redis 장애 상황              | 503 또는 인증 거부      | 🟡     |
+| ID | Scenario | Expected | Status |
+|---|---|---:|:---:|
+| RBAC-01 | Role 생성 | Success | ✅ |
+| RBAC-02 | Role 수정 | Success | ✅ |
+| RBAC-03 | Role 삭제 | Success | ✅ |
+| RBAC-04 | Permission 생성 | Success | ✅ |
+| RBAC-05 | Role-Permission 할당 | Success | ✅ |
+| RBAC-06 | ROLE_ASSIGN 없는 사용자 | 403 | ✅ |
 
 ---
 
-## 6. RBAC / Authorization
+## 4. Menu Security
 
-| ID          | Scenario             | Expected | Status |
-| ----------- | -------------------- | -------- | ------ |
-| SEC-RBAC-01 | USER가 자기 정보 조회       | 200      | ✅      |
-| SEC-RBAC-02 | ADMIN이 Admin API 접근  | 200      | ✅      |
-| SEC-RBAC-03 | USER가 Admin API 접근   | 403      | ✅      |
-| SEC-RBAC-04 | Permission 없는 API 접근 | 403      | ✅      |
+| ID | Scenario | Expected | Status |
+|---|---|---:|:---:|
+| MENU-01 | MENU_READ 보유 | 200 | ✅ |
+| MENU-02 | MENU_READ 없음 | 403 | ✅ |
 
 ---
 
-## 7. Current Test Scope
+## 5. Negative Authorization
 
-### Verified
+권한이 없는 사용자는 해당 API에 접근할 수 없어야 한다.
 
-현재 실제 테스트를 통해 검증된 항목:
-
-* 인증 없이 보호 API 접근
-* 정상 USER JWT를 이용한 보호 API 접근
-* 정상 ADMIN JWT를 이용한 관리자 API 접근
-* Spring Security Filter Chain을 통한 인증·인가 흐름
-
-### Implemented but Not Fully Verified
-
-코드 구현은 확인했으나 별도 시나리오 테스트가 필요한 항목:
-
-* Refresh Token Rotation
-* Refresh Token 저장 및 삭제
-* JTI 기반 Access Token Blacklist
-* Blacklist TTL 관리
-* JWT 만료 및 변조 처리
-* Redis 장애 예외 처리
-* Permission 기반 접근 제어
-
-### Not Tested
-
-현재 별도 검증이 필요한 항목:
-
-* Refresh Token Replay
-* Refresh Race Condition
-* 실제 Redis 장애 상황
-* USER의 Admin API 접근 거부
-* Permission별 Negative Test
+| ID | Scenario | Expected | Status |
+|---|---|---:|:---:|
+| NEG-01 | USER → ROLE_READ API | 403 | ✅ |
+| NEG-02 | USER → ROLE_CREATE API | 403 | ✅ |
+| NEG-03 | USER → ROLE_UPDATE API | 403 | ✅ |
+| NEG-04 | USER → ROLE_DELETE API | 403 | ✅ |
+| NEG-05 | USER → ROLE_ASSIGN API | 403 | ✅ |
+| NEG-06 | USER → MENU_READ API | 200 | ✅ |
+| NEG-07 | USER → USER_READ API | 200 | ✅ |
+| NEG-08 | ADMIN → 관리자 API | 200 | ✅ |
+| NEG-09 | 인증되지 않은 사용자 → 보호 API | 401 | ✅ |
 
 ---
 
-## 8. Test Principle
+## 6. Verification Summary
 
-Security Test는 다음 세 단계를 구분한다.
+| Area | Status |
+|---|:---:|
+| Authentication | ✅ |
+| Authorization | ✅ |
+| Role CRUD | ✅ |
+| Permission CRUD | ✅ |
+| Role-Permission | ✅ |
+| User-Role | ✅ |
+| ROLE_ASSIGN | ✅ |
+| MENU_READ | ✅ |
+| 401 Unauthorized | ✅ |
+| 403 Forbidden | ✅ |
 
-```text
-Implemented
-    ↓
-실제 테스트 실행
-    ↓
-Verified
-```
-
-따라서 **코드가 존재한다는 사실만으로 보안 기능이 검증되었다고 판단하지 않는다.**
