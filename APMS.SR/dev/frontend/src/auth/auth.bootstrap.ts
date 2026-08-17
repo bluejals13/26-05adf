@@ -1,9 +1,12 @@
-// auth/bootstrapAuth.tsx				// 리프레시 관리
+// auth/bootstrapAuth.tsx
 
 import { useAuthStore } from "../store/auth.store";
 import { queryClient } from "../queryClient";
 
-import { refreshToken, RefreshTokenError } from "../api/http";
+import {
+  refreshToken,
+  RefreshTokenError,
+} from "../api/http";
 
 import { authKeys } from "../auth/auth.keys";
 
@@ -21,51 +24,59 @@ export function bootstrapAuth(): Promise<void> {
       if (data?.accessToken) {
         // Refresh 성공
         useAuthStore.getState().setToken(data.accessToken);
+
         return;
       }
 
-      // 명확한 인증 정보가 없는 경우
+      // Refresh Token이 없거나 유효하지 않은 경우
       useAuthStore.getState().logout();
-      queryClient.resetQueries({
+
+      await queryClient.resetQueries({
         queryKey: authKeys.all,
       });
 
     } catch (error) {
 
-      // 401 → 실제 인증 만료/무효
+      // 401
+      // 실제 인증 만료 / 무효
       if (
         error instanceof RefreshTokenError &&
         error.status === 401
       ) {
         useAuthStore.getState().logout();
 
-        queryClient.resetQueries({
+        await queryClient.resetQueries({
           queryKey: authKeys.all,
         });
 
         return;
       }
 
-      // 503 → Redis / 인증 인프라 장애
+      // 503
+      // Redis / 인증 인프라 장애
       if (
         error instanceof RefreshTokenError &&
         error.status === 503
       ) {
-        // 절대 logout 하지 않는다.
         console.warn(
           "[Auth] Authentication service unavailable."
         );
 
+        // 중요:
+        // logout 하지 않는다.
+        // bootstrap은 정상 종료한다.
         return;
       }
 
-      // Network Error 등 일시적인 연결 장애
+      // Network Error / Timeout 등
       console.warn(
         "[Auth] Authentication service temporarily unavailable.",
         error
       );
 
-      // 여기서도 logout 하지 않는다.
+      // 중요:
+      // logout 하지 않는다.
+      // bootstrap을 종료시켜 앱이 렌더링되도록 한다.
     } finally {
       bootstrapPromise = null;
     }
@@ -73,4 +84,3 @@ export function bootstrapAuth(): Promise<void> {
 
   return bootstrapPromise;
 }
-
