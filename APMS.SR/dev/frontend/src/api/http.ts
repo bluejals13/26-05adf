@@ -27,15 +27,22 @@ export class RefreshTokenError extends HttpError {
 }
 
 // 동시에 여러 요청에서 refresh가 발생하는 것을 방지
+let refreshPromise: Promise<TokenResponse | null> | null = null;
+
+// Refresh 요청 최대 대기 시간
+const REFRESH_TIMEOUT = 5000;
+
 export async function refreshToken(): Promise<TokenResponse | null> {
-  if (refreshPromise) return refreshPromise;
+  if (refreshPromise) {
+    return refreshPromise;
+  }
 
   refreshPromise = (async () => {
     const controller = new AbortController();
 
     const timeoutId = window.setTimeout(() => {
       controller.abort();
-    }, 5000);
+    }, REFRESH_TIMEOUT);
 
     try {
       const res = await fetch("/api/auth/refresh", {
@@ -45,7 +52,10 @@ export async function refreshToken(): Promise<TokenResponse | null> {
       });
 
       if (!res.ok) {
-        throw new RefreshTokenError(res.status);
+        throw new RefreshTokenError(
+          res.status,
+          "Refresh token request failed",
+        );
       }
 
       const data: TokenResponse = await res.json();
@@ -54,9 +64,15 @@ export async function refreshToken(): Promise<TokenResponse | null> {
 
     } catch (error) {
 
-      if (error instanceof DOMException && error.name === "AbortError") {
-        throw new Error(
-          "Authentication service timeout"
+      // Redis 장애 등으로 Refresh 응답이
+      // 일정 시간 내 도착하지 않는 경우
+      if (
+        error instanceof DOMException &&
+        error.name === "AbortError"
+      ) {
+        throw new RefreshTokenError(
+          503,
+          "Authentication service timeout",
         );
       }
 
@@ -97,7 +113,10 @@ export async function request<T>(
     const newToken = await refreshToken();
 
     if (!newToken?.accessToken) {
-      throw new RefreshTokenError(401, "Unauthorized");
+      throw new RefreshTokenError(
+        401,
+        "Unauthorized",
+      );
     }
 
     // 새 Access Token 저장
