@@ -12,9 +12,6 @@ const ME_POLL_INTERVAL = 5000;
 
 export function useMe() {
   const token = useAuthStore((s) => s.token);
-  const authServiceUnavailable = useAuthStore(
-    (s) => s.authServiceUnavailable,
-  );
 
   const query = useQuery<User>({
     queryKey: [...authKeys.me(), token],
@@ -23,7 +20,6 @@ export function useMe() {
       try {
         const user = await http.get<User>("/api/users/me");
 
-        // 인증 서비스 정상 복구
         if (useAuthStore.getState().authServiceUnavailable) {
           useAuthStore
             .getState()
@@ -32,7 +28,6 @@ export function useMe() {
 
         return user;
       } catch (error) {
-        // 인증 인프라 장애
         if (
           error instanceof HttpError &&
           error.status === 503
@@ -52,13 +47,10 @@ export function useMe() {
 
     staleTime: 0,
 
-    // 다른 브라우저에서 계정 상태가 변경됐는지 주기적으로 확인
     refetchInterval: ME_POLL_INTERVAL,
 
-    // 브라우저로 돌아왔을 때 즉시 확인
     refetchOnWindowFocus: true,
 
-    // 네트워크 복구 시 즉시 확인
     refetchOnReconnect: true,
   });
 
