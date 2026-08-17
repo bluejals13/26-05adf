@@ -9,6 +9,7 @@ type AuthState = {
   setToken: (t: string | null) => void;
   logout: () => void;
   login: (token: string) => void;
+  authServiceUnavailable: boolean;
 };
 
 export const useAuthStore = create(
