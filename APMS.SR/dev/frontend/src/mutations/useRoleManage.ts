@@ -9,9 +9,23 @@ import {
   assignPermissions as assignPermissionsApi,
 } from "../api/role.api";
 
+import { authKeys } from "../auth/auth.keys";
 
 export const useRoleManagement = () => {
   const queryClient = useQueryClient();
+
+  // Role / Permission 변경 후 관련 화면 갱신
+  const refreshRoleManagement = async () => {
+    await Promise.all([
+      queryClient.invalidateQueries({
+        queryKey: ["roles"],
+      }),
+
+      queryClient.invalidateQueries({
+        queryKey: authKeys.me(),
+      }),
+    ]);
+  };
 
   const saveRole = useMutation({
     mutationFn: (payload: any) =>
@@ -19,23 +33,20 @@ export const useRoleManagement = () => {
         ? updateRole(payload.id, payload)
         : createRole(payload),
 
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["roles"] }),
+    onSuccess: refreshRoleManagement,
   });
 
   const assignPermissions = useMutation({
     mutationFn: ({ roleId, permissionIds }: any) =>
-      assignPermissionsApi(roleId, permissionIds), // ⭐ alias로 해결
+      assignPermissionsApi(roleId, permissionIds),
 
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["roles"] }),
+    onSuccess: refreshRoleManagement,
   });
 
   const removeRole = useMutation({
     mutationFn: deleteRole,
 
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["roles"] }),
+    onSuccess: refreshRoleManagement,
   });
 
   return {
@@ -44,4 +55,3 @@ export const useRoleManagement = () => {
     removeRole,
   };
 };
-
