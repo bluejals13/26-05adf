@@ -1,4 +1,4 @@
-package com.example.demo.iam.role.service;
+package com.example.demo.iam.role;
 
 import com.example.demo.audit.service.AuditService;
 import com.example.demo.iam.permission.domain.Permission;
