@@ -4,16 +4,27 @@ import { useMe } from "../../queries/useMe";
 import { useAuthStore } from "../../store/auth.store";
 import { authService } from "../auth.service";
 
-export function useAuth() {    // 로그인 상태 가져오기
+export function useAuth() {
   const token = useAuthStore((s) => s.token);
-  const { data: user, isLoading, isError } = useMe();
+
+  const {
+    data: user,
+    isLoading,
+    isError,
+  } = useMe();
+
+  const isAuthenticated = !!token;
 
   return {
     token,
     user,
+
     isLoading,
-    isError,    
-    isLoggedIn: !!token && !!user,
+    isError,
+
+    // token이 존재하는지를 인증 상태의 기준으로 사용
+    isLoggedIn: isAuthenticated,
+
     logout: authService.logout,
   };
 }
