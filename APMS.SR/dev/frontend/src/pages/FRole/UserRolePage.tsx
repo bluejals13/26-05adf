@@ -14,11 +14,6 @@ import type { User } from "../../auth/auth.types";
 
 import styles from "./UserRolePage.module.css";
 
-type Role = {
-  id: number;
-  name: string;
-  description?: string | null;
-};
 
 export default function UserRolePage() {
   const { data: me } = useMe();
