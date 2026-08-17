@@ -15,14 +15,14 @@ export const useRoleManagement = () => {
   const queryClient = useQueryClient();
 
   // Role / Permission 변경 후 관련 화면 갱신
-  const refreshRoleManagement = async () => {
+  const invalidateRoleRelatedQueries = async () => {
     await Promise.all([
       queryClient.invalidateQueries({
         queryKey: ["roles"],
       }),
 
       queryClient.invalidateQueries({
-        queryKey: authKeys.me(),
+        queryKey: userKeys.all,
       }),
     ]);
   };
@@ -33,20 +33,20 @@ export const useRoleManagement = () => {
         ? updateRole(payload.id, payload)
         : createRole(payload),
 
-    onSuccess: refreshRoleManagement,
+    onSuccess: invalidateRoleRelatedQueries,
   });
 
   const assignPermissions = useMutation({
     mutationFn: ({ roleId, permissionIds }: any) =>
       assignPermissionsApi(roleId, permissionIds),
 
-    onSuccess: refreshRoleManagement,
+    onSuccess: invalidateRoleRelatedQueries,
   });
 
   const removeRole = useMutation({
     mutationFn: deleteRole,
 
-    onSuccess: refreshRoleManagement,
+    onSuccess: invalidateRoleRelatedQueries,
   });
 
   return {
