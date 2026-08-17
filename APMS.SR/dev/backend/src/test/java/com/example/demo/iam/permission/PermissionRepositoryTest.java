@@ -1,4 +1,4 @@
-package com.example.demo.iam.permission.repository;
+package com.example.demo.iam.permission;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
