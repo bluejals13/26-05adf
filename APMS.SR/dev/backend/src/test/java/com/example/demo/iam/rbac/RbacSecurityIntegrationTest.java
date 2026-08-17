@@ -1,4 +1,4 @@
-package com.example.demo.auth.security;
+package com.example.demo.iam.rbac;
 
 import com.example.demo.auth.jwt.JwtProvider;
 import com.example.demo.iam.role.service.RolePermissionService;
