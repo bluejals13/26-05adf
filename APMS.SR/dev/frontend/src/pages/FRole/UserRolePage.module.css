@@ -15,7 +15,9 @@
     sans-serif;
 }
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
 
 .header {
   display: flex;
@@ -40,27 +42,29 @@
   font-size: 13px;
 }
 
-.summary {
+.userCount {
   display: flex;
   align-items: baseline;
-  gap: 6px;
+  gap: 5px;
 
   color: #8b949e;
   font-size: 12px;
 }
 
-.summary strong {
+.userCount strong {
   color: #58a6ff;
   font-size: 18px;
 }
 
-/* SEARCH */
+/* =========================
+   SEARCH
+========================= */
 
-.searchBox {
+.searchArea {
   margin-bottom: 12px;
 }
 
-.searchInput {
+.userSearch {
   width: 100%;
   height: 38px;
 
@@ -74,24 +78,26 @@
   border-radius: 8px;
 
   outline: none;
-  font-size: 13px;
 
-  transition:
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
+  font-size: 13px;
 }
 
-.searchInput::placeholder {
+.userSearch::placeholder,
+.roleSearch::placeholder {
   color: #6e7681;
 }
 
-.searchInput:focus {
+.userSearch:focus,
+.roleSearch:focus {
   border-color: #58a6ff;
+
   box-shadow:
     0 0 0 2px rgba(88, 166, 255, 0.15);
 }
 
-/* USER GRID */
+/* =========================
+   USER GRID
+========================= */
 
 .userGrid {
   display: grid;
@@ -128,7 +134,7 @@
   border-color: #484f58;
 }
 
-.userInfo {
+.userMain {
   min-width: 0;
 
   display: flex;
@@ -137,7 +143,7 @@
   gap: 10px;
 }
 
-.userAvatar {
+.avatar {
   width: 38px;
   height: 38px;
 
@@ -158,13 +164,11 @@
   font-weight: 700;
 }
 
-.userText {
+.userInfo {
   min-width: 0;
 }
 
-.userText > strong {
-  display: block;
-
+.username {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -172,9 +176,10 @@
   color: #e6edf3;
 
   font-size: 13px;
+  font-weight: 650;
 }
 
-.roleList {
+.roles {
   display: flex;
   flex-wrap: wrap;
 
@@ -184,9 +189,6 @@
 }
 
 .roleBadge {
-  display: inline-flex;
-  align-items: center;
-
   max-width: 150px;
 
   padding: 3px 7px;
@@ -205,8 +207,9 @@
   font-weight: 600;
 }
 
-.noRole {
+.unassigned {
   color: #6e7681;
+
   font-size: 11px;
 }
 
@@ -214,7 +217,6 @@
   flex: 0 0 auto;
 
   min-height: 32px;
-
   padding: 0 10px;
 
   background: rgba(88, 166, 255, 0.1);
@@ -227,10 +229,6 @@
 
   font-size: 12px;
   font-weight: 600;
-
-  transition:
-    background 0.15s ease,
-    border-color 0.15s ease;
 }
 
 .manageButton:hover {
@@ -239,9 +237,11 @@
   color: #0d1117;
 }
 
-/* EMPTY */
+/* =========================
+   EMPTY
+========================= */
 
-.empty {
+.emptyState {
   min-height: 150px;
 
   display: flex;
@@ -251,10 +251,11 @@
   color: #8b949e;
 
   font-size: 13px;
-  text-align: center;
 }
 
-/* OVERLAY */
+/* =========================
+   OVERLAY
+========================= */
 
 .overlay {
   position: fixed;
@@ -275,13 +276,18 @@
   -webkit-backdrop-filter: blur(4px);
 }
 
-/* PANEL */
+/* =========================
+   PANEL
+========================= */
 
 .panel {
   width: min(680px, 100%);
 
-  max-height: min(760px, calc(100vh - 48px));
-  max-height: min(760px, calc(100dvh - 48px));
+  max-height:
+    min(760px, calc(100vh - 48px));
+
+  max-height:
+    min(760px, calc(100dvh - 48px));
 
   display: flex;
   flex-direction: column;
@@ -298,7 +304,9 @@
     0 0 0 1px rgba(255, 255, 255, 0.02);
 }
 
-/* PANEL HEADER */
+/* =========================
+   PANEL HEADER
+========================= */
 
 .panelHeader {
   display: flex;
@@ -360,6 +368,7 @@
   border-radius: 7px;
 
   font-size: 22px;
+  line-height: 1;
 
   cursor: pointer;
 }
@@ -370,9 +379,11 @@
   border-color: #30363d;
 }
 
-/* TOOLBAR */
+/* =========================
+   ROLE TOOLBAR
+========================= */
 
-.toolbar {
+.roleToolbar {
   display: flex;
   align-items: center;
 
@@ -388,6 +399,7 @@
   height: 36px;
 
   padding: 0 11px;
+  box-sizing: border-box;
 
   background: #161b22;
   color: #c9d1d9;
@@ -400,13 +412,7 @@
   font-size: 13px;
 }
 
-.roleSearch:focus {
-  border-color: #58a6ff;
-  box-shadow:
-    0 0 0 2px rgba(88, 166, 255, 0.15);
-}
-
-.selectedCount {
+.selectedCounter {
   display: flex;
   align-items: baseline;
 
@@ -415,29 +421,33 @@
   color: #8b949e;
 
   white-space: nowrap;
+
   font-size: 12px;
 }
 
-.selectedCount strong {
+.selectedCounter strong {
   color: #58a6ff;
+
   font-size: 16px;
 }
 
-/* BULK */
+/* =========================
+   BULK
+========================= */
 
 .bulkActions {
   display: flex;
-
   gap: 12px;
 
   padding: 0 20px 10px;
 }
 
 .textButton,
-.dangerTextButton {
+.textButtonDanger {
   padding: 3px 0;
 
   background: transparent;
+
   border: 0;
 
   cursor: pointer;
@@ -455,16 +465,18 @@
   text-decoration: underline;
 }
 
-.dangerTextButton {
+.textButtonDanger {
   color: #f85149;
 }
 
-.dangerTextButton:hover {
+.textButtonDanger:hover {
   color: #ff7b72;
   text-decoration: underline;
 }
 
-/* ROLE LIST */
+/* =========================
+   ROLE LIST
+========================= */
 
 .roleList {
   flex: 1;
@@ -475,70 +487,101 @@
   overflow-y: auto;
 
   padding: 4px 20px 12px;
-
-  scrollbar-width: thin;
-  scrollbar-color: #30363d transparent;
 }
 
-.roleItem {
-  position: relative;
+/* =========================
+   ROLE CARD
+========================= */
+
+.roleCard {
+  width: 100%;
 
   display: flex;
-  align-items: flex-start;
+  align-items: center;
 
   gap: 11px;
 
   margin-bottom: 6px;
   padding: 12px;
 
+  box-sizing: border-box;
+
   background: #161b22;
+  color: #c9d1d9;
 
   border: 1px solid #21262d;
   border-radius: 9px;
+
+  text-align: left;
 
   cursor: pointer;
 
   transition:
     background 0.15s ease,
-    border-color 0.15s ease;
+    border-color 0.15s ease,
+    transform 0.1s ease;
 }
 
-.roleItem:hover {
+.roleCard:hover {
   background: #1c2128;
-  border-color: #30363d;
+  border-color: #3b434b;
 }
 
-.roleItemChecked {
-  background: rgba(56, 139, 253, 0.08);
-  border-color: rgba(88, 166, 255, 0.4);
+.roleCard:active {
+  transform: translateY(1px);
 }
 
-.roleItem input {
-  width: 18px;
-  height: 18px;
+.roleCardSelected {
+  background: rgba(56, 139, 253, 0.09);
+
+  border-color: rgba(88, 166, 255, 0.45);
+}
+
+.roleCardSelected:hover {
+  background: rgba(56, 139, 253, 0.13);
+}
+
+.roleIcon {
+  width: 30px;
+  height: 30px;
 
   flex: 0 0 auto;
 
-  margin: 1px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  accent-color: #58a6ff;
+  border-radius: 7px;
 
-  cursor: pointer;
+  background: #21262d;
+  color: #8b949e;
+
+  font-size: 17px;
+  font-weight: 700;
 }
 
-.roleContent {
+.roleCardSelected .roleIcon {
+  background: rgba(88, 166, 255, 0.15);
+  color: #58a6ff;
+}
+
+.roleCardContent {
   min-width: 0;
+
   flex: 1;
+
+  display: flex;
+  flex-direction: column;
 }
 
-.roleName {
+.roleCardContent strong {
   color: #e6edf3;
 
   font-size: 13px;
   font-weight: 650;
 }
 
-.roleDescription {
+.roleCardContent span {
   margin-top: 3px;
 
   color: #8b949e;
@@ -546,19 +589,26 @@
   font-size: 11px;
   line-height: 1.4;
 
-  word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.checkedMark {
+.roleState {
   flex: 0 0 auto;
 
-  color: #58a6ff;
+  color: #6e7681;
 
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 10px;
+  font-weight: 600;
 }
 
-/* NOTICE */
+.roleCardSelected .roleState {
+  color: #58a6ff;
+}
+
+/* =========================
+   NOTICE
+========================= */
 
 .notice {
   display: flex;
@@ -603,7 +653,9 @@
   line-height: 1.45;
 }
 
-/* FOOTER */
+/* =========================
+   FOOTER
+========================= */
 
 .footer {
   display: flex;
@@ -659,15 +711,13 @@
   cursor: not-allowed;
 }
 
-/* MOBILE */
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 768px) {
   .page {
     padding: 10px;
-  }
-
-  .header {
-    align-items: flex-start;
   }
 
   .header h1 {
@@ -682,13 +732,8 @@
     grid-template-columns: 1fr;
   }
 
-  .userCard {
-    padding: 11px;
-  }
-
   .overlay {
     align-items: flex-end;
-
     padding: 0;
   }
 
@@ -707,7 +752,7 @@
     padding: 16px;
   }
 
-  .toolbar {
+  .roleToolbar {
     padding: 12px 16px 8px;
   }
 
@@ -727,17 +772,21 @@
   }
 
   .footer {
-    padding: 12px 16px calc(16px + env(safe-area-inset-bottom));
+    padding:
+      12px
+      16px
+      calc(16px + env(safe-area-inset-bottom));
   }
 
   .footer > button {
     flex: 1;
-
     min-height: 40px;
   }
 }
 
-/* SMALL MOBILE */
+/* =========================
+   SMALL MOBILE
+========================= */
 
 @media (max-width: 420px) {
   .page {
@@ -749,7 +798,7 @@
     flex-direction: column;
   }
 
-  .userInfo {
+  .userMain {
     width: 100%;
   }
 
@@ -757,12 +806,12 @@
     width: 100%;
   }
 
-  .toolbar {
+  .roleToolbar {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .selectedCount {
+  .selectedCounter {
     justify-content: flex-start;
   }
 
