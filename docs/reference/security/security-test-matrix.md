@@ -60,8 +60,8 @@ RBAC 및 관리자 API 접근 제어에 대한 테스트 범위를 정의한다.
 | ----------- | -------------------- | -------- | ------ |
 | SEC-RBAC-01 | USER가 자기 정보 조회       | 200      | ✅      |
 | SEC-RBAC-02 | ADMIN이 Admin API 접근  | 200      | ✅      |
-| SEC-RBAC-03 | USER가 Admin API 접근   | 403      | ❌      |
-| SEC-RBAC-04 | Permission 없는 API 접근 | 403      | ❌      |
+| SEC-RBAC-03 | USER가 Admin API 접근   | 403      | ✅      |
+| SEC-RBAC-04 | Permission 없는 API 접근 | 403      | ✅      |
 
 ---
 
