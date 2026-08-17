@@ -27,18 +27,21 @@ export class RefreshTokenError extends HttpError {
 }
 
 // 동시에 여러 요청에서 refresh가 발생하는 것을 방지
-let refreshPromise: Promise<TokenResponse | null> | null = null;
-
 export async function refreshToken(): Promise<TokenResponse | null> {
-  if (refreshPromise) {
-    return refreshPromise;
-  }
+  if (refreshPromise) return refreshPromise;
 
   refreshPromise = (async () => {
+    const controller = new AbortController();
+
+    const timeoutId = window.setTimeout(() => {
+      controller.abort();
+    }, 5000);
+
     try {
       const res = await fetch("/api/auth/refresh", {
         method: "POST",
         credentials: "include",
+        signal: controller.signal,
       });
 
       if (!res.ok) {
@@ -48,7 +51,19 @@ export async function refreshToken(): Promise<TokenResponse | null> {
       const data: TokenResponse = await res.json();
 
       return data?.accessToken ? data : null;
+
+    } catch (error) {
+
+      if (error instanceof DOMException && error.name === "AbortError") {
+        throw new Error(
+          "Authentication service timeout"
+        );
+      }
+
+      throw error;
+
     } finally {
+      window.clearTimeout(timeoutId);
       refreshPromise = null;
     }
   })();
