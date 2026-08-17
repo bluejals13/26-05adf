@@ -42,7 +42,12 @@ export default function Main() {
         {hasPermission("ROLE_READ") && (
         <div className="card" onClick={() => navigate("/Role")}>
           <h2> ▩ Role Data</h2>
-          <p>권한등급 관리 페이지</p>
+          <p>권한등급 관리 </p>
+        </div> )}
+        {hasPermission("ROLE_READ") && (
+        <div className="card" onClick={() => navigate("/URole")}>
+          <h2> User Role Data</h2>
+          <p>권한등급 부여 </p>
         </div> )}
         
         <div className="card debug" onClick={() => navigate("/about")}>
