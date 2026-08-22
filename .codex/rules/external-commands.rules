@@ -1,0 +1,44 @@
+# Codex-only policy for commands requested outside the sandbox.
+# Project development rules are defined once in ../../AGENTS.md.
+
+prefix_rule(
+    pattern = ["sudo"],
+    decision = "forbidden",
+    justification = "Do not elevate privileges from Codex. Use the normal project environment or obtain a human-run alternative.",
+)
+
+prefix_rule(
+    pattern = ["rm"],
+    decision = "prompt",
+    justification = "Removal is destructive and requires explicit approval for its resolved target.",
+)
+
+prefix_rule(
+    pattern = ["git", "reset", "--hard"],
+    decision = "prompt",
+    justification = "This discards working-tree changes; inspect the target and obtain explicit approval.",
+)
+
+prefix_rule(
+    pattern = ["git", "clean"],
+    decision = "prompt",
+    justification = "This removes untracked files; inspect the target and obtain explicit approval.",
+)
+
+prefix_rule(
+    pattern = ["git", "push"],
+    decision = "prompt",
+    justification = "Pushing changes modifies a remote repository and requires explicit approval.",
+)
+
+prefix_rule(
+    pattern = ["gh"],
+    decision = "prompt",
+    justification = "GitHub commands may access or change remote resources; require approval.",
+)
+
+prefix_rule(
+    pattern = ["docker"],
+    decision = "prompt",
+    justification = "Docker commands may alter containers, images, volumes, ports, or host resources; require approval.",
+)

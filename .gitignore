@@ -1,0 +1,9 @@
+# Local environment
+.env
+ex.env
+
+# Build / dependencies
+**/node_modules/
+**/build/
+**/dist/
+**/.gradle/
