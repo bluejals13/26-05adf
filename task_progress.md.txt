@@ -1,0 +1,16 @@
+# Task: APMS.SR 보안/인가 성능 리팩토링 및 안정화 (2026-08-26)
+
+## Status: IN PROGRESS
+
+### Phase 1: Environment Setup
+- [ ] 1. `AGENTS.md`, `.cursorrules`, `task_progress.md` 생성 및 적용
+- [ ] 2. MCP (Filesystem, Git) 연동 완료 확인
+
+### Phase 2: Backend Refactoring (Technical Debt)
+- [ ] 3. `UserAuthorityService.java` 내 N+1 쿼리 해결 (Spring Cache + Redis 도입을 통한 권한 캐싱 처리 검토)
+- [ ] 4. `UserAuthorityService.java` 등 코드 내 존재하는 `System.out.println`을 `Slf4j` 로깅으로 마이그레이션
+- [ ] 5. `Role.java` 엔티티와 Flyway 스키마(`V1__init_schema.sql`) 불일치 수정 (`level`, `is_system` 컬럼 매핑)
+
+## Context Transfer (다음 세션을 위한 메모)
+- JWT 생명주기 및 Redis Lua 스크립트 기반 Refresh Token 동시성 제어는 완벽히 구현되어 있으므로 건드리지 말 것.
+- 인가(Authorization) 단계에서 DB Hit가 너무 자주 발생하는 문제(Phase 2 - 3번 항목)가 가장 시급한 병목임.

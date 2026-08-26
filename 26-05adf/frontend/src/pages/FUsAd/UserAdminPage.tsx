@@ -1,0 +1,170 @@
+import { useMemo } from "react";
+import styles from "./UserAdminPage.module.css";
+
+import { useUsers } from "../../queries/useUsers";
+import { useUserMutations } from "../../mutations/useUserMutations";
+import { usePermissions } from "../../auth/hooks/usePermissions";
+import { useAuth } from "../../auth/hooks/useAuth";
+import FullPageSpinner from "../../components/loading/FullPageSpinner";
+
+import type { UserStatus } from "../../auth/auth.types";
+
+export default function UserAdminPage() {
+  const { user, isLoading: authLoading } = useAuth();
+
+  // auth 기반 permission
+  const { hasPermission } = usePermissions(user);
+
+  const canRead = hasPermission("USER_READ");
+  const canUpdate = hasPermission("USER_STATUS_UPDATE");
+  const canDelete = hasPermission("USER_DELETE");
+
+  // ✅ user 있을 때만 users API 실행
+  const {
+    data: users = [],
+    isLoading,
+    isFetching,
+    error,
+  } = useUsers({
+    enabled: !!user,
+  });
+
+  const refreshing = isFetching && !isLoading;
+  const { changeStatus, deleteUser } = useUserMutations();
+
+  const activeUsers = useMemo(() => {
+    return users.filter(
+      (u) => u.status !== "DELETED" && u.status !== "DELETE_PENDING"
+    );
+  }, [users]);
+
+  const pendingUsers = useMemo(() => {
+    return users.filter(
+      (u) => u.status === "DELETE_PENDING"
+    );
+  }, [users]);
+
+  // 🔍 debug
+  console.log("auth user:", user);
+  console.log("users:", users);
+  console.log("loading:", isLoading);
+  console.log("error:", error);
+
+  // =====================
+  // guards (중요 순서)
+  // =====================
+  if (authLoading) return <FullPageSpinner />;
+  if (!user) return null;
+
+  if (!canRead) {
+    return <div className={styles.denied}>USER_READ 권한 없음</div>;
+  }
+
+  if (isLoading) return <FullPageSpinner />;
+  if (error) return <div className={styles.error}>에러 발생</div>;
+
+  return (
+    <div className={styles.container}>
+      <h1 className={styles.title}>User Admin</h1>
+   {refreshing && (
+    <div className={styles.refresh}>
+      사용자 정보 갱신중...
+    </div>
+   )}
+
+      {/* ACTIVE USERS */}
+      <div className={styles.table}>
+        <div className={styles.header}>
+          <div>ID</div>
+          <div>사용자</div>
+          <div>상태</div>
+          <div className={styles.center}>관리</div>
+		  <div className={styles.center}>차단</div>
+        </div>
+
+        {activeUsers.map((u) => (
+          <div key={u.id} className={styles.row}>
+            <div>{u.id}</div>
+            <div>{u.username}</div>
+            <div>{u.status}</div>
+
+			<div className={styles.actions}>
+            {(canUpdate || canDelete) && (
+			  <>
+                {canUpdate && (
+                  <select
+                    value={u.status}
+                    onChange={(e) =>
+                      changeStatus.mutate({
+                        id: u.id,
+                        status: e.target.value as UserStatus,
+                      })
+                    }
+                  >
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="SUSPENDED">SUSPENDED</option>
+                  </select>
+                )}
+			  </>
+			  )}
+			</div>
+			<div className={styles.actions}>
+                {canDelete && (
+                  <button className={`${styles.button} ${styles.primaryBtn}`}
+                    onClick={() =>
+                      changeStatus.mutate({
+                        id: u.id,
+                        status: "DELETE_PENDING",
+                      })
+                    }
+                  >
+                    차단
+                  </button>
+			  )}
+              </div>
+          </div>
+        ))}
+      </div>
+
+      {/* DELETE PENDING */}
+      { ( canDelete &&  pendingUsers.length > 0 ) && (
+        <>
+          <h2 className={styles.sectionTitle}>[차단된 계정들]</h2>
+
+          {pendingUsers.map((u) => (
+            <div key={u.id} className={styles.pendingRow}>
+            	<div>{u.id}</div>
+            	<div>{u.username}</div>
+				<div>차단사유</div>
+				<div>차단기간</div>
+				<div>기간만료 이후</div>
+	    		<div className={styles.actions}>
+					
+				  {canDelete && (
+              		<button className={`${styles.button} ${styles.primaryBtn}`}
+                		onClick={() =>
+                  		changeStatus.mutate({ id: u.id, status: "ACTIVE" })
+                	  }
+              	    >
+                      [복구:활성]
+                    </button>
+			      )}
+					
+					
+			      {canDelete && (
+              		<button
+                		className={`${styles.button} ${styles.dangerBtn}`}
+                		onClick={() => deleteUser.mutate(u.id)}
+              		>
+                	  제거
+              		</button>
+				  )}
+            </div>
+        </div>
+          ))}
+        </>
+      ) }
+    </div>
+  );
+}
+

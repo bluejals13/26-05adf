@@ -1,0 +1,310 @@
+
+---
+
+# 📦 Auth Architecture (React + Zustand + React Query)
+
+## 🧭 전체 구조 개요
+
+```text
+Auth Layer
+ ├─ auth.store (token)
+ ├─ useMe (user server state)
+ ├─ auth.service (login/logout/refresh)
+ └─ bootstrapAuth (refresh on app load)
+
+Permission Layer
+ ├─ usePermissions (role / permission 계산)
+
+Form Layer
+ ├─ useLoginForm
+ ├─ useSignupForm
+
+Route Guard Layer
+ ├─ ProtectedRoute (auth)
+ ├─ AdminRoute (role)
+ └─ PermissionRoute (permission)
+
+UI Layer
+ ├─ Header
+ ├─ Loading Components
+```
+
+---
+
+# 📁 1. Auth Core
+
+## 🔐 auth/auth.types.ts
+
+| 항목         | 설명                       |
+| ---------- | ------------------------ |
+| User       | 서버 사용자 타입                |
+| Role       | ADMIN / USER / MODERATOR |
+| Permission | USER_READ / USER_WRITE 등 |
+
+👉 역할:
+
+* 권한 시스템 기준 타입 정의
+
+---
+
+## 🧾 auth/auth.schema.ts
+
+| 스키마          | 설명         |
+| ------------ | ---------- |
+| loginSchema  | 로그인 입력 검증  |
+| signupSchema | 회원가입 입력 검증 |
+
+👉 역할:
+
+* zod 기반 input validation
+
+---
+
+## 🔐 auth/auth.service.ts
+
+| 기능           | 설명                    |
+| ------------ | --------------------- |
+| login        | 토큰 발급 + user prefetch |
+| logout       | 토큰 제거 + cache 초기화     |
+| refreshToken | accessToken 재발급       |
+
+👉 역할:
+
+* 인증 API 중앙 관리
+
+---
+
+## 🚀 bootstrap/bootstrapAuth.tsx
+
+| 기능                 | 설명         |
+| ------------------ | ---------- |
+| refreshToken 실행    | 자동 로그인 복구  |
+| /users/me prefetch | user 초기 로딩 |
+
+👉 역할:
+
+* 앱 시작 시 인증 복원
+
+---
+
+# 📁 2. Hooks Layer
+
+## 🧾 useSignupForm.ts
+
+| 기능                      | 설명           |
+| ----------------------- | ------------ |
+| username/password/email | 입력 상태        |
+| handleSignup            | 회원가입 처리      |
+| validation              | signupSchema |
+
+---
+
+## 🧾 useLoginForm.ts
+
+| 기능                | 설명          |
+| ----------------- | ----------- |
+| username/password | 입력 상태       |
+| handleLogin       | 로그인 처리      |
+| validation        | loginSchema |
+
+---
+
+## 🌐 useMe.ts
+
+| 기능        | 설명             |
+| --------- | -------------- |
+| queryKey  | authKeys.me    |
+| staleTime | 5분             |
+| enabled   | token 있을 때만 실행 |
+
+👉 역할:
+
+* 서버 사용자 정보 캐싱
+
+---
+
+## 🧠 useAuth.ts
+
+| 기능         | 설명                 |
+| ---------- | ------------------ |
+| token      | Zustand 상태         |
+| user       | React Query user   |
+| logout     | authService logout |
+| isLoggedIn | 인증 상태 계산           |
+
+👉 역할:
+
+* 인증 상태 통합 Hook
+
+---
+
+## 🛡 usePermissions.ts
+
+| 기능            | 설명           |
+| ------------- | ------------ |
+| isAdmin       | ADMIN 여부     |
+| isModerator   | MODERATOR 여부 |
+| hasRole       | 역할 체크        |
+| hasPermission | 권한 체크        |
+
+👉 역할:
+
+* 권한 계산 로직 분리
+
+---
+
+# 📁 3. State Layer
+
+## 🧠 store/auth.store.ts
+
+| 상태       | 설명             |
+| -------- | -------------- |
+| token    | accessToken 저장 |
+| setToken | 로그인 시 저장       |
+| logout   | 토큰 제거          |
+
+👉 역할:
+
+* 클라이언트 인증 상태 관리
+
+---
+
+# 📁 4. Route Guards
+
+## 🔐 ProtectedRoute
+
+| 역할         | 설명               |
+| ---------- | ---------------- |
+| auth check | token 없으면 로그인 이동 |
+| outlet     | 하위 라우트 보호        |
+
+---
+
+## 👑 AdminRoute
+
+| 역할            | 설명                |
+| ------------- | ----------------- |
+| role check    | ADMIN / MODERATOR |
+| loading guard | user 로딩 처리        |
+
+---
+
+## 🔑 PermissionRoute
+
+| 역할               | 설명          |
+| ---------------- | ----------- |
+| permission check | USER_READ 등 |
+| access control   | 기능 단위 제한    |
+
+---
+
+# 📁 5. UI Components
+
+## 🧭 Header
+
+| 기능        |
+| --------- |
+| 로그인 상태 표시 |
+| 메뉴 분기     |
+| logout 처리 |
+
+---
+
+## ⏳ Loading Components
+
+### FullPageSpinner
+
+| 용도    | 설명                    |
+| ----- | --------------------- |
+| 전체 로딩 | 페이지 전환 / auth loading |
+
+---
+
+### InlineSpinner
+
+| 용도            | 설명 |
+| ------------- | -- |
+| 버튼 / 작은 영역 로딩 |    |
+
+---
+
+### UserCardSkeleton
+
+| 용도                   | 설명 |
+| -------------------- | -- |
+| 리스트 / 카드 placeholder |    |
+
+---
+
+### Loading.Module.css
+
+| 역할                     |
+| ---------------------- |
+| spinner / skeleton 스타일 |
+
+---
+
+# 🔄 6. 데이터 흐름
+
+```text
+[Login]
+  ↓
+auth.service.login
+  ↓
+Zustand token 저장
+  ↓
+React Query /users/me fetch
+  ↓
+useAuth / usePermissions
+  ↓
+Route Guard
+  ↓
+UI Render
+```
+
+---
+
+# 🧩 7. 권한 시스템 구조
+
+```text
+User
+ ├─ roles (ADMIN, USER)
+ └─ permissions (USER_READ, USER_WRITE)
+
+↓
+usePermissions(user)
+↓
+UI / Route에서 사용
+```
+
+---
+
+# 📌 8. 핵심 설계 원칙
+
+✔ token = 인증 상태
+✔ user = 권한 데이터
+✔ permissions = 기능 제어
+✔ roles = 큰 권한 그룹
+✔ route guard = 접근 제어
+✔ hooks = 로직 분리
+
+---
+
+# 🚀 9. 전체 평가
+
+| 항목    | 평가    |
+| ----- | ----- |
+| 구조 분리 | ⭐⭐⭐⭐⭐ |
+| 확장성   | ⭐⭐⭐⭐⭐ |
+| 유지보수  | ⭐⭐⭐⭐☆ |
+| 실무 수준 | 중~상급  |
+
+---
+
+#  요약
+
+“Zustand + React Query + RBAC 기반으로 잘 분리된 실무형 인증/권한 아키텍처”
+
+---
+
+
