@@ -1,5 +1,5 @@
 package com.example.demo.iam.role.service;
-//--
+
 import com.example.demo.audit.domain.AuditAction;
 import com.example.demo.audit.service.AuditService;
 
@@ -8,15 +8,12 @@ import com.example.demo.iam.role.dto.RoleRequest;
 import com.example.demo.iam.role.dto.RoleResponse;
 import com.example.demo.iam.role.repository.RoleRepository;
 
-import com.example.demo.iam.permission.dto.PermissionResponse;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Map;
 

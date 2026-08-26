@@ -78,7 +78,7 @@ class RolePermissionServiceTest {
     @DisplayName("Role에 Permission을 할당한다")
     void assignPermissions() {
 
-        when(roleRepository.findById(1L))
+        when(roleRepository.findWithPermissionsById(1L))
                 .thenReturn(Optional.of(role));
 
         when(permissionRepository.findAllById(Set.of(1L, 2L)))
@@ -100,7 +100,7 @@ class RolePermissionServiceTest {
                 );
 
         verify(roleRepository)
-                .findById(1L);
+                .findWithPermissionsById(1L);
 
         verify(permissionRepository)
                 .findAllById(Set.of(1L, 2L));
@@ -120,7 +120,7 @@ class RolePermissionServiceTest {
     @DisplayName("중복된 Permission ID는 하나로 처리한다")
     void duplicatePermissionIdsAreRemoved() {
 
-        when(roleRepository.findById(1L))
+        when(roleRepository.findWithPermissionsById(1L))
                 .thenReturn(Optional.of(role));
 
         when(permissionRepository.findAllById(Set.of(1L, 2L)))
@@ -154,7 +154,7 @@ class RolePermissionServiceTest {
     @DisplayName("존재하지 않는 Permission ID가 포함되면 실패한다")
     void missingPermissionCausesFailure() {
 
-        when(roleRepository.findById(1L))
+        when(roleRepository.findWithPermissionsById(1L))
                 .thenReturn(Optional.of(role));
 
         when(permissionRepository.findAllById(Set.of(1L, 999L)))
@@ -185,7 +185,7 @@ class RolePermissionServiceTest {
     @DisplayName("존재하지 않는 Role이면 실패한다")
     void missingRoleCausesFailure() {
 
-        when(roleRepository.findById(999L))
+        when(roleRepository.findWithPermissionsById(999L))
                 .thenReturn(Optional.empty());
 
         assertThatThrownBy(() ->
@@ -221,7 +221,7 @@ class RolePermissionServiceTest {
                 userDelete
         ));
 
-        when(roleRepository.findById(1L))
+        when(roleRepository.findWithPermissionsById(1L))
                 .thenReturn(Optional.of(role));
 
         when(permissionRepository.findAllById(Set.of(3L, 4L)))
@@ -257,7 +257,7 @@ class RolePermissionServiceTest {
                 roleAssign
         ));
 
-        when(roleRepository.findById(1L))
+        when(roleRepository.findWithPermissionsById(1L))
                 .thenReturn(Optional.of(role));
 
         when(permissionRepository.findAllById(Set.of()))

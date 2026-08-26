@@ -3,6 +3,7 @@ package com.example.demo.auth.security;
 import com.example.demo.iam.user.dto.LoginResponse;
 import com.example.demo.iam.user.dto.LoginRequest;
 import com.example.demo.iam.user.dto.LoginResult;
+import com.example.demo.common.dto.ApiResponse;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +28,7 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(
+    public ResponseEntity<ApiResponse<LoginResponse>> login(
             @RequestBody LoginRequest req,
             HttpServletResponse response
     ) {
@@ -39,10 +40,13 @@ public class AuthController {
         );
 
         return ResponseEntity.ok(
+            ApiResponse.success(
                 new LoginResponse(
                         result.accessToken(),
                         result.grantType()
-                )
+                ),
+                "로그인에 성공했습니다."
+            )
         );
     }
     
@@ -51,7 +55,7 @@ public class AuthController {
     
 
     @PostMapping("/refresh")
-    public ResponseEntity<LoginResponse> refresh(
+    public ResponseEntity<ApiResponse<LoginResponse>> refresh(
             HttpServletRequest request,
             HttpServletResponse response
     ) {
@@ -68,10 +72,14 @@ public class AuthController {
         //나중에 slf4j 로그 추가 할 곳
 
         return ResponseEntity.ok(
-            new LoginResponse(        // dto 로 은닉 할 것,
-                token.accessToken(),
-                token.grantType()
-        ));
+            ApiResponse.success(
+                    new LoginResponse(
+                            token.accessToken(),
+                            token.grantType()
+                    ),
+                    "토큰이 성공적으로 재발급되었습니다."
+            )
+        );
     }
     
     
@@ -80,7 +88,7 @@ public class AuthController {
     
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(
+    public ResponseEntity<ApiResponse<Void>> logout(
             HttpServletRequest request,
             HttpServletResponse response
 ) {
@@ -97,7 +105,12 @@ public class AuthController {
 
         response.addCookie(cookie);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(
+            ApiResponse.success(
+                null,
+                "로그아웃에 성공했습니다."
+            )
+        );
 }
     
     

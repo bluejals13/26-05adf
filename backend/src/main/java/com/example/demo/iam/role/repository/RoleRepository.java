@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
 import java.util.List;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
@@ -14,6 +15,9 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
     @Query("select r from Role r")
     List<Role> findAllWithPermissions();    // Role 목록 + Permission 조회
     
+    @EntityGraph(attributePaths = "permissions")
+    Optional<Role> findWithPermissionsById(Long id); // 단건 Role + Permission 페치 조인 조회
+
     @Query("""
         select distinct r
         from Role r

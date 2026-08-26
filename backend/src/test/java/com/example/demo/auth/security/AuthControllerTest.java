@@ -112,11 +112,11 @@ class AuthControllerTest {
                 status().isOk()
         )
         .andExpect(
-                jsonPath("$.accessToken")
+                jsonPath("$.data.accessToken")
                         .value("access-token")
         )
         .andExpect(
-                jsonPath("$.grantType")
+                jsonPath("$.data.grantType")
                         .value("Bearer")
         )
         .andExpect(
@@ -183,7 +183,7 @@ class AuthControllerTest {
                 status().isOk()
         )
         .andExpect(
-                jsonPath("$.accessToken")
+                jsonPath("$.data.accessToken")
                         .value("new-access-token")
         )
         .andExpect(
@@ -219,7 +219,7 @@ class AuthControllerTest {
                         )
         )
         .andExpect(
-                status().isNoContent()
+                status().isOk()
         )
         .andExpect(
                 cookie().maxAge(

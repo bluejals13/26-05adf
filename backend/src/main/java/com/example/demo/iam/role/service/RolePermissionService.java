@@ -32,7 +32,7 @@ public class RolePermissionService {
 
         Set<Long> uniqueIds = new HashSet<>(permissionIds);
         
-        Role role = roleRepository.findById(roleId)
+        Role role = roleRepository.findWithPermissionsById(roleId)
                 .orElseThrow(() -> new IllegalArgumentException("Role not found"));
         
         Set<Permission> before = new HashSet<>(role.getPermissions());

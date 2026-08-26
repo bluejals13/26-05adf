@@ -4,6 +4,13 @@ import { useAuthStore } from "../store/auth.store";
 
 type TokenResponse = {
   accessToken: string;
+  grantType: string;
+};
+
+type ApiResponse<T> = {
+  status: string;
+  message: string;
+  data: T;
 };
 
 type ErrorResponse = {
@@ -40,10 +47,9 @@ export class AccountSuspendedError extends HttpError {
   }
 }
 
-// 동시에 여러 요청에서 refresh가 발생하는 것을 방지
+// 여러 요청이 동시에 401을 받아도 refresh는 한 번만 실행
 let refreshPromise: Promise<TokenResponse | null> | null = null;
 
-// Refresh 요청 최대 대기 시간
 const REFRESH_TIMEOUT = 5000;
 
 export async function refreshToken(): Promise<TokenResponse | null> {
@@ -72,12 +78,13 @@ export async function refreshToken(): Promise<TokenResponse | null> {
         );
       }
 
-      const data: TokenResponse = await res.json();
+      const response: ApiResponse<TokenResponse> =
+        await res.json();
 
-      return data?.accessToken ? data : null;
+      // ApiResponse.data 안에 LoginResponse가 들어 있음
+      return response.data;
+
     } catch (error) {
-      // Redis 장애 등으로 Refresh 응답이
-      // 일정 시간 내 도착하지 않는 경우
       if (
         error instanceof DOMException &&
         error.name === "AbortError"
@@ -88,12 +95,10 @@ export async function refreshToken(): Promise<TokenResponse | null> {
         );
       }
 
-      // 이미 정의한 RefreshTokenError는 그대로 전달
       if (error instanceof RefreshTokenError) {
         throw error;
       }
 
-      // Network Error 등 예상하지 못한 인증 인프라 오류
       throw new RefreshTokenError(
         503,
         "Authentication service unavailable",
@@ -112,26 +117,30 @@ export async function request<T>(
   options: RequestInit = {},
   retry = true,
 ): Promise<T> {
+
   const token = useAuthStore.getState().token;
 
   const res = await fetch(url, {
     ...options,
+
     credentials: "include",
+
     headers: {
       "Content-Type": "application/json",
 
       ...(token
         ? {
-            Authorization: `Bearer ${token}`,
-          }
+          Authorization: `Bearer ${token}`,
+        }
         : {}),
 
       ...(options.headers || {}),
     },
   });
 
-  // 401 → Refresh Token으로 한 번만 재인증
+  // Access Token 만료
   if (res.status === 401 && retry) {
+
     const newToken = await refreshToken();
 
     if (!newToken?.accessToken) {
@@ -146,11 +155,12 @@ export async function request<T>(
       .getState()
       .login(newToken.accessToken);
 
-    // 새 Token으로 동일 요청 1회 재시도
+    // 원래 요청 다시 실행
     return request<T>(
       url,
       {
         ...options,
+
         headers: {
           ...options.headers,
           Authorization: `Bearer ${newToken.accessToken}`,
@@ -161,6 +171,7 @@ export async function request<T>(
   }
 
   if (!res.ok) {
+
     const text = await res.text();
 
     let body: ErrorResponse = {};
@@ -168,7 +179,7 @@ export async function request<T>(
     try {
       body = text ? JSON.parse(text) : {};
     } catch {
-      // JSON 응답이 아니면 text 사용
+      // JSON이 아닌 응답
     }
 
     // 계정 정지
@@ -176,7 +187,6 @@ export async function request<T>(
       res.status === 403 &&
       body.code === "ACCOUNT_SUSPENDED"
     ) {
-      // 현재 로그인 세션 종료
       useAuthStore.getState().logout();
 
       throw new AccountSuspendedError(
@@ -190,10 +200,18 @@ export async function request<T>(
     );
   }
 
-  return res.json();
+  // DELETE 등 응답 body가 없을 수도 있음
+  if (res.status === 204) {
+    return undefined as T;
+  }
+
+  const response: ApiResponse<T> = await res.json();
+
+  return response.data;
 }
 
 export const http = {
+
   get: <T>(url: string): Promise<T> =>
     request<T>(url, {
       method: "GET",
@@ -206,11 +224,17 @@ export const http = {
   ): Promise<T> =>
     request<T>(url, {
       method: "POST",
+
       headers: {
         "Content-Type": "application/json",
         ...(options?.headers || {}),
       },
-      body: body ? JSON.stringify(body) : undefined,
+
+      body:
+        body !== undefined
+          ? JSON.stringify(body)
+          : undefined,
+
       ...options,
     }),
 
@@ -220,7 +244,15 @@ export const http = {
   ): Promise<T> =>
     request<T>(url, {
       method: "PATCH",
-      body: body ? JSON.stringify(body) : undefined,
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body:
+        body !== undefined
+          ? JSON.stringify(body)
+          : undefined,
     }),
 
   put: <T>(
@@ -229,7 +261,15 @@ export const http = {
   ): Promise<T> =>
     request<T>(url, {
       method: "PUT",
-      body: body ? JSON.stringify(body) : undefined,
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body:
+        body !== undefined
+          ? JSON.stringify(body)
+          : undefined,
     }),
 
   delete: <T>(url: string): Promise<T> =>

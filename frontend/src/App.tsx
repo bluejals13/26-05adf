@@ -33,6 +33,7 @@ export default function App() {
 	  bootstrapAuth().finally(() => setReady(true));
 	}, []);
 
+	// 최초 인증 확인이 끝날 때까지 Route를 렌더링하지 않음
 	if (!ready) {
 	  return (
 	    <div className="app-loading">
@@ -45,37 +46,43 @@ export default function App() {
     <BrowserRouter>
       <Routes>
 
-        {/* Layout 없는 영역 */}
+        {/* 로그인 / 회원가입 */}
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Route>
 
-        {/* 보호 영역 */}
+        {/* 로그인 필요 */}
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>		
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/monitor" element={<Monitor />} />
             <Route path="/menu" element={<MenuPage />} />
-			{/* 메뉴의 id가 필요하기 때문에 보통 URL parameter 방식 */}
+
+			{/* 메뉴 관리 */}
 			<Route element={<AdminRoute permission="MENU_READ" />}>
 				<Route path="/admin/menu/:id/edit" element={<MenuEditPage />} />
 			</Route>  
+
+			{/* 권한 관리 */}
 			<Route element={<AdminRoute permission="PERMISSION_READ" />}>
-            	<Route path="/permission" element={<PermissionPage />} />
-            </Route>  
+            	  		  <Route path="/permission" element={<PermissionPage />} />
+        	        </Route>  
+			{/* 사용자 관리 */}
 			<Route element={<AdminRoute permission="USER_READ" />}>
 				<Route path="/Admin" element={<UserAdminPage />} />
 			</Route>
+			{/* 역할 관리 */}
 			<Route element={<AdminRoute permission="ROLE_READ" />}>
 				<Route path="/Role" element={<RolePage />} />
 			</Route>
+                        {/* 사용자 역할 */}
 			<Route element={<AdminRoute permission="ROLE_READ" />}>
 				<Route path="/URole" element={<UserRolePage />} />
 			</Route>
 	  </Route> </Route>
 
-        {/* Layout 있는 영역 */}
+        {/* 일반 페이지 */}
         <Route element={<Layout />}>
           <Route path="/" element={<Main />} />
           <Route path="/about" element={<About />} />

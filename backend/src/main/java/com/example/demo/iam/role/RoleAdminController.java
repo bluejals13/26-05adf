@@ -44,7 +44,7 @@ public class RoleAdminController {
     public ResponseEntity<ApiResponse<List<RoleResponse>>> getRoles() {
 
         List<RoleResponse> roles = roleAdminService.getRoles();
-        return ResponseEntity.ok( ApiResponse.success("역할이 성공적으로 조회되었습니다.") );
+        return ResponseEntity.ok( ApiResponse.success(roles, "역할이 성공적으로 조회되었습니다.") );
     }
 
     @PreAuthorize("hasAuthority('ROLE_CREATE')")
@@ -59,7 +59,7 @@ public class RoleAdminController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ApiResponse.success("역할이 성공적으로 생성되었습니다."));
+                .body(ApiResponse.success(response, "역할이 성공적으로 생성되었습니다."));
     }
 
     @PreAuthorize("hasAuthority('ROLE_UPDATE')")
@@ -74,7 +74,7 @@ public class RoleAdminController {
                         request
                 );
 
-        return ResponseEntity.ok(ApiResponse.success("역할이 성공적으로 수정되었습니다.")));
+        return ResponseEntity.ok(ApiResponse.success(response, "역할이 성공적으로 수정되었습니다."));
     }
 
     @PreAuthorize("hasAuthority('ROLE_DELETE')")

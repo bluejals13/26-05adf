@@ -4,6 +4,7 @@ import com.example.demo.iam.user.dto.UserResponse;
 import com.example.demo.iam.user.dto.MeResponse;
 import com.example.demo.iam.user.dto.SignupRequest;
 import com.example.demo.iam.user.dto.UpdatePasswordRequest;
+import com.example.demo.common.dto.ApiResponse;
 import com.example.demo.auth.security.CustomUserPrincipal;
 import com.example.demo.iam.user.service.UserService;
 
@@ -20,20 +21,21 @@ public class UserController {
     private final UserService userService;
     
     @PostMapping("/signup")
-    public UserResponse signup(@RequestBody SignupRequest req) {
-        return userService.signup(req);
+    public ApiResponse<UserResponse> signup(@RequestBody SignupRequest req) {
+        return ApiResponse.success(userService.signup(req));
     }
     
     @GetMapping("/me")
-    public MeResponse me(@AuthenticationPrincipal CustomUserPrincipal principal) {
-        return userService.getMe(principal.getUserId());
+    public ApiResponse<MeResponse> me(@AuthenticationPrincipal CustomUserPrincipal principal) {
+        return ApiResponse.success(userService.getMe(principal.getUserId()));
     }
 
     @PatchMapping("/me/password")
-    public void updatePassword(
+    public ApiResponse<Void> updatePassword(
             @AuthenticationPrincipal CustomUserPrincipal principal,
             @RequestBody UpdatePasswordRequest req
     ) {
         userService.updatePassword(principal.getUserId(), req);
+        return ApiResponse.<Void>success(null, "비밀번호 변경에 성공했습니다.");
     }
 }

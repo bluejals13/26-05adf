@@ -14,6 +14,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
     
+    @EntityGraph(attributePaths = "roles")
+    Optional<User> findWithRolesById(Long id);
+
+    @EntityGraph(attributePaths = "roles")
+    @Query("select u from User u")
+    List<User> findAllWithRoles();
+
     @EntityGraph(attributePaths = {
         "roles",
         "roles.permissions"
@@ -23,9 +30,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("""
             select distinct u
             from User u
-            join u.roles r
-            join r.permissions p
+            join fetch u.roles r
+            join fetch r.permissions p
             where p.id = :permissionId
         """)
-        List<User> findByPermissionId(Long permissionId);
+    List<User> findByPermissionId(Long permissionId);
 }

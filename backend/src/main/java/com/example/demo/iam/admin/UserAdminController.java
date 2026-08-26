@@ -5,6 +5,7 @@ import com.example.demo.iam.admin.service.UserRoleService;
 import com.example.demo.iam.admin.dto.UserRoleRequest;
 import com.example.demo.iam.admin.dto.UserStatusRequest;
 import com.example.demo.iam.admin.dto.AdminUserResponse;
+import com.example.demo.common.dto.ApiResponse;
 
 import com.example.demo.config.SecurityUtil;
 
@@ -26,47 +27,51 @@ public class UserAdminController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('USER_READ')")
-    public List<AdminUserResponse> getUsers() {
-        return userAdminService.getUsers();
+    public ApiResponse<List<AdminUserResponse>> getUsers() {
+        return ApiResponse.success(userAdminService.getUsers());
     }
     
     @PreAuthorize("hasAuthority('USER_DELETE')")
     @DeleteMapping("/{id}/soft")
-    public void softdeleteUser(@PathVariable Long id) {    // 계정 삭제 대기 권한
+    public ApiResponse<Void> softdeleteUser(@PathVariable Long id) {    // 계정 삭제 대기 권한
 
         Long adminId = securityUtil.getUserId();
 
         userAdminService.softdeleteUser(adminId, id);
+        return ApiResponse.<Void>success(null, "계정이 성공적으로 삭제 대기 상태로 변경되었습니다.");
     }
     
     @PreAuthorize("hasAuthority('USER_DELETE')")
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {// 계정 영구 삭제 권한
+    public ApiResponse<Void> deleteUser(@PathVariable Long id) {// 계정 영구 삭제 권한
 
         Long adminId = securityUtil.getUserId();
 
         userAdminService.deleteUser(adminId, id);
+        return ApiResponse.<Void>success(null, "계정이 성공적으로 삭제되었습니다.");
     }
     
     @PreAuthorize("hasAuthority('USER_STATUS_UPDATE')")
     @PatchMapping("/{id}/status")
-    public void changeStatus(
+    public ApiResponse<Void> changeStatus(
             @PathVariable Long id,
             @RequestBody UserStatusRequest request
     ) {
         Long adminId = securityUtil.getUserId();
 
         userAdminService.changeStatus(adminId, id, request.status());
+        return ApiResponse.<Void>success(null, "계정 상태가 성공적으로 변경되었습니다.");
     }
     
     @PreAuthorize("hasAuthority('USER_ROLE_MANAGE')")
     @PostMapping("/{id}/roles")
-    public void assignRoles(
+    public ApiResponse<Void> assignRoles(
             @PathVariable Long id,
             @RequestBody UserRoleRequest request
     ) {
         Long adminId = securityUtil.getUserId();
 
         userRoleService.assignRoles(adminId, id, request.roleIds());
+        return ApiResponse.<Void>success(null, "역할이 성공적으로 부여되었습니다.");
     }
 }

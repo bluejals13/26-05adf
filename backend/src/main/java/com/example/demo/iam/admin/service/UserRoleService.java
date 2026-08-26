@@ -33,8 +33,8 @@ public class UserRoleService {
         List<Long> roleIds
     ) {
 
-        User user = userRepository.findById(userId)
-            .orElseThrow();
+        User user = userRepository.findWithRolesById(userId)
+            .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
         
         Set<Role> beforeRoles = new HashSet<>(user.getRoles());
         

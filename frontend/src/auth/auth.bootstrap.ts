@@ -1,4 +1,4 @@
-// auth/bootstrapAuth.tsx
+// auth/auth.bootstrap.ts
 
 import { useAuthStore } from "../store/auth.store";
 import { queryClient } from "../queryClient";
@@ -8,7 +8,7 @@ import {
   RefreshTokenError,
 } from "../api/http";
 
-import { authKeys } from "../auth/auth.keys";
+import { authKeys } from "./auth.keys";
 
 let bootstrapPromise: Promise<void> | null = null;
 
@@ -21,19 +21,23 @@ export function bootstrapAuth(): Promise<void> {
     try {
       const data = await refreshToken();
 
+      // Refresh 성공
       if (data?.accessToken) {
-        // Refresh 성공
-        useAuthStore.getState().setToken(data.accessToken);
-        
+        useAuthStore
+          .getState()
+          .setToken(data.accessToken);
+
         useAuthStore
           .getState()
           .setAuthServiceUnavailable(false);
-        
+
         return;
       }
 
-      // Refresh Token이 없거나 유효하지 않은 경우
-      useAuthStore.getState().logout();
+      // Refresh Token이 없거나 만료됨
+      useAuthStore
+        .getState()
+        .logout();
 
       await queryClient.resetQueries({
         queryKey: authKeys.all,
@@ -41,14 +45,18 @@ export function bootstrapAuth(): Promise<void> {
 
     } catch (error) {
 
-      // 401
-      // 실제 인증 만료 / 무효
+      // 인증 만료 / Refresh Token 무효
       if (
         error instanceof RefreshTokenError &&
         error.status === 401
       ) {
-        useAuthStore.getState().setAuthServiceUnavailable(false);
-        useAuthStore.getState().logout();
+        useAuthStore
+          .getState()
+          .setAuthServiceUnavailable(false);
+
+        useAuthStore
+          .getState()
+          .logout();
 
         await queryClient.resetQueries({
           queryKey: authKeys.all,
@@ -57,8 +65,7 @@ export function bootstrapAuth(): Promise<void> {
         return;
       }
 
-      // 503
-      // Redis / 인증 인프라 장애
+      // 인증 서버 장애
       if (
         error instanceof RefreshTokenError &&
         error.status === 503
@@ -70,25 +77,22 @@ export function bootstrapAuth(): Promise<void> {
         console.warn(
           "[Auth] Authentication service unavailable."
         );
+
         // 중요:
-        // logout 하지 않는다.
-        // bootstrap은 정상 종료한다.
+        // 여기서는 logout 하지 않는다.
         return;
       }
 
-      // Network Error / Timeout 등
+      // 기타 네트워크 오류
       useAuthStore
         .getState()
         .setAuthServiceUnavailable(true);
-      
+
       console.warn(
         "[Auth] Authentication service temporarily unavailable.",
         error
       );
 
-      // 중요:
-      // logout 하지 않는다.
-      // bootstrap을 종료시켜 앱이 렌더링되도록 한다.
     } finally {
       bootstrapPromise = null;
     }
