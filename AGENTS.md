@@ -1,12 +1,17 @@
-프로젝트 원칙
+# 26-05adf Project Agent Map
 
-1. 요구사항에 없는 기능을 임의로 추가하지 않는다.
-2. 기존 기능을 삭제하거나 변경하기 전에 근거를 확인한다.
-3. 테스트 없이 기능을 완료했다고 판단하지 않는다.
-4. 보안 관련 코드는 특히 보수적으로 변경한다.
-5. DB schema 변경은 migration을 사용한다.
-6. 환경변수와 secret을 코드에 하드코딩하지 않는다.
-7. 작업 전에 관련 코드를 읽는다.
-8. 변경 후 테스트를 실행한다.
-9. 테스트 실패를 숨기지 않는다.
-10. 큰 변경은 먼저 계획을 제시한다.
+## 1. Project Overview
+- Full-stack application with monitoring and load testing.
+- Docker Compose based containerized environment.
+
+## 2. Directory Map
+- `/backend/`: 백엔드 API 서버 소스코드
+- `/frontend/`: 프론트엔드 UI 소스코드
+- `/nginx/`: 웹 서버 및 리버스 프록시 설정
+- `/monitoring/`: 프로메테우스, 그라파나 등 모니터링 설정
+- `/k6/`: 부하 테스트 스크립트 모음
+- `docker-compose.yml`: 전체 인프라 실행 컨테이너 오케스트레이션
+
+## 3. Agent Rules
+- 코드를 탐색할 때 무작정 전체 파일을 읽지 마세요.
+- 작업 대상(예: 백엔드 API 수정)에 따라 해당하는 디렉터리(`/backend/`)의 코드만 먼저 분석하세요.

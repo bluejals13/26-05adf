@@ -13,3 +13,9 @@
    - [Backend] DTO와 Entity는 철저히 분리하고, 의존성 주입은 반드시 `@RequiredArgsConstructor`를 이용한 생성자 주입을 사용하세요.
    - [Backend] 모든 로그는 `System.out.println`이 아닌 `@Slf4j`를 사용하세요.
    - [Frontend] API 통신은 직접 `fetch`를 사용하지 말고 정의된 `http.ts`의 래퍼 메서드(`http.get`, `http.post`)를 사용하세요.
+
+# Documentation First Policy
+- 모든 코드를 수정한 후에는 즉시 다음 작업을 진행하지 마세요.
+- 반드시 `26-05adf-guideline/changelogs/` 경로에 해당 작업의 변경 로그(Log) 마크다운 파일을 생성해야 합니다.
+- 파일명 규칙: `{Phase번호}-{Task번호}_{작업명}.md` (예: 1-2_jwt_redis_optimization.md)
+
