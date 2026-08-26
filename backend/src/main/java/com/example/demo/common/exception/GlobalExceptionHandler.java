@@ -1,87 +1,64 @@
+// backend/src/main/java/com/example/demo/common/exception/GlobalExceptionHandler.java
 package com.example.demo.common.exception;
 
+import com.example.demo.common.dto.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
-
-import java.util.Map;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // 회원 가입 계정 중복
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<?> handleBadRequest(IllegalArgumentException e) {
+        // 1. @Valid 유효성 검사 실패 (400)
+        @ExceptionHandler(MethodArgumentNotValidException.class)
+        public ResponseEntity<ApiResponse<Void>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+            String errorMessage = ex.getBindingResult().getFieldErrors().stream()
+                    .findFirst()
+                    .map(err -> err.getDefaultMessage())
+                    .orElse("잘못된 요청 파라미터입니다.");
+            log.warn("Validation Error: {}", errorMessage);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(ApiResponse.error(errorMessage));
+        }
 
-        return ResponseEntity
-                .status(400)
-                .body(Map.of("message", e.getMessage()));
-    }
+        // 2. 비즈니스 파라미터 검증 실패 / 잘못된 인자 (400)
+        @ExceptionHandler(IllegalArgumentException.class)
+        public ResponseEntity<ApiResponse<Void>> handleIllegalArgumentException(IllegalArgumentException ex) {
+            log.warn("Illegal Argument: {}", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(ApiResponse.error(ex.getMessage()));
+        }
 
-    // 게스트의 리프레시 계정 정보 me 오류
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<?> handleBadCredentials(
-            BadCredentialsException e) {
 
-        return ResponseEntity.status(401).body(Map.of(
-                "message", "UNAUTHORIZED",
-                "detail", e.getMessage()
-        ));
-    }
+        // 3. 인증 실패 (401)
+        @ExceptionHandler(BadCredentialsException.class)
+        public ResponseEntity<ApiResponse<Void>> handleBadCredentials(BadCredentialsException ex) {
+            log.warn("Unauthorized: {}", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(ApiResponse.error("인증에 실패했습니다."));
+        }
 
-    // 권한 부족
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<?> handleAccessDenied(
-            AccessDeniedException e) {
 
-        log.warn("ACCESS DENIED: {}", e.getMessage());
+        // 4. 권한 부족 (403)
+        @ExceptionHandler(AccessDeniedException.class)
+        public ResponseEntity<ApiResponse<Void>> handleAccessDenied(AccessDeniedException ex) {
+            log.warn("Access Denied: {}", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(ApiResponse.error("접근 권한이 없습니다."));
+        }
 
-        return ResponseEntity
-                .status(403)
-                .body(Map.of(
-                        "message", "FORBIDDEN",
-                        "detail", e.getMessage()
-                ));
-    }
+        // 5. 서버 내부 예외 (500)
+        @ExceptionHandler(Exception.class)
+        public ResponseEntity<ApiResponse<Void>> handleAllExceptions(Exception ex) {
+            log.error("Internal Server Error: ", ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("서버 내부 오류가 발생했습니다. 관리자에게 문의하세요."));
+        }
 
-    @ExceptionHandler(DuplicateUserException.class)
-    public ResponseEntity<?> handleDuplicateUser(
-            DuplicateUserException e) {
-
-        return ResponseEntity
-                .status(409)
-                .body(Map.of(
-                        "code", "DUPLICATE_USER",
-                        "message", e.getMessage()
-                ));
-    }
-
-    // 나머지 모든 예외
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleAll(Exception e) {
-
-        log.error("SERVER ERROR", e);
-
-        return ResponseEntity
-                .status(500)
-                .body(Map.of(
-                        "message", e.getClass().getSimpleName(),
-                        "detail", e.getMessage()
-                ));
-    }
-
-    // null 값 예외 처리
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<?> handleNPE(NullPointerException e) {
-
-        return ResponseEntity
-                .status(400)
-                .body(Map.of("message", "NULL_INPUT"));
-    }
 }

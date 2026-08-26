@@ -44,7 +44,7 @@ public class RoleAdminService {
                 .toList();
     }
 
-    public void createRole(Long adminId, RoleRequest request) {
+    public RoleResponse createRole(Long adminId, RoleRequest request) {
         Role role = Role.create(request.name(), request.description());
         roleRepository.save(role);
         
@@ -61,9 +61,11 @@ public class RoleAdminService {
                 null,
                 toJson(after)
         );
+
+        return RoleResponse.from(role);
     }
 
-    public void updateRole(Long adminId, Long roleId, RoleRequest request) {
+    public RoleResponse updateRole(Long adminId, Long roleId, RoleRequest request) {
         Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new IllegalArgumentException("Role not found"));
         
@@ -90,6 +92,7 @@ public class RoleAdminService {
                 toJson(before),
                 toJson(after)
         );
+        return RoleResponse.from(role);
     }
 
     public void deleteRole(Long adminId, Long roleId) {
