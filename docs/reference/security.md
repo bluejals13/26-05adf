@@ -1,4 +1,4 @@
-﻿# [Reference] 시스템 보안 및 인증·인가 아키텍처 (Security & RBAC Reference)
+# [Reference] 시스템 보안 및 인증·인가 아키텍처 (Security & RBAC Reference)
 
 - **Version:** 1.0.0
 - **Last Updated:** 2026-08-26
@@ -200,6 +200,107 @@ flowchart LR
 | **`ROLE_DELETE`** | ❌ | ✅ |
 | **`ROLE_ASSIGN`** | ❌ | ✅ |
 | **`MENU_READ`** | ✅ | ✅ |
+
+---
+
+## 4.1 Role 할당 관리 (User-Role Assignment Administration)
+
+본 절은 관리자가 특정 사용자에게 Role을 실제로 부여·교체·해제하는 운영 흐름을 기술합니다.  
+§3-1의 Authorization Model(`User → Role → Permission → Authority → @PreAuthorize`)과 함께 읽으십시오.
+
+### 1) 관리 흐름
+
+```text
+ADMIN (USER_ROLE_MANAGE 권한 보유)
+  │
+  ▼
+POST /api/admin/users/{userId}/roles
+  Body: { "roleIds": [Long, ...] }
+  │
+  ├─ roleIds = [1, 2]  → 해당 사용자는 id=1, id=2 의 Role만 보유하게 된다 (기존 Role 전체 대체)
+  └─ roleIds = []      → 해당 사용자의 모든 Role을 해제한다
+  │
+  ▼
+UserRoleService.assignRoles()
+  ├─ DB에서 User(roles Fetch) 조회
+  ├─ roleIds로 Role Set 조회 (개수 불일치 시 400 오류)
+  ├─ user.setRoles(newRoles)  → 기존 Set clear() 후 addAll()
+  └─ AuditLog 기록 (변경 전 Role명 / 변경 후 Role명)
+  │
+  ▼
+JPA가 user_roles 테이블 동기화
+  (삭제된 Role: DELETE FROM user_roles / 추가된 Role: INSERT INTO user_roles)
+  │
+  ▼
+다음 API 요청 시 (Access Token 재사용)
+  JwtAuthenticationFilter → UserAuthorityService.getAuthorities(userId)
+  → DB에서 User.roles + Role.permissions 재조회
+  → 변경된 Role 기반의 GrantedAuthority 적재
+  → @PreAuthorize 판단에 반영
+```
+
+### 2) API 명세
+
+| 항목 | 내용 |
+| :--- | :--- |
+| **Method / Path** | `POST /api/admin/users/{userId}/roles` |
+| **요청 바디** | `{ "roleIds": [Long, ...] }` |
+| **필요 권한** | `USER_ROLE_MANAGE` |
+| **동작 방식** | **전체 교체 (Full Replace)** — 기존 Role을 모두 제거하고 roleIds에 명시된 Role만 부여 |
+| **roleIds = []** | 해당 사용자의 모든 Role을 해제 |
+| **roleIds에 없는 id 포함 시** | 400 오류 (`Role not found`) |
+| **성공 응답** | `200 OK` + `"역할이 성공적으로 부여되었습니다."` |
+
+> **⚠️ 주의 — 부분 추가(Append) 불가:** 이 API는 `roleIds`에 포함된 Role만 최종 상태로 확정합니다.  
+> 기존 Role을 유지하면서 추가하려면, 현재 Role 목록을 조회한 뒤 병합하여 요청해야 합니다.
+
+### 3) user_roles 테이블 변경 방식
+
+`user_roles` 테이블은 `(user_id, role_id)` 복합 Primary Key 구조입니다.  
+JPA `@ManyToMany` + `@JoinTable` 매핑에 의해, `User.setRoles()` 호출 시 JPA가 현재 컬렉션과 신규 컬렉션의 차이를 계산하여 자동으로 DELETE / INSERT를 수행합니다.
+
+```
+user_roles
+┌──────────────────────┐
+│ user_id  (FK→users)  │
+│ role_id  (FK→roles)  │
+│ PK(user_id, role_id) │
+└──────────────────────┘
+```
+
+### 4) Authorization Model과의 연결
+
+Role 할당 변경이 실제 인가 판단에 반영되는 경로:
+
+```text
+[관리자가 POST /api/admin/users/{userId}/roles 호출]
+  │
+  ▼
+user_roles 변경 (@Transactional 내 처리)
+  │
+  ▼
+[해당 사용자의 다음 API 요청 시]
+  JwtAuthenticationFilter
+    → UserAuthorityService.getAuthorities(userId)
+      → findWithRolesAndPermissionsById(userId)  ← DB 재조회
+      → User.roles → Role.permissions
+      → SimpleGrantedAuthority(permission.name)
+      → SimpleGrantedAuthority("ROLE_" + role.name)
+    → SecurityContextHolder 적재
+  → @PreAuthorize("hasAuthority('...')") 판단에 반영
+```
+
+> **참고:** Role 변경은 해당 사용자의 **다음 API 요청 시점**부터 새 권한으로 인가됩니다.  
+> Access Token 자체를 즉시 무효화하는 별도 처리(Blacklist 등)는 이 API 범위에 포함되지 않습니다.
+
+### 5) Permission 구분 명확화
+
+| Permission | 보호 대상 | 의미 |
+| :--- | :--- | :--- |
+| **`USER_ROLE_MANAGE`** | `POST /api/admin/users/{id}/roles` | **사용자에게 Role 할당/교체** |
+| **`ROLE_ASSIGN`** | `POST /api/admin/roles/{id}/permissions` | **Role에 Permission 할당** |
+
+> **⚠️ 구현 주의사항:** `USER_ROLE_MANAGE`는 현재 DB `permissions` 테이블 seed(`V4__insert_permissions.sql`)에 등록되어 있지 않습니다. ADMIN Role이 실제로 이 Permission을 보유하는지는 Runtime 또는 DB 직접 확인이 필요합니다.
 
 ---
 
