@@ -16,7 +16,7 @@ export { setup };
 //const flows = { admin, user, read, load };
 
 export default function (data) {
-        
+
     const stage = __ENV.STAGE || "normal";
 
     const ratioMap = {
@@ -25,17 +25,17 @@ export default function (data) {
         stress: { user: 0.5, read: 0.4, admin: 0.1 },
     };
 
-    const ratio = ratioMap[stage] || ratioMap.normal;        
+    const ratio = ratioMap[stage] || ratioMap.normal;
     const userRatio = ratio.user;
     const readRatio = ratio.read;
-        
+
     const r = Math.random();
-        
+
     if (r < userRatio) user(data);
     else if (r < userRatio + readRatio) read(data);
     else admin(data);
-        
-    // flows[scenario](data); 
+
+    // flows[scenario](data);
 }
 
 export const options = {
