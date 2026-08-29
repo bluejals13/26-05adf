@@ -42,29 +42,20 @@
   font-size: 13px;
 }
 
-.userCount {
-  display: flex;
-  align-items: baseline;
-  gap: 5px;
-
+.count {
   color: #8b949e;
   font-size: 12px;
-}
-
-.userCount strong {
-  color: #58a6ff;
-  font-size: 18px;
 }
 
 /* =========================
    SEARCH
 ========================= */
 
-.searchArea {
+.toolbar {
   margin-bottom: 12px;
 }
 
-.userSearch {
+.search {
   width: 100%;
   height: 38px;
 
@@ -80,15 +71,17 @@
   outline: none;
 
   font-size: 13px;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
-.userSearch::placeholder,
-.roleSearch::placeholder {
+.search::placeholder {
   color: #6e7681;
 }
 
-.userSearch:focus,
-.roleSearch:focus {
+.search:focus {
   border-color: #58a6ff;
 
   box-shadow:
@@ -99,7 +92,7 @@
    USER GRID
 ========================= */
 
-.userGrid {
+.grid {
   display: grid;
 
   grid-template-columns:
@@ -108,7 +101,11 @@
   gap: 10px;
 }
 
-.userCard {
+/* =========================
+   USER CARD
+========================= */
+
+.card {
   min-width: 0;
 
   display: flex;
@@ -129,46 +126,25 @@
     border-color 0.15s ease;
 }
 
-.userCard:hover {
+.card:hover {
   background: #1a2029;
   border-color: #484f58;
 }
 
-.userMain {
-  min-width: 0;
-
-  display: flex;
-  align-items: center;
-
-  gap: 10px;
-}
-
-.avatar {
-  width: 38px;
-  height: 38px;
-
-  flex: 0 0 auto;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: rgba(88, 166, 255, 0.12);
-  color: #58a6ff;
-
-  border: 1px solid rgba(88, 166, 255, 0.25);
-
-  font-size: 14px;
-  font-weight: 700;
-}
-
 .userInfo {
   min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
-.username {
+.userId {
+  color: #6e7681;
+  font-size: 10px;
+}
+
+.userInfo strong {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -185,13 +161,14 @@
 
   gap: 4px;
 
-  margin-top: 5px;
+  margin-top: 3px;
 }
 
-.roleBadge {
+.role {
   max-width: 150px;
 
   padding: 3px 7px;
+  box-sizing: border-box;
 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -207,16 +184,20 @@
   font-weight: 600;
 }
 
-.unassigned {
+.noRole {
   color: #6e7681;
-
   font-size: 11px;
 }
+
+/* =========================
+   MANAGE BUTTON
+========================= */
 
 .manageButton {
   flex: 0 0 auto;
 
   min-height: 32px;
+
   padding: 0 10px;
 
   background: rgba(88, 166, 255, 0.1);
@@ -229,6 +210,11 @@
 
   font-size: 12px;
   font-weight: 600;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .manageButton:hover {
@@ -238,10 +224,10 @@
 }
 
 /* =========================
-   EMPTY
+   PAGE EMPTY / ERROR
 ========================= */
 
-.emptyState {
+.empty {
   min-height: 150px;
 
   display: flex;
@@ -251,464 +237,6 @@
   color: #8b949e;
 
   font-size: 13px;
-}
-
-/* =========================
-   OVERLAY
-========================= */
-
-.overlay {
-  position: fixed;
-  inset: 0;
-
-  z-index: 9999;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 24px;
-  box-sizing: border-box;
-
-  background: rgba(1, 4, 9, 0.72);
-
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-}
-
-/* =========================
-   PANEL
-========================= */
-
-.panel {
-  width: min(680px, 100%);
-
-  max-height:
-    min(760px, calc(100vh - 48px));
-
-  max-height:
-    min(760px, calc(100dvh - 48px));
-
-  display: flex;
-  flex-direction: column;
-
-  overflow: hidden;
-
-  background: #0d1117;
-
-  border: 1px solid #30363d;
-  border-radius: 14px;
-
-  box-shadow:
-    0 24px 80px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.02);
-}
-
-/* =========================
-   PANEL HEADER
-========================= */
-
-.panelHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-
-  gap: 16px;
-
-  padding: 20px;
-
-  border-bottom: 1px solid #21262d;
-}
-
-.label {
-  display: block;
-
-  margin-bottom: 6px;
-
-  color: #58a6ff;
-
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
-
-.panelHeader h2 {
-  margin: 0;
-
-  color: #e6edf3;
-
-  font-size: 20px;
-  font-weight: 650;
-}
-
-.panelHeader p {
-  margin: 6px 0 0;
-
-  color: #8b949e;
-
-  font-size: 12px;
-}
-
-.closeButton {
-  width: 32px;
-  height: 32px;
-
-  flex: 0 0 auto;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 0;
-
-  background: transparent;
-  color: #8b949e;
-
-  border: 1px solid transparent;
-  border-radius: 7px;
-
-  font-size: 22px;
-  line-height: 1;
-
-  cursor: pointer;
-}
-
-.closeButton:hover {
-  background: #21262d;
-  color: #e6edf3;
-  border-color: #30363d;
-}
-
-/* =========================
-   ROLE TOOLBAR
-========================= */
-
-.roleToolbar {
-  display: flex;
-  align-items: center;
-
-  gap: 12px;
-
-  padding: 14px 20px 8px;
-}
-
-.roleSearch {
-  flex: 1;
-
-  min-width: 0;
-  height: 36px;
-
-  padding: 0 11px;
-  box-sizing: border-box;
-
-  background: #161b22;
-  color: #c9d1d9;
-
-  border: 1px solid #30363d;
-  border-radius: 8px;
-
-  outline: none;
-
-  font-size: 13px;
-}
-
-.selectedCounter {
-  display: flex;
-  align-items: baseline;
-
-  gap: 4px;
-
-  color: #8b949e;
-
-  white-space: nowrap;
-
-  font-size: 12px;
-}
-
-.selectedCounter strong {
-  color: #58a6ff;
-
-  font-size: 16px;
-}
-
-/* =========================
-   BULK
-========================= */
-
-.bulkActions {
-  display: flex;
-  gap: 12px;
-
-  padding: 0 20px 10px;
-}
-
-.textButton,
-.textButtonDanger {
-  padding: 3px 0;
-
-  background: transparent;
-
-  border: 0;
-
-  cursor: pointer;
-
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.textButton {
-  color: #58a6ff;
-}
-
-.textButton:hover {
-  color: #79c0ff;
-  text-decoration: underline;
-}
-
-.textButtonDanger {
-  color: #f85149;
-}
-
-.textButtonDanger:hover {
-  color: #ff7b72;
-  text-decoration: underline;
-}
-
-/* =========================
-   ROLE LIST
-========================= */
-
-.roleList {
-  flex: 1;
-
-  min-height: 180px;
-  max-height: 430px;
-
-  overflow-y: auto;
-
-  padding: 4px 20px 12px;
-}
-
-/* =========================
-   ROLE CARD
-========================= */
-
-.roleCard {
-  width: 100%;
-
-  display: flex;
-  align-items: center;
-
-  gap: 11px;
-
-  margin-bottom: 6px;
-  padding: 12px;
-
-  box-sizing: border-box;
-
-  background: #161b22;
-  color: #c9d1d9;
-
-  border: 1px solid #21262d;
-  border-radius: 9px;
-
-  text-align: left;
-
-  cursor: pointer;
-
-  transition:
-    background 0.15s ease,
-    border-color 0.15s ease,
-    transform 0.1s ease;
-}
-
-.roleCard:hover {
-  background: #1c2128;
-  border-color: #3b434b;
-}
-
-.roleCard:active {
-  transform: translateY(1px);
-}
-
-.roleCardSelected {
-  background: rgba(56, 139, 253, 0.09);
-
-  border-color: rgba(88, 166, 255, 0.45);
-}
-
-.roleCardSelected:hover {
-  background: rgba(56, 139, 253, 0.13);
-}
-
-.roleIcon {
-  width: 30px;
-  height: 30px;
-
-  flex: 0 0 auto;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 7px;
-
-  background: #21262d;
-  color: #8b949e;
-
-  font-size: 17px;
-  font-weight: 700;
-}
-
-.roleCardSelected .roleIcon {
-  background: rgba(88, 166, 255, 0.15);
-  color: #58a6ff;
-}
-
-.roleCardContent {
-  min-width: 0;
-
-  flex: 1;
-
-  display: flex;
-  flex-direction: column;
-}
-
-.roleCardContent strong {
-  color: #e6edf3;
-
-  font-size: 13px;
-  font-weight: 650;
-}
-
-.roleCardContent span {
-  margin-top: 3px;
-
-  color: #8b949e;
-
-  font-size: 11px;
-  line-height: 1.4;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.roleState {
-  flex: 0 0 auto;
-
-  color: #6e7681;
-
-  font-size: 10px;
-  font-weight: 600;
-}
-
-.roleCardSelected .roleState {
-  color: #58a6ff;
-}
-
-/* =========================
-   NOTICE
-========================= */
-
-.notice {
-  display: flex;
-  align-items: flex-start;
-
-  gap: 9px;
-
-  margin: 0 20px;
-  padding: 10px 11px;
-
-  background: rgba(210, 153, 34, 0.08);
-
-  border: 1px solid rgba(210, 153, 34, 0.2);
-  border-radius: 8px;
-
-  color: #c9d1d9;
-}
-
-.notice > span {
-  width: 17px;
-  height: 17px;
-
-  flex: 0 0 auto;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: rgba(210, 153, 34, 0.2);
-  color: #d29922;
-
-  font-size: 10px;
-  font-weight: 700;
-}
-
-.notice p {
-  margin: 0;
-
-  font-size: 11px;
-  line-height: 1.45;
-}
-
-/* =========================
-   FOOTER
-========================= */
-
-.footer {
-  display: flex;
-  justify-content: flex-end;
-
-  gap: 8px;
-
-  padding: 16px 20px 20px;
-}
-
-.cancelButton,
-.saveButton {
-  min-height: 36px;
-
-  padding: 0 16px;
-
-  border-radius: 8px;
-
-  cursor: pointer;
-
-  font-size: 13px;
-  font-weight: 650;
-}
-
-.cancelButton {
-  background: #21262d;
-  color: #c9d1d9;
-
-  border: 1px solid #30363d;
-}
-
-.cancelButton:hover {
-  background: #30363d;
-  color: #fff;
-}
-
-.saveButton {
-  background: #238636;
-  color: #fff;
-
-  border: 1px solid rgba(63, 185, 80, 0.4);
-}
-
-.saveButton:hover {
-  background: #2ea043;
-  border-color: #3fb950;
-}
-
-.cancelButton:disabled,
-.saveButton:disabled,
-.closeButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 /* =========================
@@ -728,59 +256,8 @@
     font-size: 12px;
   }
 
-  .userGrid {
+  .grid {
     grid-template-columns: 1fr;
-  }
-
-  .overlay {
-    align-items: flex-end;
-    padding: 0;
-  }
-
-  .panel {
-    width: 100%;
-    max-width: 100%;
-
-    max-height: 92vh;
-    max-height: 92dvh;
-
-    border-radius: 14px 14px 0 0;
-    border-bottom: 0;
-  }
-
-  .panelHeader {
-    padding: 16px;
-  }
-
-  .roleToolbar {
-    padding: 12px 16px 8px;
-  }
-
-  .bulkActions {
-    padding: 0 16px 8px;
-  }
-
-  .roleList {
-    max-height: 45vh;
-    max-height: 45dvh;
-
-    padding: 4px 16px 10px;
-  }
-
-  .notice {
-    margin: 0 16px;
-  }
-
-  .footer {
-    padding:
-      12px
-      16px
-      calc(16px + env(safe-area-inset-bottom));
-  }
-
-  .footer > button {
-    flex: 1;
-    min-height: 40px;
   }
 }
 
@@ -793,40 +270,16 @@
     padding: 8px;
   }
 
-  .userCard {
+  .card {
     align-items: flex-start;
     flex-direction: column;
   }
 
-  .userMain {
+  .userInfo {
     width: 100%;
   }
 
   .manageButton {
     width: 100%;
-  }
-
-  .roleToolbar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .selectedCounter {
-    justify-content: flex-start;
-  }
-
-  .roleList {
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-
-  .notice {
-    margin-left: 12px;
-    margin-right: 12px;
-  }
-
-  .footer {
-    padding-left: 12px;
-    padding-right: 12px;
   }
 }

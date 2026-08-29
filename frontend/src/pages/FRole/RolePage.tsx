@@ -1,427 +1,361 @@
 // pages/RolePage.tsx
 
-import { useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 import { useRoles } from "../../queries/useRoles";
 import { useRoleManagement } from "../../mutations/useRoleManage";
-import { http } from "../../api/http";
+
+import FullPageSpinner from "../../components/loading/FullPageSpinner";
+
+import RolePermissionPanel from "./RolePermissionPanel";
 
 import styles from "./RolePage.module.css";
 
-type AdminPermission = {
-  id: number;
-  name: string;
-  description: string | null;
+const emptyForm = {
+  name: "",
+  description: "",
 };
-
-type AdminRole = {
-  id: number;
-  name: string;
-  description: string;
-  permissions: AdminPermission[];
-};
-
 
 export default function RolePage() {
-  const { data: roleData = [] } = useRoles();
-  const roles = roleData as AdminRole[];
+  const {
+    data: roles = [],
+    isLoading,
+    isError,
+  } = useRoles();
 
   const {
     saveRole,
-    assignPermissions,
     removeRole,
   } = useRoleManagement();
 
-  const [form, setForm] = useState({
-    name: "",
-    description: "",
-  });
+  const [form, setForm] = useState(emptyForm);
 
-  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editingId, setEditingId] =
+    useState<number | null>(null);
 
-  const [selectedRoleId, setSelectedRoleId] = useState<number | null>(null);
+  const [selectedRoleId, setSelectedRoleId] =
+    useState<number | null>(null);
 
-  const [selectedPermissionIds, setSelectedPermissionIds] = useState<
-    number[]
-  >([]);
-
-  const [permissionSearch, setPermissionSearch] = useState("");
-
-  const { data: permissions = [], isLoading: isPermissionLoading } =
-    useQuery({
-      queryKey: ["permissions"],
-      queryFn: () =>
-        http.get<AdminPermission[]>("/api/admin/permissions"),
-    });
-
-  const selectedRole = useMemo(
-    () => roles.find((role) => role.id === selectedRoleId),
-    [roles, selectedRoleId]
-  );
-
-  const filteredPermissions = useMemo(() => {
-    const keyword = permissionSearch.trim().toLowerCase();
-
-    if (!keyword) return permissions;
-
-    return permissions.filter(
-      (permission) =>
-        permission.name.toLowerCase().includes(keyword) ||
-        permission.description?.toLowerCase().includes(keyword)
-    );
-  }, [permissions, permissionSearch]);
-
-  const createRole = () => {
-    if (!form.name.trim()) return;
-
-    saveRole.mutate(form, {
-      onSuccess() {
-        setForm({
-          name: "",
-          description: "",
-        });
-      },
-    });
+  const resetForm = () => {
+    setEditingId(null);
+    setForm(emptyForm);
   };
 
-  const updateRole = () => {
+  const handleCreate = () => {
+    if (!form.name.trim()) return;
+
+    saveRole.mutate(
+      {
+        name: form.name.trim(),
+        description: form.description.trim(),
+      },
+      {
+        onSuccess: resetForm,
+      }
+    );
+  };
+
+  const handleUpdate = () => {
     if (editingId == null) return;
+    if (!form.name.trim()) return;
 
     saveRole.mutate(
       {
         id: editingId,
-        ...form,
+        name: form.name.trim(),
+        description: form.description.trim(),
       },
       {
-        onSuccess() {
-          setEditingId(null);
-          setForm({
-            name: "",
-            description: "",
-          });
-        },
+        onSuccess: resetForm,
       }
     );
   };
 
-  const openPermissionPanel = (role: (typeof roles)[number]) => {
-    setSelectedRoleId(role.id);
+  const handleEdit = (
+    role: (typeof roles)[number]
+  ) => {
+    setEditingId(role.id);
 
-    setSelectedPermissionIds(
-      role.permissions?.map((permission) => permission.id)
-    );
-
-    setPermissionSearch("");
+    setForm({
+      name: role.name,
+      description: role.description ?? "",
+    });
   };
 
   const closePermissionPanel = () => {
-    if (assignPermissions.isPending) return;
-
     setSelectedRoleId(null);
-    setSelectedPermissionIds([]);
-    setPermissionSearch("");
   };
 
-  const togglePermission = (permissionId: number) => {
-    setSelectedPermissionIds((current) =>
-      current.includes(permissionId)
-        ? current.filter((id) => id !== permissionId)
-        : [...current, permissionId]
+  if (isLoading) {
+    return <FullPageSpinner />;
+  }
+
+  if (isError) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.empty}>
+          Role을 불러오지 못했습니다.
+        </div>
+      </div>
     );
-  };
-
-  const selectAllPermissions = () => {
-    setSelectedPermissionIds(permissions.map((permission) => permission.id));
-  };
-
-  const clearAllPermissions = () => {
-    setSelectedPermissionIds([]);
-  };
-
-  const savePermissions = () => {
-    if (!selectedRoleId) return;
-
-    assignPermissions.mutate(
-      {
-        roleId: selectedRoleId,
-        permissionIds: selectedPermissionIds,
-      },
-      {
-        onSuccess() {
-          setSelectedRoleId(null);
-          setSelectedPermissionIds([]);
-          setPermissionSearch("");
-        },
-      }
-    );
-  };
+  }
 
   return (
     <div className={styles.page}>
-      <div className={styles.header}>
+      {/* =========================
+          HEADER
+      ========================= */}
+
+      <header className={styles.header}>
         <div>
+          <div className={styles.eyebrow}>
+            ACCESS CONTROL
+          </div>
+
           <h1>Role Management</h1>
-          <p>Role을 생성하고 Permission을 관리합니다.</p>
+
+          <p>
+            Role을 생성하고 각 Role에 부여된
+            Permission을 관리합니다.
+          </p>
         </div>
-      </div>
 
-      <div className={styles.formRow}>
-        <input
-          className={styles.input}
-          placeholder="Role Name"
-          value={form.name}
-          onChange={(e) =>
-            setForm((v) => ({
-              ...v,
-              name: e.target.value,
-            }))
-          }
-        />
+        <div className={styles.count}>
+          <strong>{roles.length}</strong>
+          <span>Roles</span>
+        </div>
+      </header>
 
-        <input
-          className={styles.input}
-          placeholder="Description"
-          value={form.description}
-          onChange={(e) =>
-            setForm((v) => ({
-              ...v,
-              description: e.target.value,
-            }))
-          }
-        />
+      {/* =========================
+          FORM
+      ========================= */}
 
-        {editingId == null ? (
-          <button
-            className={styles.button}
-            onClick={createRole}
+      <section className={styles.formCard}>
+        <div className={styles.formHeader}>
+          <div>
+            <h2>
+              {editingId == null
+                ? "새 Role 생성"
+                : "Role 수정"}
+            </h2>
+
+            <p>
+              {editingId == null
+                ? "시스템에서 사용할 새로운 Role을 등록합니다."
+                : "Role 정보를 수정합니다."}
+            </p>
+          </div>
+
+          {editingId != null && (
+            <span className={styles.editingBadge}>
+              EDITING
+            </span>
+          )}
+        </div>
+
+        <div className={styles.formRow}>
+          <input
+            className={styles.input}
+            placeholder="Role Name"
+            value={form.name}
+            onChange={(event) =>
+              setForm((current) => ({
+                ...current,
+                name: event.target.value,
+              }))
+            }
             disabled={saveRole.isPending}
-          >
-            생성
-          </button>
-        ) : (
-          <>
-            <button
-              className={styles.button}
-              onClick={updateRole}
-              disabled={saveRole.isPending}
-            >
-              저장
-            </button>
+          />
 
-            <button
-              className={styles.secondaryButton}
-              onClick={() => {
-                setEditingId(null);
-                setForm({
-                  name: "",
-                  description: "",
-                });
-              }}
-              disabled={saveRole.isPending}
-            >
-              취소
-            </button>
-          </>
+          <input
+            className={styles.input}
+            placeholder="Description"
+            value={form.description}
+            onChange={(event) =>
+              setForm((current) => ({
+                ...current,
+                description: event.target.value,
+              }))
+            }
+            disabled={saveRole.isPending}
+          />
+
+          <div className={styles.formActions}>
+            {editingId == null ? (
+              <button
+                type="button"
+                className={styles.primaryButton}
+                onClick={handleCreate}
+                disabled={
+                  saveRole.isPending ||
+                  !form.name.trim()
+                }
+              >
+                {saveRole.isPending
+                  ? "생성 중..."
+                  : "Role 생성"}
+              </button>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  className={styles.primaryButton}
+                  onClick={handleUpdate}
+                  disabled={
+                    saveRole.isPending ||
+                    !form.name.trim()
+                  }
+                >
+                  {saveRole.isPending
+                    ? "저장 중..."
+                    : "변경사항 저장"}
+                </button>
+
+                <button
+                  type="button"
+                  className={styles.secondaryButton}
+                  onClick={resetForm}
+                  disabled={saveRole.isPending}
+                >
+                  취소
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================
+          ROLE LIST HEADER
+      ========================= */}
+
+      <div className={styles.listHeader}>
+        <div>
+          <h2>Roles</h2>
+
+          <span>
+            등록된 Role 목록
+          </span>
+        </div>
+
+        {roles.length > 0 && (
+          <span className={styles.listCount}>
+            {roles.length}개
+          </span>
         )}
       </div>
 
-      <div className={styles.tableHeader}>
-        <div>ID</div>
-        <div>Role</div>
-        <div>설명</div>
-        <div>관리</div>
-      </div>
+      {/* =========================
+          ROLE LIST
+      ========================= */}
 
-      {roles.map((role) => {
-        const permissionCount = role.permissions.length;
+      {roles.length === 0 ? (
+        <div className={styles.emptyCard}>
+          <strong>
+            등록된 Role이 없습니다.
+          </strong>
 
-        return (
-          <div
-            key={role.id}
-            className={styles.tableRow}
-          >
-            <div className={styles.cell}>{role.id}</div>
+          <span>
+            위의 입력창에서 새로운 Role을 생성하세요.
+          </span>
+        </div>
+      ) : (
+        <div className={styles.roleList}>
+          {roles.map((role) => (
+            <article
+              key={role.id}
+              className={styles.roleCard}
+            >
+              <div className={styles.roleInfo}>
+                <div className={styles.roleMeta}>
+                  <span className={styles.roleId}>
+                    #{role.id}
+                  </span>
 
-            <div className={styles.roleName}>
-              {role.name}
-            </div>
+                  <span className={styles.roleBadge}>
+                    ROLE
+                  </span>
+                </div>
 
-            <div className={styles.cell}>
-              {role.description?.trim() || "-"}
-            </div>
-
-            <div className={styles.actionCell}>
-              <button
-                className={styles.permissionButton}
-                onClick={() => openPermissionPanel(role)}
-              >
-                권한
-                <span className={styles.permissionCount}>
-                  {permissionCount}
-                </span>
-              </button>
-
-              <button
-                className={styles.button}
-                onClick={() => {
-                  setEditingId(role.id);
-                  setForm({
-                    name: role.name,
-                    description: role.description,
-                  });
-                }}
-              >
-                수정
-              </button>
-
-              <button
-                className={styles.actionBtn}
-                onClick={() => removeRole.mutate(role.id)}
-                disabled={removeRole.isPending}
-              >
-                삭제
-              </button>
-            </div>
-          </div>
-        );
-      })}
-
-      {selectedRole && (
-        <div className={styles.permissionOverlay}>
-          <div className={styles.permissionPanel}>
-            <div className={styles.permissionHeader}>
-              <div>
-                <span className={styles.permissionLabel}>
-                  PERMISSION MANAGEMENT
-                </span>
-
-                <h2>{selectedRole.name}</h2>
+                <h3>{role.name}</h3>
 
                 <p>
-                  이 Role에 적용할 최종 Permission을 선택하세요.
+                  {role.description?.trim() ||
+                    "설명이 없습니다."}
                 </p>
               </div>
 
-              <button
-                className={styles.closeButton}
-                onClick={closePermissionPanel}
-                disabled={assignPermissions.isPending}
-                aria-label="권한 관리 닫기"
-              >
-                ×
-              </button>
-            </div>
+              <div className={styles.rolePermissions}>
+                <span>
+                  Permissions
+                </span>
 
-            <div className={styles.permissionToolbar}>
-              <input
-                className={styles.permissionSearch}
-                placeholder="Permission 검색..."
-                value={permissionSearch}
-                onChange={(e) => setPermissionSearch(e.target.value)}
-              />
-
-              <div className={styles.selectionInfo}>
-                <strong>{selectedPermissionIds.length}</strong>
-                <span>/ {permissions.length} 선택</span>
+                <strong>
+                  {role.permissions?.length ?? 0}
+                </strong>
               </div>
-            </div>
 
-            <div className={styles.bulkActions}>
-              <button
-                className={styles.textButton}
-                onClick={selectAllPermissions}
-                disabled={isPermissionLoading || permissions.length === 0}
-              >
-                전체 선택
-              </button>
+              <div className={styles.actionCell}>
+                <button
+                  type="button"
+                  className={styles.permissionButton}
+                  onClick={() =>
+                    setSelectedRoleId(role.id)
+                  }
+                  disabled={
+                    removeRole.isPending
+                  }
+                >
+                  권한 관리
+                  <span>
+                    {role.permissions?.length ?? 0}
+                  </span>
+                </button>
 
-              <button
-                className={styles.textButtonDanger}
-                onClick={clearAllPermissions}
-                disabled={selectedPermissionIds.length === 0}
-              >
-                전체 해제
-              </button>
-            </div>
+                <button
+                  type="button"
+                  className={styles.editButton}
+                  onClick={() =>
+                    handleEdit(role)
+                  }
+                  disabled={
+                    saveRole.isPending ||
+                    removeRole.isPending
+                  }
+                >
+                  수정
+                </button>
 
-            <div className={styles.permissionList}>
-              {isPermissionLoading ? (
-                <div className={styles.emptyState}>
-                  Permission을 불러오는 중입니다...
-                </div>
-              ) : filteredPermissions.length === 0 ? (
-                <div className={styles.emptyState}>
-                  검색 결과가 없습니다.
-                </div>
-              ) : (
-                filteredPermissions.map((permission) => {
-                  const checked = selectedPermissionIds.includes(
-                    permission.id
-                  );
-
-                  return (
-                    <label
-                      key={permission.id}
-                      className={`${styles.permissionItem} ${
-                        checked ? styles.permissionItemChecked : ""
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={checked}
-                        onChange={() =>
-                          togglePermission(permission.id)
-                        }
-                      />
-
-                      <div className={styles.permissionContent}>
-                        <div className={styles.permissionName}>
-                          {permission.name}
-                        </div>
-
-                        {permission.description && (
-                          <div className={styles.permissionDescription}>
-                            {permission.description}
-                          </div>
-                        )}
-                      </div>
-                    </label>
-                  );
-                })
-              )}
-            </div>
-
-            <div className={styles.permissionNotice}>
-              <span>i</span>
-              <p>
-                저장하면 현재 선택된 Permission 목록으로 전체 교체됩니다.
-                아무것도 선택하지 않고 저장하면 모든 Permission이
-                해제됩니다.
-              </p>
-            </div>
-
-            <div className={styles.permissionFooter}>
-              <button
-                className={styles.secondaryButton}
-                onClick={closePermissionPanel}
-                disabled={assignPermissions.isPending}
-              >
-                취소
-              </button>
-
-              <button
-                className={styles.savePermissionButton}
-                onClick={savePermissions}
-                disabled={assignPermissions.isPending}
-              >
-                {assignPermissions.isPending
-                  ? "저장 중..."
-                  : "권한 저장"}
-              </button>
-            </div>
-          </div>
+                <button
+                  type="button"
+                  className={styles.deleteButton}
+                  onClick={() =>
+                    removeRole.mutate(role.id)
+                  }
+                  disabled={
+                    saveRole.isPending ||
+                    removeRole.isPending
+                  }
+                >
+                  {removeRole.isPending
+                    ? "삭제 중..."
+                    : "삭제"}
+                </button>
+              </div>
+            </article>
+          ))}
         </div>
+      )}
+
+      {/* =========================
+          PERMISSION PANEL
+      ========================= */}
+
+      {selectedRoleId !== null && (
+        <RolePermissionPanel
+          roleId={selectedRoleId}
+          onClose={closePermissionPanel}
+        />
       )}
     </div>
   );

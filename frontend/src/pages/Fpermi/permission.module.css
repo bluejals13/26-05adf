@@ -46,7 +46,9 @@
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.8fr);
+  grid-template-columns:
+    minmax(0, 1.4fr)
+    minmax(300px, 0.8fr);
   gap: 20px;
   align-items: start;
 }
@@ -68,7 +70,10 @@
 .headerRow,
 .row {
   display: grid;
-  grid-template-columns: 80px minmax(180px, 220px) minmax(0, 1fr);
+  grid-template-columns:
+    80px
+    minmax(180px, 220px)
+    minmax(0, 1fr);
 
   width: 100%;
   box-sizing: border-box;
@@ -101,6 +106,8 @@
   color: #c9d1d9;
 
   cursor: pointer;
+
+  font: inherit;
 
   transition:
     background 0.15s ease,
@@ -135,7 +142,9 @@
 
 .idColumn {
   min-width: 0;
+
   color: #8b949e;
+
   font-size: 13px;
 }
 
@@ -147,6 +156,7 @@
   min-width: 0;
 
   color: #8b949e;
+
   font-size: 14px;
 
   overflow: hidden;
@@ -160,6 +170,7 @@
 
 .code {
   display: inline-block;
+
   max-width: 100%;
   box-sizing: border-box;
 
@@ -266,7 +277,7 @@
 }
 
 /* =========================
-   ROLE LIST
+   DETAIL INFO
    ========================= */
 
 .roleList {
@@ -282,7 +293,9 @@
 
 .roleItem {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
 
   min-height: 40px;
   padding: 8px 12px;
@@ -295,11 +308,23 @@
 }
 
 .roleName {
+  flex: 0 0 auto;
+
+  color: #8b949e;
+
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.roleValue {
+  min-width: 0;
+
   color: #c9d1d9;
 
   font-size: 14px;
   font-weight: 500;
 
+  text-align: right;
   overflow-wrap: anywhere;
 }
 
@@ -356,17 +381,6 @@
   text-align: center;
 }
 
-.denied {
-  padding: 24px;
-
-  color: #f85149;
-
-  font-size: 15px;
-  font-weight: 600;
-
-  text-align: center;
-}
-
 .error {
   padding: 16px;
 
@@ -419,13 +433,12 @@
     font-size: 13px;
   }
 
-  /*
-   * Mobile에서는 ID 컬럼을 숨기고
-   * Permission / Description 중심으로 표시
-   */
   .headerRow,
   .row {
-    grid-template-columns: minmax(130px, 0.9fr) minmax(0, 1.1fr);
+    grid-template-columns:
+      minmax(130px, 0.9fr)
+      minmax(0, 1.1fr);
+
     padding: 11px 12px;
   }
 
@@ -470,10 +483,6 @@
     padding: 12px;
   }
 
-  /*
-   * 아주 작은 화면에서는 목록을
-   * 세로 카드 형태에 가깝게 표시
-   */
   .headerRow {
     display: none;
   }
@@ -500,5 +509,14 @@
 
   .detailEmpty {
     min-height: 140px;
+  }
+
+  .roleItem {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .roleValue {
+    text-align: left;
   }
 }

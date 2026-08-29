@@ -1,6 +1,9 @@
 // mutations/useRoleManage.ts
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import {
   createRole,
@@ -9,40 +12,81 @@ import {
   assignPermissions as assignPermissionsApi,
 } from "../api/role.api";
 
+import type {
+  CreateRoleRequest,
+  UpdateRoleRequest,
+} from "../types/role";
+
 import { userKeys } from "../queries/useUsers";
+
+type SaveRolePayload =
+  | CreateRoleRequest
+  | (UpdateRoleRequest & {
+      id: number;
+    });
+
+type AssignPermissionsPayload = {
+  roleId: number;
+  permissionIds: number[];
+};
 
 export const useRoleManagement = () => {
   const queryClient = useQueryClient();
 
-  const invalidateRoleRelatedQueries = async () => {
-    await Promise.all([
-      queryClient.invalidateQueries({
-        queryKey: ["roles"],
-      }),
-      queryClient.invalidateQueries({
-        queryKey: userKeys.all,
-      }),
-    ]);
+  const invalidateRoles = async () => {
+    await queryClient.invalidateQueries({
+      queryKey: ["roles"],
+    });
   };
 
+  const invalidateUsers = async () => {
+    await queryClient.invalidateQueries({
+      queryKey: userKeys.all,
+    });
+  };
+
+  // Role 생성 / 수정
   const saveRole = useMutation({
-    mutationFn: (payload: any) =>
-      payload.id ? updateRole(payload.id, payload) : createRole(payload),
+    mutationFn: (
+      payload: SaveRolePayload
+    ) => {
+      if ("id" in payload) {
+        const { id, ...data } = payload;
 
-    onSuccess: invalidateRoleRelatedQueries,
+        return updateRole(id, data);
+      }
+
+      return createRole(payload);
+    },
+
+    onSuccess: invalidateRoles,
   });
 
+  // Role ↔ Permission 관계 변경
   const assignPermissions = useMutation({
-    mutationFn: ({ roleId, permissionIds }: any) =>
-      assignPermissionsApi(roleId, permissionIds),
+    mutationFn: ({
+      roleId,
+      permissionIds,
+    }: AssignPermissionsPayload) =>
+      assignPermissionsApi(
+        roleId,
+        permissionIds
+      ),
 
-    onSuccess: invalidateRoleRelatedQueries,
+    onSuccess: async () => {
+      await Promise.all([
+        invalidateRoles(),
+        invalidateUsers(),
+      ]);
+    },
   });
 
+  // Role 삭제
   const removeRole = useMutation({
-    mutationFn: deleteRole,
+    mutationFn: (roleId: number) =>
+      deleteRole(roleId),
 
-    onSuccess: invalidateRoleRelatedQueries,
+    onSuccess: invalidateRoles,
   });
 
   return {
@@ -51,4 +95,3 @@ export const useRoleManagement = () => {
     removeRole,
   };
 };
-

@@ -1,0 +1,727 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+  box-sizing: border-box;
+
+  background: rgba(1, 4, 9, 0.72);
+  backdrop-filter: blur(4px);
+
+  animation: overlayIn 0.15s ease;
+}
+
+.panel {
+  width: min(620px, 100%);
+  max-height: min(760px, 90vh);
+
+  display: flex;
+  flex-direction: column;
+
+  background: #0d1117;
+  color: #c9d1d9;
+
+  border: 1px solid #30363d;
+  border-radius: 14px;
+
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.02);
+
+  overflow: hidden;
+
+  animation: panelIn 0.18s ease;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 22px 24px;
+
+  background: #0d1117;
+
+  border-bottom: 1px solid #21262d;
+}
+
+.headerContent {
+  min-width: 0;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+
+  color: #58a6ff;
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+}
+
+.header h2 {
+  margin: 7px 0 4px;
+
+  color: #f0f6fc;
+
+  font-size: 21px;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.header p {
+  margin: 0;
+
+  color: #8b949e;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.close {
+  flex: 0 0 auto;
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid transparent;
+  border-radius: 7px;
+
+  background: transparent;
+  color: #8b949e;
+
+  font-size: 24px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.close:hover:not(:disabled) {
+  background: #21262d;
+  border-color: #30363d;
+  color: #f0f6fc;
+}
+
+.close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================
+   TOOLBAR
+========================= */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 16px 24px 10px;
+}
+
+.searchWrapper {
+  position: relative;
+
+  flex: 1;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+
+  transform: translateY(-52%);
+
+  color: #6e7681;
+
+  font-size: 18px;
+  line-height: 1;
+
+  pointer-events: none;
+}
+
+.search {
+  width: 100%;
+  height: 38px;
+
+  padding: 0 12px 0 34px;
+  box-sizing: border-box;
+
+  background: #161b22;
+  color: #f0f6fc;
+
+  border: 1px solid #30363d;
+  border-radius: 7px;
+
+  outline: none;
+
+  font-size: 12px;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.search::placeholder {
+  color: #6e7681;
+}
+
+.search:focus {
+  border-color: #58a6ff;
+
+  box-shadow:
+    0 0 0 3px rgba(88, 166, 255, 0.12);
+}
+
+.counter {
+  min-width: 62px;
+
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 3px;
+
+  padding: 0 10px;
+  box-sizing: border-box;
+
+  background: #161b22;
+
+  border: 1px solid #30363d;
+  border-radius: 7px;
+
+  color: #6e7681;
+
+  font-size: 11px;
+}
+
+.counter strong {
+  color: #58a6ff;
+
+  font-size: 13px;
+}
+
+/* =========================
+   BULK
+========================= */
+
+.bulk {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 4px 24px 12px;
+}
+
+.bulkButton {
+  padding: 5px 8px;
+
+  background: transparent;
+
+  border: 0;
+  border-radius: 5px;
+
+  color: #8b949e;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.bulkButton:hover:not(:disabled) {
+  background: #21262d;
+  color: #f0f6fc;
+}
+
+.clearButton:hover:not(:disabled) {
+  color: #f85149;
+}
+
+.bulkButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.bulkDivider {
+  width: 1px;
+  height: 14px;
+
+  margin: 0 3px;
+
+  background: #30363d;
+}
+
+.resultCount {
+  margin-left: auto;
+
+  color: #6e7681;
+
+  font-size: 10px;
+}
+
+/* =========================
+   PERMISSION LIST
+========================= */
+
+.permissionList {
+  min-height: 180px;
+  max-height: 390px;
+
+  overflow-y: auto;
+
+  padding: 0 24px 8px;
+
+  scrollbar-width: thin;
+  scrollbar-color: #30363d transparent;
+}
+
+.permissionList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.permissionList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.permissionList::-webkit-scrollbar-thumb {
+  background: #30363d;
+  border-radius: 999px;
+}
+
+.permissionItem {
+  position: relative;
+
+  min-height: 62px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  margin-bottom: 6px;
+  padding: 10px 12px;
+
+  box-sizing: border-box;
+
+  background: #0d1117;
+
+  border: 1px solid #21262d;
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.permissionItem:hover {
+  background: #161b22;
+  border-color: #484f58;
+}
+
+.permissionItem:active {
+  transform: scale(0.995);
+}
+
+/* 실제 checkbox는 숨김 */
+.permissionItem input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 커스텀 checkbox */
+.checkbox {
+  flex: 0 0 auto;
+
+  width: 23px;
+  height: 23px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  background: #161b22;
+
+  border: 1px solid #484f58;
+  border-radius: 6px;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.permissionItem:hover .checkbox {
+  border-color: #58a6ff;
+}
+
+.checked {
+  background: rgba(35, 134, 54, 0.08);
+
+  border-color: rgba(46, 160, 67, 0.55);
+}
+
+.checked:hover {
+  background: rgba(35, 134, 54, 0.12);
+
+  border-color: #3fb950;
+}
+
+.checked .checkbox {
+  background: #238636;
+
+  border-color: #2ea043;
+
+  box-shadow:
+    0 0 0 3px rgba(46, 160, 67, 0.12);
+}
+
+.permissionContent {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.permissionContent strong {
+  overflow: hidden;
+
+  color: #e6edf3;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.permissionContent small {
+  overflow: hidden;
+
+  color: #8b949e;
+
+  font-size: 11px;
+  line-height: 1.4;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.permissionId {
+  flex: 0 0 auto;
+
+  color: #484f58;
+
+  font-size: 9px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.checked .permissionId {
+  color: #3fb950;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty {
+  min-height: 180px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  box-sizing: border-box;
+
+  color: #6e7681;
+
+  font-size: 12px;
+}
+
+/* =========================
+   NOTICE
+========================= */
+
+.notice {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  margin: 8px 24px 14px;
+  padding: 10px 12px;
+
+  box-sizing: border-box;
+
+  background: rgba(187, 128, 9, 0.08);
+
+  border: 1px solid rgba(187, 128, 9, 0.22);
+  border-radius: 7px;
+
+  color: #8b949e;
+
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.noticeIcon {
+  flex: 0 0 auto;
+
+  width: 17px;
+  height: 17px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(210, 153, 34, 0.18);
+
+  color: #d29922;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-top: auto;
+  padding: 14px 24px;
+
+  background: #161b22;
+
+  border-top: 1px solid #21262d;
+}
+
+.footerStatus {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  color: #6e7681;
+
+  font-size: 10px;
+}
+
+.footerStatus strong {
+  min-width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 6px;
+  box-sizing: border-box;
+
+  border-radius: 999px;
+
+  background: rgba(88, 166, 255, 0.12);
+
+  color: #58a6ff;
+
+  font-size: 10px;
+}
+
+.footerActions {
+  display: flex;
+  gap: 8px;
+}
+
+.footerActions button {
+  min-width: 76px;
+  height: 34px;
+
+  padding: 0 13px;
+
+  border-radius: 7px;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.cancel {
+  background: transparent;
+
+  border: 1px solid #30363d;
+
+  color: #c9d1d9;
+}
+
+.cancel:hover:not(:disabled) {
+  background: #21262d;
+  border-color: #484f58;
+}
+
+.save {
+  background: #238636;
+
+  border: 1px solid #2ea043;
+
+  color: #ffffff;
+
+  box-shadow:
+    0 0 0 1px rgba(46, 160, 67, 0.1);
+}
+
+.save:hover:not(:disabled) {
+  background: #2ea043;
+}
+
+.footerActions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================
+   ANIMATION
+========================= */
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+  .overlay {
+    align-items: flex-end;
+
+    padding: 0;
+  }
+
+  .panel {
+    width: 100%;
+    max-height: 92vh;
+
+    border-radius: 14px 14px 0 0;
+    border-bottom: 0;
+  }
+
+  .header {
+    padding: 18px;
+  }
+
+  .toolbar {
+    padding: 14px 18px 8px;
+  }
+
+  .bulk {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .permissionList {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .notice {
+    margin-left: 18px;
+    margin-right: 18px;
+  }
+
+  .footer {
+    padding: 12px 18px;
+  }
+
+  .footerStatus {
+    display: none;
+  }
+
+  .footerActions {
+    width: 100%;
+  }
+
+  .footerActions button {
+    flex: 1;
+  }
+
+  .permissionId {
+    display: none;
+  }
+}
