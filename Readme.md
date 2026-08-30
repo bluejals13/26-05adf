@@ -14,12 +14,27 @@ APMS는 기업 환경에서 요구되는 사용자 인증(Authentication), 인�
 ### Run
 ```bash
 # 1. Repository Clone
-git clone [https://github.com/bluejals13/26-05adf.git](https://github.com/bluejals13/26-05adf.git)
+git clone https://github.com/bluejals13/26-05adf.git
 cd 26-05adf
 
 # 2. Start all services via Docker Compose
-docker-compose -f dev/docker-compose.yml up -d
+docker compose up -d
 ```
+> 세부 설정, 로컬 독립 개발 모드 및 서비스 헬스체크 검증은 **[docs/02_Quick_Start.md](docs/02_Quick_Start.md)**를 참조하십시오.
+
+## 📚 프로젝트 공식 문서 (Documentation)
+
+| 카테고리 | 문서명 | 경로 |
+| :--- | :--- | :--- |
+| **문서 인덱스** | 문서 종합 허브 | [`docs/README.md`](docs/README.md) |
+| **초기 환경 설치** | 호스트 OS 개발환경 설치 가이드 | [`docs/단순 설치.md`](docs/%EB%8B%A8%EC%88%9C%20%EC%84%A4%EC%B9%98.md) |
+| **아키텍처 & 포트** | 시스템 아키텍처 및 포트 구성 | [`docs/01_Architecture_and_Ports.md`](docs/01_Architecture_and_Ports.md) |
+| **실행 가이드** | 퀵 스타트 및 실행 가이드 | [`docs/02_Quick_Start.md`](docs/02_Quick_Start.md) |
+| **백엔드 표준** | 백엔드 개발 표준 및 코딩 규칙 | [`docs/03_Backend_Conventions.md`](docs/03_Backend_Conventions.md) |
+| **프론트엔드 표준** | 프론트엔드 개발 표준 및 코딩 규칙 | [`docs/04_Frontend_Conventions.md`](docs/04_Frontend_Conventions.md) |
+| **보안 & RBAC** | 시스템 보안 및 RBAC 아키텍처 | [`docs/reference/security.md`](docs/reference/security.md) |
+| **부하 테스트** | k6 부하 및 스트레스 테스트 보고서 | [`docs/performance/k6-load-test.md`](docs/performance/k6-load-test.md) |
+| **문서화 원칙** | 문서 작성 5대 원칙 | [`docs/rules.md`](docs/rules.md) |
 
 ## 🌐 접속 정보 (Service Endpoints)
 
@@ -381,4 +396,4 @@ Page Render
 
 이 형태가 포트폴리오·기술문서·면접 설명용으로 가장 실무적인 수준이며, IAM/Auth 아키텍처와 SRE 구조도를 자연스럽게 연결할 수 있는 문서 구성입니다.
 
-[1]: https://github.com/bluejals13/26-05adf/tree/feature/auth%400603%401401 "26-05adf/APMS.SR/dev/docker-compose.yml at feature/auth@0603@1401 · bluejals13/26-05adf · GitHub"
+[1]: https://github.com/bluejals13/26-05adf "26-05adf repository · GitHub"

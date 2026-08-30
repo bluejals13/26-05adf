@@ -6,7 +6,7 @@
 
 echo "Starting monitoring stack..."
 
-cd "$(dirname "$0")/../dev"
+cd "$(dirname "$0")/.."
 
 docker compose up -d prometheus grafana node-exporter cadvisor
 
