@@ -157,8 +157,9 @@ sequenceDiagram
 flowchart LR
     User["User (Entity)"] -->|"@ManyToMany"| Role["Role (Entity)"]
     Role -->|"@ManyToMany"| Permission["Permission (Entity)"]
-    Permission -->|"UserAuthorityService"| Authority["SimpleGrantedAuthority (Permission Name)"]
-    Authority -->|"SecurityContext"| PreAuth["@PreAuthorize(\"hasAuthority('ROLE_CREATE')\")"]
+    Permission -->|"UserAuthorityService"| Authority["SimpleGrantedAuthority"]
+    Authority -->|"SecurityContext"| PreAuth["@PreAuthorize"]
+    PreAuth -->|"hasAuthority('ROLE_CREATE')"| Endpoint["Protected API"]
 ```
 
 ### 2) API 접근 제어 및 HTTP 상태 코드 기준
