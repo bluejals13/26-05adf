@@ -238,7 +238,7 @@ gradle -v
 docker --version
 docker compose version
 git --version
-k6 version
+k6 version    # 선택적 검증 도구
 ```
 
 정상적으로 버전 정보가 출력되면 기본 개발 환경 설치가 완료된 것입니다.
