@@ -94,6 +94,15 @@ docker compose up -d mysql redis
 ```bash
 cd backend
 
+# 버전
+gradle wrapper --build-version 8.14.4
+
+# 부분 테스트
+./gradlew test --tests "AuthControllerTest"
+
+# 빌드 생성
+./gradlew build --stacktrace
+
 # Gradle 빌드 및 실행
 ./gradlew bootRun
 ```
@@ -106,6 +115,9 @@ cd frontend
 
 # 의존성 패키지 설치
 npm install
+
+# 빌드
+npm run build --verbose
 
 # Vite 개발 서버 실행
 npm run dev
