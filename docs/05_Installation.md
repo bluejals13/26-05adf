@@ -107,7 +107,7 @@ Frontend 디렉터리에서 Vite React 템플릿을 생성합니다.
 
 ```bash
 cd frontend
-npm create vite@latest . -- --template react
+npm install
 npm install zustand @tanstack/react-query   # Zustand 와 Tanstack/리액트-쿼리 설치
 ```
 
